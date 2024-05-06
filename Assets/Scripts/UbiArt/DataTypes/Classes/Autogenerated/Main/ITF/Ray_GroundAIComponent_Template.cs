@@ -1,0 +1,98 @@
+namespace UbiArt.ITF {
+	[Games(GameFlags.ROVersion)]
+	public partial class Ray_GroundAIComponent_Template : Ray_AIComponent_Template {
+		public Generic<TemplateAIBehavior> roamBehavior;
+		public Generic<Ray_AIGroundRunAwayBehavior_Template> runAwayBehavior;
+		public Generic<Ray_AIGroundBaseMovementAttackBehavior_Template> attackBehavior;
+		public Generic<Ray_AIReceiveHitBehavior_Template> receiveHitBehavior;
+		public Generic<TemplateAIBehavior> deathBehavior;
+		public Generic<TemplateAIBehavior> crushedBehavior;
+		public Generic<TemplateAIBehavior> darktoonedBehavior;
+		public Generic<TemplateAIBehavior> undarktoonifyBehavior;
+		public Generic<Ray_AISleepBehavior_Template> sleepBehavior;
+		public Generic<TemplateAIBehavior> spawnBehavior;
+		public Generic<TemplateAIBehavior> floatBehavior;
+		public Generic<TemplateAIBehavior> closeRangeAttackBehavior;
+		public Generic<Ray_AIHitWallBehavior_Template> hitWallBehavior;
+		public AABB enemyDetectionRange;
+		public AABB enemyChangeRange;
+		public AABB closeRangeAttackDetectionRange;
+		public float keepRunningAwayRange;
+		public float runAwayTime;
+		public uint runAwayEnemyLimit;
+		public int wakeUpOnEnemyDetection;
+		public int wakeUpOnCloseEnemyDetection;
+		public float roamTime;
+		public float sleepTime;
+		public int canDetectEnemiesWhileSleeping;
+		public Path darktoon;
+		public int darktoonified;
+		public StringID darktoonificationBone;
+		public uint darktoonifiedHealth;
+		public float darktoonificationEjectionForceX;
+		public float darktoonificationEjectionForceY;
+		public float maxAttackDelay;
+		public float swimWaterResistMinSpeed;
+		public float swimWaterResistMaxSpeed;
+		public float swimTopSpeed;
+		public float swimSurfaceRange;
+		public float swimTurnUpsideDownWait;
+		public float swimInertiaEnterDownMultiplier;
+		public float swimInertiaEnterNormalMultiplier;
+		public float swimInertiaEnterMaxSpeed;
+		public float swimInertiaSpeed;
+		public Generic<PhysShape> dominoHitShape;
+		public int canRehit;
+		public float dominoHitSpeedMultiplier;
+		public float squashPenetrationRadius;
+		protected override void SerializeImpl(CSerializerObject s) {
+			base.SerializeImpl(s);
+			roamBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(roamBehavior, name: "roamBehavior");
+			runAwayBehavior = s.SerializeObject<Generic<Ray_AIGroundRunAwayBehavior_Template>>(runAwayBehavior, name: "runAwayBehavior");
+			attackBehavior = s.SerializeObject<Generic<Ray_AIGroundBaseMovementAttackBehavior_Template>>(attackBehavior, name: "attackBehavior");
+			receiveHitBehavior = s.SerializeObject<Generic<Ray_AIReceiveHitBehavior_Template>>(receiveHitBehavior, name: "receiveHitBehavior");
+			deathBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(deathBehavior, name: "deathBehavior");
+			crushedBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(crushedBehavior, name: "crushedBehavior");
+			darktoonedBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(darktoonedBehavior, name: "darktoonedBehavior");
+			undarktoonifyBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(undarktoonifyBehavior, name: "undarktoonifyBehavior");
+			sleepBehavior = s.SerializeObject<Generic<Ray_AISleepBehavior_Template>>(sleepBehavior, name: "sleepBehavior");
+			spawnBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(spawnBehavior, name: "spawnBehavior");
+			floatBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(floatBehavior, name: "floatBehavior");
+			closeRangeAttackBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(closeRangeAttackBehavior, name: "closeRangeAttackBehavior");
+			hitWallBehavior = s.SerializeObject<Generic<Ray_AIHitWallBehavior_Template>>(hitWallBehavior, name: "hitWallBehavior");
+			enemyDetectionRange = s.SerializeObject<AABB>(enemyDetectionRange, name: "enemyDetectionRange");
+			enemyChangeRange = s.SerializeObject<AABB>(enemyChangeRange, name: "enemyChangeRange");
+			closeRangeAttackDetectionRange = s.SerializeObject<AABB>(closeRangeAttackDetectionRange, name: "closeRangeAttackDetectionRange");
+			keepRunningAwayRange = s.Serialize<float>(keepRunningAwayRange, name: "keepRunningAwayRange");
+			runAwayTime = s.Serialize<float>(runAwayTime, name: "runAwayTime");
+			runAwayEnemyLimit = s.Serialize<uint>(runAwayEnemyLimit, name: "runAwayEnemyLimit");
+			wakeUpOnEnemyDetection = s.Serialize<int>(wakeUpOnEnemyDetection, name: "wakeUpOnEnemyDetection");
+			wakeUpOnCloseEnemyDetection = s.Serialize<int>(wakeUpOnCloseEnemyDetection, name: "wakeUpOnCloseEnemyDetection");
+			roamTime = s.Serialize<float>(roamTime, name: "roamTime");
+			sleepTime = s.Serialize<float>(sleepTime, name: "sleepTime");
+			canDetectEnemiesWhileSleeping = s.Serialize<int>(canDetectEnemiesWhileSleeping, name: "canDetectEnemiesWhileSleeping");
+			darktoon = s.SerializeObject<Path>(darktoon, name: "darktoon");
+			darktoonified = s.Serialize<int>(darktoonified, name: "darktoonified");
+			darktoonificationBone = s.SerializeObject<StringID>(darktoonificationBone, name: "darktoonificationBone");
+			darktoonifiedHealth = s.Serialize<uint>(darktoonifiedHealth, name: "darktoonifiedHealth");
+			darktoonificationEjectionForceX = s.Serialize<float>(darktoonificationEjectionForceX, name: "darktoonificationEjectionForceX");
+			darktoonificationEjectionForceY = s.Serialize<float>(darktoonificationEjectionForceY, name: "darktoonificationEjectionForceY");
+			maxAttackDelay = s.Serialize<float>(maxAttackDelay, name: "maxAttackDelay");
+			swimWaterResistMinSpeed = s.Serialize<float>(swimWaterResistMinSpeed, name: "swimWaterResistMinSpeed");
+			swimWaterResistMaxSpeed = s.Serialize<float>(swimWaterResistMaxSpeed, name: "swimWaterResistMaxSpeed");
+			swimTopSpeed = s.Serialize<float>(swimTopSpeed, name: "swimTopSpeed");
+			swimSurfaceRange = s.Serialize<float>(swimSurfaceRange, name: "swimSurfaceRange");
+			swimTurnUpsideDownWait = s.Serialize<float>(swimTurnUpsideDownWait, name: "swimTurnUpsideDownWait");
+			swimInertiaEnterDownMultiplier = s.Serialize<float>(swimInertiaEnterDownMultiplier, name: "swimInertiaEnterDownMultiplier");
+			swimInertiaEnterNormalMultiplier = s.Serialize<float>(swimInertiaEnterNormalMultiplier, name: "swimInertiaEnterNormalMultiplier");
+			swimInertiaEnterMaxSpeed = s.Serialize<float>(swimInertiaEnterMaxSpeed, name: "swimInertiaEnterMaxSpeed");
+			swimInertiaSpeed = s.Serialize<float>(swimInertiaSpeed, name: "swimInertiaSpeed");
+			dominoHitShape = s.SerializeObject<Generic<PhysShape>>(dominoHitShape, name: "dominoHitShape");
+			canRehit = s.Serialize<int>(canRehit, name: "canRehit");
+			dominoHitSpeedMultiplier = s.Serialize<float>(dominoHitSpeedMultiplier, name: "dominoHitSpeedMultiplier");
+			squashPenetrationRadius = s.Serialize<float>(squashPenetrationRadius, name: "squashPenetrationRadius");
+		}
+		public override uint? ClassCRC => 0x3A818BBC;
+	}
+}
+

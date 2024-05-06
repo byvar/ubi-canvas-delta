@@ -1,0 +1,96 @@
+namespace UbiArt.ITF {
+	[Games(GameFlags.RL | GameFlags.RA | GameFlags.RM)]
+	public partial class RO2_BTActionReceiveHit_Template : BTAction_Template {
+		public StringID anim;
+		public StringID fxStilts1;
+		public StringID fxStilts2;
+		public StringID fxStilts3;
+		public Vec2d fxStiltsOffset1;
+		public Vec2d fxStiltsOffset2;
+		public Vec2d fxStiltsOffset3;
+		public float punchFrontWeakForceUp;
+		public float punchFrontStrongForceUp;
+		public float punchFrontMegaForceUp;
+		public float punchFrontWeakForce = 200f;
+		public float punchFrontStrongForce = 600f;
+		public float punchFrontMegaForce = 1200f;
+		public float punchFrontWeakFrictionMult = 0.6f;
+		public float punchFrontStrongFrictionMult = 0.6f;
+		public float punchFrontMegaFrictionMult = 0.5f;
+		public float punchUpWeakForce = 400f;
+		public float punchUpStrongForce = 650f;
+		public float punchUpMegaForce = 800f;
+		public float punchUpWeakGravityMultiplier = 0.5f;
+		public float punchUpStrongGravityMultiplier = 0.5f;
+		public float punchUpMegaGravityMultiplier = 0.5f;
+		public float earthquakeWeakForce = 400f;
+		public float earthquakeStrongForce = 600f;
+		public float earthquakeMegaForce = 1200f;
+		public float bounceVWeakForce = 1100f;
+		public float bounceVStrongForce = 1150f;
+		public float bounceVMegaForce = 1200f;
+		public float bounceHWeakForce = 400f;
+		public float bounceHStrongForce = 500f;
+		public float bounceHMegaForce = 700f;
+		public float bounceWeakTime = 0.2f;
+		public float bounceStrongTime = 0.2f;
+		public float bounceMegaTime = 0.2f;
+		public float bounceWeakFrictionMultiplier = 0.5f;
+		public float bounceStrongFrictionMultiplier = 0.6f;
+		public float bounceMegaFrictionMultiplier = 0.2f;
+		public bool faceHitDir;
+		public uint minHitLevelForDomino = 1;
+		public float facteurBreakSpeedDomino = 0.1f;
+		public bool useDominoEffect;
+		public bool canDoWallHit = true;
+		public bool disablePhys;
+		protected override void SerializeImpl(CSerializerObject s) {
+			base.SerializeImpl(s);
+			anim = s.SerializeObject<StringID>(anim, name: "anim");
+			fxStilts1 = s.SerializeObject<StringID>(fxStilts1, name: "fxStilts1");
+			fxStilts2 = s.SerializeObject<StringID>(fxStilts2, name: "fxStilts2");
+			fxStilts3 = s.SerializeObject<StringID>(fxStilts3, name: "fxStilts3");
+			fxStiltsOffset1 = s.SerializeObject<Vec2d>(fxStiltsOffset1, name: "fxStiltsOffset1");
+			fxStiltsOffset2 = s.SerializeObject<Vec2d>(fxStiltsOffset2, name: "fxStiltsOffset2");
+			fxStiltsOffset3 = s.SerializeObject<Vec2d>(fxStiltsOffset3, name: "fxStiltsOffset3");
+			punchFrontWeakForceUp = s.Serialize<float>(punchFrontWeakForceUp, name: "punchFrontWeakForceUp");
+			punchFrontStrongForceUp = s.Serialize<float>(punchFrontStrongForceUp, name: "punchFrontStrongForceUp");
+			punchFrontMegaForceUp = s.Serialize<float>(punchFrontMegaForceUp, name: "punchFrontMegaForceUp");
+			punchFrontWeakForce = s.Serialize<float>(punchFrontWeakForce, name: "punchFrontWeakForce");
+			punchFrontStrongForce = s.Serialize<float>(punchFrontStrongForce, name: "punchFrontStrongForce");
+			punchFrontMegaForce = s.Serialize<float>(punchFrontMegaForce, name: "punchFrontMegaForce");
+			punchFrontWeakFrictionMult = s.Serialize<float>(punchFrontWeakFrictionMult, name: "punchFrontWeakFrictionMult");
+			punchFrontStrongFrictionMult = s.Serialize<float>(punchFrontStrongFrictionMult, name: "punchFrontStrongFrictionMult");
+			punchFrontMegaFrictionMult = s.Serialize<float>(punchFrontMegaFrictionMult, name: "punchFrontMegaFrictionMult");
+			punchUpWeakForce = s.Serialize<float>(punchUpWeakForce, name: "punchUpWeakForce");
+			punchUpStrongForce = s.Serialize<float>(punchUpStrongForce, name: "punchUpStrongForce");
+			punchUpMegaForce = s.Serialize<float>(punchUpMegaForce, name: "punchUpMegaForce");
+			punchUpWeakGravityMultiplier = s.Serialize<float>(punchUpWeakGravityMultiplier, name: "punchUpWeakGravityMultiplier");
+			punchUpStrongGravityMultiplier = s.Serialize<float>(punchUpStrongGravityMultiplier, name: "punchUpStrongGravityMultiplier");
+			punchUpMegaGravityMultiplier = s.Serialize<float>(punchUpMegaGravityMultiplier, name: "punchUpMegaGravityMultiplier");
+			earthquakeWeakForce = s.Serialize<float>(earthquakeWeakForce, name: "earthquakeWeakForce");
+			earthquakeStrongForce = s.Serialize<float>(earthquakeStrongForce, name: "earthquakeStrongForce");
+			earthquakeMegaForce = s.Serialize<float>(earthquakeMegaForce, name: "earthquakeMegaForce");
+			bounceVWeakForce = s.Serialize<float>(bounceVWeakForce, name: "bounceVWeakForce");
+			bounceVStrongForce = s.Serialize<float>(bounceVStrongForce, name: "bounceVStrongForce");
+			bounceVMegaForce = s.Serialize<float>(bounceVMegaForce, name: "bounceVMegaForce");
+			bounceHWeakForce = s.Serialize<float>(bounceHWeakForce, name: "bounceHWeakForce");
+			bounceHStrongForce = s.Serialize<float>(bounceHStrongForce, name: "bounceHStrongForce");
+			bounceHMegaForce = s.Serialize<float>(bounceHMegaForce, name: "bounceHMegaForce");
+			bounceWeakTime = s.Serialize<float>(bounceWeakTime, name: "bounceWeakTime");
+			bounceStrongTime = s.Serialize<float>(bounceStrongTime, name: "bounceStrongTime");
+			bounceMegaTime = s.Serialize<float>(bounceMegaTime, name: "bounceMegaTime");
+			bounceWeakFrictionMultiplier = s.Serialize<float>(bounceWeakFrictionMultiplier, name: "bounceWeakFrictionMultiplier");
+			bounceStrongFrictionMultiplier = s.Serialize<float>(bounceStrongFrictionMultiplier, name: "bounceStrongFrictionMultiplier");
+			bounceMegaFrictionMultiplier = s.Serialize<float>(bounceMegaFrictionMultiplier, name: "bounceMegaFrictionMultiplier");
+			faceHitDir = s.Serialize<bool>(faceHitDir, name: "faceHitDir");
+			minHitLevelForDomino = s.Serialize<uint>(minHitLevelForDomino, name: "minHitLevelForDomino");
+			facteurBreakSpeedDomino = s.Serialize<float>(facteurBreakSpeedDomino, name: "facteurBreakSpeedDomino");
+			useDominoEffect = s.Serialize<bool>(useDominoEffect, name: "useDominoEffect");
+			canDoWallHit = s.Serialize<bool>(canDoWallHit, name: "canDoWallHit");
+			disablePhys = s.Serialize<bool>(disablePhys, name: "disablePhys");
+		}
+		public override uint? ClassCRC => 0x4FE5F2FE;
+	}
+}
+

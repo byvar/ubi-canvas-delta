@@ -1,0 +1,20 @@
+namespace UbiArt.ITF {
+	[Games(GameFlags.All)]
+	public partial class TimedSpawnerComponent : ActorComponent {
+		public float spawnDelay;
+		public float spawnRate = 1f;
+		public int burstElementsCount = -1;
+		public int burstCount = -1;
+		public float burstDelay;
+		protected override void SerializeImpl(CSerializerObject s) {
+			base.SerializeImpl(s);
+			spawnDelay = s.Serialize<float>(spawnDelay, name: "spawnDelay");
+			spawnRate = s.Serialize<float>(spawnRate, name: "spawnRate");
+			burstElementsCount = s.Serialize<int>(burstElementsCount, name: "burstElementsCount");
+			burstCount = s.Serialize<int>(burstCount, name: "burstCount");
+			burstDelay = s.Serialize<float>(burstDelay, name: "burstDelay");
+		}
+		public override uint? ClassCRC => 0xC67FA43A;
+	}
+}
+
