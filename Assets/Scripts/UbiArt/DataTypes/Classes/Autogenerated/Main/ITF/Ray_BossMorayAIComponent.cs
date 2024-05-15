@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public ObjectPath finalCinematic;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				sequences = s.SerializeObject<CListO<Ray_BossMorayAIComponent.Sequence>>(sequences, name: "sequences");
 				finalCinematic = s.SerializeObject<ObjectPath>(finalCinematic, name: "finalCinematic");
 			}

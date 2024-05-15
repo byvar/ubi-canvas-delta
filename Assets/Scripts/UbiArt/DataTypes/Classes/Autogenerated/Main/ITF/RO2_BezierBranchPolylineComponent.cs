@@ -7,11 +7,11 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					polylineMode2 = s.Serialize<RO2_PolylineMode2>(polylineMode2, name: "polylineMode");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					polylineMode = s.Serialize<RO2_PolylineMode>(polylineMode, name: "polylineMode");
 					polylineTessellation = s.Serialize<float>(polylineTessellation, name: "polylineTessellation");
 				}

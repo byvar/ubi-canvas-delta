@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public StringID defaultItem;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				defaultItem = s.SerializeObject<StringID>(defaultItem, name: "defaultItem");
 			}
 		}

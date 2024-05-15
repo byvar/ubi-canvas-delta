@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		public Vec3d highlightOffset;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				name = s.Serialize<string>(name, name: "name");
 				mapPath = s.SerializeObject<PathRef>(mapPath, name: "mapPath");
 				hasOnlineContent = s.Serialize<int>(hasOnlineContent, name: "hasOnlineContent");

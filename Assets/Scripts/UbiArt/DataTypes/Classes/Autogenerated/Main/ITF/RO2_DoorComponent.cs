@@ -7,11 +7,11 @@ namespace UbiArt.ITF {
 		public bool isLocked;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				detectRange = s.Serialize<float>(detectRange, name: "detectRange");
 				automaticOpening = s.Serialize<bool>(automaticOpening, name: "automaticOpening");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				openCursor = s.Serialize<float>(openCursor, name: "openCursor");
 				isLocked = s.Serialize<bool>(isLocked, name: "isLocked");
 			}

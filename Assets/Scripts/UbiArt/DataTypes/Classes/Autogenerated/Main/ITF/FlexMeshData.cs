@@ -26,7 +26,7 @@ namespace UbiArt.ITF {
 		public CListO<StringID> flexBonesList;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				texture = s.SerializeObject<Path>(texture, name: "texture");
 			}
 			material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

@@ -12,7 +12,7 @@ namespace UbiArt.ITF {
 		public float nbBounce;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				crushable = s.Serialize<bool>(crushable, name: "crushable");
 				mega = s.Serialize<bool>(mega, name: "mega");
 				hitPoints = s.Serialize<uint>(hitPoints, name: "hitPoints");

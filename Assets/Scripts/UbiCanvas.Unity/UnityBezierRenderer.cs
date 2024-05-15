@@ -81,6 +81,36 @@ public class UnityBezierRenderer : MonoBehaviour {
 			yield return currentPos + new Vec3d(n.tangent?.x ?? 0f, n.tangent?.y ?? 0f, 0f);
 		}
 	}
+	public Vec3d GetPosition(int index) {
+		Vec3d currentPos = new Vec3d();
+		for (int i = 0; i <= index; i++) {
+			var n = Branch.nodes[i];
+			currentPos += n.pos;
+		}
+		return currentPos;
+	}
+	public Vec3d GetTangent(int index, bool addPosition = false) {
+		
+		var n = Branch.nodes[index];
+		var tangent = new Vec3d(n.tangent?.x ?? 0f, n.tangent?.y ?? 0f, 0f);
+		if (addPosition) {
+			return GetPosition(index) + tangent;
+		} else {
+			return tangent;
+		}
+	}
+	public void SetTangent(int index, Vec2d vec, bool addPosition = false) {
+		var pos = addPosition ? GetPosition(index) : Vec3d.Zero;
+		var tang = vec - new Vec2d(pos.x, pos.y);
+		var n = Branch.nodes[index];
+		n.tangent = tang;
+	}
+	public void SetPosition(int index, Vec3d vec, bool addPosition = false) {
+		var pos = addPosition ? GetPosition(index) : Vec3d.Zero;
+		var posDiff = vec - pos;
+		var n = Branch.nodes[index];
+		n.pos = n.pos + posDiff;
+	}
 
 
 	private void Update() {

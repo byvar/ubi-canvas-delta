@@ -20,7 +20,7 @@ namespace UbiArt.ITF {
 			rootPosScale = s.SerializeObject<Vec2d>(rootPosScale, name: "rootPosScale");
 			ignoreContactDuration = s.Serialize<float>(ignoreContactDuration, name: "ignoreContactDuration");
 			if (s.Settings.EngineVersion == EngineVersion.RO) {
-				if (!s.HasProperty(CSerializerObject.SerializerProperty.Binary) && s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (!s.HasProperties(SerializerProperties.Binary) && s.HasFlags(SerializeFlags.Group_Data)) {
 					debugName = s.Serialize<string>(debugName, name: "debugName");
 				}
 			}

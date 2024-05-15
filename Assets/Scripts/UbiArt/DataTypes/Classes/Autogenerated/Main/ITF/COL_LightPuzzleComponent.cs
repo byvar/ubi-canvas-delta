@@ -14,7 +14,7 @@ namespace UbiArt.ITF {
 			failCooldown = s.Serialize<float>(failCooldown, name: "failCooldown");
 			inRangeCoolDown = s.Serialize<float>(inRangeCoolDown, name: "inRangeCoolDown");
 			failEvent = s.SerializeObject<Placeholder>(failEvent, name: "failEvent");
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				isSolved = s.Serialize<int>(isSolved, name: "isSolved");
 			}
 		}

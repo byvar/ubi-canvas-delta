@@ -18,7 +18,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					TextLabel = s.Serialize<CString>(TextLabel, name: "TextLabel");
 					drawUsingEngine = s.Serialize<int>(drawUsingEngine, name: "drawUsingEngine");
 					drawBoxWidth = s.Serialize<float>(drawBoxWidth, name: "drawBoxWidth");

@@ -32,7 +32,7 @@ namespace UbiArt.ITF {
 				archetype = s.SerializeObject<StringID>(archetype, name: "archetype");
 				type = s.SerializeObject<StringID>(type, name: "type");
 				updatetype = s.Serialize<Pickable.UpdateType>(updatetype, name: "updatetype");
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					COMPONENTS = s.SerializeObject<CArrayO<Generic<ActorComponent_Template>>>(COMPONENTS, name: "COMPONENTS");
 				}
 			} else if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {

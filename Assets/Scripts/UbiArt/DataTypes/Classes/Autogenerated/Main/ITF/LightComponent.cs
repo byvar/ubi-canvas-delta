@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		public float blue;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				useOnActor = s.Serialize<int>(useOnActor, name: "useOnActor");
 				useOnFrize = s.Serialize<int>(useOnFrize, name: "useOnFrize");
 				useBV = s.Serialize<int>(useBV, name: "useBV");

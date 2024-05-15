@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public Generic<Event> someEvent;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				someValue = s.Serialize<float>(someValue, name: "someValue");
 				someEvent = s.SerializeObject<Generic<Event>>(someEvent, name: "someEvent");
 			}

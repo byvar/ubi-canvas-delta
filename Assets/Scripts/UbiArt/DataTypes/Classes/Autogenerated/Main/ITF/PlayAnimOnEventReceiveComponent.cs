@@ -7,13 +7,13 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					disabledAfterEvent = s.Serialize<bool>(disabledAfterEvent, name: "disabledAfterEvent");
 					playingEventCheckpointSave = s.Serialize<bool>(playingEventCheckpointSave, name: "playingEventCheckpointSave");
 					eventIdlePlayed = s.Serialize<int>(eventIdlePlayed, name: "eventIdlePlayed");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					disabledAfterEvent = s.Serialize<bool>(disabledAfterEvent, name: "disabledAfterEvent");
 					playingEventCheckpointSave = s.Serialize<bool>(playingEventCheckpointSave, name: "playingEventCheckpointSave");
 				}

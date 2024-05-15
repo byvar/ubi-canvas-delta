@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public Vec2d finalDefaultPos;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				finalDefaultPos = s.SerializeObject<Vec2d>(finalDefaultPos, name: "finalDefaultPos");
 			}
 		}

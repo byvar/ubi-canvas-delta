@@ -22,14 +22,14 @@ namespace UbiArt.ITF {
 		public bool trunkIsStoped;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				max = s.SerializeObject<Vec2d>(max, name: "max");
 				heightUnderLeftCorner = s.Serialize<float>(heightUnderLeftCorner, name: "heightUnderLeftCorner");
 				heightUnderRightCorner = s.Serialize<float>(heightUnderRightCorner, name: "heightUnderRightCorner");
 				hookLengthLeft = s.Serialize<float>(hookLengthLeft, name: "hookLengthLeft");
 				hookLengthRight = s.Serialize<float>(hookLengthRight, name: "hookLengthRight");
 			}
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				onlyOneTrigger = s.Serialize<bool>(onlyOneTrigger, name: "onlyOneTrigger");
 				setUpEnabled = s.Serialize<bool>(setUpEnabled, name: "setUpEnabled");
 				osciSummitHeight = s.Serialize<float>(osciSummitHeight, name: "osciSummitHeight");
@@ -37,7 +37,7 @@ namespace UbiArt.ITF {
 				osciAngularSpeedInit = s.SerializeObject<Angle>(osciAngularSpeedInit, name: "osciAngularSpeedInit");
 				acceptCheckPointSave = s.Serialize<bool>(acceptCheckPointSave, name: "acceptCheckPointSave");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				cornerLowerLeft = s.SerializeObject<RO2_TrunkComponent.RO2_TrunkCorner>(cornerLowerLeft, name: "cornerLowerLeft");
 				cornerLowerRight = s.SerializeObject<RO2_TrunkComponent.RO2_TrunkCorner>(cornerLowerRight, name: "cornerLowerRight");
 				cornerUpperLeft = s.SerializeObject<RO2_TrunkComponent.RO2_TrunkCorner>(cornerUpperLeft, name: "cornerUpperLeft");

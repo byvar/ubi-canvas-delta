@@ -18,6 +18,8 @@ namespace UbiArt {
 		public float G => ((colorBytes >> 8) & 0xFF) / 255f;
 		public float B => ((colorBytes >> 16) & 0xFF) / 255f;
 		public float A => ((colorBytes >> 24) & 0xFF) / 255f;
+		// Note: on X360: A R G B
+		// Currently I have it like A B G R...
 
 		public void Serialize(CSerializerObject s, string name) {
 			colorBytes = s.Serialize<uint>(colorBytes);

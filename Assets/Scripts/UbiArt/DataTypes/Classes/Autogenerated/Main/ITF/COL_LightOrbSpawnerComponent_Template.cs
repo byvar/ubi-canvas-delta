@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		public float timeBeforeRefill;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				spawnActorLua = s.SerializeObject<Path>(spawnActorLua, name: "spawnActorLua");
 				FX_Shake = s.SerializeObject<StringID>(FX_Shake, name: "FX_Shake");
 				FX_OrbsRemaining = s.SerializeObject<StringID>(FX_OrbsRemaining, name: "FX_OrbsRemaining");

@@ -8,13 +8,13 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
 				standOnce = s.Serialize<bool>(standOnce, name: "standOnce", options: CSerializerObject.Options.BoolAsByte);
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					dead = s.Serialize<bool>(dead, name: "dead");
 				}
 			} else {
 				standOnce = s.Serialize<bool>(standOnce, name: "standOnce");
 				useDestructionDelay = s.Serialize<bool>(useDestructionDelay, name: "useDestructionDelay");
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					dead = s.Serialize<bool>(dead, name: "dead");
 				}
 			}

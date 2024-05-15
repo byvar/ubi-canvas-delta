@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 			                                || s.Settings.Game == Game.RO || s.Settings.Game == Game.RL) {
 				SetEvaluationEnum();
 			} else {
-				if (evaluation == Enum_evaluation.Undefined) {
+				if (evaluation == Type.Undefined) {
 					SetEvaluationEnum();
 				} else {
 					SetEvaluationStringID();
@@ -19,25 +19,25 @@ namespace UbiArt.ITF {
 		protected void SetEvaluationEnum() {
 			var sid = eval?.stringID ?? 0xFFFFFFFF;
 			evaluation = sid switch {
-				0x8b2df96c => Enum_evaluation.LessThan,
-				0x15285401 => Enum_evaluation.LessThanOrEquals,
-				0x8caece26 => Enum_evaluation.GreaterThan,
-				0x4d07b33f => Enum_evaluation.GreaterThanOrEquals,
-				0x158d0faf => Enum_evaluation.Equals,
-				0xfb9ae83 => Enum_evaluation.NotEquals,
-				0x2166158f => Enum_evaluation.And,
-				_ => Enum_evaluation.Undefined
+				0x8b2df96c => Type.LessThan,
+				0x15285401 => Type.LessThanOrEquals,
+				0x8caece26 => Type.GreaterThan,
+				0x4d07b33f => Type.GreaterThanOrEquals,
+				0x158d0faf => Type.Equals,
+				0xfb9ae83 => Type.NotEquals,
+				0x2166158f => Type.And,
+				_ => Type.Undefined
 			};
 		}
 		protected void SetEvaluationStringID() {
 			eval = evaluation switch {
-				Enum_evaluation.LessThan => new StringID("<"),
-				Enum_evaluation.LessThanOrEquals => new StringID("<="),
-				Enum_evaluation.GreaterThan => new StringID(">"),
-				Enum_evaluation.GreaterThanOrEquals => new StringID(">="),
-				Enum_evaluation.Equals => new StringID("=="),
-				Enum_evaluation.NotEquals => new StringID("!="),
-				Enum_evaluation.And => new StringID("&"),
+				Type.LessThan => new StringID("<"),
+				Type.LessThanOrEquals => new StringID("<="),
+				Type.GreaterThan => new StringID(">"),
+				Type.GreaterThanOrEquals => new StringID(">="),
+				Type.Equals => new StringID("=="),
+				Type.NotEquals => new StringID("!="),
+				Type.And => new StringID("&"),
 				_ => new StringID()
 			};
 		}

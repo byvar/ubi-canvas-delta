@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public RO2_TouchSpringPlatformComponent.CalibrationParamsStruct calibrationParams;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				anchorData = s.SerializeObject<RO2_TouchSpringPlatformComponent.AnchorDataStruct>(anchorData, name: "anchorData");
 				calibrationParams = s.SerializeObject<RO2_TouchSpringPlatformComponent.CalibrationParamsStruct>(calibrationParams, name: "calibrationParams");
 			}

@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public Vec2d quadSize;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				ALIGN = s.Serialize<align>(ALIGN, name: "ALIGN");
 				SCREEN_POURCENT_X = s.Serialize<float>(SCREEN_POURCENT_X, name: "SCREEN_POURCENT_X");
 				SCREEN_POURCENT_Y = s.Serialize<float>(SCREEN_POURCENT_Y, name: "SCREEN_POURCENT_Y");

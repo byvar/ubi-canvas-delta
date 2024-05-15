@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public StringID level;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				teensies = s.SerializeObject<CListO<RO2_TeensyRecapComponent.Teensy>>(teensies, name: "teensies");
 				level = s.SerializeObject<StringID>(level, name: "level");
 			}

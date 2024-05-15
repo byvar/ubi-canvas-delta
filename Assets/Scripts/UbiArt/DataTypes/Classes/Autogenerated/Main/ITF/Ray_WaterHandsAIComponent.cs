@@ -5,10 +5,10 @@ namespace UbiArt.ITF {
 		public int isDead;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				rangeMaxDetect = s.Serialize<float>(rangeMaxDetect, name: "rangeMaxDetect");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				isDead = s.Serialize<int>(isDead, name: "isDead");
 			}
 		}

@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RO) {
 				startValue = s.Serialize<float>(startValue, name: "startValue");
-				if (s.HasFlags(SerializeFlags.Editor)) {
+				if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 					displayPhantom = s.Serialize<bool>(displayPhantom, name: "displayPhantom");
 				}
 			} else {

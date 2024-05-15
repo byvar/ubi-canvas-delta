@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public bool HasBeenDRCified;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				HasBeenDRCified = s.Serialize<bool>(HasBeenDRCified, name: "HasBeenDRCified");
 			}
 		}

@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public int canFallWhenSleeping;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				startsAtApex = s.Serialize<int>(startsAtApex, name: "startsAtApex");
 				delayBeforeStarting = s.Serialize<float>(delayBeforeStarting, name: "delayBeforeStarting");
 				mustWaitForTrigger = s.Serialize<int>(mustWaitForTrigger, name: "mustWaitForTrigger");

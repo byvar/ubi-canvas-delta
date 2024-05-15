@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public StringID bone;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				bone = s.SerializeObject<StringID>(bone, name: "bone");
 			}
 		}

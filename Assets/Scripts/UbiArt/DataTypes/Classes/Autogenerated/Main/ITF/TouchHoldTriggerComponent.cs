@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					onHoldEvent = s.SerializeObject<EventSender>(onHoldEvent, name: "onHoldEvent");
 					onReleaseEvent = s.SerializeObject<EventSender>(onReleaseEvent, name: "onReleaseEvent");
 					if (s.Settings.Platform != GamePlatform.Vita) {
@@ -16,13 +16,13 @@ namespace UbiArt.ITF {
 					}
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					onHoldEvent = s.SerializeObject<EventSender>(onHoldEvent, name: "onHoldEvent");
 					onReleaseEvent = s.SerializeObject<EventSender>(onReleaseEvent, name: "onReleaseEvent");
 					useTapGauge = s.Serialize<bool>(useTapGauge, name: "useTapGauge", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					onHoldEvent = s.SerializeObject<EventSender>(onHoldEvent, name: "onHoldEvent");
 					onReleaseEvent = s.SerializeObject<EventSender>(onReleaseEvent, name: "onReleaseEvent");
 					minTimeBeforeHoldEventSend = s.Serialize<float>(minTimeBeforeHoldEventSend, name: "minTimeBeforeHoldEventSend");

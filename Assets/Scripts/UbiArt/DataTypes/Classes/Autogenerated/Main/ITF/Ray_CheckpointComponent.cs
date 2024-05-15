@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public Placeholder SpawnPos;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				SpawnPos = s.SerializeObject<Placeholder>(SpawnPos, name: "SpawnPos");
 			}
 		}

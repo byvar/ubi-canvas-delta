@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public CListO<Ray_SceneSettingsComponent.PlayerData> players;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				players = s.SerializeObject<CListO<Ray_SceneSettingsComponent.PlayerData>>(players, name: "players");
 			}
 		}
@@ -21,7 +21,7 @@ namespace UbiArt.ITF {
 				base.SerializeImpl(s);
 				active = s.Serialize<bool>(active, name: "active");
 				invincible = s.Serialize<bool>(invincible, name: "invincible");
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					HP = s.Serialize<uint>(HP, name: "HP");
 					maxHP = s.Serialize<uint>(maxHP, name: "maxHP");
 				}

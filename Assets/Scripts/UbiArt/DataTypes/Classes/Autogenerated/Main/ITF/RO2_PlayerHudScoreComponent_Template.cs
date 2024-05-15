@@ -87,7 +87,7 @@ namespace UbiArt.ITF {
 				pressStartMaxAlpha = s.Serialize<float>(pressStartMaxAlpha, name: "pressStartMaxAlpha");
 				pressStartTextID = s.SerializeObject<LocalisationId>(pressStartTextID, name: "pressStartTextID");
 				leaveDRCTextID = s.SerializeObject<LocalisationId>(leaveDRCTextID, name: "leaveDRCTextID");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					lumTexture = s.SerializeObject<Path>(lumTexture, name: "lumTexture");
 				}
 				lumMaterial = s.SerializeObject<GFXMaterialSerializable>(lumMaterial, name: "lumMaterial");
@@ -121,7 +121,7 @@ namespace UbiArt.ITF {
 				grayedAlpha = s.Serialize<float>(grayedAlpha, name: "grayedAlpha");
 				idleAlpha = s.Serialize<float>(idleAlpha, name: "idleAlpha");
 				leaveDRCTextID = s.SerializeObject<LocalisationId>(leaveDRCTextID, name: "leaveDRCTextID");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					lumTexture = s.SerializeObject<Path>(lumTexture, name: "lumTexture");
 				}
 				lumMaterial = s.SerializeObject<GFXMaterialSerializable>(lumMaterial, name: "lumMaterial");

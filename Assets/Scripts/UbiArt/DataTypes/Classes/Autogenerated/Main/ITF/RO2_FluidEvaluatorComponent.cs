@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public float CellPercentValidation;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				shape = s.SerializeObject<EditableShape>(shape, name: "shape");
 				BottomRowOffset = s.Serialize<uint>(BottomRowOffset, name: "BottomRowOffset");
 				CellNbToValidateRow = s.Serialize<uint>(CellNbToValidateRow, name: "CellNbToValidateRow");

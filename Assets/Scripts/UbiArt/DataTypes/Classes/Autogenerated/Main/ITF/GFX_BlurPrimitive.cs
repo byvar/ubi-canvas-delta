@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public bool LargeBlur;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				PrimitiveParam = s.SerializeObject<GFXPrimitiveParam>(PrimitiveParam, name: "PrimitiveParam");
 				Size = s.Serialize<float>(Size, name: "Size");
 				Alpha = s.Serialize<float>(Alpha, name: "Alpha");

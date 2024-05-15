@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			id = s.SerializeObject<StringID>(id, name: "id");
 			patchBank = s.SerializeObject<Path>(patchBank, name: "patchBank");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				texture = s.SerializeObject<Path>(texture, name: "texture");
 			}
 			textureSet = s.SerializeObject<GFXMaterialTexturePathSet>(textureSet, name: "textureSet");

@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				ExternalForce = s.Serialize<float>(ExternalForce, name: "ExternalForce");
 				ExternalFluid = s.Serialize<float>(ExternalFluid, name: "ExternalFluid");
 				ExternalPrimitive = s.Serialize<float>(ExternalPrimitive, name: "ExternalPrimitive");

@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public Placeholder spawneePaths;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				spawneePaths = s.SerializeObject<Placeholder>(spawneePaths, name: "spawneePaths");
 			}
 		}

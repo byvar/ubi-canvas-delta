@@ -7,11 +7,11 @@ namespace UbiArt.ITF {
 		public bool bool__3;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				CArray_W1W_BreakableParams__2 = s.SerializeObject<CArrayO<W1W_BreakableParams>>(CArray_W1W_BreakableParams__2, name: "CArray<W1W_BreakableParams>__2");
 				bool__3 = s.Serialize<bool>(bool__3, name: "bool__3");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				uint__0 = s.Serialize<uint>(uint__0, name: "uint__0");
 				float__1 = s.Serialize<float>(float__1, name: "float__1");
 			}

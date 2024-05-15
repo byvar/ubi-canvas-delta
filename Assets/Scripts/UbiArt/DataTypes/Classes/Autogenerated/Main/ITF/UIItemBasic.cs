@@ -37,7 +37,7 @@ namespace UbiArt.ITF {
 				selectTextStyle = s.Serialize<uint>(selectTextStyle, name: "selectTextStyle");
 				selectAnimMeshVertex = s.SerializeObject<CListO<StringID>>(selectAnimMeshVertex, name: "selectAnimMeshVertex");
 				PathForMap = s.SerializeObject<PathRef>(PathForMap, name: "PathForMap");
-				if (!s.HasFlags(SerializeFlags.Editor)) {
+				if (!s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 					nextMenuOnValidate = s.SerializeObject<StringID>(nextMenuOnValidate, name: "nextMenuOnValidate");
 				} else {
 					nextMenuOnValidate = s.SerializeChoiceListObject<StringID>(nextMenuOnValidate, name: "nextMenuOnValidate", empty: "Empty");
@@ -48,7 +48,7 @@ namespace UbiArt.ITF {
 				OnValidateEvents = s.SerializeObject<CListO<sEventData>>(OnValidateEvents, name: "OnValidateEvents");
 				OnValidateLockedEvents = s.SerializeObject<CListO<sEventData>>(OnValidateLockedEvents, name: "OnValidateLockedEvents");
 				OnSelectEvents = s.SerializeObject<CListO<sEventData>>(OnSelectEvents, name: "OnSelectEvents");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					WwiseOnValidate = s.SerializeObject<EventSender>(WwiseOnValidate, name: "WwiseOnValidate");
 				}
 				isUIPADListener = s.Serialize<bool>(isUIPADListener, name: "isUIPADListener");

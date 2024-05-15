@@ -7,10 +7,10 @@ namespace UbiArt.online {
 		public uint second;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasProperty(CSerializerObject.SerializerProperty.Binary)) {
+			if (s.HasProperties(SerializerProperties.Binary)) {
 				value = s.Serialize<ulong>(value, name: "value");
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					value = s.Serialize<ulong>(value, name: "value");
 				}
 				day = s.Serialize<uint>(day, name: "day");

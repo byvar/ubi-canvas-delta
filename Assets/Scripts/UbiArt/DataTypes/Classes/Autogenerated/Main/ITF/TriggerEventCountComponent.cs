@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public uint nbEvents;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				nbEvents = s.Serialize<uint>(nbEvents, name: "nbEvents");
 			}
 		}

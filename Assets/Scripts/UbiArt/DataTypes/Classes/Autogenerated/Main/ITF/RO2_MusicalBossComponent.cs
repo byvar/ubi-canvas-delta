@@ -8,13 +8,13 @@ namespace UbiArt.ITF {
 		public uint currentNodeIndex;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				bpm = s.Serialize<float>(bpm, name: "bpm");
 				triggerDistance = s.Serialize<float>(triggerDistance, name: "triggerDistance");
 				volume = s.Serialize<float>(volume, name: "volume");
 				fadeAfterCheckpoint = s.Serialize<float>(fadeAfterCheckpoint, name: "fadeAfterCheckpoint");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				currentNodeIndex = s.Serialize<uint>(currentNodeIndex, name: "currentNodeIndex");
 			}
 		}

@@ -5,10 +5,10 @@ namespace UbiArt.ITF {
 		public bool startSequence;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				ritualType = s.Serialize<RitualType>(ritualType, name: "ritualType");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				startSequence = s.Serialize<bool>(startSequence, name: "startSequence");
 			}
 		}

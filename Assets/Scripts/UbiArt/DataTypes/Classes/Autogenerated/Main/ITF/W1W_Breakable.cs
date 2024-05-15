@@ -15,7 +15,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			CArray_W1W_BreakableSequence__1 = s.SerializeObject<CArrayO<W1W_BreakableSequence>>(CArray_W1W_BreakableSequence__1, name: "CArray<W1W_BreakableSequence>__1");
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				Enum_VH_0__2 = s.Serialize<Enum_VH_0>(Enum_VH_0__2, name: "Enum_VH_0__2");
 				int__3 = s.Serialize<int>(int__3, name: "int__3");
 				Generic_Event__4 = s.SerializeObject<Generic<Event>>(Generic_Event__4, name: "Generic<Event>__4");
@@ -26,7 +26,7 @@ namespace UbiArt.ITF {
 				CArray_Generic_Event__9 = s.SerializeObject<CArrayO<Generic<Event>>>(CArray_Generic_Event__9, name: "CArray<Generic<Event>>__9");
 			}
 			bool__10 = s.Serialize<bool>(bool__10, name: "bool__10");
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				bool__0 = s.Serialize<bool>(bool__0, name: "bool__0");
 			}
 		}

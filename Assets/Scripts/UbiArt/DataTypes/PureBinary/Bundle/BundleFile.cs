@@ -83,6 +83,9 @@ namespace UbiArt.Bundle {
 			preProcessedFiles[path] = data;
 			SetTime(path, lastWriteTime);
 		}
+		public bool HasAddedFile(Path path) => files.ContainsKey(path);
+		public ICSerializable GetAddedFile(Path path) => files[path];
+
 		public void SetTime(Path path, DateTime? lastWriteTime = null) {
 			if (lastWriteTime.HasValue)
 				times[path] = lastWriteTime.Value;

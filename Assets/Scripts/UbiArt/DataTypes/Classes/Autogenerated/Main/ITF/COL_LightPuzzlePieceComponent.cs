@@ -11,7 +11,7 @@ namespace UbiArt.ITF {
 		public StringID objectState;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				shadowActivationRadius = s.Serialize<float>(shadowActivationRadius, name: "shadowActivationRadius");
 				distanceFactor = s.Serialize<float>(distanceFactor, name: "distanceFactor");
 				receptorRadius = s.Serialize<float>(receptorRadius, name: "receptorRadius");

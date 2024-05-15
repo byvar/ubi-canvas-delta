@@ -59,7 +59,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					beginTexture = s.SerializeObject<Path>(beginTexture, name: "beginTexture");
 					endTexture = s.SerializeObject<Path>(endTexture, name: "endTexture");
 				}
@@ -117,7 +117,7 @@ namespace UbiArt.ITF {
 				animMeshVertexAngleOffset = s.SerializeObject<Angle>(animMeshVertexAngleOffset, name: "animMeshVertexAngleOffset");
 				fullDisappearOnCut = s.Serialize<CutFade>(fullDisappearOnCut, name: "fullDisappearOnCut");
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					beginTexture = s.SerializeObject<Path>(beginTexture, name: "beginTexture");
 					endTexture = s.SerializeObject<Path>(endTexture, name: "endTexture");
 				}

@@ -14,7 +14,7 @@ namespace UbiArt.ITF {
 		public float LightColMultiplier;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				LightDir0 = s.SerializeObject<Vec3d>(LightDir0, name: "LightDir0");
 				LightDir1 = s.SerializeObject<Vec3d>(LightDir1, name: "LightDir1");
 				LightDir2 = s.SerializeObject<Vec3d>(LightDir2, name: "LightDir2");

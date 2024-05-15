@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 		public float fallAccelarationMax = 10f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				cycleEnabled = s.Serialize<bool>(cycleEnabled, name: "cycleEnabled");
 				cycleStartIndex = s.Serialize<uint>(cycleStartIndex, name: "cycleStartIndex");
 				moveList = s.SerializeObject<CListO<RO2_moveData>>(moveList, name: "moveList");

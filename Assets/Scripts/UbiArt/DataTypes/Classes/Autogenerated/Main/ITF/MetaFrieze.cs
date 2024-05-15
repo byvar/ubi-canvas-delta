@@ -13,10 +13,10 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_Data)) {
 					PointsList = s.SerializeObject<PolyPointList>(PointsList, name: "PointsList");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					FriezePath = s.SerializeObject<Placeholder>(FriezePath, name: "FriezePath");
 					PrimitiveParameters = s.SerializeObject<CListO<GFXPrimitiveParam>>(PrimitiveParameters, name: "PrimitiveParameters");
 					ConfigCRC = s.Serialize<uint>(ConfigCRC, name: "ConfigCRC");
@@ -27,10 +27,10 @@ namespace UbiArt.ITF {
 				SwitchTexturePipeExtremity = s.Serialize<uint>(SwitchTexturePipeExtremity, name: "SwitchTexturePipeExtremity");
 				IsFriendlyNameValid = s.Serialize<bool>(IsFriendlyNameValid, name: "IsFriendlyNameValid");
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_Data)) {
 					PointsList = s.SerializeObject<PolyPointList>(PointsList, name: "PointsList");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					ConfigCRC = s.Serialize<uint>(ConfigCRC, name: "ConfigCRC");
 				}
 				ConfigName = s.SerializeObject<Path>(ConfigName, name: "ConfigName");
@@ -39,10 +39,10 @@ namespace UbiArt.ITF {
 				SwitchTexturePipeExtremity = s.Serialize<uint>(SwitchTexturePipeExtremity, name: "SwitchTexturePipeExtremity");
 				IsFriendlyNameValid = s.Serialize<bool>(IsFriendlyNameValid, name: "IsFriendlyNameValid", options: CSerializerObject.Options.BoolAsByte);
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_Data)) {
 					PointsList = s.SerializeObject<PolyPointList>(PointsList, name: "PointsList");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					PrimitiveParameters = s.SerializeObject<CListO<GFXPrimitiveParam>>(PrimitiveParameters, name: "PrimitiveParameters");
 					ConfigCRC = s.Serialize<uint>(ConfigCRC, name: "ConfigCRC");
 				}

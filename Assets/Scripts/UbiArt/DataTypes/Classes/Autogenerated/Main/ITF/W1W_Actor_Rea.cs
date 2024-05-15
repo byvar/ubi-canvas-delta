@@ -39,7 +39,7 @@ namespace UbiArt.ITF {
 		public bool bool__35;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				float__0 = s.Serialize<float>(float__0, name: "float__0");
 				float__1 = s.Serialize<float>(float__1, name: "float__1");
 				float__2 = s.Serialize<float>(float__2, name: "float__2");

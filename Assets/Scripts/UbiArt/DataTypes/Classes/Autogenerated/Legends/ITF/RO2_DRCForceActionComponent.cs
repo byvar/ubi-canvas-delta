@@ -18,7 +18,7 @@ namespace UbiArt.ITF {
 		public int enabled;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				forcedAction = s.Serialize<Enum_forcedAction>(forcedAction, name: "forcedAction");
 				if (forcedAction == Enum_forcedAction.NoTouch) {
 					followPlayer = s.Serialize<bool>(followPlayer, name: "followPlayer", options: CSerializerObject.Options.BoolAsByte);
@@ -49,7 +49,7 @@ namespace UbiArt.ITF {
 				}
 				activationData = s.SerializeObject<ActivationData>(activationData, name: "activationData");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				backward = s.Serialize<int>(backward, name: "backward");
 				enabled = s.Serialize<int>(enabled, name: "enabled");
 			}

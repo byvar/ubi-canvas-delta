@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 				defaultUpdate = s.Serialize<bool>(defaultUpdate, name: "defaultUpdate");
 				draw2D = s.Serialize<bool>(draw2D, name: "draw2D");
 				amvPath = s.SerializeObject<Path>(amvPath, name: "amvPath");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
@@ -32,7 +32,7 @@ namespace UbiArt.ITF {
 				defaultUpdate = s.Serialize<bool>(defaultUpdate, name: "defaultUpdate");
 				draw2D = s.Serialize<bool>(draw2D, name: "draw2D");
 				amvPath = s.SerializeObject<Path>(amvPath, name: "amvPath");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

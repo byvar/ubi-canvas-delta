@@ -36,7 +36,7 @@ namespace UbiArt.ITF {
 		public float float__32;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				Enum_VH_0__1 = s.Serialize<Enum_VH_0>(Enum_VH_0__1, name: "Enum_VH_0__1");
 				float__2 = s.Serialize<float>(float__2, name: "float__2");
 				float__3 = s.Serialize<float>(float__3, name: "float__3");
@@ -70,7 +70,7 @@ namespace UbiArt.ITF {
 				float__31 = s.Serialize<float>(float__31, name: "float__31");
 				float__32 = s.Serialize<float>(float__32, name: "float__32");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				uint__0 = s.Serialize<uint>(uint__0, name: "uint__0");
 			}
 		}

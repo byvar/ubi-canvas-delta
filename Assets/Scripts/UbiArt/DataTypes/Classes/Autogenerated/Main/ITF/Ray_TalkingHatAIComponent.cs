@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public CListO<LocalisationId> sentences;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				sentences = s.SerializeObject<CListO<LocalisationId>>(sentences, name: "sentences");
 			}
 		}

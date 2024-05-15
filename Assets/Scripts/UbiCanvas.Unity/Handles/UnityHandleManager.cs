@@ -116,13 +116,10 @@ public class UnityHandleManager : MonoBehaviour {
 					var frp = gao.AddComponent<UnityBezierPointHandle>();
 					frp.Node = bez.Branch.nodes[i];
 
-					if (i > 0) {
-						frp.RelativeTransform = Points[(i-1)*2].transform;
-					} else {
-						frp.RelativeTransform = transform;
-					}
-					frp.ScaleTransform = currentSelectedObject.transform;
-
+					frp.RelativeTransform = transform;
+					frp.PointIndex = i;
+					frp.ScaleTransform = tf;
+					frp.UnityBezier = bez;
 					frp.manager = this;
 					Points[i*2] = frp;
 					frp.Init();
@@ -138,9 +135,10 @@ public class UnityHandleManager : MonoBehaviour {
 					frp.Node = bez.Branch.nodes[i];
 
 					frp.RelativeTransform = Points[i * 2].transform;
-					frp.ScaleTransform = currentSelectedObject.transform;
+					frp.PointIndex = i;
+					frp.ScaleTransform = tf;
 					frp.MainPoint = (UnityBezierPointHandle)Points[i * 2];
-
+					frp.UnityBezier = bez;
 					frp.manager = this;
 					Points[i * 2 + 1] = frp;
 					frp.Init();

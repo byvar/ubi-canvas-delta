@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 			scale = s.SerializeObject<Vec2d>(scale, name: "scale");
 			tex = s.SerializeObject<StringID>(tex, name: "tex");
 			zExtrude = s.Serialize<float>(zExtrude, name: "zExtrude");
-			if (s.HasFlags(SerializeFlags.Flags10)) {
+			if (s.HasFlags(SerializeFlags.DataBin)) {
 				if (s.Settings.Game == Game.COL) {
 					isSmooth = s.Serialize<bool>(isSmooth, name: "isSmooth", options: CSerializerObject.Options.BoolAsByte);
 				} else {

@@ -12,7 +12,7 @@ namespace UbiArt.ITF {
 		public bool NoRespawnPlayerKill;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				LightLifeTime = s.Serialize<float>(LightLifeTime, name: "LightLifeTime");
 				RoamingMoveToTargetCoeff = s.Serialize<float>(RoamingMoveToTargetCoeff, name: "RoamingMoveToTargetCoeff");
 				LightingRepulsionCoeff = s.Serialize<float>(LightingRepulsionCoeff, name: "LightingRepulsionCoeff");

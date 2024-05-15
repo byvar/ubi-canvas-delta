@@ -12,7 +12,7 @@ namespace UbiArt.ITF {
 		public float float__8;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				CArray_float__0 = s.SerializeObject<CArrayP<float>>(CArray_float__0, name: "CArray<float>__0");
 				CArray_float__1 = s.SerializeObject<CArrayP<float>>(CArray_float__1, name: "CArray<float>__1");
 				CArray_float__2 = s.SerializeObject<CArrayP<float>>(CArray_float__2, name: "CArray<float>__2");

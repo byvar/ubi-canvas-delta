@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			lumsGiven = s.Serialize<uint>(lumsGiven, name: "lumsGiven");
 			lumsDrcGiven = s.Serialize<uint>(lumsDrcGiven, name: "lumsDrcGiven");
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				breakablePropsState = s.SerializeObject<CListP<uint>>(breakablePropsState, name: "breakablePropsState");
 				breakablePropsPaint = s.SerializeObject<CArrayP<bool>>(breakablePropsPaint, name: "breakablePropsPaint");
 			}

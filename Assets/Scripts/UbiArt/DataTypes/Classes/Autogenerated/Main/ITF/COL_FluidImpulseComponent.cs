@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public float globalRadiusFactor;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				globalFactor = s.Serialize<float>(globalFactor, name: "globalFactor");
 				globalRadiusFactor = s.Serialize<float>(globalRadiusFactor, name: "globalRadiusFactor");
 			}

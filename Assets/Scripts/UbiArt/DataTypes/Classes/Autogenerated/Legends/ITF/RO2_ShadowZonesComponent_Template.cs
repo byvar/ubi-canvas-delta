@@ -47,7 +47,7 @@ namespace UbiArt.ITF {
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				lightTexture = s.SerializeObject<Path>(lightTexture, name: "lightTexture");
 			}
 			lightMaterial = s.SerializeObject<GFXMaterialSerializable>(lightMaterial, name: "lightMaterial");
@@ -71,16 +71,16 @@ namespace UbiArt.ITF {
 			lightUVTranslationSpeed = s.SerializeObject<Vec2d>(lightUVTranslationSpeed, name: "lightUVTranslationSpeed");
 			lightUVRotationSpeed = s.SerializeObject<Angle>(lightUVRotationSpeed, name: "lightUVRotationSpeed");
 			lightUVPivot = s.SerializeObject<Vec2d>(lightUVPivot, name: "lightUVPivot");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				backLightTexture = s.SerializeObject<Path>(backLightTexture, name: "backLightTexture");
 			}
 			backLightMaterial = s.SerializeObject<GFXMaterialSerializable>(backLightMaterial, name: "backLightMaterial");
 			backLightOffset = s.Serialize<float>(backLightOffset, name: "backLightOffset");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				shadowTexture = s.SerializeObject<Path>(shadowTexture, name: "shadowTexture");
 			}
 			shadowMaterial = s.SerializeObject<GFXMaterialSerializable>(shadowMaterial, name: "shadowMaterial");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				backShadowTexture = s.SerializeObject<Path>(backShadowTexture, name: "backShadowTexture");
 			}
 			backShadowMaterial = s.SerializeObject<GFXMaterialSerializable>(backShadowMaterial, name: "backShadowMaterial");

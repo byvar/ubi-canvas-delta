@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		public bool ImmediateStart;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				SpawnBySec = s.Serialize<int>(SpawnBySec, name: "SpawnBySec");
 				MaxNumber = s.Serialize<int>(MaxNumber, name: "MaxNumber");
 				IsDirectional = s.Serialize<bool>(IsDirectional, name: "IsDirectional");

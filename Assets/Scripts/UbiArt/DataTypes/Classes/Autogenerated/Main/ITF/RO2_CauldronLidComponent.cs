@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		public StringID cauldronAttachmentBone;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				touchHandler = s.SerializeObject<RO2_TouchHandler>(touchHandler, name: "touchHandler");
 				speedFactor = s.Serialize<float>(speedFactor, name: "speedFactor");
 				smoothFactor = s.Serialize<float>(smoothFactor, name: "smoothFactor");

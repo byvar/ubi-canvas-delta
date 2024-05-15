@@ -23,7 +23,7 @@ namespace UbiArt.ITF {
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				name = s.SerializeObject<StringID>(name, name: "name");
 				triggeringType = s.Serialize<Enum_triggeringType>(triggeringType, name: "triggeringType");
 				triggeringClientType = s.Serialize<Enum_triggeringClientType>(triggeringClientType, name: "triggeringClientType");
@@ -63,7 +63,7 @@ namespace UbiArt.ITF {
 
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					anim = s.SerializeObject<StringID>(anim, name: "anim");
 					position = s.Serialize<Enum_position>(position, name: "position");
 					displacementDuration = s.Serialize<float>(displacementDuration, name: "displacementDuration");

@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public int lockOnMaxReached;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				minAngle = s.SerializeObject<AngleAmount>(minAngle, name: "minAngle");
 				maxAngle = s.SerializeObject<AngleAmount>(maxAngle, name: "maxAngle");
 				mode = s.Serialize<Mode>(mode, name: "mode");

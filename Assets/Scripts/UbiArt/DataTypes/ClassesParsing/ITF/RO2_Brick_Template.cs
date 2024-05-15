@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 
 		protected override void OnPreSerialize(CSerializerObject s) {
 			base.OnPreSerialize(s);
-			if (s is CSerializerObjectBinary sb && sb.Mode == CSerializerObjectBinary.BinaryMode.Write && s.HasFlags(SerializeFlags.Flags10)) {
+			if (s is CSerializerObjectBinary sb && sb.Mode == CSerializerObjectBinary.BinaryMode.Write && s.HasFlags(SerializeFlags.DataBin)) {
 				if (sceneFile == null && path != null) {
 					sceneFile = path.GetObject<ContainerFile<Scene>>();
 					if (sceneFile?.obj != null) {

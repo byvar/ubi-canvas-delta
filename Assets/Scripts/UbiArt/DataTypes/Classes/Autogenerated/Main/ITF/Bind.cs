@@ -14,14 +14,14 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_Data)) {
 					parentPath = s.SerializeObject<ObjectPath>(parentPath, name: "parentPath");
 					offsetPos = s.SerializeObject<Vec3d>(offsetPos, name: "offsetPos");
 					offsetAngle = s.Serialize<float>(offsetAngle, name: "offsetAngle");
 					type = s.Serialize<Type>(type, name: "type");
 					typeData = s.Serialize<uint>(typeData, name: "typeData");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_DataEditable)) {
 					useParentFlip = s.Serialize<bool>(useParentFlip, name: "useParentFlip");
 					useParentScale = s.Serialize<bool>(useParentScale, name: "useParentScale");
 					useParentAlpha = s.Serialize<bool>(useParentAlpha, name: "useParentAlpha");
@@ -29,14 +29,14 @@ namespace UbiArt.ITF {
 					removeWithParent = s.Serialize<bool>(removeWithParent, name: "removeWithParent");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_Data)) {
 					parentPath = s.SerializeObject<ObjectPath>(parentPath, name: "parentPath");
 					offsetPos = s.SerializeObject<Vec3d>(offsetPos, name: "offsetPos");
 					offsetAngle = s.Serialize<float>(offsetAngle, name: "offsetAngle");
 					type = s.Serialize<Type>(type, name: "type");
 					typeData = s.Serialize<uint>(typeData, name: "typeData");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_DataEditable)) {
 					useParentFlip = s.Serialize<bool>(useParentFlip, name: "useParentFlip");
 					useParentScale = s.Serialize<bool>(useParentScale, name: "useParentScale");
 					useParentAlpha = s.Serialize<bool>(useParentAlpha, name: "useParentAlpha");

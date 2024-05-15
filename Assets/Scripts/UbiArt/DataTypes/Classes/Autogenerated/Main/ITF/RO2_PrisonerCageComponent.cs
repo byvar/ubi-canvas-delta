@@ -10,11 +10,11 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					shape = s.SerializeObject<EditableShape>(shape, name: "shape");
 					savePosOnCheckpoint = s.Serialize<bool>(savePosOnCheckpoint, name: "savePosOnCheckpoint");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					isBroken = s.Serialize<bool>(isBroken, name: "isBroken");
 					checkpointAngle = s.Serialize<float>(checkpointAngle, name: "checkpointAngle");
 					checkpointPos = s.SerializeObject<Vec2d>(checkpointPos, name: "checkpointPos");
@@ -22,12 +22,12 @@ namespace UbiArt.ITF {
 					isBroken = s.Serialize<bool>(isBroken, name: "isBroken");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					shape = s.SerializeObject<EditableShape>(shape, name: "shape");
 					savePosOnCheckpoint = s.Serialize<bool>(savePosOnCheckpoint, name: "savePosOnCheckpoint");
 					canTriggerMagnet = s.Serialize<bool>(canTriggerMagnet, name: "canTriggerMagnet");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					isBroken = s.Serialize<bool>(isBroken, name: "isBroken");
 					checkpointAngle = s.Serialize<float>(checkpointAngle, name: "checkpointAngle");
 					checkpointPos = s.SerializeObject<Vec2d>(checkpointPos, name: "checkpointPos");

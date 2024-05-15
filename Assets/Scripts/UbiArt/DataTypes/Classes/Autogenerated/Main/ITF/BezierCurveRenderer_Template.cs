@@ -49,7 +49,7 @@ namespace UbiArt.ITF {
 				beginWidth = s.Serialize<float>(beginWidth, name: "beginWidth");
 				midWidth = s.Serialize<float>(midWidth, name: "midWidth");
 				endWidth = s.Serialize<float>(endWidth, name: "endWidth");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					beginAlpha = s.Serialize<float>(beginAlpha, name: "beginAlpha");
 					midAlpha = s.Serialize<float>(midAlpha, name: "midAlpha");
 					endAlpha = s.Serialize<float>(endAlpha, name: "endAlpha");
@@ -61,7 +61,7 @@ namespace UbiArt.ITF {
 				stretchTexture = s.Serialize<bool>(stretchTexture, name: "stretchTexture");
 				tessellationLength = s.Serialize<float>(tessellationLength, name: "tessellationLength");
 				primitiveParameters = s.SerializeObject<GFXPrimitiveParam>(primitiveParameters, name: "primitiveParameters");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

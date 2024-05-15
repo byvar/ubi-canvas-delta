@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public uint tagId;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				near = s.Serialize<float>(near, name: "near");
 				far = s.Serialize<float>(far, name: "far");
 				nearColor = s.SerializeObject<Color>(nearColor, name: "nearColor");

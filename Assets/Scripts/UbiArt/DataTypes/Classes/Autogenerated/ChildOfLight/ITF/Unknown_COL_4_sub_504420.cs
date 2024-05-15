@@ -33,7 +33,7 @@ namespace UbiArt.ITF {
 		public float doubleFirstMessageOverlapTimeOffset;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				textureActionMessageBackground = s.SerializeObject<Path>(textureActionMessageBackground, name: "textureActionMessageBackground");
 			}
 			textureActionMessageBackgroundMaterial = s.SerializeObject<Placeholder>(textureActionMessageBackgroundMaterial, name: "textureActionMessageBackgroundMaterial");

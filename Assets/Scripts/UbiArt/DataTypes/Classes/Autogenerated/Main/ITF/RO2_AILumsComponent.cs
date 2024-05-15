@@ -5,10 +5,10 @@ namespace UbiArt.ITF {
 		public Color initColor;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				IsTaken = s.Serialize<bool>(IsTaken, name: "IsTaken");
 			}
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				initColor = s.Serialize<Color>(initColor, name: "initColor");
 			}
 		}

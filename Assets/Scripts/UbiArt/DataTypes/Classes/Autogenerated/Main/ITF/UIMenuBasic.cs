@@ -21,12 +21,12 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					defaultItem = s.SerializeObject<StringID>(defaultItem, name: "defaultItem");
 					backItem = s.SerializeObject<StringID>(backItem, name: "backItem");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					defaultItem = s.SerializeObject<StringID>(defaultItem, name: "defaultItem");
 					backItem = s.SerializeObject<StringID>(backItem, name: "backItem");
 					actionItem = s.SerializeObject<StringID>(actionItem, name: "actionItem");
@@ -44,8 +44,8 @@ namespace UbiArt.ITF {
 				WwiseDeactivateSounds = s.SerializeObject<CListO<StringID>>(WwiseDeactivateSounds, name: "WwiseDeactivateSounds");
 				WwiseValidateSounds = s.SerializeObject<CListO<StringID>>(WwiseValidateSounds, name: "WwiseValidateSounds");
 				WwiseBackSounds = s.SerializeObject<CListO<StringID>>(WwiseBackSounds, name: "WwiseBackSounds");
-				if (s.HasFlags(SerializeFlags.Default)) {
-					if (s.HasFlags(SerializeFlags.Editor)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+					if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 						defaultItem = s.SerializeChoiceListObject<StringID>(defaultItem, name: "defaultItem", empty: "Empty");
 						defaultValidate = s.SerializeChoiceListObject<StringID>(defaultValidate, name: "defaultValidate", empty: "Empty");
 						backItem = s.SerializeChoiceListObject<StringID>(backItem, name: "backItem", empty: "Empty");

@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			triggerMode = s.Serialize<Enum_triggerMode>(triggerMode, name: "triggerMode");
 			softSaveOnTrigger = s.Serialize<bool>(softSaveOnTrigger, name: "softSaveOnTrigger", options: CSerializerObject.Options.BoolAsByte);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				triggered = s.Serialize<int>(triggered, name: "triggered");
 			}
 			onInteractEvent = s.SerializeObject<Placeholder>(onInteractEvent, name: "onInteractEvent");

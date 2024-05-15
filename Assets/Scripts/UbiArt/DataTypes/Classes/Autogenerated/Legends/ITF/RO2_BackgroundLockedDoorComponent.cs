@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public Enum_LockType LockType;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				lockWithTeensy = s.Serialize<int>(lockWithTeensy, name: "lockWithTeensy");
 				detectRange = s.Serialize<float>(detectRange, name: "detectRange");
 				worldTag = s.SerializeObject<StringID>(worldTag, name: "worldTag");

@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public float barWidth;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				barHeight = s.Serialize<float>(barHeight, name: "barHeight");
 				barWidth = s.Serialize<float>(barWidth, name: "barWidth");
 			}

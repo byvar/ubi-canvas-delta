@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		public float TimeToTrigger;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				CanBeManipulatedAtStart = s.Serialize<int>(CanBeManipulatedAtStart, name: "CanBeManipulatedAtStart");
 				BlindControl = s.Serialize<int>(BlindControl, name: "BlindControl");
 				Sling_Size = s.Serialize<float>(Sling_Size, name: "Sling_Size");

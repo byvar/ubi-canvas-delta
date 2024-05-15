@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public float initPos;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				limitLeft = s.Serialize<float>(limitLeft, name: "limitLeft");
 				limitRight = s.Serialize<float>(limitRight, name: "limitRight");
 				extremityLeftOffset = s.Serialize<float>(extremityLeftOffset, name: "extremityLeftOffset");

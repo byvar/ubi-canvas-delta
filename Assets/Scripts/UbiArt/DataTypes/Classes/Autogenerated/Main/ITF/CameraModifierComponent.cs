@@ -11,37 +11,37 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					CM = s.SerializeObject<CamModifier>(CM, name: "CM");
 					CM_override = s.SerializeObject<CamModifierOverride>(CM_override, name: "CM_override");
 				}
 			} else if (s.Settings.Game == Game.RL || s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					cameraView = s.Serialize<uint>(cameraView, name: "cameraView");
 					ignoreAABB = s.Serialize<bool>(ignoreAABB, name: "ignoreAABB");
 					CM = s.SerializeObject<CamModifier>(CM, name: "CM");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					localAABB = s.SerializeObject<AABB>(localAABB, name: "localAABB");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					cameraView = s.Serialize<uint>(cameraView, name: "cameraView");
 					ignoreAABB = s.Serialize<bool>(ignoreAABB, name: "ignoreAABB", options: CSerializerObject.Options.BoolAsByte);
 					zTolerance = s.Serialize<float>(zTolerance, name: "zTolerance");
 					CM = s.SerializeObject<CamModifier>(CM, name: "CM");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					localAABB = s.SerializeObject<AABB>(localAABB, name: "localAABB");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					cameraView = s.Serialize<uint>(cameraView, name: "cameraView");
 					ignoreAABB = s.Serialize<bool>(ignoreAABB, name: "ignoreAABB");
 					ignoreSceneActiveState = s.Serialize<bool>(ignoreSceneActiveState, name: "ignoreSceneActiveState");
 					CM = s.SerializeObject<CamModifier>(CM, name: "CM");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					localAABB = s.SerializeObject<AABB>(localAABB, name: "localAABB");
 				}
 			}

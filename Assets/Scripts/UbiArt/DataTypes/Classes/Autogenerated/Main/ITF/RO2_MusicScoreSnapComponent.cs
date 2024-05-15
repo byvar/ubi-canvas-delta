@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public float noteIntervalHeight;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				distOnCurve = s.Serialize<float>(distOnCurve, name: "distOnCurve");
 				note = s.Serialize<uint>(note, name: "note");
 				noteIntervalHeight = s.Serialize<float>(noteIntervalHeight, name: "noteIntervalHeight");

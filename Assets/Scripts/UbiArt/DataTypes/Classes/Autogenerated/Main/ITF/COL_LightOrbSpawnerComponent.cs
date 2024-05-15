@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public float manaOrbsMax;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				orbCount = s.Serialize<uint>(orbCount, name: "orbCount");
 				healthOrbsMin = s.Serialize<float>(healthOrbsMin, name: "healthOrbsMin");
 				healthOrbsMax = s.Serialize<float>(healthOrbsMax, name: "healthOrbsMax");

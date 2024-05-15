@@ -24,7 +24,7 @@ namespace UbiArt.ITF {
 		public float IKApproxamationCoeff;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				DrawBezier = s.Serialize<int>(DrawBezier, name: "DrawBezier");
 				DrawSpeedModulation = s.Serialize<int>(DrawSpeedModulation, name: "DrawSpeedModulation");
 				UseAlwaysActive = s.Serialize<int>(UseAlwaysActive, name: "UseAlwaysActive");

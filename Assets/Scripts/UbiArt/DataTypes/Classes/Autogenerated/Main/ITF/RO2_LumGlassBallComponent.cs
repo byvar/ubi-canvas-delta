@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public EditableShape shape;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				SteadyChildren = s.Serialize<bool>(SteadyChildren, name: "SteadyChildren");
 				TorqueFriction = s.Serialize<float>(TorqueFriction, name: "TorqueFriction");
 				SpeedFriction = s.Serialize<float>(SpeedFriction, name: "SpeedFriction");

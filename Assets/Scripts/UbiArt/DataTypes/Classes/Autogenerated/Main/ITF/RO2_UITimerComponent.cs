@@ -15,7 +15,7 @@ namespace UbiArt.ITF {
 				displayIcon = s.Serialize<bool>(displayIcon, name: "displayIcon");
 				inTextIntgration = s.SerializeObject<SmartLocId>(inTextIntgration, name: "inTextIntgration");
 				counterType = s.Serialize<CounterType>(counterType, name: "counterType");
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					isHudEventSensitive = s.Serialize<bool>(isHudEventSensitive, name: "isHudEventSensitive");
 				}
 			}

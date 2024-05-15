@@ -21,7 +21,7 @@ namespace UbiArt.ITF {
 		public CListO<Marker> markers;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				message_handle = s.Serialize<uint>(message_handle, name: "message_handle");
 				type = s.Serialize<uint>(type, name: "type");
 				onlinedate = s.SerializeObject<online.DateTime>(onlinedate, name: "onlinedate");
@@ -50,7 +50,7 @@ namespace UbiArt.ITF {
 			public float fontSize;
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					locId = s.SerializeObject<SmartLocId>(locId, name: "locId");
 					color = s.Serialize<uint>(color, name: "color");
 					fontSize = s.Serialize<float>(fontSize, name: "fontSize");
@@ -64,7 +64,7 @@ namespace UbiArt.ITF {
 			public uint value;
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					type = s.Serialize<uint>(type, name: "type");
 					value = s.Serialize<uint>(value, name: "value");
 				}

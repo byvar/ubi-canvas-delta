@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public PlayerStat deaths;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				lums = s.SerializeObject<PlayerStat>(lums, name: "lums");
 				distance = s.SerializeObject<PlayerStat>(distance, name: "distance");
 				kills = s.SerializeObject<PlayerStat>(kills, name: "kills");
@@ -23,7 +23,7 @@ namespace UbiArt.ITF {
 			public uint rank;
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					value = s.Serialize<float>(value, name: "value");
 					rank = s.Serialize<uint>(rank, name: "rank");
 				}

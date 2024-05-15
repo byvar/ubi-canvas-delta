@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public Enum_RFR_0 state;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				goodsRemaining = s.Serialize<uint>(goodsRemaining, name: "goodsRemaining");
 				state = s.Serialize<Enum_RFR_0>(state, name: "state");
 			}

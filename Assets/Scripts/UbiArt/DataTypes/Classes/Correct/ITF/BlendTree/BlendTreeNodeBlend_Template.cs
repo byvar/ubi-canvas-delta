@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public bool ignoreRuleChanges;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				leafs = s.SerializeObject<CListO<Generic<BlendTreeNodeTemplate<T>>>>(leafs, name: "leafs");
 			}
 			ignoreRuleChanges = s.Serialize<bool>(ignoreRuleChanges, name: "ignoreRuleChanges");

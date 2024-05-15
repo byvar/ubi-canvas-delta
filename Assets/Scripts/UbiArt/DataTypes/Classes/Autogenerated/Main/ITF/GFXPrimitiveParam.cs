@@ -92,7 +92,7 @@ namespace UbiArt.ITF {
 				DynamicFogFactor = s.Serialize<float>(DynamicFogFactor, name: "DynamicFogFactor");
 				useStaticFog = s.Serialize<bool>(useStaticFog, name: "useStaticFog");
 				RenderInReflections = s.Serialize<bool>(RenderInReflections, name: "RenderInReflections");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					RenderToTexture = s.Serialize<bool>(RenderToTexture, name: "RenderToTexture");
 				}
 				gfxOccludeInfo2 = s.Serialize<GFX_OCCLUDE_INFO2>(gfxOccludeInfo2, name: "gfxOccludeInfo");
@@ -135,7 +135,7 @@ namespace UbiArt.ITF {
 				colorForMask3 = s.SerializeObject<Color>(colorForMask3, name: "colorForMask3");
 				saturation = s.Serialize<float>(saturation, name: "saturation");
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					GridFluidParam = s.SerializeObject<GFX_GridFluidObjParam>(GridFluidParam, name: "GridFluidParam");
 				}
 				useStaticFog = s.Serialize<bool>(useStaticFog, name: "useStaticFog");

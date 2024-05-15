@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public float distance;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				distance = s.Serialize<float>(distance, name: "distance");
 			}
 		}

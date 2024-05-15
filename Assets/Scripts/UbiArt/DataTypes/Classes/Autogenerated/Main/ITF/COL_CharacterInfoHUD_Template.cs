@@ -19,7 +19,7 @@ namespace UbiArt.ITF {
 		public float characterInfoBackgroundFade;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				lightOrbsGaugeTexture = s.SerializeObject<Path>(lightOrbsGaugeTexture, name: "lightOrbsGaugeTexture");
 			}
 			lightOrbsGauge = s.SerializeObject<Placeholder>(lightOrbsGauge, name: "lightOrbsGauge");

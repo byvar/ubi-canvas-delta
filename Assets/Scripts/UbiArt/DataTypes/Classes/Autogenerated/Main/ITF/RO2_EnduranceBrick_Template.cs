@@ -14,7 +14,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			inTags = s.SerializeObject<CListO<StringID>>(inTags, name: "inTags");
 			outTags = s.SerializeObject<CListO<StringID>>(outTags, name: "outTags");
-			if (s.HasFlags(SerializeFlags.Flags10)) {
+			if (s.HasFlags(SerializeFlags.DataBin)) {
 				canFlip = s.Serialize<bool>(canFlip, name: "canFlip");
 				size = s.SerializeObject<Vec2d>(size, name: "size");
 				inPos = s.SerializeObject<Vec2d>(inPos, name: "inPos");

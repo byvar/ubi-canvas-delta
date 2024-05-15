@@ -8,14 +8,14 @@ namespace UbiArt.ITF {
 		public CListO<RO2_CreatureWH_BulbComponent.HandSlot> slots;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				onlyAttackInWater = s.Serialize<bool>(onlyAttackInWater, name: "onlyAttackInWater");
 				dieOnTrigger = s.Serialize<bool>(dieOnTrigger, name: "dieOnTrigger");
 				if (s.Settings.Platform != GamePlatform.Vita) {
 					retractOnTrigger = s.Serialize<bool>(retractOnTrigger, name: "retractOnTrigger");
 				}
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				isDead = s.Serialize<bool>(isDead, name: "isDead");
 				slots = s.SerializeObject<CListO<RO2_CreatureWH_BulbComponent.HandSlot>>(slots, name: "slots");
 			}

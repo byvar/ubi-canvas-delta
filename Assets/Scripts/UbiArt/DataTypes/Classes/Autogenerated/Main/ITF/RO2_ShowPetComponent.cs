@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public Enum_Animation Animation;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				VisualID = s.Serialize<uint>(VisualID, name: "VisualID");
 				Animation = s.Serialize<Enum_Animation>(Animation, name: "Animation");
 			}

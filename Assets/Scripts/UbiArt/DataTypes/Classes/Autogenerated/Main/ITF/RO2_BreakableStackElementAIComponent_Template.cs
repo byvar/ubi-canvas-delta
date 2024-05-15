@@ -29,7 +29,7 @@ namespace UbiArt.ITF {
 			fxData = s.SerializeObject<RO2_FxData>(fxData, name: "fxData");
 			gmatPath = s.SerializeObject<Path>(gmatPath, name: "gmatPath");
 			hitPoint = s.Serialize<uint>(hitPoint, name: "hitPoint");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				atlasPath = s.SerializeObject<Path>(atlasPath, name: "atlasPath");
 				atlasParticlesPath = s.SerializeObject<Path>(atlasParticlesPath, name: "atlasParticlesPath");
 			}

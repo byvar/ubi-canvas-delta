@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public bool ShowRefracBuffer;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				PrimitiveParam = s.SerializeObject<GFXPrimitiveParam>(PrimitiveParam, name: "PrimitiveParam");
 				Intensity = s.Serialize<float>(Intensity, name: "Intensity");
 				ShowRefracBuffer = s.Serialize<bool>(ShowRefracBuffer, name: "ShowRefracBuffer");

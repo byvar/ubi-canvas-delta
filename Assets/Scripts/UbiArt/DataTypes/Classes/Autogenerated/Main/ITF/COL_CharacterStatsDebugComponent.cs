@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public bool refillMPOnLevelUp;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				playerLevel = s.Serialize<uint>(playerLevel, name: "playerLevel");
 				refillHPOnLevelUp = s.Serialize<bool>(refillHPOnLevelUp, name: "refillHPOnLevelUp", options: CSerializerObject.Options.BoolAsByte);
 				refillMPOnLevelUp = s.Serialize<bool>(refillMPOnLevelUp, name: "refillMPOnLevelUp", options: CSerializerObject.Options.BoolAsByte);

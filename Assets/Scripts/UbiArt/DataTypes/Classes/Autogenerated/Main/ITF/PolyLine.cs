@@ -8,13 +8,13 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_DataEditable)) {
 					POINTS = s.SerializeObject<CListO<PolyLineEdge>>(POINTS, name: "POINTS");
 				}
 			} else {
 				PolyPointList = s.SerializeObject<PolyPointList>(PolyPointList, name: "PolyPointList");
 				AABB = s.SerializeObject<AABB>(AABB, name: "AABB");
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					connection = s.SerializeObject<PolyLine.Connection>(connection, name: "Connection");
 				}
 			}

@@ -20,7 +20,7 @@ namespace UbiArt.ITF {
 		public float textureRatio = 1f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				characterTexture = s.SerializeObject<Path>(characterTexture, name: "characterTexture");
 			}
 			characterMaterial = s.SerializeObject<GFXMaterialSerializable>(characterMaterial, name: "characterMaterial");

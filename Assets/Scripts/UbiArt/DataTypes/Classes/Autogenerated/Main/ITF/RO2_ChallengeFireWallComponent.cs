@@ -11,21 +11,21 @@ namespace UbiArt.ITF {
 				if (s.Settings.Platform == GamePlatform.Vita) {
 					screenPosition = s.SerializeObject<Vec2d>(screenPosition, name: "screenPosition");
 					useScreenPos = s.Serialize<bool>(useScreenPos, name: "useScreenPos");
-					if (s.HasFlags(SerializeFlags.Persistent)) {
+					if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 						state = s.Serialize<State>(state, name: "state");
 					}
 				} else {
 					screenPosition = s.SerializeObject<Vec2d>(screenPosition, name: "screenPosition");
 					actorPosAtCheckpointSave = s.SerializeObject<Vec3d>(actorPosAtCheckpointSave, name: "actorPosAtCheckpointSave");
 					useScreenPos = s.Serialize<bool>(useScreenPos, name: "useScreenPos");
-					if (s.HasFlags(SerializeFlags.Persistent)) {
+					if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 						state = s.Serialize<State>(state, name: "state");
 					}
 				}
 			} else {
 				screenPosition = s.SerializeObject<Vec2d>(screenPosition, name: "screenPosition");
 				actorPosAtCheckpointSave = s.SerializeObject<Vec3d>(actorPosAtCheckpointSave, name: "actorPosAtCheckpointSave");
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					state = s.Serialize<State>(state, name: "state");
 				}
 			}

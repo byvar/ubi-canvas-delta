@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			circles = s.SerializeObject<Placeholder>(circles, name: "circles");
 			transitions = s.SerializeObject<Placeholder>(transitions, name: "transitions");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				texturePath = s.SerializeObject<Path>(texturePath, name: "texturePath");
 			}
 			material = s.SerializeObject<Placeholder>(material, name: "material");

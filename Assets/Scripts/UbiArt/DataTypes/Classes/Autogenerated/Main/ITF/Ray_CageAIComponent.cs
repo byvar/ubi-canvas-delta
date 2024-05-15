@@ -5,10 +5,10 @@ namespace UbiArt.ITF {
 		public int wasBrokenInSession;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				CageIndex = s.Serialize<int>(CageIndex, name: "CageIndex");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				wasBrokenInSession = s.Serialize<int>(wasBrokenInSession, name: "wasBrokenInSession");
 			}
 		}

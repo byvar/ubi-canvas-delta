@@ -44,12 +44,12 @@ namespace UbiArt.ITF {
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				NbIter = s.Serialize<uint>(NbIter, name: "NbIter");
 				PressureDiffusion = s.Serialize<float>(PressureDiffusion, name: "PressureDiffusion");
 				PressureIntensity = s.Serialize<float>(PressureIntensity, name: "PressureIntensity");
 			}
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				DelayDesactivate = s.Serialize<float>(DelayDesactivate, name: "DelayDesactivate");
 				BoxSize = s.SerializeObject<Vec2d>(BoxSize, name: "BoxSize");
 				PosOffset = s.SerializeObject<Vec3d>(PosOffset, name: "PosOffset");

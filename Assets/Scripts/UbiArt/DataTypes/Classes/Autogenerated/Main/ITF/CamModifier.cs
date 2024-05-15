@@ -40,7 +40,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					modifierPriority = s.Serialize<int>(modifierPriority, name: "modifierPriority");
 					constraintLeftIsActive = s.Serialize<bool>(constraintLeftIsActive, name: "constraintLeftIsActive");
 					constraintRightIsActive = s.Serialize<bool>(constraintRightIsActive, name: "constraintRightIsActive");
@@ -57,7 +57,7 @@ namespace UbiArt.ITF {
 					useDecentering = s.Serialize<bool>(useDecentering, name: "useDecentering");
 				}
 			} else if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					modifierPriority = s.Serialize<int>(modifierPriority, name: "modifierPriority");
 					lookAtOffset = s.SerializeObject<Vec3d>(lookAtOffset, name: "lookAtOffset");
 					lookAtOffsetMax = s.SerializeObject<Vec3d>(lookAtOffsetMax, name: "lookAtOffsetMax");
@@ -79,7 +79,7 @@ namespace UbiArt.ITF {
 					constraintExtendedBottom = s.SerializeObject<ConstraintExtended>(constraintExtendedBottom, name: "constraintExtendedBottom");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					modifierPriority = s.Serialize<int>(modifierPriority, name: "modifierPriority");
 					lookAtOffset = s.SerializeObject<Vec3d>(lookAtOffset, name: "lookAtOffset");
 					lookAtOffsetMax = s.SerializeObject<Vec3d>(lookAtOffsetMax, name: "lookAtOffsetMax");
@@ -101,7 +101,7 @@ namespace UbiArt.ITF {
 					constraintExtendedBottom = s.SerializeObject<ConstraintExtended>(constraintExtendedBottom, name: "constraintExtendedBottom");
 				}
 			} else if (s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					modifierPriority = s.Serialize<int>(modifierPriority, name: "modifierPriority");
 					lookAtOffset = s.SerializeObject<Vec3d>(lookAtOffset, name: "lookAtOffset");
 					lookAtOffsetMax = s.SerializeObject<Vec3d>(lookAtOffsetMax, name: "lookAtOffsetMax");
@@ -128,11 +128,11 @@ namespace UbiArt.ITF {
 					constraintExtendedBottom = s.SerializeObject<ConstraintExtended>(constraintExtendedBottom, name: "constraintExtendedBottom");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					lookAtOffset = s.SerializeObject<Vec3d>(lookAtOffset, name: "lookAtOffset");
 					lookAtOffsetMax = s.SerializeObject<Vec3d>(lookAtOffsetMax, name: "lookAtOffsetMax");
 				}
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					modifierPriority = s.Serialize<int>(modifierPriority, name: "modifierPriority");
 					lookAtOffsetX = s.Serialize<float>(lookAtOffsetX, name: "lookAtOffsetX");
 					lookAtOffsetY = s.Serialize<float>(lookAtOffsetY, name: "lookAtOffsetY");
@@ -144,7 +144,7 @@ namespace UbiArt.ITF {
 					blendingZoneStop = s.Serialize<float>(blendingZoneStop, name: "blendingZoneStop");
 					zoneNeutral = s.SerializeObject<Vec2d>(zoneNeutral, name: "zoneNeutral");
 					useRotationCurve = s.Serialize<bool>(useRotationCurve, name: "useRotationCurve");
-					if (s.HasFlags(SerializeFlags.Flags15)) {
+					if (s.HasFlags(SerializeFlags.CSharp)) {
 						rotationAngle = s.SerializeObject<Angle>(rotationAngle, name: "rotationAngle");
 						rotationCurve = s.SerializeObject<Spline>(rotationCurve, name: "rotationCurve");
 					} else {

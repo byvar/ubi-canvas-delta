@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public float width = 1f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				startOpen = s.Serialize<int>(startOpen, name: "startOpen");
 				platformHeight = s.Serialize<float>(platformHeight, name: "platformHeight");
 				angle = s.Serialize<float>(angle, name: "angle");

@@ -34,7 +34,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.EngineVersion == EngineVersion.RO) {
 			} else if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					style = s.Serialize<uint>(style, name: "style");
 					offset = s.SerializeObject<Vec2d>(offset, name: "offset");
 					depth = s.Serialize<float>(depth, name: "depth");
@@ -52,7 +52,7 @@ namespace UbiArt.ITF {
 					overridingAnchor = s.Serialize<AREA_ANCHOR>(overridingAnchor, name: "overridingAnchor");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					style = s.Serialize<uint>(style, name: "style");
 					offset = s.SerializeObject<Vec2d>(offset, name: "offset");
 					depth = s.Serialize<float>(depth, name: "depth");
@@ -70,7 +70,7 @@ namespace UbiArt.ITF {
 					overridingAnchor = s.Serialize<AREA_ANCHOR>(overridingAnchor, name: "overridingAnchor");
 				}
 			} else if (s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					style = s.Serialize<uint>(style, name: "style");
 					offset = s.SerializeObject<Vec2d>(offset, name: "offset");
 					depth = s.Serialize<float>(depth, name: "depth");
@@ -80,7 +80,7 @@ namespace UbiArt.ITF {
 					rawText = s.Serialize<string>(rawText, name: "rawText");
 					locId = s.SerializeObject<LocalisationId>(locId, name: "locId");
 					overridingColor = s.SerializeObject<Color>(overridingColor, name: "overridingColor");
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						scaleToMatchWithArea = s.Serialize<bool>(scaleToMatchWithArea, name: "scaleToMatchWithArea");
 					}
 					scaleToMatchWithAreaType = s.Serialize<FontTextArea.ScaleMatchType>(scaleToMatchWithAreaType, name: "scaleToMatchWithArea");
@@ -104,14 +104,14 @@ namespace UbiArt.ITF {
 				unsecureSource = s.Serialize<bool>(unsecureSource, name: "unsecureSource");
 				overridingColor = s.SerializeObject<Color>(overridingColor, name: "overridingColor");
 				GlobalScissor = s.Serialize<Enum_GlobalScissor>(GlobalScissor, name: "GlobalScissor");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					scaleToMatchWithArea = s.Serialize<bool>(scaleToMatchWithArea, name: "scaleToMatchWithArea");
 				}
 				scaleToMatchWithAreaType = s.Serialize<FontTextArea.ScaleMatchType>(scaleToMatchWithAreaType, name: "scaleToMatchWithArea");
 				autoScrollSpeed = s.Serialize<float>(autoScrollSpeed, name: "autoScrollSpeed");
 				autoScrollWaitTime = s.Serialize<float>(autoScrollWaitTime, name: "autoScrollWaitTime");
 				autoScrollFirstWaitTime = s.Serialize<float>(autoScrollFirstWaitTime, name: "autoScrollFirstWaitTime");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					autoScrollLoop = s.Serialize<bool>(autoScrollLoop, name: "autoScrollLoop");
 				}
 				autoScrollMode = s.Serialize<AutoScroll>(autoScrollMode, name: "autoScrollMode");

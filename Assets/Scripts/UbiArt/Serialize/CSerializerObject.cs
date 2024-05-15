@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace UbiArt {
 	public abstract class CSerializerObject : IDisposable {
 		public SerializeFlags flags;
-		public virtual SerializerProperty Properties { get; }
+		public virtual SerializerProperties Properties { get; }
 		protected int indent;
 		public int Depth => indent;
 		public bool Disposed { get; set; }
@@ -81,7 +81,7 @@ namespace UbiArt {
 		public virtual void IncreaseMemCount(Type type, uint count = 1, uint? customSize = null) { }
 		public virtual void CloseSerializer() { }
 		public virtual uint GetMemorySize(Type type) {
-			if (HasProperty(CSerializerObject.SerializerProperty.StoreObjectSizes)
+			if (HasProperties(SerializerProperties.LIP)
 				&& Settings.EngineVersion > EngineVersion.RO) {
 				uint sizeOf = 0;
 
@@ -175,25 +175,25 @@ namespace UbiArt {
 
 		public bool HasFlags(SerializeFlags flags) {
 			switch (flags) {
-				case SerializeFlags.Flags8:
-					if ((this.Properties & (SerializerProperty.Flags4 | SerializerProperty.Flags5)) == SerializerProperty.None) {
-						return ((this.flags & SerializeFlags.Flags6) != SerializeFlags.None);
+				case SerializeFlags.Deprecate:
+					if ((this.Properties & (SerializerProperties.BinSkip | SerializerProperties.NoDeprecate)) == SerializerProperties.None) {
+						return ((this.flags & SerializeFlags.Data_Load) != SerializeFlags.None);
 					}
 					return false;
-				case SerializeFlags.Flags9:
-					if ((this.Properties & (SerializerProperty.Flags4 | SerializerProperty.Flags7)) == SerializerProperty.None) {
-						return ((this.flags & SerializeFlags.Default) != SerializeFlags.None);
+				case SerializeFlags.DataRaw:
+					if ((this.Properties & (SerializerProperties.BinSkip | SerializerProperties.NoRaw)) == SerializerProperties.None) {
+						return ((this.flags & SerializeFlags.Group_DataEditable) != SerializeFlags.None);
 					}
 					return false;
-				case SerializeFlags.Flags10:
-					return (((this.Properties & SerializerProperty.Binary) != SerializerProperty.None) &&
-						((this.flags & SerializeFlags.Flags_xC0) != SerializeFlags.None));
+				case SerializeFlags.DataBin:
+					return (((this.Properties & SerializerProperties.Binary) != SerializerProperties.None) &&
+						((this.flags & SerializeFlags.Group_Data) != SerializeFlags.None));
 				default:
 					return ((this.flags & flags) != SerializeFlags.None);
 			}
 		}
-		public bool HasProperty(SerializerProperty properties) {
-			return ((this.Properties & properties) != SerializerProperty.None);
+		public bool HasProperties(SerializerProperties properties) {
+			return ((this.Properties & properties) != SerializerProperties.None);
 		}
 
 		protected void ConvertTypeBefore(ref object obj, string name, Type type, Type fieldType) {
@@ -236,43 +236,6 @@ namespace UbiArt {
 
 		public virtual void Dispose() {
 			Disposed = true;
-		}
-
-		[Flags]
-		public enum SerializerProperty {
-			None = 0,
-			Binary = 1,
-			Flags1 = 1 << 1,
-			Flags2 = 1 << 2,
-			StoreObjectSizes = 1 << 3,
-			Flags4 = 1 << 4,
-			Flags5 = 1 << 5,
-			Flags6 = 1 << 6,
-			Flags7 = 1 << 7,
-			Flags8 = 1 << 8,
-			Flags9 = 1 << 9,
-			Flags10 = 1 << 10,
-			Flags11 = 1 << 11,
-			Flags12 = 1 << 12,
-			Flags13 = 1 << 13,
-			Flags14 = 1 << 14,
-			Flags15 = 1 << 15,
-			Flags16 = 1 << 16,
-			Flags17 = 1 << 17,
-			Flags18 = 1 << 18,
-			Flags19 = 1 << 19,
-			Flags20 = 1 << 20,
-			Flags21 = 1 << 21,
-			Flags22 = 1 << 22,
-			Flags23 = 1 << 23,
-			Flags24 = 1 << 24,
-			Flags25 = 1 << 25,
-			Flags26 = 1 << 26,
-			Flags27 = 1 << 27,
-			Flags28 = 1 << 28,
-			Flags29 = 1 << 29,
-			Flags30 = 1 << 30,
-			Flags31 = 1 << 31,
 		}
 
 		[Flags]

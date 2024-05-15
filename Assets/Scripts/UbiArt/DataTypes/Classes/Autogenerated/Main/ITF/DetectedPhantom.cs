@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public Vec2d ContactPoint;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags0)) {
+			if (s.HasFlags(SerializeFlags.PropertyEdit_Load)) {
 				PhantomDetectorID = s.SerializeObject<StringID>(PhantomDetectorID, name: "PhantomDetectorID");
 				PhantomID = s.SerializeObject<StringID>(PhantomID, name: "PhantomID");
 				ContactPoint = s.SerializeObject<Vec2d>(ContactPoint, name: "ContactPoint");

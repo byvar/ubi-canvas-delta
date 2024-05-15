@@ -21,7 +21,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					saveOnCheckpoint = s.Serialize<bool>(saveOnCheckpoint, name: "saveOnCheckpoint");
 					touchDetectCooldown = s.Serialize<uint>(touchDetectCooldown, name: "touchDetectCooldown");
 					speed = s.Serialize<float>(speed, name: "speed");
@@ -42,11 +42,11 @@ namespace UbiArt.ITF {
 					proceduralAnimMaxCursor = s.Serialize<float>(proceduralAnimMaxCursor, name: "proceduralAnimMaxCursor");
 					shape = s.SerializeObject<EditableShape>(shape, name: "shape");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					moveSavedCurrentCursor = s.Serialize<float>(moveSavedCurrentCursor, name: "moveSavedCurrentCursor");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					saveOnCheckpoint = s.Serialize<bool>(saveOnCheckpoint, name: "saveOnCheckpoint");
 					touchDetectCooldown = s.Serialize<uint>(touchDetectCooldown, name: "touchDetectCooldown");
 					speed = s.Serialize<float>(speed, name: "speed");
@@ -67,7 +67,7 @@ namespace UbiArt.ITF {
 					proceduralAnimMaxCursor = s.Serialize<float>(proceduralAnimMaxCursor, name: "proceduralAnimMaxCursor");
 					shape = s.SerializeObject<EditableShape>(shape, name: "shape");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					moveSavedCurrentCursor = s.Serialize<float>(moveSavedCurrentCursor, name: "moveSavedCurrentCursor");
 				}
 			}

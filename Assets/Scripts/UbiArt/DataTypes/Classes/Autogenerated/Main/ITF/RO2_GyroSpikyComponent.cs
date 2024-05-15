@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public Angle tiltAngleRight = -0.5235988f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				tiltAngleLeft = s.SerializeObject<Angle>(tiltAngleLeft, name: "tiltAngleLeft");
 				tiltAngleRight = s.SerializeObject<Angle>(tiltAngleRight, name: "tiltAngleRight");
 			}

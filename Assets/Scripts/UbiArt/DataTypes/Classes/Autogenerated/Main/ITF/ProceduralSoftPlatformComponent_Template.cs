@@ -75,7 +75,7 @@ namespace UbiArt.ITF {
 				lengthFactor = s.Serialize<float>(lengthFactor, name: "lengthFactor");
 				bezierSampling = s.Serialize<uint>(bezierSampling, name: "bezierSampling");
 				inverseCurveRenderer = s.Serialize<bool>(inverseCurveRenderer, name: "inverseCurveRenderer");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					beginTexture = s.SerializeObject<Path>(beginTexture, name: "beginTexture");
 					endTexture = s.SerializeObject<Path>(endTexture, name: "endTexture");
 				}

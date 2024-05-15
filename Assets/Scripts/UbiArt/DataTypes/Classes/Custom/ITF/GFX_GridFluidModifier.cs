@@ -28,7 +28,7 @@ namespace UbiArt.ITF {
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				BoxOffset = s.SerializeObject<Vec3d>(BoxOffset, name: "BoxOffset");
 				BoxSize = s.SerializeObject<Vec2d>(BoxSize, name: "BoxSize");
 				Force = s.SerializeObject<Vec2d>(Force, name: "Force");

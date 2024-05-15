@@ -25,7 +25,7 @@ namespace UbiArt.ITF {
 			triggerBoundParent = s.Serialize<bool>(triggerBoundParent, name: "triggerBoundParent");
 			triggerBoundChildren = s.Serialize<bool>(triggerBoundChildren, name: "triggerBoundChildren");
 			modeAfterCP = s.Serialize<Mode>(modeAfterCP, name: "modeAfterCP");
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				triggerOnceDone = s.Serialize<bool>(triggerOnceDone, name: "triggerOnceDone");
 			}
 			Events = s.SerializeObject<CListO<Event>>(Events, name: "Events");

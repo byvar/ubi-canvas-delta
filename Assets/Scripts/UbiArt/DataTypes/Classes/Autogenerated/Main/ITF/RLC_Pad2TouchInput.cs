@@ -12,7 +12,7 @@ namespace UbiArt.ITF {
 			forcePosition = s.Serialize<bool>(forcePosition, name: "forcePosition");
 			position = s.SerializeObject<Vec2d>(position, name: "position");
 			offSet = s.SerializeObject<Vec2d>(offSet, name: "offSet");
-			if (s.HasFlags(SerializeFlags.Flags1)) {
+			if (s.HasFlags(SerializeFlags.PropertyEdit_Save)) {
 				swipeRandomDir = s.Serialize<bool>(swipeRandomDir, name: "swipeRandomDir");
 				swipeRandomDir = s.Serialize<bool>(swipeRandomDir, name: "swipeRandomDir");
 			}

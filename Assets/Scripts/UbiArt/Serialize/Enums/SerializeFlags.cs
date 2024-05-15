@@ -1,33 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UbiArt {
 	[Flags]
 	public enum SerializeFlags {
 		None = 0,
-		Flags0 = 1,
-		Flags1 = 1 << 1,
-		Flags2 = 1 << 2,
-		Flags3 = 1 << 3,
-		Flags4 = 1 << 4,
-		Flags5 = 1 << 5,
-		Flags6 = 1 << 6,
-		Flags7 = 1 << 7,
-		Flags8 = 1 << 8,
-		Flags9 = 1 << 9,
-		Flags10 = 1 << 10,
-		Flags11 = 1 << 11,
-		Flags12 = 1 << 12,
-		Flags13 = 1 << 13,
-		Flags14 = 1 << 14,
-		Flags15 = 1 << 15,
-		Flags16 = 1 << 16,
-		Flags17 = 1 << 17,
-		Flags18 = 1 << 18,
-		Flags19 = 1 << 19,
+		PropertyEdit_Load = 1 << 0,
+		PropertyEdit_Save = 1 << 1,
+		Checkpoint_Load = 1 << 2,
+		Checkpoint_Save = 1 << 3,
+		Editor_Load = 1 << 4,
+		Editor_Save = 1 << 5,
+		Data_Load = 1 << 6,
+		Data_Save = 1 << 7,
+		Deprecate = 1 << 8,
+		DataRaw = 1 << 9,
+		DataBin = 1 << 10,
+		InstanceLoad = 1 << 11,
+		InstanceSave = 1 << 12,
+		ForcedValues_Load = 1 << 13,
+		ForcedValues_Save = 1 << 14,
+		CSharp = 1 << 15,
+
+		// Not in RL
+		Flags16 = 1 << 16, // Load
+		Flags17 = 1 << 17, // Save
+		Flags18 = 1 << 18, // Load
+		Flags19 = 1 << 19, // Save
+
 		Flags20 = 1 << 20,
 		Flags21 = 1 << 21,
 		Flags22 = 1 << 22,
@@ -40,11 +39,17 @@ namespace UbiArt {
 		Flags29 = 1 << 29,
 		Flags30 = 1 << 30,
 		Flags31 = 1 << 31,
-		Persistent = Flags2 | Flags3,
-		Flags_xC0 = Flags6 | Flags7,
-		Flags_x30 = Flags4 | Flags5,
-		Editor = Flags0 | Flags1,
-		Flags_0xF = Editor | Persistent,
-		Default = Editor | Flags_xC0,
+
+		// Groups
+		PropertyEdit = PropertyEdit_Load | PropertyEdit_Save,
+		Checkpoint = Checkpoint_Load | Checkpoint_Save,
+		Editor = Editor_Load | Editor_Save,
+		Data = Data_Load | Data_Save,
+		Instance = InstanceLoad | InstanceSave,
+		ForcedValues = ForcedValues_Load | ForcedValues_Save,
+		Group_Checkpoint = Checkpoint,
+		Group_Data = Data,
+		Group_PropertyEdit = PropertyEdit,
+		Group_DataEditable = Group_PropertyEdit | Group_Data,
 	}
 }

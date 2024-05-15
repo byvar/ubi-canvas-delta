@@ -26,7 +26,7 @@ namespace UbiArt.ITF {
 				speedRotY = s.Serialize<float>(speedRotY, name: "speedRotY");
 				speedRotZ = s.Serialize<float>(speedRotZ, name: "speedRotZ");
 			} else if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
@@ -41,7 +41,7 @@ namespace UbiArt.ITF {
 				zOffset = s.Serialize<float>(zOffset, name: "zOffset");
 				draw2D = s.Serialize<bool>(draw2D, name: "draw2D");
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

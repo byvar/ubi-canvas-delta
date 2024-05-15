@@ -41,7 +41,7 @@ namespace UbiArt.ITF {
 				defaultBlendFrames = s.Serialize<uint>(defaultBlendFrames, name: "defaultBlendFrames");
 				draw2D = s.Serialize<uint>(draw2D, name: "draw2D");
 				visualAABBanimID = s.SerializeObject<StringID>(visualAABBanimID, name: "visualAABBanimID");
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					animSet = s.SerializeObject<SubAnimSet_Template>(animSet, name: "animSet");
 				}
 				defaultAnimation = s.SerializeObject<StringID>(defaultAnimation, name: "defaultAnimation");
@@ -60,7 +60,7 @@ namespace UbiArt.ITF {
 				defaultBlendFrames = s.Serialize<uint>(defaultBlendFrames, name: "defaultBlendFrames");
 				draw2D = s.Serialize<uint>(draw2D, name: "draw2D");
 				visualAABBanimID = s.SerializeObject<StringID>(visualAABBanimID, name: "visualAABBanimID");
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					animSet = s.SerializeObject<SubAnimSet_Template>(animSet, name: "animSet");
 				}
 				defaultAnimation = s.SerializeObject<StringID>(defaultAnimation, name: "defaultAnimation");
@@ -88,7 +88,7 @@ namespace UbiArt.ITF {
 				defaultBlendFrames = s.Serialize<uint>(defaultBlendFrames, name: "defaultBlendFrames");
 				draw2D = s.Serialize<uint>(draw2D, name: "draw2D");
 				visualAABBanimID = s.SerializeObject<StringID>(visualAABBanimID, name: "visualAABBanimID");
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					animSet = s.SerializeObject<SubAnimSet_Template>(animSet, name: "animSet");
 				}
 				defaultAnimation = s.SerializeObject<StringID>(defaultAnimation, name: "defaultAnimation");
@@ -113,7 +113,7 @@ namespace UbiArt.ITF {
 				defaultBlendFrames = s.Serialize<uint>(defaultBlendFrames, name: "defaultBlendFrames");
 				draw2D = s.Serialize<uint>(draw2D, name: "draw2D");
 				visualAABBanimID = s.SerializeObject<StringID>(visualAABBanimID, name: "visualAABBanimID");
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					animSet = s.SerializeObject<SubAnimSet_Template>(animSet, name: "animSet");
 				}
 				defaultAnimation = s.SerializeObject<StringID>(defaultAnimation, name: "defaultAnimation");
@@ -141,7 +141,7 @@ namespace UbiArt.ITF {
 				defaultBlendFrames = s.Serialize<uint>(defaultBlendFrames, name: "defaultBlendFrames");
 				draw2D = s.Serialize<uint>(draw2D, name: "draw2D");
 				visualAABBanimID = s.SerializeObject<StringID>(visualAABBanimID, name: "visualAABBanimID");
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					animSet = s.SerializeObject<SubAnimSet_Template>(animSet, name: "animSet");
 				}
 				defaultAnimation = s.SerializeObject<StringID>(defaultAnimation, name: "defaultAnimation");

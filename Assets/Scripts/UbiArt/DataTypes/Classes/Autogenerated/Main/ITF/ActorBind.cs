@@ -12,14 +12,14 @@ namespace UbiArt.ITF {
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_Data)) {
 				parentPath = s.SerializeObject<ObjectPath>(parentPath, name: "parentPath");
 				offsetPos = s.SerializeObject<Vec3d>(offsetPos, name: "offsetPos");
 				offsetAngle = s.Serialize<float>(offsetAngle, name: "offsetAngle");
 				type = s.Serialize<Type>(type, name: "type");
 				typeData = s.Serialize<uint>(typeData, name: "typeData");
 			}
-			if(s.HasFlags((SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0 | SerializeFlags.Editor))) {
+			if(s.HasFlags((SerializeFlags.Editor | SerializeFlags.Group_Data | SerializeFlags.Group_PropertyEdit))) {
 				useParentFlip = s.Serialize<bool>(useParentFlip, name: "useParentFlip");
 				useParentScale = s.Serialize<bool>(useParentScale, name: "useParentScale");
 				removeWithParent = s.Serialize<bool>(removeWithParent, name: "removeWithParent");

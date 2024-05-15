@@ -11,7 +11,7 @@ namespace UbiArt.ITF {
 				|| s.Settings.Game == Game.COL) {
 				sender = (ObjectRef)s.Serialize<uint>((uint)sender, name: "sender");
 			} else if(s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					sender = s.SerializeObject<ObjectRef>(sender, name: "sender");
 				}
 			} else {

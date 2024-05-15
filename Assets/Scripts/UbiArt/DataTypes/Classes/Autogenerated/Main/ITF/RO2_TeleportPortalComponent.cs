@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public bool oneWay;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				oneWay = s.Serialize<bool>(oneWay, name: "oneWay");
 			}
 		}

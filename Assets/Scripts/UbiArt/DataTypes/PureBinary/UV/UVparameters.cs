@@ -1,13 +1,13 @@
 namespace UbiArt.UV {
 	public class UVparameters : CSerializable {
-		public float unkFloat;
-		public string unkString;
+		public float orientation;
+		public string flag;
 		public CArrayO<Parameters> parameters; // Number of vertices used by the triangles
 		public CArrayO<Triangle> triangles;
 
 		protected override void SerializeImpl(CSerializerObject s) {
-			unkFloat = s.Serialize<float>(unkFloat, name: "unkFloat");
-			unkString = s.Serialize<string>(unkString, name: "unkString");
+			orientation = s.Serialize<float>(orientation, name: "orientation");
+			flag = s.Serialize<string>(flag, name: "flag");
 			parameters = s.SerializeObject<CArrayO<Parameters>>(parameters, name: "parameters");
 			triangles = s.SerializeObject<CArrayO<Triangle>>(triangles, name: "triangles");
 		}
@@ -22,11 +22,11 @@ namespace UbiArt.UV {
 			}
 		}
 		public class Parameters : CSerializable {
-			public float x;
-			public float y;
+			public float weight;
+			public float depth;
 			protected override void SerializeImpl(CSerializerObject s) {
-				x = s.Serialize<float>(x, name: "x");
-				y = s.Serialize<float>(y, name: "y");
+				weight = s.Serialize<float>(weight, name: "weight");
+				depth = s.Serialize<float>(depth, name: "depth");
 			}
 		}
 	}

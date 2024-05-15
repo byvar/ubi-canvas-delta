@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			testedPhaseTag = s.SerializeObject<StringID>(testedPhaseTag, name: "testedPhaseTag");
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				nextPhaseIndex = s.Serialize<int>(nextPhaseIndex, name: "nextPhaseIndex");
 				sequenceHitCount = s.Serialize<uint>(sequenceHitCount, name: "sequenceHitCount");
 			}

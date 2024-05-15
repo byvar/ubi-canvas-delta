@@ -9,12 +9,12 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					alignOnTrajectoryOnStart = s.Serialize<bool>(alignOnTrajectoryOnStart, name: "alignOnTrajectoryOnStart", options: CSerializerObject.Options.BoolAsByte);
 					flipWithDirection = s.Serialize<bool>(flipWithDirection, name: "flipWithDirection", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					alignOnTrajectoryOnStart = s.Serialize<bool>(alignOnTrajectoryOnStart, name: "alignOnTrajectoryOnStart");
 					flipWithDirection = s.Serialize<bool>(flipWithDirection, name: "flipWithDirection");
 					disablePolyline = s.Serialize<bool>(disablePolyline, name: "disablePolyline");

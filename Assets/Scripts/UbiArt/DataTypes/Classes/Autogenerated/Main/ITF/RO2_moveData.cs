@@ -12,7 +12,7 @@ namespace UbiArt.ITF {
 		public bool pauseFxInWait;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				dir = s.SerializeObject<Vec2d>(dir, name: "dir");
 				period = s.Serialize<float>(period, name: "period");
 				cycle = s.Serialize<bool>(cycle, name: "cycle");

@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR) {
 			} else if (s.Settings.Game == Game.RO) {
-				if (!s.HasProperty(CSerializerObject.SerializerProperty.Binary) && s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (!s.HasProperties(SerializerProperties.Binary) && s.HasFlags(SerializeFlags.Group_Data)) {
 					debugColor = s.SerializeObject<Color>(debugColor, name: "debugColor");
 					debugColorSelected = s.SerializeObject<Color>(debugColorSelected, name: "debugColorSelected");
 					debugChildIndex = s.Serialize<int>(debugChildIndex, name: "debugChildIndex");

@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public Ray_ShooterCameraModifierComponent.ShooterCameraModifier initModifier;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				Pos = s.SerializeObject<Vec3d>(Pos, name: "Pos");
 			}
 			useInitModifier = s.Serialize<bool>(useInitModifier, name: "useInitModifier");

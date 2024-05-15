@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public Vec2d doorOffset;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				doorOffset = s.SerializeObject<Vec2d>(doorOffset, name: "doorOffset");
 			}
 		}

@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public EditableShape shape;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				controlOffset = s.SerializeObject<Vec2d>(controlOffset, name: "controlOffset");
 				textPos = s.SerializeObject<Vec2d>(textPos, name: "textPos");
 				shape = s.SerializeObject<EditableShape>(shape, name: "shape");

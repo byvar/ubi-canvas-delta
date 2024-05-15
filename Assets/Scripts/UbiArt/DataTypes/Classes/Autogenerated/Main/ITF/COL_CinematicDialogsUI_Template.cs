@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public Placeholder nameBackgroundTexture;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				dialogBackgroundTexturePath = s.SerializeObject<Path>(dialogBackgroundTexturePath, name: "dialogBackgroundTexturePath");
 				nameBackgroundTexturePath = s.SerializeObject<Path>(nameBackgroundTexturePath, name: "nameBackgroundTexturePath");
 			}

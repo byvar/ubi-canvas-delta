@@ -9,11 +9,11 @@ namespace UbiArt.ITF {
 		public uint blockState;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				managerPath = s.SerializeObject<ObjectPath>(managerPath, name: "managerPath");
 			}
 			countSpawnMax = s.Serialize<uint>(countSpawnMax, name: "countSpawnMax");
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				blockIsDestroy = s.Serialize<int>(blockIsDestroy, name: "blockIsDestroy");
 				checkPointRow = s.Serialize<uint>(checkPointRow, name: "checkPointRow");
 				checkPointCol = s.Serialize<uint>(checkPointCol, name: "checkPointCol");

@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public bool bool__2;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				Enum_VH_0__0 = s.Serialize<Enum_VH_0>(Enum_VH_0__0, name: "Enum_VH_0__0");
 				CArray_ushort__1 = s.SerializeObject<CArrayP<ushort>>(CArray_ushort__1, name: "CArray<unsigned short>__1");
 				bool__2 = s.Serialize<bool>(bool__2, name: "bool__2");

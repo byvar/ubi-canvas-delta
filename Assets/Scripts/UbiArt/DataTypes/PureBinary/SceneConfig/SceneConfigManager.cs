@@ -1,16 +1,16 @@
 namespace UbiArt.SceneConfig {
 	public class SceneConfigManager : CSerializable {
-		public uint unk;
+		public uint version;
 		public uint dataversion;
 		public CMapGeneric<StringID, ITF.SceneConfig> sgsMap;
 		public SgsKey sgsMapAdv;
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			if(s.Settings.Game == Game.RA || s.Settings.Game == Game.RM) {
-				unk = s.SerializeGenericPureBinary<uint>(unk, name: "unk");
+				version = s.SerializeGenericPureBinary<uint>(version, name: "unk");
 				sgsMapAdv = s.SerializeObject<SgsKey>(sgsMapAdv, name: "sgsMap");
 			} else {
-				unk = s.Serialize<uint>(unk, name: "unk");
+				version = s.Serialize<uint>(version, name: "unk");
 				dataversion = s.Serialize<uint>(dataversion, name: "dataversion");
 				sgsMap = s.SerializeObject<CMapGeneric<StringID, ITF.SceneConfig>>(sgsMap, name: "sgsMap");
 			}

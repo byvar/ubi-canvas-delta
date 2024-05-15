@@ -21,7 +21,7 @@ namespace UbiArt.ITF {
 			bool__5 = s.Serialize<bool>(bool__5, name: "bool__5");
 			float__6 = s.Serialize<float>(float__6, name: "float__6");
 			float__7 = s.Serialize<float>(float__7, name: "float__7");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				LocalisationId__8 = s.SerializeObject<LocalisationId>(LocalisationId__8, name: "LocalisationId__8");
 				LocalisationId__9 = s.SerializeObject<LocalisationId>(LocalisationId__9, name: "LocalisationId__9");
 			}

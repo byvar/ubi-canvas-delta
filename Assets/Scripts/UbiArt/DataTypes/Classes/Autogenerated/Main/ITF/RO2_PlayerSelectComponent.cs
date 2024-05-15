@@ -5,10 +5,10 @@ namespace UbiArt.ITF {
 		public bool disabled;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				playerId = s.SerializeObject<StringID>(playerId, name: "playerId");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				disabled = s.Serialize<bool>(disabled, name: "disabled");
 			}
 		}

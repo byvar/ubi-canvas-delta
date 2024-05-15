@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 		public float float__13;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				uint__0 = s.Serialize<uint>(uint__0, name: "uint__0");
 				Vector2__1 = s.SerializeObject<Vec2d>(Vector2__1, name: "Vector2__1");
 				Vector2__2 = s.SerializeObject<Vec2d>(Vector2__2, name: "Vector2__2");

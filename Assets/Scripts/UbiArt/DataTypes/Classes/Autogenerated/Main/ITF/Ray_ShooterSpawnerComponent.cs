@@ -6,14 +6,14 @@ namespace UbiArt.ITF {
 		public Vec3d beforeCamRelativeInitialPos;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Editor)) {
+			if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 				tweenId = s.SerializeChoiceListObject<StringID>(tweenId, name: "tweenId", empty: "invalid");
 				spawnActorId = s.SerializeChoiceListObject<StringID>(spawnActorId, name: "spawnActorId", empty: "invalid");
 			} else {
 				tweenId = s.SerializeObject<StringID>(tweenId, name: "tweenId");
 				spawnActorId = s.SerializeObject<StringID>(spawnActorId, name: "spawnActorId");
 			}
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				beforeCamRelativeInitialPos = s.SerializeObject<Vec3d>(beforeCamRelativeInitialPos, name: "beforeCamRelativeInitialPos");
 			}
 		}

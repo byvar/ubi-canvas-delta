@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 			public bool gotoRun;
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					interactionAction = s.SerializeObject<StringID>(interactionAction, name: "interactionAction");
 					gotoType = s.Serialize<Enum_gotoType>(gotoType, name: "gotoType");
 					gotoTargetPos = s.SerializeObject<Vec2d>(gotoTargetPos, name: "gotoTargetPos");

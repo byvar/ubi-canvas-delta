@@ -16,7 +16,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					ScaleZ = s.Serialize<float>(ScaleZ, name: "ScaleZ");
 					materialList = s.SerializeObject<CListO<GFXMaterialSerializable>>(materialList, name: "materialList");
 					mesh3D = s.SerializeObject<Path>(mesh3D, name: "mesh3D");
@@ -31,7 +31,7 @@ namespace UbiArt.ITF {
 					rotateOnFlip = s.Serialize<bool>(rotateOnFlip, name: "rotateOnFlip", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					ScaleZ = s.Serialize<float>(ScaleZ, name: "ScaleZ");
 					materialList = s.SerializeObject<CListO<GFXMaterialSerializable>>(materialList, name: "materialList");
 					mesh3D = s.SerializeObject<Path>(mesh3D, name: "mesh3D");

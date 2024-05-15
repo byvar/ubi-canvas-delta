@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public float bubbleFloatForceX;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				bubbleLifetime = s.Serialize<float>(bubbleLifetime, name: "bubbleLifetime");
 				bubbleFloatForceX = s.Serialize<float>(bubbleFloatForceX, name: "bubbleFloatForceX");
 			}

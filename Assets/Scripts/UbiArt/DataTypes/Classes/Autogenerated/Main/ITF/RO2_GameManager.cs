@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public bool savedtouchScreenPlayerMandatory;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				savedDRCSwappedPlayerIdx = s.Serialize<uint>(savedDRCSwappedPlayerIdx, name: "savedDRCSwappedPlayerIdx");
 				playersCurrentScale = s.Serialize<float>(playersCurrentScale, name: "playersCurrentScale");
 				savedtouchScreenPlayerMandatory = s.Serialize<bool>(savedtouchScreenPlayerMandatory, name: "savedtouchScreenPlayerMandatory");

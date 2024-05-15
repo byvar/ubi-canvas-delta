@@ -11,7 +11,7 @@ namespace UbiArt.ITF {
 		public float RespawnDelay;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				PlaySpecificFX = s.Serialize<bool>(PlaySpecificFX, name: "PlaySpecificFX");
 				NbOfFXGenerator = s.Serialize<uint>(NbOfFXGenerator, name: "NbOfFXGenerator");
 				SpawnLimit = s.Serialize<int>(SpawnLimit, name: "SpawnLimit");

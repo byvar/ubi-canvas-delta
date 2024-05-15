@@ -11,7 +11,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					isPassword = s.Serialize<bool>(isPassword, name: "isPassword", options: CSerializerObject.Options.BoolAsByte);
 					dialogMaxChar = s.Serialize<uint>(dialogMaxChar, name: "dialogMaxChar");
 					dialogAcceptSpace = s.Serialize<bool>(dialogAcceptSpace, name: "dialogAcceptSpace");
@@ -20,7 +20,7 @@ namespace UbiArt.ITF {
 					style2 = s.Serialize<InputAdapter__VK_style2>(style2, name: "style");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					isPassword = s.Serialize<bool>(isPassword, name: "isPassword");
 					dialogMaxChar = s.Serialize<uint>(dialogMaxChar, name: "dialogMaxChar");
 					dialogAcceptSpace = s.Serialize<bool>(dialogAcceptSpace, name: "dialogAcceptSpace");

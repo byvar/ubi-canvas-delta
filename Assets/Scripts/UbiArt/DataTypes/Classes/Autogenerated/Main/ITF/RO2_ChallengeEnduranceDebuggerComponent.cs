@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		public float stressTestCompetitionDistance;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				modePath = s.SerializeObject<Path>(modePath, name: "modePath");
 				startDifficulty = s.Serialize<uint>(startDifficulty, name: "startDifficulty");
 				stressTestMinSeed = s.Serialize<uint>(stressTestMinSeed, name: "stressTestMinSeed");

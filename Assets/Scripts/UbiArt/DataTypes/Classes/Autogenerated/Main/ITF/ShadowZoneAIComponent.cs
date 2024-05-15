@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public bool UseLaserDetection;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				startOn = s.Serialize<bool>(startOn, name: "startOn");
 				pauseTween = s.Serialize<bool>(pauseTween, name: "pauseTween");
 				pauseTrajectory = s.Serialize<bool>(pauseTrajectory, name: "pauseTrajectory");

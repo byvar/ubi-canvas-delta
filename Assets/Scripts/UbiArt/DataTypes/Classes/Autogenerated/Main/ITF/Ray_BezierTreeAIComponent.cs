@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				startActivated = s.Serialize<bool>(startActivated, name: "startActivated");
 				branchSpeed = s.Serialize<float>(branchSpeed, name: "branchSpeed");
 				polylineMode = s.Serialize<PolylineMode>(polylineMode, name: "polylineMode");

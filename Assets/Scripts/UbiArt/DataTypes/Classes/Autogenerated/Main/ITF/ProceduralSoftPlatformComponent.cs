@@ -10,14 +10,14 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					endPos = s.SerializeObject<Vec3d>(endPos, name: "endPos");
 					useBeginTexture = s.Serialize<bool>(useBeginTexture, name: "useBeginTexture");
 					useEndTexture = s.Serialize<bool>(useEndTexture, name: "useEndTexture");
 					initIteration = s.Serialize<bool>(initIteration, name: "initIteration");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					endPos = s.SerializeObject<Vec3d>(endPos, name: "endPos");
 					useBeginTexture = s.Serialize<bool>(useBeginTexture, name: "useBeginTexture");
 					useEndTexture = s.Serialize<bool>(useEndTexture, name: "useEndTexture");

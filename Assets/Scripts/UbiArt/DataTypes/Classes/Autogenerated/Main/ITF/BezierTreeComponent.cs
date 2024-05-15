@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public BezierBranch branch;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				branch = s.SerializeObject<BezierBranch>(branch, name: "branch");
 			}
 		}

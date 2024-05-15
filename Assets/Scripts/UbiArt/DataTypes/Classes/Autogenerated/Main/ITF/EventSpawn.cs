@@ -29,7 +29,7 @@ namespace UbiArt.ITF {
 				spawnMode = s.Serialize<EventSpawn__e>(spawnMode, name: "spawnMode");
 				waveDelay = s.Serialize<float>(waveDelay, name: "waveDelay");
 				waveGroupDelay = s.Serialize<float>(waveGroupDelay, name: "waveGroupDelay");
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					minSimultaneousPerGroup = s.Serialize<int>(minSimultaneousPerGroup, name: "minSimultaneousPerGroup");
 					totalStock = s.Serialize<int>(totalStock, name: "totalStock");
 					minRespawnDelay = s.Serialize<float>(minRespawnDelay, name: "minRespawnDelay");

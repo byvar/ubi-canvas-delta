@@ -7,19 +7,19 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					distanceFromCheckpoint = s.Serialize<float>(distanceFromCheckpoint, name: "distanceFromCheckpoint");
 					speedFactor = s.Serialize<float>(speedFactor, name: "speedFactor");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					hasMoved = s.Serialize<bool>(hasMoved, name: "hasMoved", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					distanceFromCheckpoint = s.Serialize<float>(distanceFromCheckpoint, name: "distanceFromCheckpoint");
 					speedFactor = s.Serialize<float>(speedFactor, name: "speedFactor");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					hasMoved = s.Serialize<bool>(hasMoved, name: "hasMoved");
 				}
 			}

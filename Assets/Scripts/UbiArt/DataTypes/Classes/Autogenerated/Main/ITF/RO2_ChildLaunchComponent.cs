@@ -5,10 +5,10 @@ namespace UbiArt.ITF {
 		public bool hintFxEnabled = true;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				nextLaunchIndex = s.Serialize<uint>(nextLaunchIndex, name: "nextLaunchIndex");
 			}
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				hintFxEnabled = s.Serialize<bool>(hintFxEnabled, name: "hintFxEnabled");
 			}
 		}

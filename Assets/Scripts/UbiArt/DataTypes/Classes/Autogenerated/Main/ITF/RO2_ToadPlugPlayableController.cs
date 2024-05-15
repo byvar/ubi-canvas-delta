@@ -12,7 +12,7 @@ namespace UbiArt.ITF {
 		public float maxUnPlugJumpHeightFactor;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				tweakJumpImpulse = s.Serialize<float>(tweakJumpImpulse, name: "tweakJumpImpulse");
 				tweakBoostedJumpImpulse = s.Serialize<float>(tweakBoostedJumpImpulse, name: "tweakBoostedJumpImpulse");
 				tweakBoostTolerance = s.Serialize<float>(tweakBoostTolerance, name: "tweakBoostTolerance");

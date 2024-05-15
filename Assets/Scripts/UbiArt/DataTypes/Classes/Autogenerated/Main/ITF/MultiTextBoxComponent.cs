@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.COL) {
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					textBoxList = s.SerializeObject<CListO<MultiTextBoxComponent.TextBox>>(textBoxList, name: "textBoxList");
 				}
 			}
@@ -31,7 +31,7 @@ namespace UbiArt.ITF {
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
 				if (s.Settings.Game == Game.VH || s.Settings.Game == Game.RL) {
-					if (s.HasFlags(SerializeFlags.Default)) {
+					if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 						text = s.SerializeObject<SmartLocId>(text, name: "text");
 						area = s.SerializeObject<Vec2d>(area, name: "area");
 						offset = s.SerializeObject<Vec3d>(offset, name: "offset");
@@ -47,7 +47,7 @@ namespace UbiArt.ITF {
 						overridingAnchor = s.Serialize<AREA_ANCHOR>(overridingAnchor, name: "overridingAnchor");
 					}
 				} else {
-					if (s.HasFlags(SerializeFlags.Default)) {
+					if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 						text = s.SerializeObject<SmartLocId>(text, name: "text");
 						area = s.SerializeObject<Vec2d>(area, name: "area");
 						offset = s.SerializeObject<Vec3d>(offset, name: "offset");

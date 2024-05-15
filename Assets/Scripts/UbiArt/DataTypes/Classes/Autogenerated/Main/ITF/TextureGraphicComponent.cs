@@ -17,12 +17,12 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 			} else if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						texture = s.SerializeObject<Path>(texture, name: "texture");
 					}
 					anchor = s.Serialize<TEXTURE_ANCHOR>(anchor, name: "anchor");
@@ -34,8 +34,8 @@ namespace UbiArt.ITF {
 					}
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						texture = s.SerializeObject<Path>(texture, name: "texture");
 					}
 					anchor = s.Serialize<TEXTURE_ANCHOR>(anchor, name: "anchor");
@@ -46,8 +46,8 @@ namespace UbiArt.ITF {
 					uvTranslationSpeed = s.SerializeObject<Vec2d>(uvTranslationSpeed, name: "uvTranslationSpeed");
 				}
 			} else if (s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						texture = s.SerializeObject<Path>(texture, name: "texture");
 					}
 					anchor = s.Serialize<TEXTURE_ANCHOR>(anchor, name: "anchor");
@@ -55,10 +55,10 @@ namespace UbiArt.ITF {
 					spriteIndex = s.Serialize<uint>(spriteIndex, name: "spriteIndex");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default | SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable | SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					anchor = s.Serialize<TEXTURE_ANCHOR>(anchor, name: "anchor");
 					material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
 					Scale = s.SerializeObject<Vec2d>(Scale, name: "Scale");

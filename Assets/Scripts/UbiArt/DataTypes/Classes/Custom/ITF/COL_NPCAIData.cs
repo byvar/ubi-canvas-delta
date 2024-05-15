@@ -19,7 +19,7 @@ namespace UbiArt.ITF {
 		public float maxAbsoluteAngle;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				npcType = s.Serialize<Enum_npcType>(npcType, name: "npcType");
 				useRoaming = s.Serialize<bool>(useRoaming, name: "useRoaming", options: CSerializerObject.Options.BoolAsByte);
 				roamingLimitLeft = s.Serialize<float>(roamingLimitLeft, name: "roamingLimitLeft");

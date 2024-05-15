@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				pid = s.Serialize<int>(pid, name: "pid");
 				name = s.Serialize<string>(name, name: "name");
 				statusIcon = s.Serialize<uint>(statusIcon, name: "statusIcon");

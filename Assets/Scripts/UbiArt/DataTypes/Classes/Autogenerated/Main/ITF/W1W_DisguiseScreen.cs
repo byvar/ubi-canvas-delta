@@ -5,10 +5,10 @@ namespace UbiArt.ITF {
 		public Enum_VH_0_2 Enum_VH_0__1;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				Enum_VH_0__1 = s.Serialize<Enum_VH_0_2>(Enum_VH_0__1, name: "Enum_VH_0__1");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				Enum_VH_0__0_1 = s.Serialize<Enum_VH_0_1>(Enum_VH_0__0_1, name: "Enum_VH_0__0");
 			}
 		}

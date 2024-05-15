@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					canDrown = s.Serialize<bool>(canDrown, name: "canDrown");
 				}
 			}

@@ -33,7 +33,7 @@ namespace UbiArt.ITF {
 				color = s.SerializeObject<Color>(color, name: "color");
 				attachBone = s.SerializeObject<StringID>(attachBone, name: "attachBone");
 			} else if(s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
@@ -50,7 +50,7 @@ namespace UbiArt.ITF {
 				color = s.SerializeObject<Color>(color, name: "color");
 				attachBone = s.SerializeObject<StringID>(attachBone, name: "attachBone");
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

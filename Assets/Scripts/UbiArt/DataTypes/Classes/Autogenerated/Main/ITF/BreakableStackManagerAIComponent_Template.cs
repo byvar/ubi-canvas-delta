@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 			countDownHit = s.Serialize<float>(countDownHit, name: "countDownHit");
 			gravityBallistics = s.Serialize<float>(gravityBallistics, name: "gravityBallistics");
 			timeExpulse = s.Serialize<float>(timeExpulse, name: "timeExpulse");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				atlasPath = s.SerializeObject<Path>(atlasPath, name: "atlasPath");
 				atlasParticlesPath = s.SerializeObject<Path>(atlasParticlesPath, name: "atlasParticlesPath");
 			}

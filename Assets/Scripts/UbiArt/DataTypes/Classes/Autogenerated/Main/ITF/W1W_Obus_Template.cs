@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		public float float__6;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				Path__0 = s.SerializeObject<Path>(Path__0, name: "Path__0");
 			}
 			float__1 = s.Serialize<float>(float__1, name: "float__1");

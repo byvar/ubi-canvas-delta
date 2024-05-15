@@ -25,7 +25,7 @@ namespace UbiArt {
 				BinarySerializer = File.CreateWriter();
 			}
 		}
-		public override SerializerProperty Properties => base.Properties | SerializerProperty.Binary | SerializerProperty.Flags4; // 0x11
+		public override SerializerProperties Properties => base.Properties | SerializerProperties.Binary | SerializerProperties.BinSkip; // 0x11
 
 		public BinaryFile File { get; protected set; }
 		public IBinaryLowLevelSerializer BinarySerializer { get; protected set; }
@@ -312,7 +312,7 @@ namespace UbiArt {
 			if (options.HasFlag(Options.ForceAsByte)) {
 				asByte = true;
 			} else if (options.HasFlag(Options.BoolAsByte)) {
-				asByte = HasFlags(SerializeFlags.Flags1);
+				asByte = HasFlags(SerializeFlags.PropertyEdit_Save);
 			}
 			uint value32 = value ? (uint)1 : 0;
 

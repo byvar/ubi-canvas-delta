@@ -9,11 +9,11 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					trailPath = s.SerializeObject<Path>(trailPath, name: "trailPath");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					trailPath = s.SerializeObject<Path>(trailPath, name: "trailPath");
 					reticlePath = s.SerializeObject<Path>(reticlePath, name: "reticlePath");
 					minePath = s.SerializeObject<Path>(minePath, name: "minePath");

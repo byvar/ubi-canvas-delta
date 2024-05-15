@@ -50,17 +50,23 @@ public class FriseEditorPointHandle : UnityHandle {
 		}
 	}
 	void UpdateData() {
-		var relativePoint = RelativeTransform.InverseTransformPoint(transform.position);
-		if (ScaleTransform.localScale.x != 0 && ScaleTransform.localScale.y != 0 && ScaleTransform.localScale.z != 0) {
-			relativePoint = Vector3.Scale(relativePoint, new Vector3(1f / ScaleTransform.localScale.x, 1f / ScaleTransform.localScale.y, 1f / ScaleTransform.localScale.z));
-		}
-		const float min = 0.005f;
+		var scale = ScaleTransform.lossyScale;
+		if (scale.x != 0 && scale.y != 0 && scale.z != 0) {
+			var relativePoint = RelativeTransform.InverseTransformPoint(transform.position);
+			relativePoint = Vector3.Scale(relativePoint, new Vector3(1f / scale.x, 1f / scale.y, 1f / scale.z));
 
-		if (Mathf.Abs(relativePoint.x - (Data?.POS?.x ?? 0)) > min
-			|| Mathf.Abs(relativePoint.y - (Data?.POS?.y ?? 0)) > min) {
-			//Debug.Log($"Recompute ({relativePoint.x}, {relativePoint.y}) - ({Data.POS})");
-			Data.POS = new UbiArt.Vec2d(relativePoint.x, relativePoint.y);
-			Frise.frise.Recompute();
+			const float min = 0.001f;
+			var og = DataPosition;
+			var diff = new UbiArt.Vec3d(relativePoint.x - og.x, relativePoint.y - og.y, relativePoint.z - og.z);
+			diff.x = Mathf.Abs(diff.x);
+			diff.y = Mathf.Abs(diff.y);
+			diff.z = Mathf.Abs(diff.z);
+
+			if (diff.x > min / Mathf.Abs(scale.x) || diff.y > min / Mathf.Abs(scale.y)) {
+				Debug.Log($"Recomputing frise point: ({relativePoint.x}, {relativePoint.y}) - ({Data.POS})");
+				Data.POS = new UbiArt.Vec2d(relativePoint.x, relativePoint.y);
+				Frise.frise.Recompute();
+			}
 		}
 	}
 	public override void CreateMesh() {

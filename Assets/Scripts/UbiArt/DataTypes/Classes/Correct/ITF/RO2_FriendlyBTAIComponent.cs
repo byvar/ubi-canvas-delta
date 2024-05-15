@@ -12,30 +12,30 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					path = s.SerializeObject<Path>(path, name: "path");
 					prisonerVisualType = s.Serialize<Prisoner>(prisonerVisualType, name: "prisonerVisualType");
 				}
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					prisonerType = s.Serialize<Enum_prisonerType>(prisonerType, name: "prisonerType");
 					prisonerIndexType = s.Serialize<Index>(prisonerIndexType, name: "prisonerIndexType");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					targetWaypoint = s.SerializeObject<ObjectPath>(targetWaypoint, name: "targetWaypoint");
 					respawnPoint = s.SerializeObject<ObjectPath>(respawnPoint, name: "respawnPoint");
 					rescued = s.Serialize<bool>(rescued, name: "rescued");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					path = s.SerializeObject<Path>(path, name: "path");
 					prisonerVisualType = s.Serialize<Prisoner>(prisonerVisualType, name: "prisonerVisualType");
 				}
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					prisonerType = s.Serialize<Enum_prisonerType>(prisonerType, name: "prisonerType");
 					prisonerIndexType = s.Serialize<Index>(prisonerIndexType, name: "prisonerIndexType");
 					canReceiveHits = s.Serialize<bool>(canReceiveHits, name: "canReceiveHits");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					targetWaypoint = s.SerializeObject<ObjectPath>(targetWaypoint, name: "targetWaypoint");
 					respawnPoint = s.SerializeObject<ObjectPath>(respawnPoint, name: "respawnPoint");
 					rescued = s.Serialize<bool>(rescued, name: "rescued");

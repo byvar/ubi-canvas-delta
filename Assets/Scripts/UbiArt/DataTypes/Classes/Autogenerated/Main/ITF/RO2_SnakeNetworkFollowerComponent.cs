@@ -8,13 +8,13 @@ namespace UbiArt.ITF {
 		public bool everStarted;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				baseSpeed = s.Serialize<float>(baseSpeed, name: "baseSpeed");
 				baseAcceleration = s.Serialize<float>(baseAcceleration, name: "baseAcceleration");
 				activeMode = s.Serialize<ActiveMode>(activeMode, name: "activeMode");
 				disableOnCheckpointIfActive = s.Serialize<bool>(disableOnCheckpointIfActive, name: "disableOnCheckpointIfActive");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				everStarted = s.Serialize<bool>(everStarted, name: "everStarted");
 			}
 		}

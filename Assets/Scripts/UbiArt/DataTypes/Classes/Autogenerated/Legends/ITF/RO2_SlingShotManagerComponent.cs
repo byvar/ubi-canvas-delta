@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public uint NbToRespawn;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				SpawnLimitNb = s.Serialize<int>(SpawnLimitNb, name: "SpawnLimitNb");
 				WaveSpawnNb = s.Serialize<uint>(WaveSpawnNb, name: "WaveSpawnNb");
 				NbToRespawn = s.Serialize<uint>(NbToRespawn, name: "NbToRespawn");

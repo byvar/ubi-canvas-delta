@@ -18,7 +18,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					isActive = s.Serialize<bool>(isActive, name: "isActive");
 					margingTop = s.Serialize<float>(margingTop, name: "margingTop");
 					margingLeft = s.Serialize<float>(margingLeft, name: "margingLeft");
@@ -34,7 +34,7 @@ namespace UbiArt.ITF {
 					aabb = s.SerializeObject<AABB>(aabb, name: "aabb");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					isActive = s.Serialize<bool>(isActive, name: "isActive");
 					margingTop = s.Serialize<float>(margingTop, name: "margingTop");
 					margingLeft = s.Serialize<float>(margingLeft, name: "margingLeft");
@@ -50,7 +50,7 @@ namespace UbiArt.ITF {
 					aabb = s.SerializeObject<AABB>(aabb, name: "aabb");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					isActive = s.Serialize<bool>(isActive, name: "isActive");
 					margingTop = s.Serialize<float>(margingTop, name: "margingTop");
 					margingLeft = s.Serialize<float>(margingLeft, name: "margingLeft");

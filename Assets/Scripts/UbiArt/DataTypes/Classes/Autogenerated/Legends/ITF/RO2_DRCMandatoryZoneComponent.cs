@@ -7,15 +7,15 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Platform == GamePlatform.Vita) return;
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				AMDisplayTuto = s.Serialize<bool>(AMDisplayTuto, name: "AMDisplayTuto", options: CSerializerObject.Options.BoolAsByte);
-				if (s.HasFlags(SerializeFlags.Editor)) {
+				if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 					AM_MapId = s.SerializeChoiceListObject<StringID>(AM_MapId, name: "AM_MapId", empty: "invalid");
 				} else {
 					AM_MapId = s.SerializeObject<StringID>(AM_MapId, name: "AM_MapId");
 				}
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				activated = s.Serialize<bool>(activated, name: "activated");
 			}
 		}

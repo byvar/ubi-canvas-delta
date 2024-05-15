@@ -13,7 +13,7 @@ namespace UbiArt.ITF {
 			} else {
 				if (s.Settings.Platform == GamePlatform.Vita && (this is PhysShapeBox)) return;
 				Points = s.SerializeObject<CListO<Vec2d>>(Points, name: "Points");
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					normals = s.SerializeObject<CListO<Vec2d>>(normals, name: "normals");
 					edge = s.SerializeObject<CListO<Vec2d>>(edge, name: "edge");
 					distances = s.SerializeObject<CArrayP<float>>(distances, name: "distances");

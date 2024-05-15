@@ -30,7 +30,7 @@ namespace UbiArt.ITF {
 		public float manaOrbsMax;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				moveSpeed = s.Serialize<float>(moveSpeed, name: "moveSpeed");
 				useGlobalSpeedFactor = s.Serialize<bool>(useGlobalSpeedFactor, name: "useGlobalSpeedFactor", options: CSerializerObject.Options.BoolAsByte);
 				trajectory = s.Serialize<Trajectory>(trajectory, name: "trajectory");

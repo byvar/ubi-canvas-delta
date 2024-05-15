@@ -40,26 +40,26 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					retriggerOnCheckpoint = s.Serialize<int>(retriggerOnCheckpoint, name: "retriggerOnCheckpoint");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					triggerOnceDone = s.Serialize<bool>(triggerOnceDone, name: "triggerOnceDone");
 					activator = s.Serialize<uint>(activator, name: "activator");
 				}
 			} else if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					mode = s.Serialize<Mode>(mode, name: "mode");
 				}
 				if (s.Settings.Platform == GamePlatform.Vita) {
 					triggerOnceDone = s.Serialize<bool>(triggerOnceDone, name: "triggerOnceDone", options: CSerializerObject.Options.ForceAsByte);
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					triggerOnceDone = s.Serialize<bool>(triggerOnceDone, name: "triggerOnceDone");
 					activator = s.Serialize<uint>(activator, name: "activator");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					mode = s.Serialize<Mode>(mode, name: "mode");
 					onEnterEvent = s.SerializeObject<Generic<Event>>(onEnterEvent, name: "onEnterEvent");
 					onExitEvent = s.SerializeObject<Generic<Event>>(onExitEvent, name: "onExitEvent");
@@ -80,18 +80,18 @@ namespace UbiArt.ITF {
 					triggerBroadcast = s.Serialize<bool>(triggerBroadcast, name: "triggerBroadcast", options: CSerializerObject.Options.BoolAsByte);
 					triggerExitOnBecomeInactive = s.Serialize<bool>(triggerExitOnBecomeInactive, name: "triggerExitOnBecomeInactive", options: CSerializerObject.Options.BoolAsByte);
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					version = s.Serialize<uint>(version, name: "version");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					triggerOnceDone = s.Serialize<bool>(triggerOnceDone, name: "triggerOnceDone", options: CSerializerObject.Options.BoolAsByte);
 					activator = s.Serialize<uint>(activator, name: "activator");
 				}
 			} else if (s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					mode = s.Serialize<Mode>(mode, name: "mode");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					triggerOnceDone = s.Serialize<bool>(triggerOnceDone, name: "triggerOnceDone");
 					activator = s.Serialize<uint>(activator, name: "activator");
 				}
@@ -100,10 +100,10 @@ namespace UbiArt.ITF {
 				AutoActivation = s.Serialize<bool>(AutoActivation, name: "AutoActivation");
 				NoConditionEvent = s.SerializeObject<Generic<Event>>(NoConditionEvent, name: "NoConditionEvent");
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					mode = s.Serialize<Mode>(mode, name: "mode");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					triggerOnceDone = s.Serialize<bool>(triggerOnceDone, name: "triggerOnceDone");
 					activator = s.Serialize<uint>(activator, name: "activator");
 				}

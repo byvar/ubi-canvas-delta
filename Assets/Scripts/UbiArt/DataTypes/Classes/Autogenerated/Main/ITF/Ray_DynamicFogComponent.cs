@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public float dynamicFogMaxDepth;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				useTempateFogParams = s.Serialize<bool>(useTempateFogParams, name: "useTempateFogParams");
 				if (!useTempateFogParams) {
 					dynamicFogColor = s.SerializeObject<Color>(dynamicFogColor, name: "dynamicFogColor");

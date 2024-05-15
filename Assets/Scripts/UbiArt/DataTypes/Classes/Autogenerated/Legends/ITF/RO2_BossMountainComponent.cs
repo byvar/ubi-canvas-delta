@@ -25,7 +25,7 @@ namespace UbiArt.ITF {
 		public int AppearanceDone;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				DEBUG_StartOnPattern = s.Serialize<uint>(DEBUG_StartOnPattern, name: "DEBUG_StartOnPattern");
 				DEBUG_StartOnPhase = s.Serialize<uint>(DEBUG_StartOnPhase, name: "DEBUG_StartOnPhase");
 				Alpha = s.Serialize<float>(Alpha, name: "Alpha");
@@ -48,7 +48,7 @@ namespace UbiArt.ITF {
 				Phase3_OrientCoeff = s.Serialize<float>(Phase3_OrientCoeff, name: "Phase3_OrientCoeff");
 				Phase3_OrientBlend = s.Serialize<float>(Phase3_OrientBlend, name: "Phase3_OrientBlend");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				AppearanceDone = s.Serialize<int>(AppearanceDone, name: "AppearanceDone");
 			}
 		}

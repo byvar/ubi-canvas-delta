@@ -21,7 +21,7 @@ namespace UbiArt {
 			var serializer = context.GetStoredObject<CSerializerObjectUnityEditor>(UnitySerializerID);
 			if (serializer == null) {
 				serializer = new CSerializerObjectUnityEditor(context);
-				serializer.flags |= SerializeFlags.Flags7;
+				serializer.flags |= SerializeFlags.Data_Save;
 				context.StoreObject<CSerializerObjectUnityEditor>(UnitySerializerID, serializer);
 			}
 			return serializer;
@@ -31,7 +31,7 @@ namespace UbiArt {
 		public CSerializerObjectUnityEditor(Context context) : base(context) {
 		}
 
-		public override SerializerProperty Properties => base.Properties | SerializerProperty.Binary | SerializerProperty.Flags4; // 0x11
+		public override SerializerProperties Properties => base.Properties | SerializerProperties.Binary | SerializerProperties.BinSkip; // 0x11
 
 		public override Pointer CurrentPointer => new Pointer(CurrentPosition, null);
 		public override long CurrentPosition => 0;

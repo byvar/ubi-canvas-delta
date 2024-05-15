@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					startOpen = s.Serialize<bool>(startOpen, name: "startOpen", options: CSerializerObject.Options.BoolAsByte);
 					openDuration = s.Serialize<float>(openDuration, name: "openDuration");
 					closedDuration = s.Serialize<float>(closedDuration, name: "closedDuration");
@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 					invertSentOpenCloseEvent = s.Serialize<bool>(invertSentOpenCloseEvent, name: "invertSentOpenCloseEvent", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					startOpen = s.Serialize<bool>(startOpen, name: "startOpen");
 					openDuration = s.Serialize<float>(openDuration, name: "openDuration");
 					closedDuration = s.Serialize<float>(closedDuration, name: "closedDuration");

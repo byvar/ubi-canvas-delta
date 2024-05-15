@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public bool showAttackSphere;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				mode = s.Serialize<Enum_mode>(mode, name: "mode");
 				anim = s.SerializeObject<StringID>(anim, name: "anim");
 				secondAnim = s.SerializeObject<StringID>(secondAnim, name: "secondAnim");

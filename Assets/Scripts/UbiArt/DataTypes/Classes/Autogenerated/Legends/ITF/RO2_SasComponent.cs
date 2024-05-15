@@ -13,7 +13,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			initLeftDoorOpened = s.Serialize<int>(initLeftDoorOpened, name: "initLeftDoorOpened");
 			initRightDoorOpened = s.Serialize<int>(initRightDoorOpened, name: "initRightDoorOpened");
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				doorStateCurrent0 = s.Serialize<SasDoor>(doorStateCurrent0, name: "doorStateCurrent0");
 				doorStateTarget0 = s.Serialize<SasDoor>(doorStateTarget0, name: "doorStateTarget0");
 				doorStateCursor0 = s.Serialize<float>(doorStateCursor0, name: "doorStateCursor0");

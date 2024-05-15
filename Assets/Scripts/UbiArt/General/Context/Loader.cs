@@ -440,7 +440,7 @@ namespace UbiArt {
 				case "wav":
 				case null: // Save files
 				case "":
-					flags |= SerializeFlags.Flags7;
+					flags |= SerializeFlags.Data_Save;
 					break;
 			}
 			return flags;

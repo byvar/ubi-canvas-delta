@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public Placeholder buttonBackgroundTexture;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				baseActionsTexturePath = s.SerializeObject<Path>(baseActionsTexturePath, name: "baseActionsTexturePath");
 				buttonBackgroundTexturePath = s.SerializeObject<Path>(buttonBackgroundTexturePath, name: "buttonBackgroundTexturePath");
 			}

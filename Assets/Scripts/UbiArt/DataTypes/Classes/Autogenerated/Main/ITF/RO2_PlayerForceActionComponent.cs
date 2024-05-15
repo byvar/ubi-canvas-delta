@@ -21,7 +21,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					Action2 = s.Serialize<PlayerForcedAction2>(Action2, name: "Action");
 					enabledOnInit = s.Serialize<bool>(enabledOnInit, name: "enabledOnInit", options: CSerializerObject.Options.BoolAsByte);
 					OverallPriority = s.Serialize<uint>(OverallPriority, name: "OverallPriority");
@@ -41,14 +41,14 @@ namespace UbiArt.ITF {
 					}
 					actorUpdateInfo = s.SerializeObject<RO2_PlayerForceActionComponent.ActorUpdateInfoStruct>(actorUpdateInfo, name: "actorUpdateInfo");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					isEnabled = s.Serialize<bool>(isEnabled, name: "isEnabled");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					shadowActorGroupTest = s.Serialize<bool>(shadowActorGroupTest, name: "shadowActorGroupTest", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					Action = s.Serialize<PlayerForcedAction>(Action, name: "Action");
 					enabledOnInit = s.Serialize<bool>(enabledOnInit, name: "enabledOnInit");
 					OverallPriority = s.Serialize<uint>(OverallPriority, name: "OverallPriority");
@@ -68,7 +68,7 @@ namespace UbiArt.ITF {
 					}
 					actorUpdateInfo = s.SerializeObject<RO2_PlayerForceActionComponent.ActorUpdateInfoStruct>(actorUpdateInfo, name: "actorUpdateInfo");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					isEnabled = s.Serialize<bool>(isEnabled, name: "isEnabled");
 				}
 			}

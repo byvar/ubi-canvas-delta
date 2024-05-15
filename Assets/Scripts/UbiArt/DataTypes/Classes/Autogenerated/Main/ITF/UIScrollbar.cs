@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public float speed;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				textBoxFriendly = s.SerializeObject<StringID>(textBoxFriendly, name: "textBoxFriendly");
 				speed = s.Serialize<float>(speed, name: "speed");
 			}

@@ -46,7 +46,7 @@ namespace UbiArt.ITF {
 			bezierEndWidth = s.Serialize<float>(bezierEndWidth, name: "bezierEndWidth");
 			tesselationLength = s.Serialize<float>(tesselationLength, name: "tesselationLength");
 			blendMode = s.Serialize<uint>(blendMode, name: "blendMode");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				texture = s.SerializeObject<Path>(texture, name: "texture");
 			}
 			material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

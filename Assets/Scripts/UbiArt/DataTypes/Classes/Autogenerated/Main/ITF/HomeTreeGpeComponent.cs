@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public bool useComponent;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				isDebugActor = s.Serialize<bool>(isDebugActor, name: "isDebugActor");
 				appearCursor = s.Serialize<float>(appearCursor, name: "appearCursor");
 				useComponent = s.Serialize<bool>(useComponent, name: "useComponent");

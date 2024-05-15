@@ -7,17 +7,17 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					detectRadius = s.Serialize<float>(detectRadius, name: "detectRadius");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					m_triggered = s.Serialize<bool>(m_triggered, name: "m_triggered");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					detectRadius = s.Serialize<float>(detectRadius, name: "detectRadius");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					m_triggered = s.Serialize<bool>(m_triggered, name: "m_triggered");
 				}
 				powerUpId = s.Serialize<Enum_powerUpId>(powerUpId, name: "powerUpId");

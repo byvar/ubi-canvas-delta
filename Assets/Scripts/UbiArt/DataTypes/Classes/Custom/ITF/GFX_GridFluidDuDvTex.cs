@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				Texture = s.SerializeObject<Path>(Texture, name: "Texture");
 				Intensity = s.Serialize<float>(Intensity, name: "Intensity");
 				SpeedX1 = s.Serialize<float>(SpeedX1, name: "SpeedX1");

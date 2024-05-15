@@ -9,7 +9,7 @@ namespace UbiArt.online {
 		public uint second;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8) || (s.Settings.Game != Game.RM)) {
+			if (s.HasFlags(SerializeFlags.Deprecate) || (s.Settings.Game != Game.RM)) {
 				value = s.Serialize<ulong>(value, name: "value");
 			}
 			if (s.Settings.Game == Game.RA || s.Settings.Game == Game.RM) {

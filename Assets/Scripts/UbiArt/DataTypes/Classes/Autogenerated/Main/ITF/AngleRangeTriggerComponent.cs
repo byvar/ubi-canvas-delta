@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		public EventSender outEventSender;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				minAngle = s.SerializeObject<Angle>(minAngle, name: "minAngle");
 				maxAngle = s.SerializeObject<Angle>(maxAngle, name: "maxAngle");
 				hysteresis = s.SerializeObject<Angle>(hysteresis, name: "hysteresis");

@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public int dead;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				dead = s.Serialize<int>(dead, name: "dead");
 			}
 		}

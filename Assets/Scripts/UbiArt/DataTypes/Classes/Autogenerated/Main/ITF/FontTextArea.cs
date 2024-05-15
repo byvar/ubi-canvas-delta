@@ -64,7 +64,7 @@ namespace UbiArt.ITF {
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
 				if (s.Settings.Game == Game.COL) {
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						fontPath = s.SerializeObject<Path>(fontPath, name: "fontPath");
 					}
 					fontSet = s.SerializeObject<FontTextArea.FontSet>(fontSet, name: "fontSet");
@@ -83,7 +83,7 @@ namespace UbiArt.ITF {
 					gradientColor = s.SerializeObject<Color>(gradientColor, name: "gradientColor");
 					charSpacing = s.Serialize<float>(charSpacing, name: "charSpacing");
 				} else if (s.Settings.Game == Game.RL) {
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						fontPath = s.SerializeObject<Path>(fontPath, name: "fontPath");
 					}
 					fontSet = s.SerializeObject<FontTextArea.FontSet>(fontSet, name: "fontSet");
@@ -102,7 +102,7 @@ namespace UbiArt.ITF {
 					gradientColor = s.SerializeObject<Color>(gradientColor, name: "gradientColor");
 					charSpacing = s.Serialize<float>(charSpacing, name: "charSpacing");
 				} else if (s.Settings.Game == Game.VH) {
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						fontPath = s.SerializeObject<Path>(fontPath, name: "fontPath");
 					}
 					fontSet = s.SerializeObject<FontTextArea.FontSet>(fontSet, name: "fontSet");

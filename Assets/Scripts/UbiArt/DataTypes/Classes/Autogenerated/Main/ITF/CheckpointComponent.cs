@@ -32,11 +32,11 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO || s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					INDEX = s.Serialize<uint>(INDEX, name: "INDEX");
 					joinAlive = s.Serialize<bool>(joinAlive, name: "joinAlive");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					active = s.Serialize<bool>(active, name: "active");
 				}
 				if (s.Settings.Platform == GamePlatform.Vita) {
@@ -51,23 +51,23 @@ namespace UbiArt.ITF {
 					uint__3 = s.Serialize<uint>(uint__3, name: "uint__3");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					INDEX = s.Serialize<uint>(INDEX, name: "INDEX");
 					joinAlive = s.Serialize<bool>(joinAlive, name: "joinAlive");
 					canBeTriggeredWhenInactive = s.Serialize<bool>(canBeTriggeredWhenInactive, name: "canBeTriggeredWhenInactive", options: CSerializerObject.Options.BoolAsByte);
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					active = s.Serialize<bool>(active, name: "active");
 				}
 			} else if (s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					INDEX = s.Serialize<uint>(INDEX, name: "INDEX");
 					Enum_VH_0__1 = s.Serialize<Enum_VH_0>(Enum_VH_0__1, name: "Enum_VH_0__1");
 					joinAlive = s.Serialize<bool>(joinAlive, name: "joinAlive");
 				}
 				persistent = s.Serialize<bool>(persistent, name: "persistent");
 				persistentSaveOnce = s.Serialize<bool>(persistentSaveOnce, name: "persistentSaveOnce");
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					active = s.Serialize<bool>(active, name: "active");
 					persistentDataSaved = s.Serialize<bool>(persistentDataSaved, name: "persistentDataSaved");
 				}
@@ -85,13 +85,13 @@ namespace UbiArt.ITF {
 				Enum_VH_1__18 = s.Serialize<Enum_VH_1>(Enum_VH_1__18, name: "Enum_VH_1__18");
 				Enum_VH_1__19 = s.Serialize<Enum_VH_1>(Enum_VH_1__19, name: "Enum_VH_2__19");
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					INDEX = s.Serialize<uint>(INDEX, name: "INDEX");
 					joinAlive = s.Serialize<bool>(joinAlive, name: "joinAlive");
 				}
 				persistent = s.Serialize<bool>(persistent, name: "persistent");
 				persistentSaveOnce = s.Serialize<bool>(persistentSaveOnce, name: "persistentSaveOnce");
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					active = s.Serialize<bool>(active, name: "active");
 					persistentDataSaved = s.Serialize<bool>(persistentDataSaved, name: "persistentDataSaved");
 				}

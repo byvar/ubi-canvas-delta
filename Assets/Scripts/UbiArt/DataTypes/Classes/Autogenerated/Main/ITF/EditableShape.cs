@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public bool applyRotation = true;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				shape = s.SerializeObject<Generic<PhysShape>>(shape, name: "shape");
 				if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
 					bindedBoneName = s.SerializeObject<StringID>(bindedBoneName, name: "bindedBoneName");

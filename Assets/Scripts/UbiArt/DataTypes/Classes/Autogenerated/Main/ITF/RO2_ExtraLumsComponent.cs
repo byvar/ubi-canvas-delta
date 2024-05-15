@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public float disappearIntervalTime = -1f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				disappearStartTime = s.Serialize<float>(disappearStartTime, name: "disappearStartTime");
 				disappearIntervalTime = s.Serialize<float>(disappearIntervalTime, name: "disappearIntervalTime");
 			}

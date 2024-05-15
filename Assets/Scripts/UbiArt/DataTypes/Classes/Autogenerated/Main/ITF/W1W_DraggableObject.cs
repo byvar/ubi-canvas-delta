@@ -31,7 +31,7 @@ namespace UbiArt.ITF {
 			EventSender__12 = s.SerializeObject<EventSender>(EventSender__12, name: "EventSender__12");
 			EventSender__13 = s.SerializeObject<EventSender>(EventSender__13, name: "EventSender__13");
 			EventSender__14 = s.SerializeObject<EventSender>(EventSender__14, name: "EventSender__14");
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				Vector2__0 = s.SerializeObject<Vec2d>(Vector2__0, name: "Vector2__0");
 				bool__1 = s.Serialize<bool>(bool__1, name: "bool__1");
 			}

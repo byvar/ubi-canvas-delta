@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					canFlip = s.Serialize<bool>(canFlip, name: "canFlip", options: CSerializerObject.Options.BoolAsByte);
 					size = s.SerializeObject<Vec2d>(size, name: "size");
 					inPos = s.SerializeObject<Vec2d>(inPos, name: "inPos");
@@ -19,7 +19,7 @@ namespace UbiArt.ITF {
 					outSide = s.Serialize<BrickSide>(outSide, name: "outSide");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					canFlip = s.Serialize<bool>(canFlip, name: "canFlip");
 					size = s.SerializeObject<Vec2d>(size, name: "size");
 					inPos = s.SerializeObject<Vec2d>(inPos, name: "inPos");

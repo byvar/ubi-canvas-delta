@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public int goOut;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				goIn = s.Serialize<int>(goIn, name: "goIn");
 				goOut = s.Serialize<int>(goOut, name: "goOut");
 			}

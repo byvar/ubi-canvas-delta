@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		public float ZWorldCliping;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				attenuationDist = s.SerializeObject<Vec2d>(attenuationDist, name: "attenuationDist");
 				near = s.Serialize<float>(near, name: "near");
 				far = s.Serialize<float>(far, name: "far");

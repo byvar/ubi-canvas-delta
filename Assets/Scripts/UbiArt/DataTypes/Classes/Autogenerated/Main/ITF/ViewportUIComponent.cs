@@ -37,7 +37,7 @@ namespace UbiArt.ITF {
 			visibilityRejectFlags = s.Serialize<uint>(visibilityRejectFlags, name: "visibilityRejectFlags");
 			focale = s.Serialize<float>(focale, name: "focale");
 			farPlane = s.Serialize<float>(farPlane, name: "farPlane");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				viewportDefinitionLeft = s.Serialize<float>(viewportDefinitionLeft, name: "viewportDefinitionLeft");
 				viewportDefinitionRight = s.Serialize<float>(viewportDefinitionRight, name: "viewportDefinitionRight");
 				viewportDefinitionTop = s.Serialize<float>(viewportDefinitionTop, name: "viewportDefinitionTop");

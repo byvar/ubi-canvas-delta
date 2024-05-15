@@ -13,7 +13,7 @@ namespace UbiArt.ITF {
 			startingItemIDs = s.SerializeObject<Placeholder>(startingItemIDs, name: "startingItemIDs");
 			startingItemIDs_TRIAL = s.SerializeObject<Placeholder>(startingItemIDs_TRIAL, name: "startingItemIDs_TRIAL");
 			attachmentBoneName = s.SerializeObject<StringID>(attachmentBoneName, name: "attachmentBoneName");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				inventoryRunesTexturePath = s.SerializeObject<Path>(inventoryRunesTexturePath, name: "inventoryRunesTexturePath");
 			}
 			inventoryRunesTexture = s.SerializeObject<Placeholder>(inventoryRunesTexture, name: "inventoryRunesTexture");

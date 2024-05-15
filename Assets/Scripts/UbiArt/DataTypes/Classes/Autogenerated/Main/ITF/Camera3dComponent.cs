@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		public float deltaFogZ;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				fadeInSmoothA = s.Serialize<float>(fadeInSmoothA, name: "fadeInSmoothA");
 				fadeOutSmoothA = s.Serialize<float>(fadeOutSmoothA, name: "fadeOutSmoothA");
 			}

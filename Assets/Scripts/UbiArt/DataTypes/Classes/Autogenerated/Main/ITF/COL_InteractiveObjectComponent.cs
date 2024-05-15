@@ -9,11 +9,11 @@ namespace UbiArt.ITF {
 		public StringID savedObjectState;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				defaultObjectState = s.SerializeObject<StringID>(defaultObjectState, name: "defaultObjectState");
 				objectStates = s.SerializeObject<CListO<COL_InteractiveObjectComponent.State>>(objectStates, name: "objectStates");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				savedObjectState = s.SerializeObject<StringID>(savedObjectState, name: "savedObjectState");
 			}
 		}
@@ -37,7 +37,7 @@ namespace UbiArt.ITF {
 
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					name = s.SerializeObject<StringID>(name, name: "name");
 					saveState = s.Serialize<bool>(saveState, name: "saveState", options: CSerializerObject.Options.BoolAsByte);
 					saveStatePersistentForNewGamePlus = s.Serialize<bool>(saveStatePersistentForNewGamePlus, name: "saveStatePersistentForNewGamePlus", options: CSerializerObject.Options.BoolAsByte);

@@ -6,11 +6,11 @@ namespace UbiArt.ITF {
 		public uint debugCurrentSeed = 0xFFFFFFFF;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				modePath = s.SerializeObject<Path>(modePath, name: "modePath");
 				debugForcedSeed = s.Serialize<uint>(debugForcedSeed, name: "debugForcedSeed");
 			}
-			if (s.HasFlags(SerializeFlags.Editor)) {
+			if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 				debugCurrentSeed = s.Serialize<uint>(debugCurrentSeed, name: "debugCurrentSeed");
 			}
 		}

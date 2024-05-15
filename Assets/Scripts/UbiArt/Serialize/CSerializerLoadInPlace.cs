@@ -7,7 +7,7 @@ namespace UbiArt {
 		public CSerializerLoadInPlace(Context context, IBinaryLowLevelSerializer serializer) : base(context, serializer) {}
 		public CSerializerLoadInPlace(Context context, BinaryFile file, BinaryMode mode) : base(context, file, mode) {}
 
-		public override SerializerProperty Properties => base.Properties | SerializerProperty.StoreObjectSizes; // 0x19
+		public override SerializerProperties Properties => base.Properties | SerializerProperties.LIP; // 0x19
 
 		public uint SerializerMemCount { get; set; }
 		public uint ExpectedMemCount { get; set; }

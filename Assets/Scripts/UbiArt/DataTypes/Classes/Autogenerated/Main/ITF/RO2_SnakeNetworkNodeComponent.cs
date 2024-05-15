@@ -19,7 +19,7 @@ namespace UbiArt.ITF {
 				base.SerializeImpl(s);
 				speedMultiplier = s.Serialize<float>(speedMultiplier, name: "speedMultiplier");
 				forceApplySpeed = s.Serialize<bool>(forceApplySpeed, name: "forceApplySpeed");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					acceleration = s.Serialize<float>(acceleration, name: "acceleration");
 				}
 				accelerationMultiplier = s.Serialize<float>(accelerationMultiplier, name: "accelerationMultiplier");

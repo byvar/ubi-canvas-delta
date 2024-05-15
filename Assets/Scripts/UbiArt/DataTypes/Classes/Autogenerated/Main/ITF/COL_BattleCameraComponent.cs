@@ -45,7 +45,7 @@ namespace UbiArt.ITF {
 		public float actionEndDuration;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				defaultFov = s.Serialize<float>(defaultFov, name: "defaultFov");
 				baseOffset = s.SerializeObject<Vec3d>(baseOffset, name: "baseOffset");
 				offsetLimitX = s.Serialize<float>(offsetLimitX, name: "offsetLimitX");

@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			LocalPoints = s.SerializeObject<CListO<PolyLineEdge>>(LocalPoints, name: "LocalPoints");
 			Loop = s.Serialize<bool>(Loop, name: "Loop");
-			if (s.HasFlags(SerializeFlags.Flags10)) {
+			if (s.HasFlags(SerializeFlags.DataBin)) {
 				Length = s.Serialize<float>(Length, name: "Length");
 			}
 		}

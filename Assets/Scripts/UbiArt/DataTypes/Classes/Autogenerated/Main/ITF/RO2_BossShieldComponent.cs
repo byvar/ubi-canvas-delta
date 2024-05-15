@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public bool startOn;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				startOn = s.Serialize<bool>(startOn, name: "startOn");
 			}
 		}

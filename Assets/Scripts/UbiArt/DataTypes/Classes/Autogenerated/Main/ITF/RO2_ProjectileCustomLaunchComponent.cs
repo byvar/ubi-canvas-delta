@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public CListO<RO2_BTActionThrowObject_Tools.LaunchData> customLaunchData;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				customLaunchData = s.SerializeObject<CListO<RO2_BTActionThrowObject_Tools.LaunchData>>(customLaunchData, name: "customLaunchData");
 			}
 		}

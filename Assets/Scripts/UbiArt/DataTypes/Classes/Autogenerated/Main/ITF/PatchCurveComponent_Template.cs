@@ -30,7 +30,7 @@ namespace UbiArt.ITF {
 				childOrientationInfluence = s.Serialize<float>(childOrientationInfluence, name: "childOrientationInfluence");
 				attachToChild = s.Serialize<bool>(attachToChild, name: "attachToChild");
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
@@ -47,7 +47,7 @@ namespace UbiArt.ITF {
 				childOrientationInfluence = s.Serialize<float>(childOrientationInfluence, name: "childOrientationInfluence");
 				attachToChild = s.Serialize<bool>(attachToChild, name: "attachToChild", options: CSerializerObject.Options.BoolAsByte);
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

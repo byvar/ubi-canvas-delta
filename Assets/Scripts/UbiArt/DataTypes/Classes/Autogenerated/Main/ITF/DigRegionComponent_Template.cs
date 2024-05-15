@@ -33,7 +33,7 @@ namespace UbiArt.ITF {
 		public uint LumsCountMaxByChain;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				MaterialDig = s.SerializeObject<GFXMaterialSerializable>(MaterialDig, name: "MaterialDig");
 				MaterialPlump = s.SerializeObject<GFXMaterialSerializable>(MaterialPlump, name: "MaterialPlump");
 				MaterialBorder = s.SerializeObject<GFXMaterialSerializable>(MaterialBorder, name: "MaterialBorder");

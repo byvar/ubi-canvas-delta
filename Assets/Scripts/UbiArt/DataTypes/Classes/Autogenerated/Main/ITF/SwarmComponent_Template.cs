@@ -35,7 +35,7 @@ namespace UbiArt.ITF {
 				stiff = s.Serialize<float>(stiff, name: "stiff");
 				particleGenerator = s.SerializeObject<ITF_ParticleGenerator_Template>(particleGenerator, name: "particleGenerator");
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				swarmMaterial = s.SerializeObject<GFXMaterialSerializable>(swarmMaterial, name: "swarmMaterial");

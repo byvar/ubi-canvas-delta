@@ -24,7 +24,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					style = s.Serialize<uint>(style, name: "style");
 					offset = s.SerializeObject<Vec2d>(offset, name: "offset");
 					scale = s.SerializeObject<Vec2d>(scale, name: "scale");
@@ -45,7 +45,7 @@ namespace UbiArt.ITF {
 					depthOffset = s.Serialize<float>(depthOffset, name: "depthOffset");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					style = s.Serialize<uint>(style, name: "style");
 					offset = s.SerializeObject<Vec2d>(offset, name: "offset");
 					scale = s.SerializeObject<Vec2d>(scale, name: "scale");
@@ -62,7 +62,7 @@ namespace UbiArt.ITF {
 					depthOffset = s.Serialize<float>(depthOffset, name: "depthOffset");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					style = s.Serialize<uint>(style, name: "style");
 					offset = s.SerializeObject<Vec2d>(offset, name: "offset");
 					scale = s.SerializeObject<Vec2d>(scale, name: "scale");
@@ -72,7 +72,7 @@ namespace UbiArt.ITF {
 					locId = s.SerializeObject<LocalisationId>(locId, name: "locId");
 					unsecureSource = s.Serialize<bool>(unsecureSource, name: "unsecureSource");
 					GlobalScissor = s.Serialize<Enum_GlobalScissor>(GlobalScissor, name: "GlobalScissor");
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						scaleToMatchWithArea = s.Serialize<bool>(scaleToMatchWithArea, name: "scaleToMatchWithArea");
 					}
 					autoScrollSpeed = s.Serialize<float>(autoScrollSpeed, name: "autoScrollSpeed");

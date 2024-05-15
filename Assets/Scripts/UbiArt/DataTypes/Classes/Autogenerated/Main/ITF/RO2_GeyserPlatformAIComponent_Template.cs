@@ -157,7 +157,7 @@ namespace UbiArt.ITF {
 				if (s.Settings.Platform != GamePlatform.Vita) {
 					widthReductionSpeed = s.Serialize<float>(widthReductionSpeed, name: "widthReductionSpeed");
 				}
-				if (s.HasFlags(SerializeFlags.Flags9)) {
+				if (s.HasFlags(SerializeFlags.DataRaw)) {
 					minAngle = s.SerializeObject<Angle>(minAngle, name: "minAngle");
 					maxAngle = s.SerializeObject<Angle>(maxAngle, name: "maxAngle");
 					debugForce = s.Serialize<int>(debugForce, name: "debugForce");

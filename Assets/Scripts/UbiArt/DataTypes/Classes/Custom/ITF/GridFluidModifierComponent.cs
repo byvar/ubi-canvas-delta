@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public AABB Margin;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				Reinit = s.Serialize<bool>(Reinit, name: "Reinit");
 				FluidModifier = s.SerializeObject<GFX_GridFluidModifierList>(FluidModifier, name: "FluidModifier");
 				Margin = s.SerializeObject<AABB>(Margin, name: "Margin");

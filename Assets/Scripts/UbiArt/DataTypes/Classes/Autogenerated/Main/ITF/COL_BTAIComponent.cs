@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public StringID defaultFeedbackID;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				npcAIDatas = s.SerializeObject<Generic<COL_NPCAIData>>(npcAIDatas, name: "npcAIDatas");
 				defaultFeedbackID = s.SerializeObject<StringID>(defaultFeedbackID, name: "defaultFeedbackID");
 			}

@@ -9,27 +9,27 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
 			} else if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					localOffset = s.SerializeObject<Vec2d>(localOffset, name: "localOffset");
 					localScale = s.SerializeObject<Vec2d>(localScale, name: "localScale");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					useShapeTransform = s.Serialize<bool>(useShapeTransform, name: "useShapeTransform");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					localOffset = s.SerializeObject<Vec2d>(localOffset, name: "localOffset");
 					localScale = s.SerializeObject<Vec2d>(localScale, name: "localScale");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					useShapeTransform = s.Serialize<bool>(useShapeTransform, name: "useShapeTransform", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					localOffset = s.SerializeObject<Vec2d>(localOffset, name: "localOffset");
 					localScale = s.SerializeObject<Vec2d>(localScale, name: "localScale");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					useShapeTransform = s.Serialize<bool>(useShapeTransform, name: "useShapeTransform");
 				}
 				AnimPolylineList = s.SerializeObject<CListO<StringID>>(AnimPolylineList, name: "AnimPolylineList");

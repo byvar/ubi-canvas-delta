@@ -56,11 +56,11 @@ namespace UbiArt.ITF {
 				addBorders = s.Serialize<bool>(addBorders, name: "addBorders");
 				useAnimMeshVertex = s.Serialize<bool>(useAnimMeshVertex, name: "useAnimMeshVertex");
 				anims = s.SerializeObject<CListO<RenderSingleAnimData>>(anims, name: "anims");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					frontTexture = s.SerializeObject<Path>(frontTexture, name: "frontTexture");
 				}
 				frontMaterial = s.SerializeObject<GFXMaterialSerializable>(frontMaterial, name: "frontMaterial");
@@ -102,7 +102,7 @@ namespace UbiArt.ITF {
 					highlightOffset = s.SerializeObject<Vec3d>(highlightOffset, name: "highlightOffset");
 					highlightAlpha = s.Serialize<float>(highlightAlpha, name: "highlightAlpha");
 					highlightScale = s.SerializeObject<Vec2d>(highlightScale, name: "highlightScale");
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						highlightTexture = s.SerializeObject<Path>(highlightTexture, name: "highlightTexture");
 					}
 					highlightMaterial = s.SerializeObject<GFXMaterialSerializable>(highlightMaterial, name: "highlightMaterial");
@@ -111,11 +111,11 @@ namespace UbiArt.ITF {
 				is2D = s.Serialize<bool>(is2D, name: "is2D");
 				addBorders = s.Serialize<bool>(addBorders, name: "addBorders");
 				useAnimMeshVertex = s.Serialize<bool>(useAnimMeshVertex, name: "useAnimMeshVertex");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					frontTexture = s.SerializeObject<Path>(frontTexture, name: "frontTexture");
 				}
 				frontMaterial = s.SerializeObject<GFXMaterialSerializable>(frontMaterial, name: "frontMaterial");
@@ -157,7 +157,7 @@ namespace UbiArt.ITF {
 					highlightOffset = s.SerializeObject<Vec3d>(highlightOffset, name: "highlightOffset");
 					highlightAlpha = s.Serialize<float>(highlightAlpha, name: "highlightAlpha");
 					highlightScale = s.SerializeObject<Vec2d>(highlightScale, name: "highlightScale");
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						highlightTexture = s.SerializeObject<Path>(highlightTexture, name: "highlightTexture");
 					}
 					highlightMaterial = s.SerializeObject<GFXMaterialSerializable>(highlightMaterial, name: "highlightMaterial");
@@ -167,12 +167,12 @@ namespace UbiArt.ITF {
 				addBorders = s.Serialize<bool>(addBorders, name: "addBorders");
 				useAnimMeshVertex = s.Serialize<bool>(useAnimMeshVertex, name: "useAnimMeshVertex");
 				anims = s.SerializeObject<CListO<RenderSingleAnimData>>(anims, name: "anims");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
 				AdditionalMaterials = s.SerializeObject<CListO<GFXMaterialSerializable>>(AdditionalMaterials, name: "AdditionalMaterials");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					frontTexture = s.SerializeObject<Path>(frontTexture, name: "frontTexture");
 				}
 				frontMaterial = s.SerializeObject<GFXMaterialSerializable>(frontMaterial, name: "frontMaterial");
@@ -213,7 +213,7 @@ namespace UbiArt.ITF {
 				highlightOffset = s.SerializeObject<Vec3d>(highlightOffset, name: "highlightOffset");
 				highlightAlpha = s.Serialize<float>(highlightAlpha, name: "highlightAlpha");
 				highlightScale = s.SerializeObject<Vec2d>(highlightScale, name: "highlightScale");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					highlightTexture = s.SerializeObject<Path>(highlightTexture, name: "highlightTexture");
 				}
 				highlightMaterial = s.SerializeObject<GFXMaterialSerializable>(highlightMaterial, name: "highlightMaterial");

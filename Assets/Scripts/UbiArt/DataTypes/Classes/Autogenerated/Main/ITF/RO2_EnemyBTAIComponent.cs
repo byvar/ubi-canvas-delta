@@ -43,7 +43,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					shape = s.SerializeObject<EditableShape>(shape, name: "shape");
 					appearType2 = s.Serialize<Enum_appearType2>(appearType2, name: "appearType");
 					useChargeDirect = s.Serialize<bool>(useChargeDirect, name: "useChargeDirect");
@@ -70,14 +70,14 @@ namespace UbiArt.ITF {
 					isLinkedToForceField = s.Serialize<bool>(isLinkedToForceField, name: "isLinkedToForceField");
 					useQuickLaunch = s.Serialize<bool>(useQuickLaunch, name: "useQuickLaunch");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					isDead = s.Serialize<bool>(isDead, name: "isDead");
 					quickLaunchUsed = s.Serialize<bool>(quickLaunchUsed, name: "quickLaunchUsed");
 					lifePoints = s.Serialize<uint>(lifePoints, name: "lifePoints");
 					nbTickleRewarded = s.Serialize<uint>(nbTickleRewarded, name: "nbTickleRewarded");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					shape = s.SerializeObject<EditableShape>(shape, name: "shape");
 					appearType = s.Serialize<Enum_appearType>(appearType, name: "appearType");
 					useChargeDirect = s.Serialize<bool>(useChargeDirect, name: "useChargeDirect");
@@ -112,7 +112,7 @@ namespace UbiArt.ITF {
 					canTriggerMagnet = s.Serialize<bool>(canTriggerMagnet, name: "canTriggerMagnet");
 					noUturn = s.Serialize<bool>(noUturn, name: "noUturn");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					isDead = s.Serialize<bool>(isDead, name: "isDead");
 					quickLaunchUsed = s.Serialize<bool>(quickLaunchUsed, name: "quickLaunchUsed");
 					lifePoints = s.Serialize<uint>(lifePoints, name: "lifePoints");

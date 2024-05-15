@@ -20,7 +20,7 @@ namespace UbiArt.ITF {
 			blendFromTransition = s.Serialize<uint>(blendFromTransition, name: "blendFromTransition");
 			from = s.SerializeObject<CArrayO<StringID>>(from, name: "from");
 			to = s.SerializeObject<CArrayO<StringID>>(to, name: "to");
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				node = s.SerializeObject<Generic<BlendTreeNodeTemplate<T>>>(node, name: "node");
 			}
 		}

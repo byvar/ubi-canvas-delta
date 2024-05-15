@@ -19,14 +19,14 @@ namespace UbiArt.ITF {
 				Path__0 = s.SerializeObject<Path>(Path__0, name: "Path__0");
 				CArray_Generic_Event__1 = s.SerializeObject<CArrayO<Generic<Event>>>(CArray_Generic_Event__1, name: "CArray<Generic<Event>>__1");
 				bool__2 = s.Serialize<bool>(bool__2, name: "bool__2");
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					EventSpawn__3 = s.SerializeObject<EventSpawn>(EventSpawn__3, name: "EventSpawn__3");
 				}
 			} else {
 				actorToSpawn = s.SerializeObject<Path>(actorToSpawn, name: "actorToSpawn");
 				onSpawnEvents = s.SerializeObject<CArrayO<Generic<Event>>>(onSpawnEvents, name: "onSpawnEvents");
 				autoStart = s.Serialize<bool>(autoStart, name: "autoStart");
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					spawnDataAutoStart = s.SerializeObject<EventSpawn>(spawnDataAutoStart, name: "spawnDataAutoStart");
 				}
 				SpawnObjectRef = s.Serialize<Enum_SpawnObjectRef>(SpawnObjectRef, name: "SpawnObjectRef");

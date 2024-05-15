@@ -27,7 +27,7 @@ namespace UbiArt.ITF {
 		public Generic<Event> Generic_Event__23;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				bool__1 = s.Serialize<bool>(bool__1, name: "bool__1");
 				Enum_VH_0__2 = s.Serialize<Enum_VH_0_>(Enum_VH_0__2, name: "Enum_VH_0__2");
 				bool__3 = s.Serialize<bool>(bool__3, name: "bool__3");
@@ -52,7 +52,7 @@ namespace UbiArt.ITF {
 				Generic_Event__22 = s.SerializeObject<Generic<Event>>(Generic_Event__22, name: "Generic<Event>__22");
 				Generic_Event__23 = s.SerializeObject<Generic<Event>>(Generic_Event__23, name: "Generic<Event>__23");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				bool__0_ = s.Serialize<bool>(bool__0_, name: "bool__0");
 			}
 		}

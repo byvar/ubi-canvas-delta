@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			petModelID = s.Serialize<int>(petModelID, name: "petModelID");
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				petProfileHandle = s.Serialize<uint>(petProfileHandle, name: "petProfileHandle");
 			}
 		}

@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public CListO<GFX_GridFluidModifier> ModifierList;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				Name = s.SerializeObject<StringID>(Name, name: "Name");
 				Active = s.Serialize<bool>(Active, name: "Active");
 				IsExternal = s.Serialize<bool>(IsExternal, name: "IsExternal");

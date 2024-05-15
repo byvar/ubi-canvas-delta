@@ -12,7 +12,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Flags_x30)) {
+				if (s.HasFlags(SerializeFlags.Editor)) {
 					RELATIVEPATH = s.SerializeObject<Path>(RELATIVEPATH, name: "RELATIVEPATH");
 					EMBED_SCENE = s.Serialize<bool>(EMBED_SCENE, name: "EMBED_SCENE");
 					IS_SINGLE_PIECE = s.Serialize<bool>(IS_SINGLE_PIECE, name: "IS_SINGLE_PIECE");
@@ -20,7 +20,7 @@ namespace UbiArt.ITF {
 					xFLIPPED = s.Serialize<bool>(xFLIPPED, name: "xFLIPPED");
 					parentBindOrigins = s.SerializeObject<Nullable<ActorBind>>(parentBindOrigins, name: "parentBind"); // Serialized a second time
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					RELATIVEPATH = s.SerializeObject<Path>(RELATIVEPATH, name: "RELATIVEPATH");
 					EMBED_SCENE = s.Serialize<bool>(EMBED_SCENE, name: "EMBED_SCENE");
 					IS_SINGLE_PIECE = s.Serialize<bool>(IS_SINGLE_PIECE, name: "IS_SINGLE_PIECE");
@@ -36,14 +36,14 @@ namespace UbiArt.ITF {
 				ZFORCED = s.Serialize<bool>(ZFORCED, name: "ZFORCED");
 				DIRECT_PICKING = s.Serialize<bool>(DIRECT_PICKING, name: "DIRECT_PICKING");
 				viewType = s.Serialize<VIEWTYPE>(viewType, name: "viewType");
-				if (s.HasFlags(SerializeFlags.Flags_xC0) && EMBED_SCENE) {
+				if (s.HasFlags(SerializeFlags.Group_Data) && EMBED_SCENE) {
 					SCENE = s.SerializeObject<Nullable<Scene>>(SCENE, name: "SCENE");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_x30)) {
-					if (s.HasFlags(SerializeFlags.Flags11 | SerializeFlags.Flags12)) {
+				if (s.HasFlags(SerializeFlags.Editor)) {
+					if (s.HasFlags(SerializeFlags.Instance)) {
 						parentBind = s.SerializeObject<Nullable<Bind>>(parentBind, name: "parentBind"); // Serialized a second time
 					}
-					if (!s.HasFlags(SerializeFlags.Default)) {
+					if (!s.HasFlags(SerializeFlags.Group_DataEditable)) {
 						USERFRIENDLY = s.Serialize<string>(USERFRIENDLY, name: "USERFRIENDLY"); // Serialized a second time
 					}
 				}
@@ -54,10 +54,10 @@ namespace UbiArt.ITF {
 				ZFORCED = s.Serialize<bool>(ZFORCED, name: "ZFORCED");
 				DIRECT_PICKING = s.Serialize<bool>(DIRECT_PICKING, name: "DIRECT_PICKING");
 				viewType = s.Serialize<VIEWTYPE>(viewType, name: "viewType");
-				if (s.HasFlags(SerializeFlags.Flags_xC0) && EMBED_SCENE) {
+				if (s.HasFlags(SerializeFlags.Group_Data) && EMBED_SCENE) {
 					SCENE = s.SerializeObject<Nullable<Scene>>(SCENE, name: "SCENE");
 				}
-				if (s.HasFlags(SerializeFlags.Flags15)) {
+				if (s.HasFlags(SerializeFlags.CSharp)) {
 					SCENE = s.SerializeObject<Nullable<Scene>>(SCENE, name: "SCENE");
 				}
 			}

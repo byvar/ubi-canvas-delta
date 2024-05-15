@@ -73,20 +73,20 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_DataEditable)) {
 					LOCAL_POINTS = s.SerializeObject<CListO<PolyLineEdge>>(LOCAL_POINTS, name: "LOCAL_POINTS");
 				}
-				if (s.HasFlags(SerializeFlags.Flags6 | SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Data_Load | SerializeFlags.Deprecate)) {
 					POINTS = s.SerializeObject<CListO<PolyLineEdge>>(POINTS, name: "POINTS");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					pivotMode = s.Serialize<PivotMode>(pivotMode, name: "PivotMode");
 					LOOP = s.Serialize<bool>(LOOP, name: "LOOP");
 					USERPIVOT = s.SerializeObject<Vec2d>(USERPIVOT, name: "USERPIVOT");
 					ConfigName = s.SerializeObject<Path>(ConfigName, name: "ConfigName");
 					SwitchTexturePipeExtremity = s.Serialize<uint>(SwitchTexturePipeExtremity, name: "SwitchTexturePipeExtremity");
-					if (s.HasFlags(SerializeFlags.Default)) {
-						if (!s.HasProperty(CSerializerObject.SerializerProperty.Binary)) {
+					if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+						if (!s.HasProperties(SerializerProperties.Binary)) {
 							ColorFactor_Red = s.Serialize<float>(ColorFactor_Red, name: "ColorFactor_Red");
 							ColorFactor_Green = s.Serialize<float>(ColorFactor_Green, name: "ColorFactor_Green");
 							ColorFactor_Blu = s.Serialize<float>(ColorFactor_Blu, name: "ColorFactor_Blu");
@@ -114,11 +114,11 @@ namespace UbiArt.ITF {
 					}
 				}
 			} else if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					EventShowColorDst = s.SerializeObject<Color>(EventShowColorDst, name: "EventShowColorDst");
 					disablePhysic = s.Serialize<bool>(disablePhysic, name: "disablePhysic");
 				}
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					collisionData = s.SerializeObject<Nullable<Frise.CollisionData>>(collisionData, name: "CollisionData");
 					meshStaticData = s.SerializeObject<Nullable<Frise.MeshStaticData>>(meshStaticData, name: "MeshStaticData");
 					meshAnimData = s.SerializeObject<Nullable<Frise.MeshAnimData>>(meshAnimData, name: "MeshAnimData");
@@ -136,14 +136,14 @@ namespace UbiArt.ITF {
 					AABB_MinZ = s.Serialize<float>(AABB_MinZ, name: "AABB_MinZ");
 					AABB_MaxZ = s.Serialize<float>(AABB_MaxZ, name: "AABB_MaxZ");
 				}
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					LOCAL_POINTS = s.SerializeObject<CListO<PolyLineEdge>>(LOCAL_POINTS, name: "LOCAL_POINTS");
 					LOOP = s.Serialize<bool>(LOOP, name: "LOOP");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_Data)) {
 					PointsList = s.SerializeObject<PolyPointList>(PointsList, name: "PointsList");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					ConfigName = s.SerializeObject<Path>(ConfigName, name: "ConfigName");
 					SwitchTexturePipeExtremity = s.Serialize<uint>(SwitchTexturePipeExtremity, name: "SwitchTexturePipeExtremity");
 					SwitchExtremityStart = s.Serialize<bool>(SwitchExtremityStart, name: "SwitchExtremityStart");
@@ -152,8 +152,8 @@ namespace UbiArt.ITF {
 					PreComputedForCook = s.Serialize<bool>(PreComputedForCook, name: "PreComputedForCook");
 					XfForCook = s.SerializeObject<Transform2d>(XfForCook, name: "XfForCook");
 					DepthForCook = s.Serialize<float>(DepthForCook, name: "DepthForCook");
-					if (s.HasFlags(SerializeFlags.Default)) {
-						if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+						if (s.HasFlags(SerializeFlags.Deprecate)) {
 							ColorFactor = s.SerializeObject<Color>(ColorFactor, name: "ColorFactor");
 							ColorFog = s.SerializeObject<Color>(ColorFog, name: "ColorFog");
 							useStaticFog = s.Serialize<bool>(useStaticFog, name: "useStaticFog");
@@ -183,11 +183,11 @@ namespace UbiArt.ITF {
 					}
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					EventShowColorDst = s.SerializeObject<Color>(EventShowColorDst, name: "EventShowColorDst");
 					disablePhysic = s.Serialize<bool>(disablePhysic, name: "disablePhysic");
 				}
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					collisionData = s.SerializeObject<Nullable<Frise.CollisionData>>(collisionData, name: "CollisionData");
 					meshStaticData = s.SerializeObject<Nullable<Frise.MeshStaticData>>(meshStaticData, name: "MeshStaticData");
 					meshAnimData = s.SerializeObject<Nullable<Frise.MeshAnimData>>(meshAnimData, name: "MeshAnimData");
@@ -199,14 +199,14 @@ namespace UbiArt.ITF {
 					AABB_MinZ = s.Serialize<float>(AABB_MinZ, name: "AABB_MinZ");
 					AABB_MaxZ = s.Serialize<float>(AABB_MaxZ, name: "AABB_MaxZ");
 				}
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					LOCAL_POINTS = s.SerializeObject<CListO<PolyLineEdge>>(LOCAL_POINTS, name: "LOCAL_POINTS");
 					LOOP = s.Serialize<bool>(LOOP, name: "LOOP");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_Data)) {
 					PointsList = s.SerializeObject<PolyPointList>(PointsList, name: "PointsList");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					ConfigName = s.SerializeObject<Path>(ConfigName, name: "ConfigName");
 					SwitchTexturePipeExtremity = s.Serialize<uint>(SwitchTexturePipeExtremity, name: "SwitchTexturePipeExtremity");
 					SwitchExtremityStart = s.Serialize<bool>(SwitchExtremityStart, name: "SwitchExtremityStart", options: CSerializerObject.Options.BoolAsByte);
@@ -215,8 +215,8 @@ namespace UbiArt.ITF {
 					PreComputedForCook = s.Serialize<bool>(PreComputedForCook, name: "PreComputedForCook", options: CSerializerObject.Options.BoolAsByte);
 					XfForCook = s.SerializeObject<Transform2d>(XfForCook, name: "XfForCook");
 					DepthForCook = s.Serialize<float>(DepthForCook, name: "DepthForCook");
-					if (s.HasFlags(SerializeFlags.Default)) {
-						if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+						if (s.HasFlags(SerializeFlags.Deprecate)) {
 							ColorFactor = s.SerializeObject<Color>(ColorFactor, name: "ColorFactor");
 							ColorFog = s.SerializeObject<Color>(ColorFog, name: "ColorFog");
 							useStaticFog = s.Serialize<bool>(useStaticFog, name: "useStaticFog", options: CSerializerObject.Options.BoolAsByte);
@@ -241,11 +241,11 @@ namespace UbiArt.ITF {
 					}
 				}
 			} else if (s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					EventShowColorDst = s.SerializeObject<Color>(EventShowColorDst, name: "EventShowColorDst");
 					disablePhysic = s.Serialize<bool>(disablePhysic, name: "disablePhysic");
 				}
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					collisionData = s.SerializeObject<Nullable<Frise.CollisionData>>(collisionData, name: "CollisionData");
 					meshStaticData = s.SerializeObject<Nullable<Frise.MeshStaticData>>(meshStaticData, name: "MeshStaticData");
 					meshAnimData = s.SerializeObject<Nullable<Frise.MeshAnimData>>(meshAnimData, name: "MeshAnimData");
@@ -257,14 +257,14 @@ namespace UbiArt.ITF {
 					AABB_MinZ = s.Serialize<float>(AABB_MinZ, name: "AABB_MinZ");
 					AABB_MaxZ = s.Serialize<float>(AABB_MaxZ, name: "AABB_MaxZ");
 				}
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					LOCAL_POINTS = s.SerializeObject<CListO<PolyLineEdge>>(LOCAL_POINTS, name: "LOCAL_POINTS");
 					LOOP = s.Serialize<bool>(LOOP, name: "LOOP");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_Data)) {
 					PointsList = s.SerializeObject<PolyPointList>(PointsList, name: "PointsList");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					ConfigName = s.SerializeObject<Path>(ConfigName, name: "ConfigName");
 					SwitchTexturePipeExtremity = s.Serialize<uint>(SwitchTexturePipeExtremity, name: "SwitchTexturePipeExtremity");
 					SwitchExtremityStart = s.Serialize<bool>(SwitchExtremityStart, name: "SwitchExtremityStart");
@@ -273,8 +273,8 @@ namespace UbiArt.ITF {
 					PreComputedForCook = s.Serialize<bool>(PreComputedForCook, name: "PreComputedForCook");
 					XfForCook = s.SerializeObject<Transform2d>(XfForCook, name: "XfForCook");
 					DepthForCook = s.Serialize<float>(DepthForCook, name: "DepthForCook");
-					if (s.HasFlags(SerializeFlags.Default)) {
-						if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+						if (s.HasFlags(SerializeFlags.Deprecate)) {
 							ColorFactor = s.SerializeObject<Color>(ColorFactor, name: "ColorFactor");
 							ColorFog = s.SerializeObject<Color>(ColorFog, name: "ColorFog");
 							useStaticFog = s.Serialize<bool>(useStaticFog, name: "useStaticFog");
@@ -303,11 +303,11 @@ namespace UbiArt.ITF {
 				animSpeedFactor = s.Serialize<float>(animSpeedFactor, name: "animSpeedFactor");
 				animAmplitudeFactor = s.Serialize<float>(animAmplitudeFactor, name: "animAmplitudeFactor");
 			} else {
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					EventShowColorDst = s.SerializeObject<Color>(EventShowColorDst, name: "EventShowColorDst");
 					disablePhysic = s.Serialize<bool>(disablePhysic, name: "disablePhysic");
 				}
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					collisionData = s.SerializeObject<Nullable<Frise.CollisionData>>(collisionData, name: "CollisionData");
 					meshStaticData = s.SerializeObject<Nullable<Frise.MeshStaticData>>(meshStaticData, name: "MeshStaticData");
 					meshAnimData = s.SerializeObject<Nullable<Frise.MeshAnimData>>(meshAnimData, name: "MeshAnimData");
@@ -319,14 +319,14 @@ namespace UbiArt.ITF {
 				meshFluidData = s.SerializeObject<Nullable<Frise.MeshFluidData>>(meshFluidData, name: "MeshFluidData");
 				AABB_MinZ = s.Serialize<float>(AABB_MinZ, name: "AABB_MinZ");
 				AABB_MaxZ = s.Serialize<float>(AABB_MaxZ, name: "AABB_MaxZ");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					LOCAL_POINTS = s.SerializeObject<CListO<PolyLineEdge>>(LOCAL_POINTS, name: "LOCAL_POINTS");
 					LOOP = s.Serialize<bool>(LOOP, name: "LOOP");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_Data)) {
 					PointsList = s.SerializeObject<PolyPointList>(PointsList, name: "PointsList");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					ConfigName = s.SerializeObject<Path>(ConfigName, name: "ConfigName");
 					SwitchTexturePipeExtremity = s.Serialize<uint>(SwitchTexturePipeExtremity, name: "SwitchTexturePipeExtremity");
 					SwitchExtremityStart = s.Serialize<bool>(SwitchExtremityStart, name: "SwitchExtremityStart");
@@ -335,8 +335,8 @@ namespace UbiArt.ITF {
 					PreComputedForCook = s.Serialize<bool>(PreComputedForCook, name: "PreComputedForCook");
 					XfForCook = s.SerializeObject<Transform2d>(XfForCook, name: "XfForCook");
 					DepthForCook = s.Serialize<float>(DepthForCook, name: "DepthForCook");
-					if (s.HasFlags(SerializeFlags.Default)) {
-						if (s.HasFlags(SerializeFlags.Flags8)) {
+					if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+						if (s.HasFlags(SerializeFlags.Deprecate)) {
 							ColorFactor = s.SerializeObject<Color>(ColorFactor, name: "ColorFactor");
 							ColorFog = s.SerializeObject<Color>(ColorFog, name: "ColorFog");
 						}

@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 		public float float__13_;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				bool__0 = s.Serialize<bool>(bool__0, name: "bool__0");
 				bool__1 = s.Serialize<bool>(bool__1, name: "bool__1");
 				bool__2 = s.Serialize<bool>(bool__2, name: "bool__2");

@@ -14,12 +14,12 @@ namespace UbiArt.Animation {
 
 		public CListP<uint> animIndex; // Index of an animation is found using animIndex[IndexOf(stringID, animFriendly)]
 
-		public CListO<CListO<FrameMeshInfo>> frameMeshInfo; // frameMeshInfo[animIndex][frame]
-		public CListP<uint> uvStartIndices; // Vec2ds indices?
-		public CListO<CListP<uint>> unk4;
+		public CListO<CListO<FrameMeshInfo>> frameIndexToMeshDataByAnim; // frameMeshInfo[animIndex][frame]
+		public CListP<uint> uvIndexToUVData; // Vec2ds indices?
+		public CListO<CListP<uint>> uvIndexRedirect;
 		public CListO<AABB> animAABB;
-		public CListO<Vec2d> uvs;
-		public CListO<PatchData> patches;
+		public CListO<Vec2d> uvList;
+		public CListO<PatchData> patchList;
 		public CListP<string> animNames;
 
 
@@ -33,12 +33,12 @@ namespace UbiArt.Animation {
 				animFriendly = s.SerializeObject<CListO<StringID>>(animFriendly, name: "animFriendly");
 			}
 			animIndex = s.SerializeObject<CListP<uint>>(animIndex, name: "animIndex");
-			frameMeshInfo = s.SerializeObject<CListO<CListO<FrameMeshInfo>>>(frameMeshInfo, name: "frameMeshInfo");
-			uvStartIndices = s.SerializeObject<CListP<uint>>(uvStartIndices, name: "uvStartIndices");
-			unk4 = s.SerializeObject<CListO<CListP<uint>>>(unk4, name: "unk4");
-			animAABB = s.SerializeObject<CListO<AABB>>(animAABB, name: "aabb");
-			uvs = s.SerializeObject<CListO<Vec2d>>(uvs, name: "uvs");
-			patches = s.SerializeObject<CListO<PatchData>>(patches, name: "patches");
+			frameIndexToMeshDataByAnim = s.SerializeObject<CListO<CListO<FrameMeshInfo>>>(frameIndexToMeshDataByAnim, name: "frameIndexToMeshDataByAnim");
+			uvIndexToUVData = s.SerializeObject<CListP<uint>>(uvIndexToUVData, name: "uvIndexToUVData");
+			uvIndexRedirect = s.SerializeObject<CListO<CListP<uint>>>(uvIndexRedirect, name: "uvIndexRedirect");
+			animAABB = s.SerializeObject<CListO<AABB>>(animAABB, name: "animAABB");
+			uvList = s.SerializeObject<CListO<Vec2d>>(uvList, name: "uvList");
+			patchList = s.SerializeObject<CListO<PatchData>>(patchList, name: "patchList");
 			animNames = s.SerializeObject<CListP<string>>(animNames, name: "animNames");
 		}
 

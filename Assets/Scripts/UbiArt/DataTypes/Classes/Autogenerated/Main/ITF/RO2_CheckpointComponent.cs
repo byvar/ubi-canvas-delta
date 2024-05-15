@@ -18,7 +18,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
 			} else {
-				if (s.HasFlags(SerializeFlags.Editor)) {
+				if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 					PrimaryPowerUp = s.SerializeChoiceListObject<StringID>(PrimaryPowerUp, name: "PrimaryPowerUp", choices: PowerUpList);
 					SecondaryPowerUp = s.SerializeChoiceListObject<StringID>(SecondaryPowerUp, name: "SecondaryPowerUp", choices: PowerUpList);
 					mapPowerup = s.SerializeChoiceListObject<StringID>(mapPowerup, name: "mapPowerup", choices: PowerUpList);

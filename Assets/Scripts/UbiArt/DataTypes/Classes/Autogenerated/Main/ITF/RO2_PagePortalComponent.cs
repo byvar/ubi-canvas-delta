@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public float enterExitDist = 2;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				enterExitDist = s.Serialize<float>(enterExitDist, name: "enterExitDist");
 			}
 		}

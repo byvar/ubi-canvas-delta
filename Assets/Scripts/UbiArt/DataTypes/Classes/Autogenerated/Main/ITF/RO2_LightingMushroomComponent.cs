@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					IsMoving = s.Serialize<bool>(IsMoving, name: "IsMoving");
 					ScaleMin = s.Serialize<float>(ScaleMin, name: "ScaleMin");
 					ScaleMax = s.Serialize<float>(ScaleMax, name: "ScaleMax");
@@ -30,7 +30,7 @@ namespace UbiArt.ITF {
 					MushroomTargets = s.SerializeObject<CListO<RO2_LightingMushroomComponent.MushroomTarget>>(MushroomTargets, name: "MushroomTargets");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					IsMoving = s.Serialize<bool>(IsMoving, name: "IsMoving");
 					ScaleMin = s.Serialize<float>(ScaleMin, name: "ScaleMin");
 					ScaleMax = s.Serialize<float>(ScaleMax, name: "ScaleMax");
@@ -55,12 +55,12 @@ namespace UbiArt.ITF {
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
 				if (s.Settings.Game == Game.RL) {
-					if (s.HasFlags(SerializeFlags.Default)) {
+					if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 						Position = s.SerializeObject<Vec3d>(Position, name: "Position");
 						ExplosionTimer = s.Serialize<float>(ExplosionTimer, name: "ExplosionTimer");
 					}
 				} else {
-					if (s.HasFlags(SerializeFlags.Default)) {
+					if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 						Position = s.SerializeObject<Vec3d>(Position, name: "Position");
 						ExplosionTimer = s.Serialize<float>(ExplosionTimer, name: "ExplosionTimer");
 						flareSpeed = s.Serialize<float>(flareSpeed, name: "flareSpeed");

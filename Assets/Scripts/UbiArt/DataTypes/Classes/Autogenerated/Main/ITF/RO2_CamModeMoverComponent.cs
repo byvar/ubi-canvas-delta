@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public float BlendCoeff;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				TimeToMove = s.Serialize<float>(TimeToMove, name: "TimeToMove");
 				BlendCoeff = s.Serialize<float>(BlendCoeff, name: "BlendCoeff");
 			}

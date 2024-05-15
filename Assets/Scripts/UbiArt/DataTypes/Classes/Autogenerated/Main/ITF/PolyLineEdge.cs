@@ -14,10 +14,10 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Flags_x30 | SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Editor | SerializeFlags.Group_DataEditable)) {
 					POS = s.SerializeObject<Vec2d>(POS, name: "POS");
 				}
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					HoleMode = s.Serialize<Hole>(HoleMode, name: "HoleMode");
 					Scale = s.Serialize<float>(Scale, name: "Scale");
 					SwitchTexture = s.Serialize<bool>(SwitchTexture, name: "SwitchTexture");
@@ -27,7 +27,7 @@ namespace UbiArt.ITF {
 				Scale = s.Serialize<float>(Scale, name: "Scale");
 				SwitchTexture = s.Serialize<bool>(SwitchTexture, name: "SwitchTexture");
 				HoleMode = s.Serialize<Hole>(HoleMode, name: "HoleMode");
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					Vector = s.SerializeObject<Vec2d>(Vector, name: "Vector");
 					NormalizedVector = s.SerializeObject<Vec2d>(NormalizedVector, name: "NormalizedVector");
 					Length = s.Serialize<float>(Length, name: "Length");
@@ -39,7 +39,7 @@ namespace UbiArt.ITF {
 				SwitchTexture = s.Serialize<bool>(SwitchTexture, name: "SwitchTexture");
 				GMatOverride = s.SerializeObject<StringID>(GMatOverride, name: "GMatOverride");
 				HoleMode = s.Serialize<Hole>(HoleMode, name: "HoleMode");
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					Vector = s.SerializeObject<Vec2d>(Vector, name: "Vector");
 					NormalizedVector = s.SerializeObject<Vec2d>(NormalizedVector, name: "NormalizedVector");
 					Length = s.Serialize<float>(Length, name: "Length");

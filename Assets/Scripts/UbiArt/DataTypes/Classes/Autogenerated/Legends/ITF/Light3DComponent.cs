@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public Color color;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				near = s.Serialize<float>(near, name: "near");
 				far = s.Serialize<float>(far, name: "far");
 				color = s.SerializeObject<Color>(color, name: "color");

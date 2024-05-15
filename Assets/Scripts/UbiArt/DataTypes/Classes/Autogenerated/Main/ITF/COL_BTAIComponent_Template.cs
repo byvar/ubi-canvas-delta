@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public float groundCheckDistance;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				defaultOrientation = s.Serialize<Enum_defaultOrientation>(defaultOrientation, name: "defaultOrientation");
 				groundCheckDistance = s.Serialize<float>(groundCheckDistance, name: "groundCheckDistance");
 			}

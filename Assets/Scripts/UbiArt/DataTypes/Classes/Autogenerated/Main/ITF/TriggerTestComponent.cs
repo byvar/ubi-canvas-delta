@@ -16,7 +16,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.VH) {
 				AutoStart = s.Serialize<bool>(AutoStart, name: "AutoStart");
-				if (!s.HasFlags(SerializeFlags.Editor)) {
+				if (!s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 					Detection = s.SerializeObject<CListO<Generic<TriggerSelectionAbstract>>>(Detection, name: "Detection");
 					DetectionOperator = s.Serialize<Operator>(DetectionOperator, name: "DetectionOperator");
 					Test = s.SerializeObject<CListO<Generic<TriggerTestAbstract>>>(Test, name: "Test");
@@ -32,7 +32,7 @@ namespace UbiArt.ITF {
 				OnStayActive = s.SerializeObject<CListO<sEventData>>(OnStayActive, name: "OnStayActive");
 			} else {
 				AutoStart = s.Serialize<bool>(AutoStart, name: "AutoStart");
-				if (!s.HasFlags(SerializeFlags.Editor)) {
+				if (!s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 					Detection = s.SerializeObject<CListO<Generic<TriggerSelectionAbstract>>>(Detection, name: "Detection");
 					DetectionOperator = s.Serialize<Operator>(DetectionOperator, name: "DetectionOperator");
 					Test = s.SerializeObject<CListO<Generic<TriggerTestAbstract>>>(Test, name: "Test");
@@ -47,7 +47,7 @@ namespace UbiArt.ITF {
 				OnActivate = s.SerializeObject<CListO<sEventData>>(OnActivate, name: "OnActivate");
 				OnDeactivate = s.SerializeObject<CListO<sEventData>>(OnDeactivate, name: "OnDeactivate");
 				OnStayActive = s.SerializeObject<CListO<sEventData>>(OnStayActive, name: "OnStayActive");
-				if (s.HasFlags(SerializeFlags.Editor)) {
+				if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 					StayActiveDelay = s.Serialize<float>(StayActiveDelay, name: "StayActiveDelay");
 				}
 			}

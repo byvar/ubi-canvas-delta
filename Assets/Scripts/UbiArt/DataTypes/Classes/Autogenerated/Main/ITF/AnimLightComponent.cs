@@ -21,17 +21,17 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					syncOffset = s.Serialize<float>(syncOffset, name: "syncOffset");
 					animInstance = s.SerializeObject<Path>(animInstance, name: "animInstance");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					playAnim = s.SerializeObject<StringID>(playAnim, name: "playAnim");
 					playAnimFrames = s.Serialize<uint>(playAnimFrames, name: "playAnimFrames");
 					currentFrameSubAnims = s.SerializeObject<CListO<AnimLightFrameInfo>>(currentFrameSubAnims, name: "currentFrameSubAnims");
 				}
 			} else if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					syncOffset = s.Serialize<float>(syncOffset, name: "syncOffset");
 					startOffset = s.Serialize<float>(startOffset, name: "startOffset");
 					subAnimInfo = s.SerializeObject<SubAnimSet>(subAnimInfo, name: "subAnimInfo");
@@ -40,13 +40,13 @@ namespace UbiArt.ITF {
 					defaultAnim = s.SerializeObject<StringID>(defaultAnim, name: "defaultAnim");
 					useZOffset = s.Serialize<bool>(useZOffset, name: "useZOffset");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					playAnim = s.SerializeObject<StringID>(playAnim, name: "playAnim");
 					playAnimFrames = s.Serialize<uint>(playAnimFrames, name: "playAnimFrames");
 					currentFrameSubAnims = s.SerializeObject<CListO<AnimLightFrameInfo>>(currentFrameSubAnims, name: "currentFrameSubAnims");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					syncOffset = s.Serialize<float>(syncOffset, name: "syncOffset");
 					startOffset = s.Serialize<float>(startOffset, name: "startOffset");
 					subAnimInfo = s.SerializeObject<SubAnimSet>(subAnimInfo, name: "subAnimInfo");
@@ -55,13 +55,13 @@ namespace UbiArt.ITF {
 					defaultAnim = s.SerializeObject<StringID>(defaultAnim, name: "defaultAnim");
 					useZOffset = s.Serialize<bool>(useZOffset, name: "useZOffset", options: CSerializerObject.Options.BoolAsByte);
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					playAnim = s.SerializeObject<StringID>(playAnim, name: "playAnim");
 					playAnimFrames = s.Serialize<uint>(playAnimFrames, name: "playAnimFrames");
 					currentFrameSubAnims = s.SerializeObject<CListO<AnimLightFrameInfo>>(currentFrameSubAnims, name: "currentFrameSubAnims");
 				}
 			} else if (s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					syncOffset = s.Serialize<float>(syncOffset, name: "syncOffset");
 					startOffset = s.Serialize<float>(startOffset, name: "startOffset");
 					subAnimInfo = s.SerializeObject<SubAnimSet>(subAnimInfo, name: "subAnimInfo");
@@ -73,14 +73,14 @@ namespace UbiArt.ITF {
 					defaultAnim = s.SerializeObject<StringID>(defaultAnim, name: "defaultAnim");
 					useZOffset = s.Serialize<bool>(useZOffset, name: "useZOffset");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					lastAnim = s.SerializeObject<StringID>(lastAnim, name: "lastAnim");
 					playAnim = s.SerializeObject<StringID>(playAnim, name: "playAnim");
 					playAnimFrames = s.Serialize<uint>(playAnimFrames, name: "playAnimFrames");
 					currentFrameSubAnims = s.SerializeObject<CListO<AnimLightFrameInfo>>(currentFrameSubAnims, name: "currentFrameSubAnims");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					syncOffset = s.Serialize<float>(syncOffset, name: "syncOffset");
 					startOffset = s.Serialize<float>(startOffset, name: "startOffset");
 					subAnimInfo = s.SerializeObject<SubAnimSet>(subAnimInfo, name: "subAnimInfo");
@@ -89,11 +89,11 @@ namespace UbiArt.ITF {
 					defaultAnim = s.SerializeObject<StringID>(defaultAnim, name: "defaultAnim");
 					useZOffset = s.Serialize<bool>(useZOffset, name: "useZOffset");
 				}
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					EmitFluid = s.Serialize<bool>(EmitFluid, name: "EmitFluid");
 					BasicRender = s.Serialize<bool>(BasicRender, name: "BasicRender");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					lastAnim = s.SerializeObject<StringID>(lastAnim, name: "lastAnim");
 					playAnim = s.SerializeObject<StringID>(playAnim, name: "playAnim");
 					playAnimFrames = s.Serialize<uint>(playAnimFrames, name: "playAnimFrames");

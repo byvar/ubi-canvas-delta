@@ -13,7 +13,7 @@ namespace UbiArt.ITF {
 			offset = s.Serialize<float>(offset, name: "offset");
 			cornerIn = s.SerializeObject<Vec2d>(cornerIn, name: "cornerIn");
 			cornerOut = s.SerializeObject<Vec2d>(cornerOut, name: "cornerOut");
-			if (s.HasFlags(SerializeFlags.Flags10)) {
+			if (s.HasFlags(SerializeFlags.DataBin)) {
 				cornerInCur = s.Serialize<bool>(cornerInCur, name: "cornerInCur");
 				cornerOutCur = s.Serialize<bool>(cornerOutCur, name: "cornerOutCur");
 			}

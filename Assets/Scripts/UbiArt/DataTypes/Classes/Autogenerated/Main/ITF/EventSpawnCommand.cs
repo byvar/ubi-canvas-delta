@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			Command = s.Serialize<EventSpawnCommand_Enum>(Command, name: "Command");
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				duration = s.Serialize<float>(duration, name: "duration");
 			}
 		}

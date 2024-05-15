@@ -18,7 +18,7 @@ namespace UbiArt.ITF {
 				Duration = s.Serialize<int>(Duration, name: "Duration");
 				TrackLine = s.Serialize<uint>(TrackLine, name: "TrackLine");
 				Channel = s.Serialize<string>(Channel, name: "Channel");
-				if (s.HasFlags(SerializeFlags.Flags_x30)) {
+				if (s.HasFlags(SerializeFlags.Editor)) {
 					Selected = s.Serialize<int>(Selected, name: "Selected");
 					DisabledForTesting = s.Serialize<bool>(DisabledForTesting, name: "DisabledForTesting");
 				}
@@ -28,7 +28,7 @@ namespace UbiArt.ITF {
 				Duration = s.Serialize<int>(Duration, name: "Duration");
 				TrackLine = s.Serialize<uint>(TrackLine, name: "TrackLine");
 				Channel = s.Serialize<string>(Channel, name: "Channel");
-				if (s.HasFlags(SerializeFlags.Flags_x30)) {
+				if (s.HasFlags(SerializeFlags.Editor)) {
 					Selected = s.Serialize<int>(Selected, name: "Selected");
 					DisabledForTesting = s.Serialize<bool>(DisabledForTesting, name: "DisabledForTesting");
 					uid = s.Serialize<uint>(uid, name: "uid");

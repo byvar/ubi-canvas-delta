@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public float DetectionDistance = 2f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				SpawnLimit = s.Serialize<int>(SpawnLimit, name: "SpawnLimit");
 				SpawnBySec = s.Serialize<int>(SpawnBySec, name: "SpawnBySec");
 				MoveCoeff = s.Serialize<float>(MoveCoeff, name: "MoveCoeff");

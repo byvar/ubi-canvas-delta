@@ -807,7 +807,7 @@ namespace UbiArt.ITF {
 				genGenType = s.Serialize<PARGEN_GEN>(genGenType, name: "genGenType");
 				genMode = s.Serialize<PARGEN_MODE>(genMode, name: "genMode");
 				genEmitMode = s.Serialize<PARGEN_EMITMODE>(genEmitMode, name: "genEmitMode");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					GridFluidParam = s.SerializeObject<GFX_GridFluidObjParam>(GridFluidParam, name: "GridFluidParam");
 				}
 				PrimitiveParameters = s.SerializeObject<GFXPrimitiveParam>(PrimitiveParameters, name: "PrimitiveParameters");

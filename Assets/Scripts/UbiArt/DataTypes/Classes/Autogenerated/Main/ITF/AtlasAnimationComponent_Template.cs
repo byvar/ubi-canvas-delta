@@ -14,7 +14,7 @@ namespace UbiArt.ITF {
 				width = s.Serialize<float>(width, name: "width");
 				height = s.Serialize<float>(height, name: "height");
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.COL) {
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					controllers = s.SerializeObject<CArrayO<Generic<ActorPlugBaseController>>>(controllers, name: "controllers");
 				}
 			}

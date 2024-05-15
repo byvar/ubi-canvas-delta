@@ -6,12 +6,12 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					offsetFromCam = s.SerializeObject<Vec3d>(offsetFromCam, name: "offsetFromCam");
 				}
 				ignoreCamZ = s.Serialize<bool>(ignoreCamZ, name: "ignoreCamZ");
 			} else {
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					offsetFromCam = s.SerializeObject<Vec3d>(offsetFromCam, name: "offsetFromCam");
 				}
 				ignoreCamZ = s.Serialize<bool>(ignoreCamZ, name: "ignoreCamZ");

@@ -8,12 +8,12 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					SlowDownDistValidation = s.Serialize<float>(SlowDownDistValidation, name: "SlowDownDistValidation");
 					BaseTimeToReachMaxSpeed = s.Serialize<float>(BaseTimeToReachMaxSpeed, name: "BaseTimeToReachMaxSpeed");
 					CheckPointStartIdx = s.Serialize<uint>(CheckPointStartIdx, name: "CheckPointStartIdx");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					PhaseIdx = s.Serialize<uint>(PhaseIdx, name: "PhaseIdx");
 				}
 			} else {

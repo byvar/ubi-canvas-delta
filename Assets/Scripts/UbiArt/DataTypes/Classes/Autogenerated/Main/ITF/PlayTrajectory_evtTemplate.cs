@@ -37,7 +37,7 @@ namespace UbiArt.ITF {
 				coeffOneCameraOut = s.Serialize<float>(coeffOneCameraOut, name: "coeffOneCameraOut");
 				coeffTwoCameraOut = s.Serialize<float>(coeffTwoCameraOut, name: "coeffTwoCameraOut");
 			} else if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					coeffOneCamera = s.Serialize<float>(coeffOneCamera, name: "coeffOneCamera");
 					coeffOneCameraOut = s.Serialize<float>(coeffOneCameraOut, name: "coeffOneCameraOut");
 				}
@@ -61,7 +61,7 @@ namespace UbiArt.ITF {
 				Alpha = s.SerializeObject<Spline>(Alpha, name: "Alpha");
 				UseSequenceInitialPos = s.Serialize<bool>(UseSequenceInitialPos, name: "UseSequenceInitialPos");
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					coeffOneCamera = s.Serialize<float>(coeffOneCamera, name: "coeffOneCamera");
 					coeffOneCameraOut = s.Serialize<float>(coeffOneCameraOut, name: "coeffOneCameraOut");
 				}
@@ -83,7 +83,7 @@ namespace UbiArt.ITF {
 				Alpha = s.SerializeObject<Spline>(Alpha, name: "Alpha");
 				UseSequenceInitialPos = s.Serialize<bool>(UseSequenceInitialPos, name: "UseSequenceInitialPos", options: CSerializerObject.Options.BoolAsByte);
 			} else if (s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					coeffOneCamera = s.Serialize<float>(coeffOneCamera, name: "coeffOneCamera");
 					coeffOneCameraOut = s.Serialize<float>(coeffOneCameraOut, name: "coeffOneCameraOut");
 				}
@@ -101,7 +101,7 @@ namespace UbiArt.ITF {
 				Alpha = s.SerializeObject<Spline>(Alpha, name: "Alpha");
 				UseSequenceInitialPos = s.Serialize<bool>(UseSequenceInitialPos, name: "UseSequenceInitialPos");
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					coeffOneCamera = s.Serialize<float>(coeffOneCamera, name: "coeffOneCamera");
 					coeffOneCameraOut = s.Serialize<float>(coeffOneCameraOut, name: "coeffOneCameraOut");
 				}

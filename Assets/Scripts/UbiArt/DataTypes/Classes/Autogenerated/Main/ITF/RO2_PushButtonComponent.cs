@@ -9,22 +9,22 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					triggerOnStick = s.Serialize<bool>(triggerOnStick, name: "triggerOnStick");
 					triggerOnHit = s.Serialize<bool>(triggerOnHit, name: "triggerOnHit");
 					triggerOnDRC = s.Serialize<bool>(triggerOnDRC, name: "triggerOnDRC");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					activator = s.Serialize<uint>(activator, name: "activator");
 					triggerCount = s.Serialize<uint>(triggerCount, name: "triggerCount");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					triggerOnStick = s.Serialize<bool>(triggerOnStick, name: "triggerOnStick");
 					triggerOnHit = s.Serialize<bool>(triggerOnHit, name: "triggerOnHit");
 					triggerOnDRC = s.Serialize<bool>(triggerOnDRC, name: "triggerOnDRC");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					triggerCount = s.Serialize<uint>(triggerCount, name: "triggerCount");
 				}
 			}

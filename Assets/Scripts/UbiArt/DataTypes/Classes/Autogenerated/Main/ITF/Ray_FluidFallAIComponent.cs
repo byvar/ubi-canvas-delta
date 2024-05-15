@@ -15,7 +15,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RFR) {
 				Enum_RFR_0__0 = s.Serialize<Enum_RFR_0>(Enum_RFR_0__0, name: "Enum_RFR_0__0");
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					int__1 = s.Serialize<int>(int__1, name: "int__1");
 					float__2 = s.Serialize<float>(float__2, name: "float__2");
 					float__3 = s.Serialize<float>(float__3, name: "float__3");
@@ -23,7 +23,7 @@ namespace UbiArt.ITF {
 				}
 			} else {
 				uvMode = s.Serialize<Enum_RJR_0>(uvMode, name: "uvMode");
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					startOpen = s.Serialize<int>(startOpen, name: "startOpen");
 					widthStart = s.Serialize<float>(widthStart, name: "widthStart");
 					widthBase = s.Serialize<float>(widthBase, name: "widthBase");

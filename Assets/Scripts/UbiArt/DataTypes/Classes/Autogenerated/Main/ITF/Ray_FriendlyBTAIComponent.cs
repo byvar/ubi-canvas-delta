@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public int rescueFinished;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				targetWaypoint = s.SerializeObject<ObjectPath>(targetWaypoint, name: "targetWaypoint");
 				respawnPoint = s.SerializeObject<ObjectPath>(respawnPoint, name: "respawnPoint");
 				rescued = s.Serialize<int>(rescued, name: "rescued");

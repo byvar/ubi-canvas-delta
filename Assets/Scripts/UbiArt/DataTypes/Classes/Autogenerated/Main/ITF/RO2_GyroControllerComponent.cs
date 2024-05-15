@@ -18,7 +18,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					cursorSmooth = s.Serialize<float>(cursorSmooth, name: "cursorSmooth");
 					rollBackCursorSmooth = s.Serialize<float>(rollBackCursorSmooth, name: "rollBackCursorSmooth");
 					rollBackCursorSmoothMidTarget = s.Serialize<float>(rollBackCursorSmoothMidTarget, name: "rollBackCursorSmoothMidTarget");
@@ -35,7 +35,7 @@ namespace UbiArt.ITF {
 					TVOffcameraResetMultiplier = s.Serialize<bool>(TVOffcameraResetMultiplier, name: "TVOffcameraResetMultiplier", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					cursorSmooth = s.Serialize<float>(cursorSmooth, name: "cursorSmooth");
 					rollBackCursorSmooth = s.Serialize<float>(rollBackCursorSmooth, name: "rollBackCursorSmooth");
 					rollBackCursorSmoothMidTarget = s.Serialize<float>(rollBackCursorSmoothMidTarget, name: "rollBackCursorSmoothMidTarget");

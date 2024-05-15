@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public bool debug;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				wallPos = s.SerializeObject<Vec2d>(wallPos, name: "wallPos");
 				wallExtent = s.SerializeObject<Vec2d>(wallExtent, name: "wallExtent");
 				debug = s.Serialize<bool>(debug, name: "debug");

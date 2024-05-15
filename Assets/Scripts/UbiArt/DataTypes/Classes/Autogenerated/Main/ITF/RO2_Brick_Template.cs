@@ -16,7 +16,7 @@ namespace UbiArt.ITF {
 				spawnCooldown = s.Serialize<uint>(spawnCooldown, name: "spawnCooldown");
 				difficulty = s.Serialize<uint>(difficulty, name: "difficulty");
 				murphymode = s.Serialize<eMM>(murphymode, name: "murphymode");
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					archive = s.SerializeObject<ArchiveMemory>(archive, name: "archive");
 				}
 			} else {

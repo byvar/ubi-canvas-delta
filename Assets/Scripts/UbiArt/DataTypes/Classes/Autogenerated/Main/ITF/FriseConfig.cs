@@ -129,7 +129,7 @@ namespace UbiArt.ITF {
 				if (s.Settings.Platform != GamePlatform.Vita) {
 					offsetExtremity = s.Serialize<float>(offsetExtremity, name: "offsetExtremity");
 				}
-				if (s.HasFlags(SerializeFlags.Flags9)) {
+				if (s.HasFlags(SerializeFlags.DataRaw)) {
 					slope_180 = s.SerializeObject<StringID>(slope_180, name: "slope_180");
 					slope_202 = s.SerializeObject<StringID>(slope_202, name: "slope_202");
 					slope_225 = s.SerializeObject<StringID>(slope_225, name: "slope_225");
@@ -147,7 +147,7 @@ namespace UbiArt.ITF {
 					slope_135 = s.SerializeObject<StringID>(slope_135, name: "slope_135");
 					slope_157 = s.SerializeObject<StringID>(slope_157, name: "slope_157");
 				}
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					idTexSwitch = s.Serialize<int>(idTexSwitch, name: "idTexSwitch");
 					cooked = s.Serialize<bool>(cooked, name: "cooked");
 					textureConfigIndexBySlope = s.SerializeObject<CListP<int>>(textureConfigIndexBySlope, name: "textureConfigIndexBySlope");
@@ -199,7 +199,7 @@ namespace UbiArt.ITF {
 				isLockedDigShape = s.Serialize<bool>(isLockedDigShape, name: "isLockedDigShape", options: CSerializerObject.Options.BoolAsByte);
 				switchExtremityAuto = s.Serialize<bool>(switchExtremityAuto, name: "switchExtremityAuto");
 				offsetExtremity = s.Serialize<float>(offsetExtremity, name: "offsetExtremity");
-				if (s.HasFlags(SerializeFlags.Flags9)) {
+				if (s.HasFlags(SerializeFlags.DataRaw)) {
 					slope_180 = s.SerializeObject<StringID>(slope_180, name: "slope_180");
 					slope_202 = s.SerializeObject<StringID>(slope_202, name: "slope_202");
 					slope_225 = s.SerializeObject<StringID>(slope_225, name: "slope_225");
@@ -217,7 +217,7 @@ namespace UbiArt.ITF {
 					slope_135 = s.SerializeObject<StringID>(slope_135, name: "slope_135");
 					slope_157 = s.SerializeObject<StringID>(slope_157, name: "slope_157");
 				}
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					idTexSwitch = s.Serialize<int>(idTexSwitch, name: "idTexSwitch");
 					cooked = s.Serialize<bool>(cooked, name: "cooked", options: CSerializerObject.Options.BoolAsByte);
 					textureConfigIndexBySlope = s.SerializeObject<CListP<int>>(textureConfigIndexBySlope, name: "textureConfigIndexBySlope");
@@ -271,7 +271,7 @@ namespace UbiArt.ITF {
 				isLockedDigShape = s.Serialize<bool>(isLockedDigShape, name: "isLockedDigShape");
 				switchExtremityAuto = s.Serialize<bool>(switchExtremityAuto, name: "switchExtremityAuto");
 				offsetExtremity = s.Serialize<float>(offsetExtremity, name: "offsetExtremity");
-				if (s.HasFlags(SerializeFlags.Flags9)) {
+				if (s.HasFlags(SerializeFlags.DataRaw)) {
 					slope_180 = s.SerializeObject<StringID>(slope_180, name: "slope_180");
 					slope_202 = s.SerializeObject<StringID>(slope_202, name: "slope_202");
 					slope_225 = s.SerializeObject<StringID>(slope_225, name: "slope_225");
@@ -289,7 +289,7 @@ namespace UbiArt.ITF {
 					slope_135 = s.SerializeObject<StringID>(slope_135, name: "slope_135");
 					slope_157 = s.SerializeObject<StringID>(slope_157, name: "slope_157");
 				}
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					idTexSwitch = s.Serialize<int>(idTexSwitch, name: "idTexSwitch");
 					cooked = s.Serialize<bool>(cooked, name: "cooked");
 					textureConfigIndexBySlope = s.SerializeObject<CListP<int>>(textureConfigIndexBySlope, name: "textureConfigIndexBySlope");
@@ -345,7 +345,7 @@ namespace UbiArt.ITF {
 				isLockedDigShape = s.Serialize<bool>(isLockedDigShape, name: "isLockedDigShape");
 				switchExtremityAuto = s.Serialize<bool>(switchExtremityAuto, name: "switchExtremityAuto");
 				offsetExtremity = s.Serialize<float>(offsetExtremity, name: "offsetExtremity");
-				if (s.HasFlags(SerializeFlags.Flags9)) {
+				if (s.HasFlags(SerializeFlags.DataRaw)) {
 					slope_180 = s.SerializeObject<StringID>(slope_180, name: "slope_180");
 					slope_202 = s.SerializeObject<StringID>(slope_202, name: "slope_202");
 					slope_225 = s.SerializeObject<StringID>(slope_225, name: "slope_225");
@@ -363,7 +363,7 @@ namespace UbiArt.ITF {
 					slope_135 = s.SerializeObject<StringID>(slope_135, name: "slope_135");
 					slope_157 = s.SerializeObject<StringID>(slope_157, name: "slope_157");
 				}
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					idTexSwitch = s.Serialize<int>(idTexSwitch, name: "idTexSwitch");
 					cooked = s.Serialize<bool>(cooked, name: "cooked");
 					textureConfigIndexBySlope = s.SerializeObject<CListP<int>>(textureConfigIndexBySlope, name: "textureConfigIndexBySlope");

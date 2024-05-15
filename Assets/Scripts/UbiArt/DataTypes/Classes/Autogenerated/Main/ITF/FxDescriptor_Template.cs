@@ -36,7 +36,7 @@ namespace UbiArt.ITF {
 			} else {
 				name = s.SerializeObject<StringID>(name, name: "name");
 				gen = s.SerializeObject<ITF_ParticleGenerator_Template>(gen, name: "gen");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

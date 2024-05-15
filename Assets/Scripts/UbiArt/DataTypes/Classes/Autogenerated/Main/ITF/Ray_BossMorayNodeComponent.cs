@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RFR) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					float__0 = s.Serialize<float>(float__0, name: "float__0");
 					float__1 = s.Serialize<float>(float__1, name: "float__1");
 					int__2 = s.Serialize<int>(int__2, name: "int__2");

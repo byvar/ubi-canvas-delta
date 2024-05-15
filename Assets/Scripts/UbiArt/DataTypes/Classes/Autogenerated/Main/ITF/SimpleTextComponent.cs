@@ -13,7 +13,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					TextLabel = (string)s.Serialize<CString>((CString)TextLabel, name: "TextLabel");
 					lineId = s.SerializeObject<LocalisationId>(lineId, name: "lineId");
 					drawUsingEngine = s.Serialize<bool>(drawUsingEngine, name: "drawUsingEngine");
@@ -25,7 +25,7 @@ namespace UbiArt.ITF {
 					centerText = s.Serialize<bool>(centerText, name: "centerText");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					TextLabel = s.Serialize<string>(TextLabel, name: "TextLabel");
 					lineId = s.SerializeObject<LocalisationId>(lineId, name: "lineId");
 					drawUsingEngine = s.Serialize<bool>(drawUsingEngine, name: "drawUsingEngine");

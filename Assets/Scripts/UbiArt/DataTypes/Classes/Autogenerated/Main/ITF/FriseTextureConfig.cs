@@ -18,7 +18,7 @@ namespace UbiArt.ITF {
 		public byte alphaUp = 0xff;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				path = s.SerializeObject<Path>(path, name: "path");
 			}
 			material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

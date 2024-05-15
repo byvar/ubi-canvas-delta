@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public CListO<CurveComponent.TrajectoryNode> points;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				points = s.SerializeObject<CListO<CurveComponent.TrajectoryNode>>(points, name: "points");
 			}
 		}
@@ -15,7 +15,7 @@ namespace UbiArt.ITF {
 			public Vec3d tangB;
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					pos = s.SerializeObject<Vec3d>(pos, name: "pos");
 					tangA = s.SerializeObject<Vec3d>(tangA, name: "tangA");
 					tangB = s.SerializeObject<Vec3d>(tangB, name: "tangB");

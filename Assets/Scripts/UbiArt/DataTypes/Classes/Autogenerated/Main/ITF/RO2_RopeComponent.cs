@@ -29,7 +29,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					useBeginTexture = s.Serialize<bool>(useBeginTexture, name: "useBeginTexture");
 					useEndTexture = s.Serialize<bool>(useEndTexture, name: "useEndTexture");
 					rendererScaleMultiplier = s.Serialize<float>(rendererScaleMultiplier, name: "rendererScaleMultiplier");
@@ -53,13 +53,13 @@ namespace UbiArt.ITF {
 					resetOnCheckpoint = s.Serialize<bool>(resetOnCheckpoint, name: "resetOnCheckpoint");
 					disableAfterFadeOnRelease = s.Serialize<bool>(disableAfterFadeOnRelease, name: "disableAfterFadeOnRelease");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					wasCut = s.Serialize<bool>(wasCut, name: "wasCut");
 					cutLength = s.Serialize<float>(cutLength, name: "cutLength");
 					cutSender = s.Serialize<uint>(cutSender, name: "cutSender");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					useBeginTexture = s.Serialize<bool>(useBeginTexture, name: "useBeginTexture");
 					useEndTexture = s.Serialize<bool>(useEndTexture, name: "useEndTexture");
 					rendererScaleMultiplier = s.Serialize<float>(rendererScaleMultiplier, name: "rendererScaleMultiplier");
@@ -83,7 +83,7 @@ namespace UbiArt.ITF {
 					resetOnCheckpoint = s.Serialize<bool>(resetOnCheckpoint, name: "resetOnCheckpoint");
 					disableAfterFadeOnRelease = s.Serialize<bool>(disableAfterFadeOnRelease, name: "disableAfterFadeOnRelease");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					wasCut = s.Serialize<bool>(wasCut, name: "wasCut");
 					cutLength = s.Serialize<float>(cutLength, name: "cutLength");
 				}

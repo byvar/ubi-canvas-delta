@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			nodePaintingOffsetY = s.Serialize<float>(nodePaintingOffsetY, name: "nodePaintingOffsetY");
 			frequency = s.Serialize<CompetitionFrequency>(frequency, name: "frequency");
-			if (s.HasFlags(SerializeFlags.Editor)) {
+			if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 				currentOffset = s.SerializeObject<Vec3d>(currentOffset, name: "currentOffset");
 			}
 		}

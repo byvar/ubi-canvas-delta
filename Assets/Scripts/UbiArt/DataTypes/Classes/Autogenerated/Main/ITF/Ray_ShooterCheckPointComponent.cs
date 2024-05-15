@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public CArrayO<Vec2d> SpawnPos;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				SpawnPos = s.SerializeObject<CArrayO<Vec2d>>(SpawnPos, name: "SpawnPos");
 			}
 		}

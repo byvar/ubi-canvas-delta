@@ -27,7 +27,7 @@ namespace UbiArt.ITF {
 				ParticleGeneratorParams = s.SerializeObject<ITF_ParticleGenerator_Template>(ParticleGeneratorParams, name: "ParticleGeneratorParams");
 				startTime = s.Serialize<float>(startTime, name: "startTime");
 				stopTime = s.Serialize<float>(stopTime, name: "stopTime");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
@@ -39,7 +39,7 @@ namespace UbiArt.ITF {
 				ParticleGeneratorParams = s.SerializeObject<ITF_ParticleGenerator_Template>(ParticleGeneratorParams, name: "ParticleGeneratorParams");
 				startTime = s.Serialize<float>(startTime, name: "startTime");
 				stopTime = s.Serialize<float>(stopTime, name: "stopTime");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");

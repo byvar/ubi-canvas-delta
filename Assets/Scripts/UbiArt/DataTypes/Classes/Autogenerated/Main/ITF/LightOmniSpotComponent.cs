@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		public float LightColMultiplier;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				LightCol = s.SerializeObject<Color>(LightCol, name: "LightCol");
 				Near = s.Serialize<float>(Near, name: "Near");
 				Far = s.Serialize<float>(Far, name: "Far");

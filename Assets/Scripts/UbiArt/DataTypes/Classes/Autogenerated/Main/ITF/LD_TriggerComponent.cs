@@ -33,7 +33,7 @@ namespace UbiArt.ITF {
 			if (s.Settings.Game == Game.VH) {
 				mode = s.Serialize<Mode>(mode, name: "mode");
 				modeAfterCP = s.Serialize<ModeAfterCP>(modeAfterCP, name: "modeAfterCP");
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					triggerOnceDone = s.Serialize<bool>(triggerOnceDone, name: "triggerOnceDone");
 				}
 				onEnterEvent = s.SerializeObject<Generic<Event>>(onEnterEvent, name: "onEnterEvent");
@@ -59,7 +59,7 @@ namespace UbiArt.ITF {
 			} else {
 				mode = s.Serialize<Mode>(mode, name: "mode");
 				modeAfterCP = s.Serialize<ModeAfterCP>(modeAfterCP, name: "modeAfterCP");
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					triggerOnceDone = s.Serialize<bool>(triggerOnceDone, name: "triggerOnceDone");
 				}
 				onEnterEvent = s.SerializeObject<Generic<Event>>(onEnterEvent, name: "onEnterEvent");

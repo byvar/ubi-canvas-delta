@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public bool startWithHalo;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				disableWindForce = s.Serialize<bool>(disableWindForce, name: "disableWindForce", options: CSerializerObject.Options.BoolAsByte);
 				startWithHalo = s.Serialize<bool>(startWithHalo, name: "startWithHalo", options: CSerializerObject.Options.BoolAsByte);
 			}

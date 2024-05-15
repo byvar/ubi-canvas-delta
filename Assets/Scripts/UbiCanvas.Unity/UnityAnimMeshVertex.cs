@@ -70,7 +70,7 @@ public class UnityAnimMeshVertex : MonoBehaviour {
 
 	void InitAnimation() {
 		if (Animation.PatchesCount == 0) {
-			Animation.PatchesCount = AMV.frameMeshInfo[Animation.Index].Max(f => f.patchesCount);
+			Animation.PatchesCount = AMV.frameIndexToMeshDataByAnim[Animation.Index].Max(f => f.patchesCount);
 		}
 		if (Patches == null || Animation.PatchesCount != Patches.Length) {
 			if (Patches != null) {
@@ -106,7 +106,7 @@ public class UnityAnimMeshVertex : MonoBehaviour {
 
 	void UpdateAnimation() {
 		if (loaded && Animation != null) {
-			var frames = AMV.frameMeshInfo[Animation.Index];
+			var frames = AMV.frameIndexToMeshDataByAnim[Animation.Index];
 			var framesCount = frames.Count;
 			if (framesCount == 0) {
 				currentFrame = 0;
@@ -121,14 +121,14 @@ public class UnityAnimMeshVertex : MonoBehaviour {
 				int patchesCount = (int)patchInfo.patchesCount;
 
 				for (int i = 0; i < patchesCount; i++) {
-					var patch = AMV.patches[patchIndex + i];
+					var patch = AMV.patchList[patchIndex + i];
 					var points = patch.points;
 
 					Patches[i].Mesh.vertices = points.Select(p => new Vector3(p.x, p.y, 0f)).ToArray();
-					Patches[i].Mesh.uv = points.Select((p, j) => AMV.uvs[patch.uvsIndex + j].GetUnityVector()).ToArray();
+					Patches[i].Mesh.uv = points.Select((p, j) => AMV.uvList[patch.uvsIndex + j].GetUnityVector()).ToArray();
 					//Patches[i].Filter.sharedMesh = Patches[i].Mesh;
 
-					AnimMeshVertexComponent.SetColor(new UnityEngine.Color(1f, 1f, 1f, patch.alpha1 / 255f), Patches[i].Renderer);
+					AnimMeshVertexComponent.SetColor(new UnityEngine.Color(1f, 1f, 1f, patch.alphaBegin / 255f), Patches[i].Renderer);
 
 					var obj = Patches[i].Object;
 					if (!obj.activeSelf) obj.SetActive(true);

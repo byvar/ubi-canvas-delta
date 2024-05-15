@@ -41,7 +41,7 @@ namespace UbiArt.ITF {
 			tileLength = s.Serialize<float>(tileLength, name: "tileLength");
 			uvAttachToEnd = s.Serialize<bool>(uvAttachToEnd, name: "uvAttachToEnd");
 			uvScrollSpeed = s.Serialize<float>(uvScrollSpeed, name: "uvScrollSpeed");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				beginLength = s.Serialize<float>(beginLength, name: "beginLength");
 				endLength = s.Serialize<float>(endLength, name: "endLength");
 				beginWidth = s.Serialize<float>(beginWidth, name: "beginWidth");

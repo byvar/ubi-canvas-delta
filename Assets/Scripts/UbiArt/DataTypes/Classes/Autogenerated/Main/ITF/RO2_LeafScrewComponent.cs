@@ -7,10 +7,10 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			actorSpawnedPath = s.SerializeObject<Path>(actorSpawnedPath, name: "actorSpawnedPath");
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				terminated = s.Serialize<bool>(terminated, name: "terminated");
 			}
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				actorSpawnType = s.Serialize<SpawnActorType>(actorSpawnType, name: "actorSpawnType");
 			}
 		}

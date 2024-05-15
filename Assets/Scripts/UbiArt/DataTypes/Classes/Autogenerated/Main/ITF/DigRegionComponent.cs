@@ -35,18 +35,18 @@ namespace UbiArt.ITF {
 		public bool IsDiggable;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				Brush_State = s.Serialize<Action>(Brush_State, name: "Brush_State");
 				Brush_Action = s.Serialize<Action>(Brush_Action, name: "Brush_Action");
 			}
-			if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				BoxCountX = s.Serialize<uint>(BoxCountX, name: "BoxCountX");
 				BoxCountY = s.Serialize<uint>(BoxCountY, name: "BoxCountY");
 				BrushRadiusGrid = s.Serialize<int>(BrushRadiusGrid, name: "BrushRadiusGrid");
 				LightDir = s.SerializeObject<Vec2d>(LightDir, name: "LightDir");
 				MergeCount = s.Serialize<int>(MergeCount, name: "MergeCount");
 			}
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				Vecto_LengthMax = s.Serialize<float>(Vecto_LengthMax, name: "Vecto_LengthMax");
 				Smooth_LengthMax = s.Serialize<float>(Smooth_LengthMax, name: "Smooth_LengthMax");
 				Smooth_ShapeMinSize = s.Serialize<float>(Smooth_ShapeMinSize, name: "Smooth_ShapeMinSize");

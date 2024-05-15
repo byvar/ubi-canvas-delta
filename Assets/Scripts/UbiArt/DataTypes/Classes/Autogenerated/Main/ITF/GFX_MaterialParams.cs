@@ -48,7 +48,7 @@ namespace UbiArt.ITF {
 				float__6 = s.Serialize<float>(float__6, name: "float__6");
 				float__7 = s.Serialize<float>(float__7, name: "float__7");
 				float__8 = s.Serialize<float>(float__8, name: "float__8");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					float__9 = s.Serialize<float>(float__9, name: "float__9");
 					float__10 = s.Serialize<float>(float__10, name: "float__10");
 					float__11 = s.Serialize<float>(float__11, name: "float__11");
@@ -70,7 +70,7 @@ namespace UbiArt.ITF {
 				matParams0VY = s.Serialize<float>(matParams0VY, name: "matParams0VY");
 				matParams0VZ = s.Serialize<float>(matParams0VZ, name: "matParams0VZ");
 				matParams0VW = s.Serialize<float>(matParams0VW, name: "matParams0VW");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					Refract_alphaMul = s.Serialize<float>(Refract_alphaMul, name: "Refract_alphaMul");
 					Refract_normalmul = s.Serialize<float>(Refract_normalmul, name: "Refract_normalmul");
 					Reflection_factor = s.Serialize<float>(Reflection_factor, name: "Reflection_factor");

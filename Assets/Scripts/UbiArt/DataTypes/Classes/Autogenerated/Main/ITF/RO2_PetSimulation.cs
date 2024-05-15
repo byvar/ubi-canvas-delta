@@ -11,7 +11,7 @@ namespace UbiArt.ITF {
 		public float TimeToStartFollowing;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				SpawnBySec = s.Serialize<int>(SpawnBySec, name: "SpawnBySec");
 				MoveCoeff = s.Serialize<float>(MoveCoeff, name: "MoveCoeff");
 				FollowPlayerCoeff = s.Serialize<float>(FollowPlayerCoeff, name: "FollowPlayerCoeff");

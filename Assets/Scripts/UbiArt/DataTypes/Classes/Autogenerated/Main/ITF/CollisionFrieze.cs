@@ -21,7 +21,7 @@ namespace UbiArt.ITF {
 				methode = s.Serialize<uint>(methode, name: "methode");
 				distMaxToSkipParallelEdge = s.Serialize<float>(distMaxToSkipParallelEdge, name: "distMaxToSkipParallelEdge");
 				smoothFactor = s.Serialize<float>(smoothFactor, name: "smoothFactor");
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					isSmooth = s.Serialize<bool>(isSmooth, name: "isSmooth", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
@@ -33,7 +33,7 @@ namespace UbiArt.ITF {
 				methode = s.Serialize<uint>(methode, name: "methode");
 				distMaxToSkipParallelEdge = s.Serialize<float>(distMaxToSkipParallelEdge, name: "distMaxToSkipParallelEdge");
 				smoothFactor = s.Serialize<float>(smoothFactor, name: "smoothFactor");
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					isSmooth = s.Serialize<bool>(isSmooth, name: "isSmooth");
 				}
 			}

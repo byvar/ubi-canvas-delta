@@ -40,7 +40,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					moveSpeed = s.Serialize<float>(moveSpeed, name: "moveSpeed");
 					useGlobalSpeedFactor = s.Serialize<bool>(useGlobalSpeedFactor, name: "useGlobalSpeedFactor", options: CSerializerObject.Options.BoolAsByte);
 					trajectory = s.Serialize<Trajectory>(trajectory, name: "trajectory");
@@ -64,7 +64,7 @@ namespace UbiArt.ITF {
 					useFireflyCloud = s.Serialize<bool>(useFireflyCloud, name: "useFireflyCloud", options: CSerializerObject.Options.BoolAsByte);
 					displayLinks = s.Serialize<bool>(displayLinks, name: "displayLinks", options: CSerializerObject.Options.BoolAsByte);
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					tutoSucceeded = s.Serialize<bool>(tutoSucceeded, name: "tutoSucceeded");
 					particles = s.SerializeObject<CListO<RO2_LumsChainComponent.st_Particle>>(particles, name: "particles");
 					aliveParticles = s.SerializeObject<CArrayP<uint>>(aliveParticles, name: "aliveParticles");
@@ -74,7 +74,7 @@ namespace UbiArt.ITF {
 					perfectActivation = s.Serialize<bool>(perfectActivation, name: "perfectActivation");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					moveSpeed = s.Serialize<float>(moveSpeed, name: "moveSpeed");
 					useGlobalSpeedFactor = s.Serialize<bool>(useGlobalSpeedFactor, name: "useGlobalSpeedFactor");
 					trajectory = s.Serialize<Trajectory>(trajectory, name: "trajectory");
@@ -103,7 +103,7 @@ namespace UbiArt.ITF {
 					useFireflyCloud = s.Serialize<bool>(useFireflyCloud, name: "useFireflyCloud");
 					displayLinks = s.Serialize<bool>(displayLinks, name: "displayLinks");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					tutoSucceeded = s.Serialize<bool>(tutoSucceeded, name: "tutoSucceeded");
 					particles = s.SerializeObject<CListO<RO2_LumsChainComponent.st_Particle>>(particles, name: "particles");
 					aliveParticles = s.SerializeObject<CArrayP<uint>>(aliveParticles, name: "aliveParticles");

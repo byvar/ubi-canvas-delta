@@ -30,7 +30,7 @@ namespace UbiArt.ITF {
 		public float foreGroundColorZMax;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				DrawBezier = s.Serialize<bool>(DrawBezier, name: "DrawBezier");
 				DrawSpeedModulation = s.Serialize<bool>(DrawSpeedModulation, name: "DrawSpeedModulation");
 				AutoShock = s.Serialize<bool>(AutoShock, name: "AutoShock");

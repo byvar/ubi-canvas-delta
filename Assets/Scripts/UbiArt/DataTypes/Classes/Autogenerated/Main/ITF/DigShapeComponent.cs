@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public float Radius;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				action = s.Serialize<Action>(action, name: "Action");
 				Radius = s.Serialize<float>(Radius, name: "Radius");
 			}

@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public int health = 100;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				health = s.Serialize<int>(health, name: "health");
 			}
 		}

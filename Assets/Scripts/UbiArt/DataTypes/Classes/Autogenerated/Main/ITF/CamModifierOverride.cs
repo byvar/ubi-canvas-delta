@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public bool constraintMatchView;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				constraintLeftIsActive = s.Serialize<bool>(constraintLeftIsActive, name: "constraintLeftIsActive");
 				constraintRightIsActive = s.Serialize<bool>(constraintRightIsActive, name: "constraintRightIsActive");
 				constraintTopIsActive = s.Serialize<bool>(constraintTopIsActive, name: "constraintTopIsActive");

@@ -25,7 +25,7 @@ namespace UbiArt.ITF {
 		public bool bool__21;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				StringID__0 = s.SerializeObject<StringID>(StringID__0, name: "StringID__0");
 				StringID__1_ = s.SerializeObject<StringID>(StringID__1_, name: "StringID__1");
 				bool__2 = s.Serialize<bool>(bool__2, name: "bool__2");
@@ -47,7 +47,7 @@ namespace UbiArt.ITF {
 				bool__18_ = s.Serialize<bool>(bool__18_, name: "bool__18");
 				bool__19_ = s.Serialize<bool>(bool__19_, name: "bool__19");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 			}
 			Path__20 = s.SerializeObject<Path>(Path__20, name: "Path__20");
 			bool__21 = s.Serialize<bool>(bool__21, name: "bool__21");

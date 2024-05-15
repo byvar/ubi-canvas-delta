@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public FireMode fireMode;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				playerSpeed = s.Serialize<float>(playerSpeed, name: "playerSpeed");
 				music = s.SerializeObject<StringID>(music, name: "music");
 				musicPart = s.SerializeObject<StringID>(musicPart, name: "musicPart");

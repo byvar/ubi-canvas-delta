@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public Vec3d offset;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				offset = s.SerializeObject<Vec3d>(offset, name: "offset");
 			}
 		}

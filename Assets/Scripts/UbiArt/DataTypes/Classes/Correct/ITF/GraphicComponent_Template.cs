@@ -83,7 +83,7 @@ namespace UbiArt.ITF {
 				useShadow = s.Serialize<bool>(useShadow, name: "useShadow");
 				useRootBone = s.Serialize<bool>(useRootBone, name: "useRootBone");
 				shadowSize = s.SerializeObject<Vec2d>(shadowSize, name: "shadowSize");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					shadowTextureFile = s.SerializeObject<Path>(shadowTextureFile, name: "shadowTextureFile");
 				}
 				shadowMaterial = s.SerializeObject<GFXMaterialSerializable>(shadowMaterial, name: "shadowMaterial");
@@ -109,7 +109,7 @@ namespace UbiArt.ITF {
 				shadowUseBase = s.Serialize<bool>(shadowUseBase, name: "shadowUseBase", options: CSerializerObject.Options.BoolAsByte);
 				shadowUnderBone = s.SerializeObject<StringID>(shadowUnderBone, name: "shadowUnderBone");
 				shadowSize = s.SerializeObject<Vec2d>(shadowSize, name: "shadowSize");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					shadowTextureFile = s.SerializeObject<Path>(shadowTextureFile, name: "shadowTextureFile");
 				}
 				shadowMaterial = s.SerializeObject<GFXMaterialSerializable>(shadowMaterial, name: "shadowMaterial");
@@ -136,7 +136,7 @@ namespace UbiArt.ITF {
 				useRootBone = s.Serialize<bool>(useRootBone, name: "useRootBone");
 				shadowUnderBone = s.SerializeObject<StringID>(shadowUnderBone, name: "shadowUnderBone");
 				shadowSize = s.SerializeObject<Vec2d>(shadowSize, name: "shadowSize");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					shadowTextureFile = s.SerializeObject<Path>(shadowTextureFile, name: "shadowTextureFile");
 				}
 				shadowMaterial = s.SerializeObject<GFXMaterialSerializable>(shadowMaterial, name: "shadowMaterial");
@@ -165,7 +165,7 @@ namespace UbiArt.ITF {
 				useNoColShadow = s.Serialize<bool>(useNoColShadow, name: "useNoColShadow");
 				useRootBone = s.Serialize<bool>(useRootBone, name: "useRootBone");
 				shadowSize = s.SerializeObject<Vec2d>(shadowSize, name: "shadowSize");
-				if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					shadowTextureFile = s.SerializeObject<Path>(shadowTextureFile, name: "shadowTextureFile");
 				}
 				shadowMaterial = s.SerializeObject<GFXMaterialSerializable>(shadowMaterial, name: "shadowMaterial");

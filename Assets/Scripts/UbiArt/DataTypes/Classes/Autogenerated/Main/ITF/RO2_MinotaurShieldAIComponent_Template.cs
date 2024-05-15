@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public StringID disappearAnimName;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				flyAnimName = s.SerializeObject<StringID>(flyAnimName, name: "flyAnimName");
 				landingAnimName = s.SerializeObject<StringID>(landingAnimName, name: "landingAnimName");
 				deathAnimName = s.SerializeObject<StringID>(deathAnimName, name: "deathAnimName");

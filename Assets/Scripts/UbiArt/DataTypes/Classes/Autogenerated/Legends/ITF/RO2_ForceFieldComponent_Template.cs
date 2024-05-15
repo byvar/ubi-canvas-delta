@@ -27,7 +27,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			gfxMaterial = s.SerializeObject<GFXMaterialSerializable>(gfxMaterial, name: "gfxMaterial");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				texture = s.SerializeObject<Path>(texture, name: "texture");
 			}
 			softCollisionRadius = s.Serialize<float>(softCollisionRadius, name: "softCollisionRadius");

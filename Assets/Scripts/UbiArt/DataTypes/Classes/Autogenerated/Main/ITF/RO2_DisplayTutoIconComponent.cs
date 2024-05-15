@@ -21,7 +21,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					tutoType2 = s.Serialize<TutoType2>(tutoType2, name: "tutoType");
 					scale = s.Serialize<float>(scale, name: "scale");
 					offset = s.SerializeObject<Vec3d>(offset, name: "offset");
@@ -40,11 +40,11 @@ namespace UbiArt.ITF {
 						AMActionCountMax = s.Serialize<int>(AMActionCountMax, name: "AMActionCountMax");
 					}
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					tutoSucceeded = s.Serialize<bool>(tutoSucceeded, name: "tutoSucceeded");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					tutoType = s.Serialize<TutoType>(tutoType, name: "tutoType");
 					scale = s.Serialize<float>(scale, name: "scale");
 					offset = s.SerializeObject<Vec3d>(offset, name: "offset");
@@ -61,7 +61,7 @@ namespace UbiArt.ITF {
 					testSceneDepthRef = s.Serialize<bool>(testSceneDepthRef, name: "testSceneDepthRef");
 					AMActionCountMax = s.Serialize<int>(AMActionCountMax, name: "AMActionCountMax");
 				}
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					tutoSucceeded = s.Serialize<bool>(tutoSucceeded, name: "tutoSucceeded");
 				}
 			}

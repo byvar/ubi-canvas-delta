@@ -15,9 +15,9 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					syncOffset = s.Serialize<float>(syncOffset, name: "syncOffset");
-					if (s.HasFlags(SerializeFlags.Editor)) {
+					if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 						startSet = s.SerializeChoiceListObject<StringID>(startSet, name: "startSet", empty: "- None -");
 					} else {
 						startSet = s.SerializeObject<StringID>(startSet, name: "startSet");
@@ -25,10 +25,10 @@ namespace UbiArt.ITF {
 					instructionSets = s.SerializeObject<CListO<TweenComponent.InstructionSet>>(instructionSets, name: "instructionSets");
 				}
 			} else if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Persistent) || s.Settings.Platform == GamePlatform.Vita) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint) || s.Settings.Platform == GamePlatform.Vita) {
 					trigOnCheckPoint = s.Serialize<bool>(trigOnCheckPoint, name: "trigOnCheckPoint");
 				}
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					instanceTemplate = s.SerializeObject<Nullable<TweenComponent_Template>>(instanceTemplate, name: "instanceTemplate");
 					syncOffset = s.Serialize<float>(syncOffset, name: "syncOffset");
 					skipInstructionSetSyncOffset = s.Serialize<bool>(skipInstructionSetSyncOffset, name: "skipInstructionSetSyncOffset", options: CSerializerObject.Options.BoolAsByte);
@@ -37,7 +37,7 @@ namespace UbiArt.ITF {
 					if (s.Settings.Platform == GamePlatform.Vita) {
 						Vita_00 = s.Serialize<uint>(Vita_00, name: nameof(Vita_00));
 					}
-					if (s.HasFlags(SerializeFlags.Editor)) {
+					if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 						startSet = s.SerializeChoiceListObject<StringID>(startSet, name: "startSet", empty: "- None -");
 					} else {
 						startSet = s.SerializeObject<StringID>(startSet, name: "startSet");
@@ -45,16 +45,16 @@ namespace UbiArt.ITF {
 					instructionSets = s.SerializeObject<CListO<TweenComponent.InstructionSet>>(instructionSets, name: "instructionSets");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Persistent)) {
+				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					trigOnCheckPoint = s.Serialize<bool>(trigOnCheckPoint, name: "trigOnCheckPoint");
 				}
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					instanceTemplate = s.SerializeObject<Nullable<TweenComponent_Template>>(instanceTemplate, name: "instanceTemplate");
 					syncOffset = s.Serialize<float>(syncOffset, name: "syncOffset");
 					skipInstructionSetSyncOffset = s.Serialize<bool>(skipInstructionSetSyncOffset, name: "skipInstructionSetSyncOffset");
 					autoStart = s.Serialize<bool>(autoStart, name: "autoStart");
 					groupIndex = s.Serialize<uint>(groupIndex, name: "groupIndex");
-					if (s.HasFlags(SerializeFlags.Editor)) {
+					if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 						startSet = s.SerializeChoiceListObject<StringID>(startSet, name: "startSet", empty: "- None -");
 					} else {
 						startSet = s.SerializeObject<StringID>(startSet, name: "startSet");

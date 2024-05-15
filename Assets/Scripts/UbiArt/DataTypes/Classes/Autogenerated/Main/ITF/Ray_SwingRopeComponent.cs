@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public Angle initialAngle;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				initialAngle = s.SerializeObject<Angle>(initialAngle, name: "initialAngle");
 			}
 		}

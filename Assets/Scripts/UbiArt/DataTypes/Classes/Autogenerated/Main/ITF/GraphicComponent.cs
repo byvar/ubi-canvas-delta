@@ -24,8 +24,8 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
 				if(this is SwarmComponent) return;
-				if (s.HasFlags(SerializeFlags.Default)) {
-					if (!s.HasProperty(CSerializerObject.SerializerProperty.Binary)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+					if (!s.HasProperties(SerializerProperties.Binary)) {
 						ColorFog_Red = s.Serialize<float>(ColorFog_Red, name: "ColorFog_Red");
 						ColorFog_Green = s.Serialize<float>(ColorFog_Green, name: "ColorFog_Green");
 						ColorFog_Blu = s.Serialize<float>(ColorFog_Blu, name: "ColorFog_Blu");
@@ -38,8 +38,8 @@ namespace UbiArt.ITF {
 					disableLight = s.Serialize<int>(disableLight, name: "disableLight");
 				}
 			} else if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						ColorFactor = s.SerializeObject<Color>(ColorFactor, name: "ColorFactor");
 						ColorFog = s.SerializeObject<Color>(ColorFog, name: "ColorFog");
 						useStaticFog = s.Serialize<bool>(useStaticFog, name: "useStaticFog");
@@ -53,8 +53,8 @@ namespace UbiArt.ITF {
 					depthOffset = s.Serialize<float>(depthOffset, name: "depthOffset");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						ColorFactor = s.SerializeObject<Color>(ColorFactor, name: "ColorFactor");
 						ColorFog = s.SerializeObject<Color>(ColorFog, name: "ColorFog");
 						useStaticFog = s.Serialize<bool>(useStaticFog, name: "useStaticFog", options: CSerializerObject.Options.BoolAsByte);
@@ -68,8 +68,8 @@ namespace UbiArt.ITF {
 					depthOffset = s.Serialize<float>(depthOffset, name: "depthOffset");
 				}
 			} else if (s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						ColorFactor = s.SerializeObject<Color>(ColorFactor, name: "ColorFactor");
 						ColorFog = s.SerializeObject<Color>(ColorFog, name: "ColorFog");
 						useStaticFog = s.Serialize<bool>(useStaticFog, name: "useStaticFog");
@@ -84,8 +84,8 @@ namespace UbiArt.ITF {
 					AlphaInit = s.Serialize<float>(AlphaInit, name: "AlphaInit");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
-					if (s.HasFlags(SerializeFlags.Flags8)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
+					if (s.HasFlags(SerializeFlags.Deprecate)) {
 						ColorFactor = s.SerializeObject<Color>(ColorFactor, name: "ColorFactor");
 						ColorFog = s.SerializeObject<Color>(ColorFog, name: "ColorFog");
 					}

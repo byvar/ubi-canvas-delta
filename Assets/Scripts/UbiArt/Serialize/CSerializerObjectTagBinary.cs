@@ -22,7 +22,7 @@ namespace UbiArt {
 			File = file;
 		}
 
-		public override SerializerProperty Properties => base.Properties | SerializerProperty.Binary | SerializerProperty.Flags7; // 0x81
+		public override SerializerProperties Properties => base.Properties | SerializerProperties.Binary | SerializerProperties.NoRaw; // 0x81
 
 		public BinaryFile File { get; protected set; }
 		public Reader Reader { get; protected set; }
@@ -169,7 +169,7 @@ namespace UbiArt {
 					if (options.HasFlag(Options.ForceAsByte)) {
 						asByte = true;
 					} else if (options.HasFlag(Options.BoolAsByte)) {
-						asByte = HasFlags(SerializeFlags.Flags1);
+						asByte = HasFlags(SerializeFlags.PropertyEdit_Save);
 					}
 					if (asByte) {
 						uint tmp = Reader.ReadByte();

@@ -6,10 +6,10 @@ namespace UbiArt.ITF {
 		public EventSender eventSender;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				touchedMinDuration = s.Serialize<float>(touchedMinDuration, name: "touchedMinDuration");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				triggered = s.Serialize<bool>(triggered, name: "triggered");
 			}
 			eventSender = s.SerializeObject<EventSender>(eventSender, name: "eventSender");

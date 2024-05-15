@@ -384,6 +384,32 @@ namespace UbiArt.ITF {
 			return results;
 		}
 
+		public ObjectPath GetRelativePath(Pickable from, Pickable to) {
+			var fromPath = FindPickable(p => p == from);
+			var toPath = FindPickable(p => p == to);
+			var fromLevelsCount = (fromPath.Path.levels?.Count ?? 0);
+			var toLevelsCount = (toPath.Path.levels?.Count ?? 0);
+
+			int sameLevels = 0;
+
+			for (int i = 0; i < fromLevelsCount; i++) {
+				// We don't need to take into account "parent" levels as FindPickable will not produce those
+				if (i >= toLevelsCount || fromPath.Path.levels[i].name != toPath.Path.levels[i].name) {
+					break;
+				}
+				sameLevels++;
+			}
+			string path = "";
+			for (int i = sameLevels; i < fromLevelsCount; i++) {
+				path += "..|";
+			}
+			for (int i = sameLevels; i < toLevelsCount; i++) {
+				path += $"{toPath.Path.levels[i].name}|";
+			}
+			path += toPath.Path.id;
+			return new ObjectPath(path);
+		}
+
 		[Flags]
 		public enum SearchFlags {
 			None = 0,

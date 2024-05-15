@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			Price = s.Serialize<uint>(Price, name: "Price");
 			Amount = s.Serialize<uint>(Amount, name: "Amount");
-			if (s.HasFlags(SerializeFlags.Flags8)) {
+			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				GoldenTicketPack = s.Serialize<bool>(GoldenTicketPack, name: "GoldenTicketPack");
 			}
 			msdkItemId_ = s.Serialize<uint>(msdkItemId_, name: "msdkItemId");

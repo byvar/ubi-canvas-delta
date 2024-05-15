@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public RO2_DarkCreatureSimulation DarkCreatureSimulation;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				MaxCreatures = s.Serialize<uint>(MaxCreatures, name: "MaxCreatures");
 				AllAtStart = s.Serialize<bool>(AllAtStart, name: "AllAtStart");
 				DarkCreatureSimulation = s.SerializeObject<RO2_DarkCreatureSimulation>(DarkCreatureSimulation, name: "DarkCreatureSimulation");

@@ -20,7 +20,7 @@ namespace UbiArt.ITF {
 		public float PHYSIC_OverlapCollisionCoeff;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				ParticlesCanHit = s.Serialize<bool>(ParticlesCanHit, name: "ParticlesCanHit");
 				GridWidth = s.Serialize<int>(GridWidth, name: "GridWidth");
 				GridHeight = s.Serialize<int>(GridHeight, name: "GridHeight");

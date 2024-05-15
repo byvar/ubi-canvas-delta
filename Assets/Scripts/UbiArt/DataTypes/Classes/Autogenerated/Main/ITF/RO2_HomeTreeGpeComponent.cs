@@ -7,13 +7,13 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					isDebugActor = s.Serialize<bool>(isDebugActor, name: "isDebugActor", options: CSerializerObject.Options.BoolAsByte);
 					appearCursor = s.Serialize<float>(appearCursor, name: "appearCursor");
 					useComponent = s.Serialize<bool>(useComponent, name: "useComponent", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					isDebugActor = s.Serialize<bool>(isDebugActor, name: "isDebugActor");
 					appearCursor = s.Serialize<float>(appearCursor, name: "appearCursor");
 					useComponent = s.Serialize<bool>(useComponent, name: "useComponent");

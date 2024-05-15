@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		public float borderForceLeft;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				numFishPerColumn = s.Serialize<uint>(numFishPerColumn, name: "numFishPerColumn");
 				numColumn = s.Serialize<uint>(numColumn, name: "numColumn");
 				borderForceUp = s.Serialize<float>(borderForceUp, name: "borderForceUp");

@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public State StartingState;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				CheckFirePatch = s.Serialize<int>(CheckFirePatch, name: "CheckFirePatch");
 				SuffocateTimer = s.Serialize<float>(SuffocateTimer, name: "SuffocateTimer");
 				DefaultFlameSize = s.Serialize<float>(DefaultFlameSize, name: "DefaultFlameSize");

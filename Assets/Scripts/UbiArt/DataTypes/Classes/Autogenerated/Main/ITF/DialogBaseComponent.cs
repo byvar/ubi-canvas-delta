@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		public bool waitInit;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				playOnce = s.Serialize<bool>(playOnce, name: "playOnce");
 				loop = s.Serialize<bool>(loop, name: "loop");
 				wordTime_Default = s.Serialize<float>(wordTime_Default, name: "wordTime_Default");

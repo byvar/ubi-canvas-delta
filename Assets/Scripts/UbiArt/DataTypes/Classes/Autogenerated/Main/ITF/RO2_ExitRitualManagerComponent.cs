@@ -7,13 +7,13 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					ritualType = s.Serialize<RitualType>(ritualType, name: "ritualType");
 					canBeClosed = s.Serialize<bool>(canBeClosed, name: "canBeClosed", options: CSerializerObject.Options.BoolAsByte);
 					canDisplayTuto = s.Serialize<bool>(canDisplayTuto, name: "canDisplayTuto", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					ritualType = s.Serialize<RitualType>(ritualType, name: "ritualType");
 					canBeClosed = s.Serialize<bool>(canBeClosed, name: "canBeClosed");
 					canDisplayTuto = s.Serialize<bool>(canDisplayTuto, name: "canDisplayTuto");

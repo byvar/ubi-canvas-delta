@@ -15,7 +15,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					_event = s.SerializeObject<Generic<Event>>(_event, name: "event");
 					triggerOnce = s.Serialize<bool>(triggerOnce, name: "triggerOnce", options: CSerializerObject.Options.BoolAsByte);
 					triggerSelf = s.Serialize<bool>(triggerSelf, name: "triggerSelf", options: CSerializerObject.Options.BoolAsByte);
@@ -26,7 +26,7 @@ namespace UbiArt.ITF {
 					sendOnlyToChildrenWithThisTag = s.SerializeObject<StringID>(sendOnlyToChildrenWithThisTag, name: "sendOnlyToChildrenWithThisTag");
 				}
 			} else if(s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					_event = s.SerializeObject<Generic<Event>>(_event, name: "event");
 					triggerOnce = s.Serialize<bool>(triggerOnce, name: "triggerOnce", options: CSerializerObject.Options.BoolAsByte);
 					triggerSelf = s.Serialize<bool>(triggerSelf, name: "triggerSelf", options: CSerializerObject.Options.BoolAsByte);
@@ -35,7 +35,7 @@ namespace UbiArt.ITF {
 					triggerBroadcast = s.Serialize<bool>(triggerBroadcast, name: "triggerBroadcast", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					_event = s.SerializeObject<Generic<Event>>(_event, name: "event");
 					triggerOnce = s.Serialize<bool>(triggerOnce, name: "triggerOnce");
 					triggerSelf = s.Serialize<bool>(triggerSelf, name: "triggerSelf");

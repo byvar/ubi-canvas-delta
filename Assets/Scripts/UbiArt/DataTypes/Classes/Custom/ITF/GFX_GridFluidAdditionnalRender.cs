@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				RenderOffset = s.SerializeObject<Vec3d>(RenderOffset, name: "RenderOffset");
 				FluidCol = s.SerializeObject<Color>(FluidCol, name: "FluidCol");
 				ColorTex = s.SerializeObject<Path>(ColorTex, name: "ColorTex");

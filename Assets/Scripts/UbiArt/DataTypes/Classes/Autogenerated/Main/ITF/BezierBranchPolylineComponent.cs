@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public PolylineMode polylineMode;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				polylineMode = s.Serialize<PolylineMode>(polylineMode, name: "polylineMode");
 			}
 		}

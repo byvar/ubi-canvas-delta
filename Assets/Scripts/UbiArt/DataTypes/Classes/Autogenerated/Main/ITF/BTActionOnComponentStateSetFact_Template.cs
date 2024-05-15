@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			fact = s.SerializeObject<StringID>(fact, name: "fact");
-			if (s.HasFlags(SerializeFlags.Editor)) {
+			if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 				ComponentList = s.SerializeChoiceList<uint>(ComponentList, name: "ComponentList", empty: "Invalid");
 				StateList = s.SerializeChoiceList<uint>(StateList, name: "StateList"); // No empty for this
 			} else {

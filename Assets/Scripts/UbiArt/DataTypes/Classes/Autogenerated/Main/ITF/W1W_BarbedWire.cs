@@ -12,7 +12,7 @@ namespace UbiArt.ITF {
 			uint__2 = s.Serialize<uint>(uint__2, name: "uint__2");
 			uint__3 = s.Serialize<uint>(uint__3, name: "uint__3");
 			Generic_Event__4 = s.SerializeObject<Generic<Event>>(Generic_Event__4, name: "Generic<Event>__4");
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				bool__0 = s.Serialize<bool>(bool__0, name: "bool__0");
 			}
 		}

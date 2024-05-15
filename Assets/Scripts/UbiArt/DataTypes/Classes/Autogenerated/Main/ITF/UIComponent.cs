@@ -35,7 +35,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.EngineVersion == EngineVersion.RO) {
 				if (this is UITextBox) return;
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					RELATIVEPOSX = s.Serialize<float>(RELATIVEPOSX, name: "RELATIVEPOSX");
 					RELATIVEPOSY = s.Serialize<float>(RELATIVEPOSY, name: "RELATIVEPOSY");
 					friendly = s.Serialize<string>(friendly, name: "friendly");
@@ -47,7 +47,7 @@ namespace UbiArt.ITF {
 					align = s.Serialize<Align>(align, name: "align");
 				}
 			} else if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					transition = s.Serialize<bool>(transition, name: "transition");
 					display = s.Serialize<bool>(display, name: "display");
 					if (s.Settings.Platform != GamePlatform.Vita) {
@@ -58,20 +58,20 @@ namespace UbiArt.ITF {
 					}
 					displayMask = s.Serialize<View>(displayMask, name: "displayMask");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					screenSpace = s.SerializeObject<Vec2d>(screenSpace, name: "screenSpace");
 				}
 			} else if (s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					transition = s.Serialize<bool>(transition, name: "transition");
 					display = s.Serialize<bool>(display, name: "display");
 					displayMask = s.Serialize<View>(displayMask, name: "displayMask");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					screenSpace = s.SerializeObject<Vec2d>(screenSpace, name: "screenSpace");
 				}
 			} else if (s.Settings.Game == Game.VH) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					transition = s.Serialize<bool>(transition, name: "transition");
 					display = s.Serialize<bool>(display, name: "display");
 					leftComponentID = s.SerializeObject<StringID>(leftComponentID, name: "leftComponentID");
@@ -84,10 +84,10 @@ namespace UbiArt.ITF {
 					displayMask = s.Serialize<View>(displayMask, name: "displayMask");
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					transition = s.Serialize<bool>(transition, name: "transition");
 					display = s.Serialize<bool>(display, name: "display");
-					if (s.HasFlags(SerializeFlags.Editor)) {
+					if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 						leftComponentID = s.SerializeChoiceListObject<StringID>(leftComponentID, name: "leftComponentID", empty: "Empty");
 						rightComponentID = s.SerializeChoiceListObject<StringID>(rightComponentID, name: "rightComponentID", empty: "Empty");
 						upComponentID = s.SerializeChoiceListObject<StringID>(upComponentID, name: "upComponentID", empty: "Empty");
@@ -103,10 +103,10 @@ namespace UbiArt.ITF {
 					hidingFadeDuration = s.Serialize<float>(hidingFadeDuration, name: "hidingFadeDuration");
 					displayMask = s.Serialize<View>(displayMask, name: "displayMask");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					screenSpace = s.SerializeObject<Vec2d>(screenSpace, name: "screenSpace");
 				}
-				if (s.HasFlags(SerializeFlags.Editor)) {
+				if (s.HasFlags(SerializeFlags.Group_PropertyEdit)) {
 					UIState = s.Serialize<int>(UIState, name: "UIState");
 				}
 				needsAspectRatioFix = s.Serialize<bool>(needsAspectRatioFix, name: "needsAspectRatioFix");

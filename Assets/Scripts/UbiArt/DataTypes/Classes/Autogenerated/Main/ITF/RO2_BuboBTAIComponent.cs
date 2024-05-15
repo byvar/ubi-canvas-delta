@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public bool delayTrigger;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				crushable = s.Serialize<bool>(crushable, name: "crushable");
 				triggerActivator = s.Serialize<bool>(triggerActivator, name: "triggerActivator");
 				delayTrigger = s.Serialize<bool>(delayTrigger, name: "delayTrigger");

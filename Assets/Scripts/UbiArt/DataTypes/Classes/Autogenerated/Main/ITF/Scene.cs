@@ -22,51 +22,51 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR) {
-				if (s.HasFlags(SerializeFlags.Flags7)) {
+				if (s.HasFlags(SerializeFlags.Data_Save)) {
 					ENGINE_VERSION = s.Serialize<uint>(ENGINE_VERSION, name: "ENGINE_VERSION");
 				}
-				if (s.HasFlags(SerializeFlags.Flags6)) {
+				if (s.HasFlags(SerializeFlags.Data_Load)) {
 					ENGINE_VERSION = s.Serialize<uint>(ENGINE_VERSION, name: "ENGINE_VERSION");
 				}
-				if (s.HasProperty(CSerializerObject.SerializerProperty.Binary)) {
+				if (s.HasProperties(SerializerProperties.Binary)) {
 					DEPENDENCIES = s.SerializeObject<CArrayO<Path>>(DEPENDENCIES, name: "DEPENDENCIES");
 					MUSIC_THEME_PATH = s.SerializeObject<Path>(MUSIC_THEME_PATH, name: "MUSIC_THEME_PATH");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					FRISE_ORIGINS = s.SerializeObject<CArrayO<Generic<Pickable>>>(FRISE_ORIGINS, name: "FRISE");
 					ACTORS_ORIGINS = s.SerializeObject<CArrayO<Generic<Pickable>>>(ACTORS_ORIGINS, name: "ACTORS");
 					friezeConnections = s.SerializeObject<CListO<FriezeConnectionResult>>(friezeConnections, name: "friezeConnections");
 					MUSIC_THEME = s.SerializeObject<StringID>(MUSIC_THEME, name: "MUSIC_THEME");
 				}
 			} else if (s.Settings.Game == Game.RO) {
-				if (s.HasFlags(SerializeFlags.Flags7)) {
+				if (s.HasFlags(SerializeFlags.Data_Save)) {
 					ENGINE_VERSION = s.Serialize<uint>(ENGINE_VERSION, name: "ENGINE_VERSION");
 				}
-				if (s.HasFlags(SerializeFlags.Flags6)) {
+				if (s.HasFlags(SerializeFlags.Data_Load)) {
 					ENGINE_VERSION = s.Serialize<uint>(ENGINE_VERSION, name: "ENGINE_VERSION");
 				}
-				if (s.HasProperty(CSerializerObject.SerializerProperty.Binary)) {
+				if (s.HasProperties(SerializerProperties.Binary)) {
 					DEPENDENCIES = s.SerializeObject<CArrayO<Path>>(DEPENDENCIES, name: "DEPENDENCIES");
 					MUSIC_THEME_PATH = s.SerializeObject<Path>(MUSIC_THEME_PATH, name: "MUSIC_THEME_PATH");
-				} else if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				} else if (s.HasFlags(SerializeFlags.Group_Data)) {
 					TABS = s.SerializeObject<CListO<Path>>(TABS, name: "TABS");
 					GRIDUNIT = s.Serialize<float>(GRIDUNIT, name: "GRIDUNIT");
 					PLATFORM_FILTER = s.SerializeObject<TargetFilterList>(PLATFORM_FILTER, name: "PLATFORM_FILTER");
 				}
-				if (s.HasFlags(SerializeFlags.Flags_xC0)) {
+				if (s.HasFlags(SerializeFlags.Group_Data)) {
 					FRISE_ORIGINS = s.SerializeObject<CArrayO<Generic<Pickable>>>(FRISE_ORIGINS, name: "FRISE");
 					ACTORS_ORIGINS = s.SerializeObject<CArrayO<Generic<Pickable>>>(ACTORS_ORIGINS, name: "ACTORS");
 					friezeConnections = s.SerializeObject<CListO<FriezeConnectionResult>>(friezeConnections, name: "friezeConnections");
 					MUSIC_THEME = s.SerializeObject<StringID>(MUSIC_THEME, name: "MUSIC_THEME");
 				}
 			} else if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
-				if (s.HasFlags(SerializeFlags.Flags7)) {
+				if (s.HasFlags(SerializeFlags.Data_Save)) {
 					ENGINE_VERSION = s.Serialize<uint>(ENGINE_VERSION, name: "ENGINE_VERSION");
 				}
-				if (s.HasFlags(SerializeFlags.Flags6)) {
+				if (s.HasFlags(SerializeFlags.Data_Load)) {
 					ENGINE_VERSION = s.Serialize<uint>(ENGINE_VERSION, name: "ENGINE_VERSION");
 				}
-				if (s.HasFlags(SerializeFlags.Flags9)) {
+				if (s.HasFlags(SerializeFlags.DataRaw)) {
 					TABS = s.SerializeObject<CListO<Path>>(TABS, name: "TABS");
 					GRIDUNIT = s.Serialize<float>(GRIDUNIT, name: "GRIDUNIT");
 					DEPTH_SEPARATOR = s.Serialize<int>(DEPTH_SEPARATOR, name: "DEPTH_SEPARATOR");
@@ -74,7 +74,7 @@ namespace UbiArt.ITF {
 					FAR_SEPARATOR = s.SerializeObject<Matrix44>(FAR_SEPARATOR, name: "FAR_SEPARATOR");
 					PLATFORM_FILTER = s.SerializeObject<TargetFilterList>(PLATFORM_FILTER, name: "PLATFORM_FILTER");
 				}
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					DEPENDENCIES = s.SerializeObject<CArrayO<Path>>(DEPENDENCIES, name: "DEPENDENCIES");
 				}
 				FRISE = s.SerializeObject<CRefList<Frise>>(FRISE, name: "FRISE");
@@ -83,13 +83,13 @@ namespace UbiArt.ITF {
 				friezeConnections = s.SerializeObject<CListO<FriezeConnectionResult>>(friezeConnections, name: "friezeConnections");
 				sceneConfigs = s.SerializeObject<SceneConfigs>(sceneConfigs, name: "sceneConfigs");
 			} else {
-				if (s.HasFlags(SerializeFlags.Flags7)) {
+				if (s.HasFlags(SerializeFlags.Data_Save)) {
 					ENGINE_VERSION = s.Serialize<uint>(ENGINE_VERSION, name: "ENGINE_VERSION");
 				}
-				if (s.HasFlags(SerializeFlags.Flags6)) {
+				if (s.HasFlags(SerializeFlags.Data_Load)) {
 					ENGINE_VERSION = s.Serialize<uint>(ENGINE_VERSION, name: "ENGINE_VERSION");
 				}
-				if (s.HasFlags(SerializeFlags.Flags10)) {
+				if (s.HasFlags(SerializeFlags.DataBin)) {
 					DEPENDENCIES = s.SerializeObject<CArrayO<Path>>(DEPENDENCIES, name: "DEPENDENCIES");
 				}
 				FRISE = s.SerializeObject<CRefList<Frise>>(FRISE, name: "FRISE");

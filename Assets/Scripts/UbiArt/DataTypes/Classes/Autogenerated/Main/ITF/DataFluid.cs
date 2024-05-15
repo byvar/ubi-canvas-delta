@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public CListO<FluidFriseLayer> LayerInfos;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Flags10)) {
+			if (s.HasFlags(SerializeFlags.DataBin)) {
 				EdgeFluidList = s.SerializeObject<CListO<EdgeFluid>>(EdgeFluidList, name: "EdgeFluidList");
 				EdgeFluidListLevels = s.SerializeObject<CListO<EdgeFluidLevel>>(EdgeFluidListLevels, name: "EdgeFluidListLevels");
 				IsCushion = s.Serialize<bool>(IsCushion, name: "IsCushion");

@@ -6,12 +6,12 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					bubbleLifetime = s.Serialize<float>(bubbleLifetime, name: "bubbleLifetime");
 					useTuto = s.Serialize<bool>(useTuto, name: "useTuto", options: CSerializerObject.Options.BoolAsByte);
 				}
 			} else {
-				if (s.HasFlags(SerializeFlags.Default)) {
+				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					bubbleLifetime = s.Serialize<float>(bubbleLifetime, name: "bubbleLifetime");
 					useTuto = s.Serialize<bool>(useTuto, name: "useTuto");
 				}

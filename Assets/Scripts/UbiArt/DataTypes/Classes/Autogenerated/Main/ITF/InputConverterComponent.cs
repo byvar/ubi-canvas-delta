@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public Enum_conversion conversion;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				inputToListen = s.SerializeObject<StringID>(inputToListen, name: "inputToListen");
 				conversion = s.Serialize<Enum_conversion>(conversion, name: "conversion");
 			}

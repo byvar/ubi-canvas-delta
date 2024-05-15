@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		public float float__6;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				bool__1 = s.Serialize<bool>(bool__1, name: "bool__1");
 				bool__2 = s.Serialize<bool>(bool__2, name: "bool__2");
 				bool__3 = s.Serialize<bool>(bool__3, name: "bool__3");
@@ -18,7 +18,7 @@ namespace UbiArt.ITF {
 				bool__5 = s.Serialize<bool>(bool__5, name: "bool__5");
 				float__6 = s.Serialize<float>(float__6, name: "float__6");
 			}
-			if (s.HasFlags(SerializeFlags.Persistent)) {
+			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				bool__0 = s.Serialize<bool>(bool__0, name: "bool__0");
 			}
 		}

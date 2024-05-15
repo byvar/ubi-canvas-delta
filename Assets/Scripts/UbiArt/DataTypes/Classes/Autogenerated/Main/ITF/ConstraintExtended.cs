@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 		public float timeToDecrease = 2f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.HasFlags(SerializeFlags.Default)) {
+			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				offset = s.Serialize<float>(offset, name: "offset");
 				timeToIncrease = s.Serialize<float>(timeToIncrease, name: "timeToIncrease");
 				timeToWaitBeforeDecrease = s.Serialize<float>(timeToWaitBeforeDecrease, name: "timeToWaitBeforeDecrease");
