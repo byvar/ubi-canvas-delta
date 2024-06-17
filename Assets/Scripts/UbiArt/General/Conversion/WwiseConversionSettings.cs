@@ -13,11 +13,29 @@ namespace UbiArt {
 
 		public Dictionary<SoundDescriptor_Template, List<SoundDescriptor_Template>> SoundDescriptorMapping { get; set; } = new Dictionary<SoundDescriptor_Template, List<SoundDescriptor_Template>>();
 
+		public Dictionary<SoundDescriptor_Template, Action<SoundDescriptor_Template>> ExtraConversionFunctions { get; set; } = new Dictionary<SoundDescriptor_Template, Action<SoundDescriptor_Template>>();
+
 		//public PlaySound_evtTemplate ConvertWwiseEvent(PlayWwise_evtTemplate wwiseEvt) {
 		//}
 
 		public void ResetUsedEvents() {
 			UsedEvents.Clear();
+		}
+
+		public void RegisterExtraConversionFunction(SoundDescriptor_Template tpl, Action<SoundDescriptor_Template> action) {
+			if(tpl == null) return;
+			ExtraConversionFunctions[tpl] = action;
+		}
+		public void RegisterExtraConversionFunction(SoundComponent_Template tpl, Action<SoundDescriptor_Template> action) {
+			if(tpl?.soundList == null) return;
+			foreach (var snd in tpl.soundList) {
+				RegisterExtraConversionFunction(snd, action);
+			}
+		}
+		public void RegisterExtraConversionFunction(Actor_Template tpl, Action<SoundDescriptor_Template> action) {
+			var component = tpl?.GetComponent<SoundComponent_Template>();
+			if(component == null) return;
+			RegisterExtraConversionFunction(component, action);
 		}
 
 		public SoundParams GetParams(Action action, bool? playAfterDestroy) {
@@ -126,6 +144,9 @@ namespace UbiArt {
 					//limitCategory = new StringID((uint)act.ID)
 				};
 				newTPL.soundPlayAfterdestroy = newTPL.soundPlayAfterdestroy || (newTPL._params?.loop ?? 0) == 0;
+				if (ExtraConversionFunctions.ContainsKey(tpl)) {
+					ExtraConversionFunctions[tpl]?.Invoke(newTPL);
+				}
 				soundDescriptors.Add(newTPL);
 			}
 			SoundDescriptorMapping[tpl] = soundDescriptors;

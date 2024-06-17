@@ -60,6 +60,11 @@ public class UnityPickableEditor : Editor {
 				if (p.pickable.templatePickable.TAGS != null) {
 					p.pickable.templatePickable.TAGS.Serialize(s, "TAGS");
 				}
+				if (p.pickable is UbiArt.ITF.SubSceneActor ssa) {
+					ssa.EMBED_SCENE = s.Serialize<bool>(ssa.EMBED_SCENE, name: "EMBED_SCENE");
+					ssa.IS_SINGLE_PIECE = s.Serialize<bool>(ssa.IS_SINGLE_PIECE, name: "IS_SINGLE_PIECE");
+					ssa.ZFORCED = s.Serialize<bool>(ssa.ZFORCED, name: "ZFORCED");
+				}
 			}
 
 			if (GUILayout.Button("Select in game view")) {

@@ -4,6 +4,7 @@ using UbiArt.ITF;
 using System.Linq;
 using UbiCanvas.Helpers;
 
+[ExecuteInEditMode]
 public class UnityPickable : MonoBehaviour {
 	public Pickable pickable;
 	private SpriteRenderer sr;
@@ -11,10 +12,53 @@ public class UnityPickable : MonoBehaviour {
 	public Scene ContainingScene;
 	private bool inited = false;
 
+	[SerializeField]
+	[HideInInspector]
+	private int originalInstanceID = -1;
+
 	private void Init() {
 		inited = true;
+		ProcessCopyPaste();
 		CreateMesh();
 		UpdateGizmo();
+	}
+
+	private async void ProcessCopyPaste() {
+		if (originalInstanceID != -1) {
+			// This is a copy made through CTRL+C
+			Destroy(gameObject);
+			
+			var parentPickable = transform.parent?.GetComponentInParent<UnityPickable>(includeInactive: true);
+			if (parentPickable != null) {
+				if (parentPickable.pickable == null) {
+					return;
+				}
+			}
+
+			var allPickables = FindObjectsOfType<UnityPickable>(includeInactive: true);
+			var original = allPickables.FirstOrDefault(p => p.GetInstanceID() == originalInstanceID);
+			if(original == null) return;
+			var newPickable = (Pickable)original.pickable.Clone("isc");
+
+			UnityScene containingScene = null;
+			if (transform.parent?.gameObject != null) {
+				containingScene = transform.GetComponentInParent<UnityScene>(includeInactive: true);
+			}
+			if (containingScene?.scene == null) {
+				containingScene = original.transform.GetComponentInParent<UnityScene>(includeInactive: true);
+			}
+			if (containingScene?.scene != null) {
+				if (newPickable is Actor a) { // Frises are also actors
+					containingScene.scene.AddActor(a);
+					await a.SetGameObjectParent(containingScene.gameObject);
+					await a.SetContainingScene(containingScene.scene);
+#if UNITY_EDITOR
+					UnityEditor.Selection.activeGameObject = a.GetPrecreatedGameObject();
+#endif
+				}
+			}
+		}
+		originalInstanceID = GetInstanceID();
 	}
 
 	private void Update() {
@@ -212,10 +256,18 @@ public class UnityPickable : MonoBehaviour {
 	}
 
 	void CreateMesh() {
-		sr = gameObject.AddComponent<SpriteRenderer>();
+		if (gameObject.GetComponent<SpriteRenderer>() != null) {
+			sr = gameObject.GetComponent<SpriteRenderer>();
+		} else {
+			sr = gameObject.AddComponent<SpriteRenderer>();
+		}
 		sr.sortingLayerName = "Gizmo";
 		sr.drawMode = SpriteDrawMode.Sliced;
-		sc = gameObject.AddComponent<SphereCollider>();
+		if (gameObject.GetComponent<SphereCollider>() != null) {
+			sc = gameObject.GetComponent<SphereCollider>();
+		} else {
+			sc = gameObject.AddComponent<SphereCollider>();
+		}
 		sc.radius = 0.2f;
 		//sr.sharedMaterial = new Material(Shader.Find("Custom/Gizmo"));
 		/*mr.sharedMaterial = unityMat;

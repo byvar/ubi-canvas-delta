@@ -96,7 +96,7 @@ namespace UbiArt.Bundle {
 		public async Task WriteBundle(Context context, string path) {
 			bootHeader.FilesCount = (uint)files.Keys.Count + (uint)preProcessedFiles.Count;
 			List<byte[]> data = new List<byte[]>();
-			uint curOffset = 0;
+			ulong curOffset = 0;
 			byte[] serializedData = null;
 			foreach (KeyValuePair<Path, ICSerializable> kv in files) {
 				using (MemoryStream stream = new MemoryStream()) {

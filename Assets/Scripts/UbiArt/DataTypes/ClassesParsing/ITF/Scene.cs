@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEditor.Search;
 
 namespace UbiArt.ITF {
@@ -20,12 +21,8 @@ namespace UbiArt.ITF {
 						name = a.LUA?.GetFilenameWithoutExtension(removeCooked: true);
 
 					if (name != null) {
-						int i = 1; // New actor names start from name@1 in UbiArt, w do the same
 						var newName = name;
-						while (FindByName(newName) != null) {
-							newName = $"{name}@{i}";
-							i++;
-						}
+						newName = GetNewActorName(newName);
 						a.USERFRIENDLY = newName;
 					}
 					if (a is Frise f) {
@@ -44,12 +41,8 @@ namespace UbiArt.ITF {
 						name = a.USERFRIENDLY;
 
 					if (name != null) {
-						int i = 1; // New actor names start from name@1 in UbiArt, we do the same
 						var newName = name;
-						while (FindByName(newName) != null) {
-							newName = $"{name}@{i}";
-							i++;
-						}
+						newName = GetNewActorName(newName);
 						a.USERFRIENDLY = newName;
 					}
 					if (a is Frise f) {
@@ -62,6 +55,30 @@ namespace UbiArt.ITF {
 				}
 			}
 			return false;
+		}
+
+		string GetNewActorName(string newName) {
+			if (FindByName(newName) != null) {
+				var basename = newName;
+				int i = 1; // New actor names start from name@1 in UbiArt, we do the same
+
+				// Check if name is already in the name@1 format
+				const string namePattern = @"^(?<basename>.*)@(?<index>[0-9]+)$";
+				var match = Regex.Match(newName, namePattern, RegexOptions.IgnoreCase);
+				if (match.Success) {
+					var newbasename = match.Groups["basename"].Value;
+					if (int.TryParse(match.Groups["index"].Value, out int newIndex) && newIndex > 0 && newIndex < short.MaxValue) {
+						i = newIndex;
+						basename = newbasename;
+					}
+				}
+
+				while (FindByName(newName) != null) {
+					newName = $"{basename}@{i}";
+					i++;
+				}
+			}
+			return newName;
 		}
 
 		public void DeletePickable(Pickable pickable) {
@@ -176,12 +193,19 @@ namespace UbiArt.ITF {
 							var ssResult = ss.FindPickable(p, flags);
 							if (ssResult != null) {
 								List<ObjectPath.Level> levels = new List<ObjectPath.Level>();
+								List<SubSceneActor> ssaLevels = new List<SubSceneActor>();
 								levels.Add(new ObjectPath.Level() {
 									name = ssa.USERFRIENDLY
 								});
+								ssaLevels.Add(ssa);
 								if (ssResult.Path.levels != null) {
 									foreach (var lev in ssResult.Path.levels) {
 										levels.Add(lev);
+									}
+								}
+								if (ssResult.PathLevels != null) {
+									foreach (var lev in ssResult.PathLevels) {
+										ssaLevels.Add(lev);
 									}
 								}
 								var newResult = new SearchResult<Pickable>() {
@@ -191,6 +215,7 @@ namespace UbiArt.ITF {
 										levels = new CListO<ObjectPath.Level>(levels),
 										id = ssResult.Path.id
 									},
+									PathLevels = ssaLevels,
 									Result = ssResult.Result
 								};
 
@@ -215,12 +240,19 @@ namespace UbiArt.ITF {
 							var ssResult = ss.FindPickable(p, flags);
 							if (ssResult != null) {
 								List<ObjectPath.Level> levels = new List<ObjectPath.Level>();
+								List<SubSceneActor> ssaLevels = new List<SubSceneActor>();
 								levels.Add(new ObjectPath.Level() {
 									name = ssa.USERFRIENDLY
 								});
+								ssaLevels.Add(ssa);
 								if (ssResult.Path.levels != null) {
 									foreach (var lev in ssResult.Path.levels) {
 										levels.Add(lev);
+									}
+								}
+								if (ssResult.PathLevels != null) {
+									foreach (var lev in ssResult.PathLevels) {
+										ssaLevels.Add(lev);
 									}
 								}
 								var newResult = new SearchResult<Pickable>() {
@@ -230,6 +262,7 @@ namespace UbiArt.ITF {
 										levels = new CListO<ObjectPath.Level>(levels),
 										id = ssResult.Path.id
 									},
+									PathLevels = ssaLevels,
 									Result = ssResult.Result
 								};
 
@@ -248,7 +281,8 @@ namespace UbiArt.ITF {
 					ContainingScene = pickable.ContainingScene,
 					RootScene = pickable.RootScene,
 					Path = pickable.Path,
-					Result = pickable.Result as Actor
+					Result = pickable.Result as Actor,
+					PathLevels = pickable.PathLevels
 				};
 			}
 			return null;
@@ -264,7 +298,7 @@ namespace UbiArt.ITF {
 								Path = new ObjectPath() { id = fr.USERFRIENDLY },
 								Result = fr,
 								ContainingScene = this,
-								RootScene = this,
+								RootScene = this
 							});
 						}
 					}
@@ -301,12 +335,19 @@ namespace UbiArt.ITF {
 							if (ssResults != null && ssResults.Any()) {
 								foreach (var ssResult in ssResults) {
 									List<ObjectPath.Level> levels = new List<ObjectPath.Level>();
+									List<SubSceneActor> ssaLevels = new List<SubSceneActor>();
 									levels.Add(new ObjectPath.Level() {
 										name = ssa.USERFRIENDLY
 									});
+									ssaLevels.Add(ssa);
 									if (ssResult.Path.levels != null) {
 										foreach (var lev in ssResult.Path.levels) {
 											levels.Add(lev);
+										}
+									}
+									if (ssResult.PathLevels != null) {
+										foreach (var lev in ssResult.PathLevels) {
+											ssaLevels.Add(lev);
 										}
 									}
 									var newResult = new SearchResult<Pickable>() {
@@ -316,6 +357,7 @@ namespace UbiArt.ITF {
 											levels = new CListO<ObjectPath.Level>(levels),
 											id = ssResult.Path.id
 										},
+										PathLevels = ssaLevels,
 										Result = ssResult.Result
 									};
 									results.Add(newResult);
@@ -342,12 +384,19 @@ namespace UbiArt.ITF {
 							if (ssResults != null && ssResults.Any()) {
 								foreach (var ssResult in ssResults) {
 									List<ObjectPath.Level> levels = new List<ObjectPath.Level>();
+									List<SubSceneActor> ssaLevels = new List<SubSceneActor>();
 									levels.Add(new ObjectPath.Level() {
 										name = ssa.USERFRIENDLY
 									});
+									ssaLevels.Add(ssa);
 									if (ssResult.Path.levels != null) {
 										foreach (var lev in ssResult.Path.levels) {
 											levels.Add(lev);
+										}
+									}
+									if (ssResult.PathLevels != null) {
+										foreach (var lev in ssResult.PathLevels) {
+											ssaLevels.Add(lev);
 										}
 									}
 									var newResult = new SearchResult<Pickable>() {
@@ -357,6 +406,7 @@ namespace UbiArt.ITF {
 											levels = new CListO<ObjectPath.Level>(levels),
 											id = ssResult.Path.id
 										},
+										PathLevels = ssaLevels,
 										Result = ssResult.Result
 									};
 									results.Add(newResult);
@@ -377,7 +427,8 @@ namespace UbiArt.ITF {
 						ContainingScene = pickable.ContainingScene,
 						RootScene = pickable.RootScene,
 						Path = pickable.Path,
-						Result = pickable.Result as Actor
+						Result = pickable.Result as Actor,
+						PathLevels = pickable.PathLevels
 					});
 				}
 			}
@@ -427,6 +478,7 @@ namespace UbiArt.ITF {
 			public ObjectPath Path { get; set; }
 			public Scene RootScene { get; set; }
 			public Scene ContainingScene { get; set; }
+			public List<SubSceneActor> PathLevels { get; set; }
 		}
 		#endregion
 	}

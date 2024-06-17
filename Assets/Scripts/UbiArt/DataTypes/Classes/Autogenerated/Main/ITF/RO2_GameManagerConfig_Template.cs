@@ -409,6 +409,7 @@ namespace UbiArt.ITF {
 				[Serialize("NodeBehaviorType_Pet"              )] Pet = 8,
 				[Serialize("NodeBehaviorType_PetStand"         )] PetStand = 9,
 				[Serialize("NodeBehaviorType_Door"             )] Door = 10,
+				Invasion = 11,
 			}
 		}
 		[Games(GameFlags.RA)]

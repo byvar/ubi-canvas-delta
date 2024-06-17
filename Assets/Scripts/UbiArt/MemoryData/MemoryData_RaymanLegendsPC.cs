@@ -1024,6 +1024,7 @@ namespace UbiArt {
 			[typeof(Volume)] = 4,
 
 			// From IDA
+			[typeof(ITF.BoneMapping)] = 8,
 			[typeof(ITF.ScreenRollOff)] = 16,
 			[typeof(ITF.ScreenRollOffXY)] = 32,
 			[typeof(ITF.ZRollOff)] = 12,

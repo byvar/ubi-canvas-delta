@@ -3,17 +3,17 @@ namespace UbiArt.ITF {
 	public partial class PatchCurveComponent_Template : GraphicComponent_Template {
 		public Path texture;
 		public GFXMaterialSerializable material;
-		public float widthStart;
-		public float widthEnd;
+		public float widthStart = 1f;
+		public float widthEnd = 1f;
 		public float tileLength;
 		public float uvScrollSpeed;
 		public float zOffset;
-		public float tessellationLength;
-		public StringID parentBone;
-		public StringID childBone;
-		public float childOrientationInfluence;
+		public float tessellationLength = 0.1f;
+		public StringID parentBone = "SnapPoint";
+		public StringID childBone = "SnapPoint";
+		public float childOrientationInfluence = 0.5f;
 		public bool attachToChild;
-		public float width;
+		public float width = 1f;
 		public bool parentBoneEnd;
 		public bool childBoneEnd;
 		protected override void SerializeImpl(CSerializerObject s) {

@@ -163,15 +163,19 @@ namespace UbiCanvas {
 			byte[] dxtBytes = new byte[ddsBytes.Length - DDS_HEADER_SIZE];
 			Array.Copy(ddsBytes, DDS_HEADER_SIZE, dxtBytes, 0, ddsBytes.Length - DDS_HEADER_SIZE);
 
-			Texture2D texture = new Texture2D(width, height, format, false);
-			texture.LoadRawTextureData(dxtBytes);
-			if (width == height) {
-				texture.Apply(true, makeNoLongerReadable);
-			} else {
-				texture.Apply(true, false);
+			try {
+				Texture2D texture = new Texture2D(width, height, format, false);
+				texture.LoadRawTextureData(dxtBytes);
+				if (width == height) {
+					texture.Apply(true, makeNoLongerReadable);
+				} else {
+					texture.Apply(true, false);
+				}
+				return (texture);
+			} catch (Exception ex) {
+				Debug.LogWarning(ex);
+				return null;
 			}
-
-			return (texture);
 		}
 	}
 }
