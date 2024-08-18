@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ImageMagick;
 using UbiArt;
 using UbiArt.Animation;
 using UbiArt.UV;
@@ -332,6 +333,22 @@ public class UnityWindowAtlasEditor : UnityWindow {
 							index++;
 						}
 					}
+
+					if (EditorButton("Export as PNG"))
+					{
+						var defaultName = $"{new Path(SelectedTextureFile).GetFilenameWithoutExtension()}.png";
+						string filePath = EditorUtility.SaveFilePanel("Output PNG file", "", defaultName, "png");
+
+						if (!string.IsNullOrWhiteSpace(filePath))
+							SavePatchBankAsPNG(tex, filePath, pbk);
+					}
+
+					PatchBankExport_IncludeImage = EditorField("Include image", PatchBankExport_IncludeImage);
+					PatchBankExport_Scale = EditorField("Scale", PatchBankExport_Scale);
+					PatchBankExport_Padding = EditorField("Padding", PatchBankExport_Padding);
+					PatchBankExport_PointSize = EditorField("Point size", PatchBankExport_PointSize);
+					PatchBankExport_LineSize = EditorField("Line size", PatchBankExport_LineSize);
+					PatchBankExport_IncludeNormals = EditorField("Include normals", PatchBankExport_IncludeNormals);
 				}
 			} else {
 				if (EditorButton("Load")) {
@@ -345,6 +362,155 @@ public class UnityWindowAtlasEditor : UnityWindow {
 						)
 					);
 				}
+			}
+		}
+	}
+
+	void SavePatchBankAsPNG(TextureCooked tex, string outputPath, AnimPatchBank pbk)
+	{
+		Texture2D tex2d = tex.GetUnityTexture(Controller.MainContext).Texture;
+		using MagickImage img = PatchBankExport_IncludeImage 
+			? new MagickImage(tex2d.EncodeToPNG(), MagickFormat.Png) 
+			: new MagickImage(MagickColors.Transparent, tex2d.width, tex2d.height);
+		
+		// Make sure it's not vertically flipped!
+		img.Flip();
+
+		// Optionally resize
+		if (PatchBankExport_Scale != 1)
+		{
+			//img.Interpolate = PixelInterpolateMethod.Integer;
+			//img.FilterType = FilterType.Point;
+			img.Resize(new Percentage(PatchBankExport_Scale * 100));
+		}
+
+		// Optionally add padding
+		if (PatchBankExport_Padding != 0)
+		{
+			img.Extent(img.Width + PatchBankExport_Padding * 2, img.Height + PatchBankExport_Padding * 2, Gravity.Center, MagickColors.Transparent);
+		}
+
+		// Add UVs
+		DrawPatchBankToImage(img, new Rect(PatchBankExport_Padding, PatchBankExport_Padding, img.Width - PatchBankExport_Padding * 2, img.Height - PatchBankExport_Padding * 2), pbk);
+
+		// Save
+		img.Write(outputPath);
+	}
+
+	// Re-implemented from DrawPatchBank
+	void DrawPatchBankToImage(MagickImage img, Rect rect, AnimPatchBank pbk)
+	{
+		Vector2 getTexturePositionOnRect(Vector2 pos) => rect.position + pos * rect.size;
+
+		DrawableStrokeWidth lineSize = new(PatchBankExport_LineSize);
+
+		UnityEngine.Random.InitState(12675);
+		for (int tpl_i = 0; tpl_i < pbk.templates.Count; tpl_i++)
+		{
+			AnimTemplate tpl = pbk.templates[tpl_i];
+			ulong tplKey = pbk.templateKeys.GetKeyFromValue(tpl_i);
+			if (CurrentPBKTemplate == -1)
+			{
+				ShowTemplate.TryAdd(tplKey, true);
+				if (!ShowTemplate[tplKey]) 
+					continue;
+			}
+			else if (tpl_i != CurrentPBKTemplate)
+			{
+				continue;
+			}
+
+			// Create a random color
+			Color unityPointColor = UnityEngine.Random.ColorHSV(0f, 1f, 0.8f, 0.8f, 0.8f, 1f, 1f, 1f);
+			DrawableFillColor fillColor = new(new MagickColor(
+				(byte)(unityPointColor.r * 255), 
+				(byte)(unityPointColor.g * 255), 
+				(byte)(unityPointColor.b * 255)));
+
+			// Draw points
+			foreach (AnimPatchPoint point in tpl.patchPoints)
+			{
+				// Draw point
+				Vector2 uvPos = getTexturePositionOnRect(point.uv.GetUnityVector());
+				img.Draw(fillColor, new DrawableRectangle(
+					upperLeftX: uvPos.x - PatchBankExport_PointSize / 2, 
+					upperLeftY: uvPos.y - PatchBankExport_PointSize / 2, 
+					lowerRightX: uvPos.x + PatchBankExport_PointSize / 2, 
+					lowerRightY: uvPos.y + PatchBankExport_PointSize / 2)); 
+
+				// Draw normal
+				if (PatchBankExport_IncludeNormals)
+				{
+					Vec2d normalTest = point.uv + point.normal * 0.01f;
+					Vector2 normalTestPos = getTexturePositionOnRect(normalTest.GetUnityVector());
+					img.Draw(new DrawableStrokeColor(MagickColors.White), lineSize, new DrawableLine(uvPos.x, uvPos.y, normalTestPos.x, normalTestPos.y));
+				}
+			}
+
+			if (tpl.patchPoints.Count >= 2)
+			{
+				var pt1 = tpl.patchPoints[0];
+				var pt2 = tpl.patchPoints[1];
+				var uv1 = pt1.uv;
+				var uv2 = pt2.uv;
+				var uvPos1 = getTexturePositionOnRect(new Vector2(uv1.x, uv1.y));
+				var uvPos2 = getTexturePositionOnRect(new Vector2(uv2.x, uv2.y));
+				img.Draw(fillColor, lineSize, new DrawableLine(uvPos1.x, uvPos1.y, uvPos2.x, uvPos2.y));
+			}
+			if (tpl.patchPoints.Count >= 3)
+			{
+				var cnt = tpl.patchPoints.Count;
+				var pt1 = tpl.patchPoints[cnt - 2];
+				var pt2 = tpl.patchPoints[cnt - 1];
+				var uv1 = pt1.uv;
+				var uv2 = pt2.uv;
+				var uvPos1 = getTexturePositionOnRect(new Vector2(uv1.x, uv1.y));
+				var uvPos2 = getTexturePositionOnRect(new Vector2(uv2.x, uv2.y));
+				img.Draw(fillColor, lineSize, new DrawableLine(uvPos1.x, uvPos1.y, uvPos2.x, uvPos2.y));
+			}
+
+			Dictionary<Link, AnimPatchPoint> points = tpl.patchPoints.ToDictionary(p => p.key, p => p);
+			foreach (var patch in tpl.patches)
+			{
+				int count = patch.points.Length;
+
+				if (count != 4) 
+					throw new Exception("Unexpected patch points count!");
+
+				Vec2d[] controlPoints = AnimTemplate.GetPatchControlPoints(
+					new Vec2d[] {
+						points[patch.points[0]].uv,
+						points[patch.points[2]].uv,
+						points[patch.points[3]].uv,
+						points[patch.points[1]].uv,
+					},
+					new Vec2d[] {
+						points[patch.points[0]].normal,
+						points[patch.points[2]].normal,
+						points[patch.points[3]].normal,
+						points[patch.points[1]].normal,
+					});
+
+				drawCubicBezier(controlPoints[0], controlPoints[1], controlPoints[2], controlPoints[3]);
+				drawCubicBezier(controlPoints[4], controlPoints[5], controlPoints[6], controlPoints[7]);
+
+				void drawCubicBezier(Vec2d p0, Vec2d p1, Vec2d p2, Vec2d p3)
+				{
+					const int numPoints = 16;
+					
+					Vec2d[] bezierPoints = Enumerable.Range(0, numPoints).
+						Select(i => CalculateCubicBezierPoint(i / (float)(numPoints - 1), p0, p1, p2, p3)).
+						ToArray();
+					Vector2[] pointsConv = bezierPoints.
+						Select(p => getTexturePositionOnRect(p.GetUnityVector())).
+						ToArray();
+					
+					for (int i = 0; i < bezierPoints.Length - 1; i++)
+					{
+						img.Draw(fillColor, lineSize, new DrawableLine(pointsConv[i].x, pointsConv[i].y, pointsConv[i + 1].x, pointsConv[i + 1].y));
+					}
+				}
+
 			}
 		}
 	}
@@ -756,4 +922,12 @@ public class UnityWindowAtlasEditor : UnityWindow {
 
 	public float patchHLevel { get; set; } = 2f;
 	public float patchVLevel { get; set; } = 2f;
+
+	// Patch bank export options
+	public bool PatchBankExport_IncludeImage { get; set; } = true;
+	public float PatchBankExport_Scale { get; set; } = 1f;
+	public int PatchBankExport_Padding { get; set; } = 0;
+	public float PatchBankExport_PointSize { get; set; } = 6f;
+	public float PatchBankExport_LineSize { get; set; } = 2f;
+	public bool PatchBankExport_IncludeNormals { get; set; } = false;
 }
