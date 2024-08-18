@@ -370,7 +370,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 	{
 		Texture2D tex2d = tex.GetUnityTexture(Controller.MainContext).Texture;
 		using MagickImage img = PatchBankExport_IncludeImage 
-			? new MagickImage(tex2d.EncodeToPNG(), MagickFormat.Png) 
+			? new MagickImage(tex2d.Decompress().EncodeToPNG(), MagickFormat.Png) 
 			: new MagickImage(MagickColors.Transparent, tex2d.width, tex2d.height);
 		
 		// Make sure it's not vertically flipped!
