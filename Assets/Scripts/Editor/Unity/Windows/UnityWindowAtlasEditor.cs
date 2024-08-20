@@ -400,7 +400,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 	// Re-implemented from DrawPatchBank
 	void DrawPatchBankToImage(MagickImage img, Rect rect, AnimPatchBank pbk)
 	{
-		Vector2 getTexturePositionOnRect(Vector2 pos) => rect.position + pos * rect.size;
+		Vector2 getTexturePositionOnRect(Vector2 pos) => rect.position + pos * rect.width;
 
 		DrawableStrokeWidth lineSize = new(PatchBankExport_LineSize);
 
