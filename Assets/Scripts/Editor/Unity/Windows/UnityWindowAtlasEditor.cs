@@ -421,11 +421,13 @@ public class UnityWindowAtlasEditor : UnityWindow {
 			}
 
 			// Create a random color
-			Color unityPointColor = UnityEngine.Random.ColorHSV(0f, 1f, 0.8f, 0.8f, 0.8f, 1f, 1f, 1f);
-			DrawableFillColor fillColor = new(new MagickColor(
-				(byte)(unityPointColor.r * 255), 
-				(byte)(unityPointColor.g * 255), 
-				(byte)(unityPointColor.b * 255)));
+			Color unityColor = UnityEngine.Random.ColorHSV(0f, 1f, 0.8f, 0.8f, 0.8f, 1f, 1f, 1f);
+			MagickColor color = new MagickColor(
+				(byte)(unityColor.r * 255),
+				(byte)(unityColor.g * 255),
+				(byte)(unityColor.b * 255));
+			DrawableFillColor fillColor = new(color);
+			DrawableStrokeColor strokeColor = new(color);
 
 			// Draw points
 			foreach (AnimPatchPoint point in tpl.patchPoints)
@@ -455,7 +457,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 				var uv2 = pt2.uv;
 				var uvPos1 = getTexturePositionOnRect(new Vector2(uv1.x, uv1.y));
 				var uvPos2 = getTexturePositionOnRect(new Vector2(uv2.x, uv2.y));
-				img.Draw(fillColor, lineSize, new DrawableLine(uvPos1.x, uvPos1.y, uvPos2.x, uvPos2.y));
+				img.Draw(strokeColor, lineSize, new DrawableLine(uvPos1.x, uvPos1.y, uvPos2.x, uvPos2.y));
 			}
 			if (tpl.patchPoints.Count >= 3)
 			{
@@ -466,7 +468,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 				var uv2 = pt2.uv;
 				var uvPos1 = getTexturePositionOnRect(new Vector2(uv1.x, uv1.y));
 				var uvPos2 = getTexturePositionOnRect(new Vector2(uv2.x, uv2.y));
-				img.Draw(fillColor, lineSize, new DrawableLine(uvPos1.x, uvPos1.y, uvPos2.x, uvPos2.y));
+				img.Draw(strokeColor, lineSize, new DrawableLine(uvPos1.x, uvPos1.y, uvPos2.x, uvPos2.y));
 			}
 
 			Dictionary<Link, AnimPatchPoint> points = tpl.patchPoints.ToDictionary(p => p.key, p => p);
@@ -507,7 +509,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 					
 					for (int i = 0; i < bezierPoints.Length - 1; i++)
 					{
-						img.Draw(fillColor, lineSize, new DrawableLine(pointsConv[i].x, pointsConv[i].y, pointsConv[i + 1].x, pointsConv[i + 1].y));
+						img.Draw(strokeColor, lineSize, new DrawableLine(pointsConv[i].x, pointsConv[i].y, pointsConv[i + 1].x, pointsConv[i + 1].y));
 					}
 				}
 
@@ -928,6 +930,6 @@ public class UnityWindowAtlasEditor : UnityWindow {
 	public float PatchBankExport_Scale { get; set; } = 1f;
 	public int PatchBankExport_Padding { get; set; } = 0;
 	public float PatchBankExport_PointSize { get; set; } = 6f;
-	public float PatchBankExport_LineSize { get; set; } = 2f;
+	public float PatchBankExport_LineSize { get; set; } = 1f;
 	public bool PatchBankExport_IncludeNormals { get; set; } = false;
 }
