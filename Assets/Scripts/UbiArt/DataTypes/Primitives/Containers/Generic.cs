@@ -118,6 +118,22 @@ namespace UbiArt {
 								if (e.IsAdventuresExclusive()) MakeNull();
 							}
 						}
+					} else if (previousSettings.EngineVersion <= EngineVersion.RO && settings.EngineVersion >= EngineVersion.RL) {
+						if (obj != null) {
+							var type = obj.GetType();
+							if (type.Name.StartsWith("Ray_")) {
+								var typeName = type.FullName;
+								var ro2TypeName = typeName.Replace("Ray_", "RO2_");
+								Type ro2Type = Type.GetType(ro2TypeName);
+								if (ro2Type != null) {
+									var inst = (CSerializable)Activator.CreateInstance(ro2Type);
+									inst.InitContext(c);
+									Merger.MergeGeneric(obj, ro2Type, targetObject: inst);
+									obj = (T)(object)inst;
+									className = new StringID(obj.ClassCRC.Value);
+								}
+							}
+						}
 					}
 					if (obj != null) {
 						var attr = (GamesAttribute)Attribute.GetCustomAttribute(obj.GetType(), typeof(GamesAttribute));
@@ -148,15 +164,27 @@ namespace UbiArt {
 									obj = (T)(object)newBT;
 									className = new StringID(obj.ClassCRC.Value);
 								} else if (obj is RO2_BTActionJumpAttack_Template btJump) {
+									var newBT = Merger.Merge<RO2_BTActionCharge_Template>(btJump);
+									newBT.animRun = btJump.animJump;
+									newBT.animEndRun = btJump.animReception;
+									newBT.animAnticip = btJump.animAnticip;
+									newBT.animHitWall = btJump.animWallStand;
+									newBT.animHoleStop = btJump.animReception;
+									newBT.distMaxCharge = btJump.jumpImpulse;
+									newBT.timePatinage = 0.5f; // Time before start of charge
+									newBT.name = btJump.name;
+									obj = (T)(object)newBT;
+									className = new StringID(obj.ClassCRC.Value);
 									// TODO: Doesn't work properly (dualswordman uses it)
-									var newBT = Merger.Merge<RO2_BTActionJumpJanod_Template>(btJump);
+									/*var newBT = Merger.Merge<RO2_BTActionJumpJanod_Template>(btJump);
 									newBT.animJump = btJump.animJump;
 									newBT.animLanding = btJump.animReception;
 									newBT.animAnticip = btJump.animAnticip;
 									newBT.animIdle = btJump.animWallStand;
+									newBT.speedJump = btJump.jumpImpulse;
 									newBT.name = btJump.name;
 									obj = (T)(object)newBT;
-									className = new StringID(obj.ClassCRC.Value);
+									className = new StringID(obj.ClassCRC.Value);*/
 								} else if (obj is RO2_BTActionAppearBackground_Rope_Template btRope) {
 									//var newBT = Merger.Merge<RO2_BTActionAppearBackgroundLadders_Template>(btRope);
 									var newBT = Merger.Merge<RO2_BTActionAppearBackground_Template>(btRope);
@@ -187,11 +215,34 @@ namespace UbiArt {
 									newBT.animNinjaFore = btBasket.animAppear;
 									newBT.heightNinja = 0f;
 									newBT.fallTime = 0f;
-									newBT.jumpToActorMinTime = 0f;
-									newBT.jumpToActorYFuncPoint1Dist = 0f;
-									newBT.jumpToActorXZFuncPoint1T = 0.001f;
+									newBT.jumpToActorMinTime = 0.3f;
+									newBT.jumpToActorYFuncPoint0Dist = 0;
+									newBT.jumpToActorYFuncPoint1Dist = 0;
+									newBT.jumpToActorXZFuncPoint0T = 0f;
+									newBT.jumpToActorXZFuncPoint1T = 0f;
 									newBT.animLandingBack = btBasket.animAppear;
 									newBT.animLandingFore = btBasket.animAppear;
+									//newBT.jumpUseEasing = true;
+									//newBT.disablePhys = true;
+									obj = (T)(object)newBT;
+									className = new StringID(obj.ClassCRC.Value);
+								} else if (obj is Ray_BTActionWaitForDanceOnDoor_Template btWDod) {
+									var newBT = Merger.Merge<BTActionPlayAnim_Template>(btWDod);
+									obj = (T)(object)newBT;
+									className = new StringID(obj.ClassCRC.Value);
+								} else if (obj is Ray_BTActionDanceOnDoor_Template btDod) {
+									var newBT = Merger.Merge<BTActionPlayAnim_Template>(btDod);
+									obj = (T)(object)newBT;
+									className = new StringID(obj.ClassCRC.Value);
+								} else if (obj is Ray_BTActionActivateStone_Template btAS) {
+									var newBT = Merger.Merge<BTActionPlayAnim_Template>(btAS);
+									obj = (T)(object)newBT;
+									className = new StringID(obj.ClassCRC.Value);
+								} else if (obj is Ray_BTActionUseTeleport_Template btUT) {
+									var newBT = Merger.Merge<BTActionSetFact_Template>(btUT);
+									newBT.fact = "placeholder_teleportfact";
+									newBT.value = "1";
+									newBT.type = BTActionSetFact_Template.EValueType2.Integer32;
 									obj = (T)(object)newBT;
 									className = new StringID(obj.ClassCRC.Value);
 								} else if (obj is EventBreakableBreak evbreak) {

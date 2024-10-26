@@ -173,6 +173,7 @@ namespace UbiArt.FriseOrigins {
 					tex = idTexFill != -1 ? textureConfigs[idTexFill].friendly?.str : null,
 					zExtrude = 0f,
 				},
+				switchExtremityAuto = methode != 5, // true, except for pipe?
 				flexibility = flexibility,
 				Fluid = Fluid,
 				width = width,
@@ -212,7 +213,7 @@ namespace UbiArt.FriseOrigins {
 							diffuse = tc.TexturePath,
 							normal = tc.NormalPath
 						},
-						shaderPath = !tc.TexturePath.IsNull ? tc.RO2_ShaderPath : null
+						shaderPath = !Path.IsNull(tc.TexturePath) ? tc.RO2_ShaderPath : null
 						// TODO: or "world/common/matshader/default.msh" ?
 					},
 					collision = new CollisionTexture() {

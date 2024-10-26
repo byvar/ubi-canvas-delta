@@ -46,7 +46,7 @@ namespace UbiArt {
 					if (a.texturePaths != null) {
 						foreach (var texPath in a.texturePaths) {
 							var texturePath = texPath?.Item2;
-							if(texturePath == null || texturePath.IsNull) continue;
+							if(Path.IsNull(texturePath)) continue;
 							if (!grp.TextureBanks.ContainsKey(texturePath)) {
 								var pbkPath = new Path($"{texturePath.GetFilenameWithoutExtension(fullPath: true)}.pbk");
 								var pbk = context.Cache.Get<AnimPatchBank>(pbkPath);

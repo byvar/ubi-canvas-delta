@@ -479,6 +479,8 @@ namespace UbiArt.ITF {
 			public Scene RootScene { get; set; }
 			public Scene ContainingScene { get; set; }
 			public List<SubSceneActor> PathLevels { get; set; }
+
+			public void Delete() => ContainingScene.DeletePickable(Result);
 		}
 		#endregion
 	}

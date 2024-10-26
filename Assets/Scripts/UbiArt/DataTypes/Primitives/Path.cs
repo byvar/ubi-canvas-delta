@@ -86,10 +86,15 @@ namespace UbiArt {
 			}
 		}
 
-		public bool IsNull {
+		protected bool IsPathNull {
 			get {
 				return ((folder == null || folder == "") && (filename == null || filename == "") && stringID.IsNull);
 			}
+		}
+
+		public static bool IsNull(Path p) {
+			if(p == null) return true;
+			return p.IsPathNull;
 		}
 
 		public bool IsCooked(Context context) {
@@ -98,14 +103,14 @@ namespace UbiArt {
 		}
 
 		public Path CookedPath(Context context) {
-			if (!IsNull && !IsCooked(context)) {
+			if (!IsPathNull && !IsCooked(context)) {
 				return new Path(folder != null ? context.Settings.ITFDirectory + folder : null,
 					filename != null ? filename + ".ckd" : null, cooked: true);
 			}
 			return this;
 		}
 		public Path UncookedPath(Context context) {
-			if (!IsNull && IsCooked(context)) {
+			if (!IsPathNull && IsCooked(context)) {
 				var folder = this.folder;
 				var filename = this.filename;
 				if(folder != null && folder.StartsWith(context.Settings.ITFDirectory)) folder = folder.Substring(context.Settings.ITFDirectory.Length);
@@ -162,7 +167,7 @@ namespace UbiArt {
 		}
 
 		public void LoadObject(Context c, bool removeCooked = false) {
-			if (!IsNull) {
+			if (!IsPathNull) {
 				switch (GetExtension(removeCooked: removeCooked)) {
 					case "anm":
 						c.Loader.LoadFile<AnimTrack>(this, o => Object = o);

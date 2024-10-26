@@ -159,6 +159,19 @@ public class Controller : MonoBehaviour {
 		GlobalLoadState.LoadState = GlobalLoadState.State.Finished;
 		loadingScreen.Active = false;
 	}
+	public async UniTask ExportSceneContainer(Scene scene, string path) {
+		const string extension = "isc";
+		
+		GlobalLoadState.LoadState = GlobalLoadState.State.Loading;
+		loadingScreen.Active = true;
+		byte[] actorBytes = await MainContext.Loader.WriteSceneFile(scene, extension);
+		if (actorBytes != null)
+			Util.ByteArrayToFile(path, actorBytes);
+
+		GlobalLoadState.DetailedState = "Finished";
+		GlobalLoadState.LoadState = GlobalLoadState.State.Finished;
+		loadingScreen.Active = false;
+	}
 
 	public async UniTask LoadTemplateAndCreateActor(Scene scene, UbiArt.Path path) {
 		path.LoadObject(MainContext, removeCooked: true);

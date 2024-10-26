@@ -13,26 +13,28 @@ namespace UbiArt {
 
 		public Dictionary<SoundDescriptor_Template, List<SoundDescriptor_Template>> SoundDescriptorMapping { get; set; } = new Dictionary<SoundDescriptor_Template, List<SoundDescriptor_Template>>();
 
-		public Dictionary<SoundDescriptor_Template, Action<SoundDescriptor_Template>> ExtraConversionFunctions { get; set; } = new Dictionary<SoundDescriptor_Template, Action<SoundDescriptor_Template>>();
+		public Dictionary<SoundDescriptor_Template, ExtraConversionFunction> ExtraConversionFunctions { get; set; } = new Dictionary<SoundDescriptor_Template, ExtraConversionFunction>();
 
 		//public PlaySound_evtTemplate ConvertWwiseEvent(PlayWwise_evtTemplate wwiseEvt) {
 		//}
+
+		public delegate void ExtraConversionFunction(SoundDescriptor_Template template, WwiseConversionSettings.Event wwiseEvent);
 
 		public void ResetUsedEvents() {
 			UsedEvents.Clear();
 		}
 
-		public void RegisterExtraConversionFunction(SoundDescriptor_Template tpl, Action<SoundDescriptor_Template> action) {
+		public void RegisterExtraConversionFunction(SoundDescriptor_Template tpl, ExtraConversionFunction action) {
 			if(tpl == null) return;
 			ExtraConversionFunctions[tpl] = action;
 		}
-		public void RegisterExtraConversionFunction(SoundComponent_Template tpl, Action<SoundDescriptor_Template> action) {
+		public void RegisterExtraConversionFunction(SoundComponent_Template tpl, ExtraConversionFunction action) {
 			if(tpl?.soundList == null) return;
 			foreach (var snd in tpl.soundList) {
 				RegisterExtraConversionFunction(snd, action);
 			}
 		}
-		public void RegisterExtraConversionFunction(Actor_Template tpl, Action<SoundDescriptor_Template> action) {
+		public void RegisterExtraConversionFunction(Actor_Template tpl, ExtraConversionFunction action) {
 			var component = tpl?.GetComponent<SoundComponent_Template>();
 			if(component == null) return;
 			RegisterExtraConversionFunction(component, action);
@@ -145,7 +147,7 @@ namespace UbiArt {
 				};
 				newTPL.soundPlayAfterdestroy = newTPL.soundPlayAfterdestroy || (newTPL._params?.loop ?? 0) == 0;
 				if (ExtraConversionFunctions.ContainsKey(tpl)) {
-					ExtraConversionFunctions[tpl]?.Invoke(newTPL);
+					ExtraConversionFunctions[tpl]?.Invoke(newTPL, ev);
 				}
 				soundDescriptors.Add(newTPL);
 			}

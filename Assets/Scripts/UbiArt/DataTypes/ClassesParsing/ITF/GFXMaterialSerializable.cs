@@ -21,8 +21,8 @@
 			if (previousSettings != null) {
 				if (previousSettings.Game != settings.Game) {
 					if ((previousSettings.Game == Game.RA || previousSettings.Game == Game.RM) && settings.Game == Game.RL) {
-						if (!(textureSet?.diffuse?.IsNull ?? true)) {
-							if (shaderPath == null || shaderPath.IsNull) {
+						if (!Path.IsNull(textureSet?.diffuse)) {
+							if (Path.IsNull(shaderPath)) {
 								shaderPath = new Path("world/common/matshader/regularbuffer/backlighted.msh");
 							}
 						}

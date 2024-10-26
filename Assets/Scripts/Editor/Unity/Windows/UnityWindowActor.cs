@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using System.Linq;
 using UbiArt.ITF;
+using System.Collections.Generic;
 
 public class UnityWindowActor : UnityWindow {
 	[MenuItem("Ubi-Canvas/Actor Tools")]
@@ -28,16 +29,17 @@ public class UnityWindowActor : UnityWindow {
 				string ExtensionScene = "isc";
 				string ExtensionFrise = "frz";
 				//string ExtensionFriseConfig = $"*.fcg{(c.Settings.Cooked ? ".ckd" : "")}";
-				string ExtensionSubSceneActor = $"ucs";
+				string ExtensionSubsceneActor = $"ucs";
 
-				string[] extensions = new string[] {
-					$"*.{ExtensionActor}{(c.Settings.Cooked ? ".ckd" : "")}",
-					$"*.{ExtensionActorTemplate}{(c.Settings.Cooked ? ".ckd" : "")}",
-					$"*.{ExtensionTemplateScene}{(c.Settings.Cooked ? ".ckd" : "")}",
-					//$"*.{ExtensionScene}{(c.Settings.Cooked ? ".ckd" : "")}",
-					$"*.{ExtensionFrise}{(c.Settings.Cooked ? ".ckd" : "")}",
-					$"*.{ExtensionSubSceneActor}{(c.Settings.Cooked ? ".ckd" : "")}"
-				};
+				List<string> extensionsList = new List<string>();
+				if(LoadActors) extensionsList.Add($"*.{ExtensionActor}{(c.Settings.Cooked ? ".ckd" : "")}");
+				if(LoadTemplates) extensionsList.Add($"*.{ExtensionActorTemplate}{(c.Settings.Cooked ? ".ckd" : "")}");
+				if(LoadTemplateScenes) extensionsList.Add($"*.{ExtensionTemplateScene}{(c.Settings.Cooked ? ".ckd" : "")}");
+				if(LoadScenes) extensionsList.Add($"*.{ExtensionScene}{(c.Settings.Cooked ? ".ckd" : "")}");
+				if(LoadFrise) extensionsList.Add($"*.{ExtensionFrise}{(c.Settings.Cooked ? ".ckd" : "")}");
+				if(LoadSubsceneActors) extensionsList.Add($"*.{ExtensionSubsceneActor}{(c.Settings.Cooked ? ".ckd" : "")}");
+				var extensions = extensionsList.ToArray();
+
 				#region Add Actor
 				DrawHeader("Import Actor");
 				Rect rect = GetNextRect(vPaddingBottom: 4f);
@@ -96,7 +98,7 @@ public class UnityWindowActor : UnityWindow {
 							ExecuteTask(controller.AdditionalLoad(controller.LoadActorContainer<Actor>(sc, path).AsTask()));
 						} else if (extension == ExtensionFrise) {
 							ExecuteTask(controller.AdditionalLoad(controller.LoadActorContainer<Frise>(sc, path).AsTask()));
-						} else if (extension == ExtensionSubSceneActor) {
+						} else if (extension == ExtensionSubsceneActor) {
 							ExecuteTask(controller.AdditionalLoad(controller.LoadActorContainer<SubSceneActor>(sc, path).AsTask()));
 						} else if (extension == ExtensionTemplateScene || extension == ExtensionScene) {
 							ExecuteTask(controller.AdditionalLoad(controller.LoadActorContainer<Scene>(sc, path).AsTask()));
@@ -104,33 +106,52 @@ public class UnityWindowActor : UnityWindow {
 					}
 				}
 				EditorGUI.EndDisabledGroup();
+
+				LoadActors = EditorField($"Actors ({ExtensionActor})", LoadActors);
+				LoadTemplates = EditorField($"Actor Templates ({ExtensionActorTemplate})", LoadTemplates);
+				LoadTemplateScenes = EditorField($"Template Scenes ({ExtensionTemplateScene})", LoadTemplateScenes);
+				LoadScenes = EditorField($"Scenes ({ExtensionScene})", LoadScenes);
+				LoadFrise = EditorField($"Frises ({ExtensionFrise})", LoadFrise);
+				LoadSubsceneActors = EditorField($"Subscene Actors ({ExtensionSubsceneActor})", LoadSubsceneActors);
 				#endregion
 
 				#region Export Actor
 				DrawHeader("Export Actor");
 				UbiArt.ITF.Actor a = null;
+				UbiArt.ITF.Scene scn = null;
 				if (Selection.activeGameObject != null) {
 					UnityPickable up = Selection.activeGameObject.GetComponent<UnityPickable>();
 					if (up?.pickable != null && up.pickable is Actor act) {
 						a = act;
+					} else {
+						UnityScene uscn = Selection.activeGameObject.GetComponent<UnityScene>();
+						if (uscn?.scene != null) {
+							scn = uscn.scene;
+						}
 					}
 				}
-				EditorGUI.LabelField(GetNextRect(), new GUIContent("Selected actor"), new GUIContent(a == null ? "None" : a.USERFRIENDLY));
+				EditorGUI.LabelField(GetNextRect(), new GUIContent("Selected actor"), new GUIContent(a == null ? (scn == null ? "None" : "Scene") : a.USERFRIENDLY));
 				var chosenExtension = ExtensionActor;
 				if (a is Frise f) {
 					chosenExtension = ExtensionFrise;
 				} else if (a is SubSceneActor s) {
-					chosenExtension = ExtensionSubSceneActor;
+					chosenExtension = ExtensionSubsceneActor;
+				} else if (scn != null) {
+					chosenExtension = ExtensionScene;
 				}
 				if (c.Settings.Cooked) {
 					chosenExtension += ".ckd";
 				}
 				ActorPath = FileField(GetNextRect(), "Actor path", ActorPath, true, chosenExtension);
 
-				EditorGUI.BeginDisabledGroup(a == null || string.IsNullOrEmpty(ActorPath));
+				EditorGUI.BeginDisabledGroup((a == null && scn == null) || string.IsNullOrEmpty(ActorPath));
 				if (EditorButton("Export")) {
 					async UniTask exportActor() {
-						await controller.ExportActorContainer(a, ActorPath);
+						if (scn != null) {
+							await controller.ExportSceneContainer(scn, ActorPath);
+						} else {
+							await controller.ExportActorContainer(a, ActorPath);
+						}
 						recheckFiles = true;
 					};
 					ExecuteTask(exportActor());
@@ -164,4 +185,11 @@ public class UnityWindowActor : UnityWindow {
 	private string ActorPath { get; set; }
 
 	private bool recheckFiles = false;
+
+	private bool LoadActors { get; set; } = true;
+	private bool LoadTemplates { get; set; } = true;
+	private bool LoadScenes { get; set; }
+	private bool LoadTemplateScenes { get; set; } = true;
+	private bool LoadSubsceneActors { get; set; } = true;
+	private bool LoadFrise { get; set; } = true;
 }

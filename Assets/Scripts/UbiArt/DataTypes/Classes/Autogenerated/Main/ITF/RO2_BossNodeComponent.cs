@@ -1,7 +1,7 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_BossNodeComponent : ActorComponent {
-		public float playerSpeed;
+		public float playerSpeed = 10f;
 		public StringID music;
 		public StringID musicPart;
 		public bool cameraFollowPlayer;

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_ChickenComponent_Template : CSerializable {
+	public partial class RO2_ChickenComponent_Template : ActorComponent_Template {
 		public StringID waitAnim;
 		public StringID staticAnim;
 		public StringID runAnim;

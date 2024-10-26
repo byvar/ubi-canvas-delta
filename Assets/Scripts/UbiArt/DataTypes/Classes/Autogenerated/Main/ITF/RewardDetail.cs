@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.VH | GameFlags.RA)]
+	[Games(GameFlags.RL | GameFlags.VH | GameFlags.RA)]
 	public partial class RewardDetail : CSerializable {
 		public StringID id;
 		public StringID name;

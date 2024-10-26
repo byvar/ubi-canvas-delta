@@ -24,7 +24,9 @@ namespace UbiArt.ITF {
 					shaderPath = new Path(shaderPath)
 				};
 				p.genGenType = (ParticleGeneratorParameters.PARGEN_GEN)(int)p.genGenType2;
-				p.velNorm = (float)p.vel.Magnitude;
+				/*if (p.vel != null && p.vel != Vec3d.Zero) {
+					p.velNorm = (float)p.vel.Magnitude;
+				}*/
 				p.genEmitMode = ParticleGeneratorParameters.PARGEN_EMITMODE.OVERTIME;
 				p.freqDelta = p.emitInterval;
 				p.uniformscale = (float)p.uniformscale2;

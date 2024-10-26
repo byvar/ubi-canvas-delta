@@ -129,7 +129,8 @@ namespace UbiArt.ITF {
 			skeleton.ResetBones(c, bones);
 			ua = skeleton_gao.AddComponent<UnityAnimation>();
 			ua.transform.localScale = new Vector3(tpl?.scale?.x ?? 1f, tpl?.scale?.y ?? 1f, 1f);
-			ua.transform.localPosition = new Vector3(tpl?.posOffset?.x ?? 1f, tpl?.posOffset?.y ?? 1f, 0f);
+			ua.transform.localPosition = new Vector3(tpl?.posOffset?.x ?? 1f, tpl?.posOffset?.y ?? 1f, -(tpl?.depthOffset ?? 0f));
+			ua.transform.localRotation = tpl?.angleOffset?.GetUnityQuaternion() ?? Quaternion.identity;
 			ua.bones = bones;
 			ua.skeleton = skeleton;
 			ua.alc = this;
@@ -242,7 +243,8 @@ namespace UbiArt.ITF {
 			skeleton.ResetBones(c, bones);
 			ua = skeleton_gao.AddComponent<UnityAnimation>();
 			ua.transform.localScale = new Vector3(tpl?.scale?.x ?? 1f, tpl?.scale?.y ?? 1f, 1f);
-			ua.transform.localPosition = new Vector3(tpl?.posOffset?.x ?? 1f, tpl?.posOffset?.y ?? 1f, 0f);
+			ua.transform.localPosition = new Vector3(tpl?.posOffset?.x ?? 1f, tpl?.posOffset?.y ?? 1f, -(tpl?.depthOffset ?? 0f));
+			ua.transform.localRotation = tpl?.angleOffset?.GetUnityQuaternion() ?? Quaternion.identity;
 			ua.bones = bones;
 			ua.skeleton = skeleton;
 			ua.patchBanks = unityPBKs;

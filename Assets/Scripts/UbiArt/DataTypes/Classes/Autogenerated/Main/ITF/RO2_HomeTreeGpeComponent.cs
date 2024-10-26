@@ -2,7 +2,7 @@ namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.VH | GameFlags.RA)]
 	public partial class RO2_HomeTreeGpeComponent : ActorComponent {
 		public bool isDebugActor;
-		public float appearCursor;
+		public float appearCursor = 1f;
 		public bool useComponent;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

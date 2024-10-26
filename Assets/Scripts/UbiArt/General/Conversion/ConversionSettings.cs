@@ -12,6 +12,13 @@ namespace UbiArt {
 
 		public Action<Context, ConversionSettings, TextureCooked> TextureConversion { get; set; }
 
+		public TexturePathConversionSettings TexturePathConversion { get; set; }
+
+		public ConversionSettings() {
+			TexturePathConversion = new TexturePathConversionSettings() {
+				Conversion = this
+			};
+		}
 
 		#region Path Conversion
 		public List<IPathConversionRule> PathConversionRules { get; set; } = new List<IPathConversionRule>();
@@ -24,15 +31,19 @@ namespace UbiArt {
 			public int GetHashCode(T obj) => RuntimeHelpers.GetHashCode(obj);
 		}
 
+		public bool IsPathLocked(Path p) {
+			return (LockedPaths != null && LockedPaths.Contains(p));
+		}
+
 		public void ConvertPath(Path p) {
-			if(LockedPaths != null && LockedPaths.Contains(p)) return;
+			if (IsPathLocked(p)) return;
 			if (PathConversionRules != null) {
 				foreach (var rule in PathConversionRules) {
 					rule.Apply(p);
 				}
 			}
 			if (OldSettings?.EngineVersion == EngineVersion.RO) {
-				if (!p.IsNull && string.IsNullOrEmpty(p.FullPath)) p.FullPath = "";
+				if (!Path.IsNull(p) && string.IsNullOrEmpty(p.FullPath)) p.FullPath = "";
 			}
 			if (LockPaths) LockedPaths.Add(p);
 		}

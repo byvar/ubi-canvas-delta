@@ -1,8 +1,8 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_NautilusAIComponent : ActorComponent {
-		public AngleAmount minAngle;
-		public AngleAmount maxAngle;
+		public AngleAmount minAngle = float.MaxValue;
+		public AngleAmount maxAngle = float.MaxValue;
 		public Mode mode;
 		public bool lockOnMinReached;
 		public bool lockOnMaxReached;

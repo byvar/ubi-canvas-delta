@@ -13,6 +13,7 @@ namespace UbiArt {
 
 		public Context Context { get; set; }
 		public Settings Settings => Context?.Settings;
+		public virtual bool IsCustomSerializer => false;
 
 		public CSerializerObject(Context context) {
 			Context = context;

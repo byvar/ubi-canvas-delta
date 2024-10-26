@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_BreakableCageComponent_Template : CSerializable {
+	public partial class Ray_BreakableCageComponent_Template : ActorComponent_Template {
 		public StringID stage1Anim;
 		public StringID stage2Anim;
 		public StringID stage3Anim;

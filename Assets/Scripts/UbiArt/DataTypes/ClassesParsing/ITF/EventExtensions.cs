@@ -19,6 +19,7 @@
 		}
 
 		public static Event GetWorkaroundEvent(this Event e) {
+			//Event newE;
 			if (e != null) {
 				switch (e) {
 					case EventGeneric gen:
@@ -30,6 +31,12 @@
 							case 0xDDD92049: return new RO2_EventDragonUnPause();
 						}
 						break;
+					/*case EventBreakableBreak ebb:
+						newE = Merger.Merge<RO2_EventBreakableBreak>(ebb);
+						return newE;
+					case EventBreakableQuery ebq:
+						newE = Merger.Merge<RO2_EventBreakableQuery>(ebq);
+						return newE;*/
 				}
 			}
 			return null;

@@ -11,7 +11,7 @@ namespace UbiArt.ITF {
 		public int startFrameCameraBlend;
 		public float coeffCameraIn = 1f;
 		public float coeffCameraOut;
-		public uint cameraMask = 0xFFFFFFFF;
+		public uint cameraMask = uint.MaxValue;
 		public BoolEventList Flip;
 		public Spline Color;
 		public Spline Alpha;
@@ -21,7 +21,7 @@ namespace UbiArt.ITF {
 		public bool MustUpdateChildrenPos;
 		public float coeffTwoCamera;
 		public float coeffTwoCameraOut;
-		public float depthZ;
+		public float depthZ = -1f;
 		public float actorInterpoDuration;
 		public int actorInterpoSetFlipFromSpeed;
 		public bool dynamicDeltaFogZ;

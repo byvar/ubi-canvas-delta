@@ -9,7 +9,7 @@ namespace UbiArt.UV {
 		}
 
 		public UVAtlas GetAtlasIfExists(Path path) {
-			if (path != null && !path.IsNull && atlas != null && atlas.ContainsKey(path.stringID)) {
+			if (!Path.IsNull(path) && atlas != null && atlas.ContainsKey(path.stringID)) {
 				return atlas[path.stringID];
 			}
 			return null;

@@ -4,7 +4,7 @@
 			base.Convert(context, actor, oldSettings, newSettings);
 			if (oldSettings.Game != newSettings.Game) {
 				if (newSettings.Game == Game.RL) {
-					finalblend2 = (GFX_BLEND2)(int)finalblend;
+					//finalblend2 = (GFX_BLEND2)(int)finalblend;
 					afxtype2 = (AFX2)(int)afxtype;
 				}
 			}

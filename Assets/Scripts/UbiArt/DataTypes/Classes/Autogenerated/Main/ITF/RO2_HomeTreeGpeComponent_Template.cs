@@ -1,13 +1,13 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RAVersion)]
 	public partial class RO2_HomeTreeGpeComponent_Template : ActorComponent_Template {
-		public AppearMode appearMode;
-		public float fadeDuration;
-		public StringID appearAnim;
-		public StringID idleAnim;
+		public AppearMode appearMode = AppearMode.ScaleAndFade;
+		public float fadeDuration = 1;
+		public StringID appearAnim = new StringID("opening");
+		public StringID idleAnim = new StringID(0x4459e8e);
 		public bool scaleActor;
-		public float trunkAttachCurveLimit;
-		public float trunkAttachCurveWidth;
+		public float trunkAttachCurveLimit = 6;
+		public float trunkAttachCurveWidth = 4;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {

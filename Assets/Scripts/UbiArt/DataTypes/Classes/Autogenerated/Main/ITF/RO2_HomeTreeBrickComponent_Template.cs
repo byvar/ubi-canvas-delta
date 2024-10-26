@@ -1,10 +1,10 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.VH | GameFlags.RA)]
 	public partial class RO2_HomeTreeBrickComponent_Template : ActorComponent_Template {
-		public uint editor_stepCount;
-		public float editor_minGrowth;
-		public Vec2d editor_brickSize;
-		public float editor_trunkWidth;
+		public uint editor_stepCount = 20;
+		public float editor_minGrowth = 0.2f;
+		public Vec2d editor_brickSize = new Vec2d(40, 20);
+		public float editor_trunkWidth = 20;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			editor_stepCount = s.Serialize<uint>(editor_stepCount, name: "editor_stepCount");

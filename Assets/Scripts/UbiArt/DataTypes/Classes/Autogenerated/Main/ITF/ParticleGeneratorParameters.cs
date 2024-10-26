@@ -13,7 +13,7 @@ namespace UbiArt.ITF {
 		public Vec3d pos;
 		public Vec2d pivot;
 		public float velNorm = 1f;
-		public float velAngle;
+		public float velAngle; // In DEGREES!
 		public float velAngleDelta;
 		public Vec3d grav;
 		public Vec3d acc;

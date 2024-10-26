@@ -32,6 +32,7 @@ namespace UbiArt {
 		public static Vec3d operator +(Vec3d a, Vec3d b) => new Vec3d(a.x + b.x, a.y + b.y, a.z + b.z);
 		public static Vec3d operator -(Vec3d a, Vec3d b) => new Vec3d(a.x - b.x, a.y - b.y, a.z - b.z);
 		public static Vec3d operator *(Vec3d a, Vec3d b) => new Vec3d(a.x * b.x, a.y * b.y, a.z * b.z);
+		public static Vec3d operator /(Vec3d a, Vec3d b) => new Vec3d(a.x / b.x, a.y / b.y, a.z / b.z);
 		public static Vec3d operator *(Vec3d a, float b) => new Vec3d(a.x * b, a.y * b, a.z * b);
 		public static Vec3d operator /(Vec3d a, float b) => new Vec3d(a.x / b, a.y / b, a.z / b);
 		public static Vec3d operator -(Vec3d a) => new Vec3d(-a.x, -a.y, -a.z);

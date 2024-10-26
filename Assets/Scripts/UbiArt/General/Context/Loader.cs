@@ -485,7 +485,7 @@ namespace UbiArt {
 		}
 
 		protected void Load(Path path, SerializeAction action) {
-			if (path == null || path.IsNull) return;
+			if (Path.IsNull(path)) return;
 			if (files.ContainsKey(path.stringID)) {
 				UbiArtFile f = files[path.stringID];
 				CSerializerObject s = f.Deserializer;
@@ -506,7 +506,7 @@ namespace UbiArt {
 		}
 
 		public async Task<T> LoadExtra<T>(Path p) where T : class, ICSerializable, new() {
-			if (p != null && !p.IsNull) {
+			if (!Path.IsNull(p)) {
 				Loader l = this;
 				T a = null;
 				l.LoadFile<T>(p, result => a = result);
@@ -596,7 +596,7 @@ namespace UbiArt {
 
 			var atlas = uvAtlasManager?.GetAtlasIfExists(texturePath);
 
-			if (atlas == null && Settings.PastaStructure && texturePath != null && !texturePath.IsNull) {
+			if (atlas == null && Settings.PastaStructure && !Path.IsNull(texturePath)) {
 				var atlasPath = new Path($"{texturePath.GetFilenameWithoutExtension(fullPath: true)}_atl.atl");
 				LoadFile<UVAtlas>(atlasPath, (result) => {
 					uvAtlasManager.atlas[texturePath.stringID] = result;
@@ -640,6 +640,31 @@ namespace UbiArt {
 				using (Writer writer = new Writer(stream, Settings.IsLittleEndian)) {
 					CSerializerObject w = CreateBinarySerializer(extension, writer);
 					object toWrite = w.Serialize(container, container.GetType(), name: act.USERFRIENDLY);
+					serializedData = stream.ToArray();
+				}
+			}
+			await Context.AsyncController.WaitIfNecessary();
+			Context.AsyncController.StopAsync();
+
+			return serializedData;
+		}
+
+		public async Task<byte[]> WriteSceneFile(ITF.Scene scn, string extension) {
+			Context.AsyncController.StartAsync();
+
+			// Clone actor
+			CSerializable c = await Clone(scn, extension);
+			ITF.Scene actClone = c as ITF.Scene;
+
+			// Add it to a container file
+			ContainerFile<ITF.Scene> container = new ContainerFile<ITF.Scene>(actClone);
+
+			// Serialize container file
+			byte[] serializedData = null;
+			using (MemoryStream stream = new MemoryStream()) {
+				using (Writer writer = new Writer(stream, Settings.IsLittleEndian)) {
+					CSerializerObject w = CreateBinarySerializer(extension, writer);
+					object toWrite = w.Serialize(container, container.GetType(), name: "Scene");
 					serializedData = stream.ToArray();
 				}
 			}

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_ChickenComponent : CSerializable {
+	public partial class RO2_ChickenComponent : ActorComponent {
 		public int patrol;
 		public int isStatic;
 		public int isInFly;

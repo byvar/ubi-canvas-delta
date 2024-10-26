@@ -20,6 +20,11 @@ namespace UbiArt.ITF {
 		protected override void OnPreSerialize(CSerializerObject s) {
 			base.OnPreSerialize(s);
 			Reinit(s.Context, s.Settings);
+
+			/*if (s.Context.HasSettings<ConversionSettings>() && !Path.IsNull(textureSet?.diffuse)) {
+				var conversion = s.Context.GetSettings<ConversionSettings>();
+				conversion?.TexturePathConversion?.Convert(this);
+			}*/
 		}
 
 		Settings previousSettings = null;
@@ -27,8 +32,8 @@ namespace UbiArt.ITF {
 			if (previousSettings != null) {
 				if (previousSettings.Game != settings.Game) {
 					if ((previousSettings.Game == Game.RA || previousSettings.Game == Game.RM) && settings.Game == Game.RL) {
-						if (!(textureSet?.diffuse?.IsNull ?? true)) {
-							if (materialShader == null || materialShader.IsNull) {
+						if (!Path.IsNull(textureSet?.diffuse)) {
+							if (Path.IsNull(materialShader)) {
 								materialShader = new Path("world/common/matshader/regularbuffer/backlighted.msh");
 							}
 						}

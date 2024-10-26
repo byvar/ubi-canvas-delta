@@ -10,6 +10,10 @@ namespace UbiArt.ITF {
 				if (firstComponent != null && this != firstComponent) {
 					//return null;
 				}
+				if (oldSettings.EngineVersion == EngineVersion.RO) {
+					if(ColorFog != null && ColorFog != Color.Zero)
+						useStaticFog = true;
+				}
 			}
 			return this;
 		}

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_ActivationSequenceStoneComponent_Template : CSerializable {
+	public partial class Ray_ActivationSequenceStoneComponent_Template : ActorComponent_Template {
 		public Path fx;
 		public StringID fxBone;
 		public float activationTime;

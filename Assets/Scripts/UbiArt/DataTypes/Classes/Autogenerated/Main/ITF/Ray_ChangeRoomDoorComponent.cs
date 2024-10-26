@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_ChangeRoomDoorComponent : CSerializable {
+	public partial class Ray_ChangeRoomDoorComponent : ActorComponent {
 		public int goIn;
 		public int goOut;
 		protected override void SerializeImpl(CSerializerObject s) {

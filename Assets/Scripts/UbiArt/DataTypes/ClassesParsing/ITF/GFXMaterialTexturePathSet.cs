@@ -23,6 +23,15 @@ namespace UbiArt.ITF {
 			}
 		}
 
+		protected override void OnPreSerialize(CSerializerObject s) {
+			base.OnPreSerialize(s);
+
+			if (s.Context.HasSettings<ConversionSettings>() && !Path.IsNull(diffuse) && Path.IsNull(back_light)) {
+				var conversion = s.Context.GetSettings<ConversionSettings>();
+				conversion?.TexturePathConversion?.Convert(this);
+			}
+		}
+
 		protected void LoadTexture(Context context, string fieldName, Path path) {
 			Loader l = context.Loader;
 

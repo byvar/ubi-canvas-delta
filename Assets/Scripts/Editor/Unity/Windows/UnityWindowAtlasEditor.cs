@@ -151,12 +151,48 @@ public class UnityWindowAtlasEditor : UnityWindow {
 	}
 
 	void DrawAtlasUI(TextureCooked tex, Rect rect) {
+		if (ResetAtlas) {
+			ResetAtlas = false;
+			ShowAtlas.Clear();
+		}
 		DrawAtlas(tex, rect);
 
 		var atlas = tex.atlas;
 		if (atlas != null) {
 			EditorField("GridX", atlas.gridX);
 			EditorField("GridY", atlas.gridY);
+
+			var buttonsRect = GetNextRect();
+			buttonsRect = EditorGUI.PrefixLabel(buttonsRect, new GUIContent("Show atlas"));
+			var initialX = buttonsRect.xMin;
+			bool MiniButton(string label, bool pressed) {
+				var buttonRect = RowEntryRect(ref buttonsRect, buttonsRect.height * 3, getNextRect: () => {
+					var r = GetNextRect();
+					r.xMin = initialX;
+					return r;
+				});
+				var oldColor = GUI.backgroundColor;
+				if (pressed) GUI.backgroundColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+				if (GUI.Button(buttonRect, new GUIContent(label), EditorStyles.miniButton)) {
+					if (pressed) GUI.backgroundColor = oldColor;
+					return true;
+				}
+				if (pressed) GUI.backgroundColor = oldColor;
+				return false;
+			}
+			bool allShown = ShowAtlas.All(st => st.Value == true);
+			var showTemplateCopy = ShowAtlas.ToArray();
+			if (MiniButton("All", allShown)) {
+				foreach (var entry in showTemplateCopy) ShowAtlas[entry.Key] = !allShown;
+				showTemplateCopy = ShowAtlas.ToArray();
+			}
+			int index = 0;
+			foreach (var entry in showTemplateCopy) {
+				if (MiniButton($"{entry.Key}", entry.Value)) {
+					ShowAtlas[entry.Key] = !entry.Value;
+				}
+				index++;
+			}
 		}
 	}
 
@@ -203,6 +239,12 @@ public class UnityWindowAtlasEditor : UnityWindow {
 
 			// Draw UVs
 			foreach (var uvPair in atlas.uvData) {
+				var tplKey = uvPair.Key;
+				if (!ShowAtlas.ContainsKey(tplKey)) {
+					ShowAtlas[tplKey] = true;
+				}
+				if (!ShowAtlas[tplKey]) continue;
+
 				UVdata uvdata = uvPair.Value;
 				if(uvdata.uvs == null) continue;
 				var pointColor = UnityEngine.Random.ColorHSV(0f, 1f, 0.8f, 0.8f, 0.8f, 1f, 1f, 1f);
@@ -333,7 +375,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 							index++;
 						}
 					}
-
+					DrawHeader("Patch Bank PNG Export");
 					if (EditorButton("Export as PNG"))
 					{
 						var defaultName = $"{new Path(SelectedTextureFile).GetFilenameWithoutExtension()}.png";
@@ -747,6 +789,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 			SelectedTextureFile = Dropdown.selection;
 			ZoomFactor = 1f;
 			ResetPBK = true;
+			ResetAtlas = true;
 			Dropdown.selection = null;
 			Dirty = true;
 		}
@@ -909,9 +952,11 @@ public class UnityWindowAtlasEditor : UnityWindow {
 	public int CurrentPBKTemplate { get; set; }
 
 	private Dictionary<ulong, bool> ShowTemplate { get; set; } = new Dictionary<ulong, bool>();
+	private Dictionary<int, bool> ShowAtlas { get; set; } = new Dictionary<int, bool>();
 
 	private bool recheckFiles = false;
 
+	private bool ResetAtlas { get; set; }
 	private bool ResetPBK { get; set; }
 	public Color BackgroundColor { get; set; } = new Color(0,0,0,0.2f);
 
@@ -919,7 +964,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 
 	public float ZoomFactor { get; set; } = 1f;
 	public float ZoomMin { get; set; } = 1f;
-	public float ZoomMax { get; set; } = 4f;
+	public float ZoomMax { get; set; } = 8f;
 	public Vector2 ZoomCenter { get; set; } = new Vector2(0.5f, 0.5f);
 
 	public float patchHLevel { get; set; } = 2f;

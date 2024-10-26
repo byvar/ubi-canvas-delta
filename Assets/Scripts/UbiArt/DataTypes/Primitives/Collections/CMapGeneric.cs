@@ -11,19 +11,14 @@ namespace UbiArt {
 		public void Serialize(CSerializerObject s, string name) {
 			uint count = (uint)Count;
 			count = s.Serialize<uint>(count, name: name);
-			List<KeyValuePair<TKey, Generic<TValue>>> copy = new Dictionary<TKey, Generic<TValue>>(container).ToList();
-			//copy.Sort(
-			container.Clear();
+			var copy = container.ToList();
+			Resize(copy, (int)count);
 			s.IncreaseMemCount(typeof(TKey), count: count);
 			for (int i = 0; i < count; i++) {
-				TKey key = default;
-				Generic<TValue> val = new Generic<TValue>();
-				if (i < copy.Count) {
-					key = copy[i].Key;
-					val = copy[i].Value;
-				}
+				TKey key = copy[i].Key;
+				Generic<TValue> val = copy[i].Value ?? new Generic<TValue>();
 				if (s.ArrayEntryStart(name: name, index: i)) {
-					if (s.Settings.Game == Game.RL) {
+					if (s.Settings.Game == Game.RL && !s.IsCustomSerializer) {
 						val.SerializeClassName(s);
 						key = s.SerializeGeneric(key, name: "KEY");
 						val.serializeClassName = false;
@@ -35,12 +30,26 @@ namespace UbiArt {
 						val = s.SerializeGeneric(val, name: "VAL");
 					}
 					s.ArrayEntryStop();
+					copy[i] = new KeyValuePair<TKey, Generic<TValue>>(key, val);
 				}
-				Add(key, val);
+			}
+			container.Clear();
+			foreach (var k in copy) {
+				container.Add(k.Key, k.Value);
 			}
 		}
 
 		#region Dictionary interface
+		private void Resize(List<KeyValuePair<TKey, Generic<TValue>>> container, int sz) {
+			int cur = container.Count;
+			if (sz < cur)
+				container.RemoveRange(sz, cur - sz);
+			else if (sz > cur) {
+				if (sz > container.Capacity) container.Capacity = sz;
+				container.AddRange(Enumerable.Repeat(default(KeyValuePair<TKey, Generic<TValue>>), sz - cur));
+			}
+		}
+
 		public Generic<TValue> this[TKey key] { get => ((IDictionary<TKey, Generic<TValue>>)container)[key]; set => ((IDictionary<TKey, Generic<TValue>>)container)[key] = value; }
 
 		public ICollection<TKey> Keys => ((IDictionary<TKey, Generic<TValue>>)container).Keys;

@@ -14,6 +14,7 @@ namespace UbiArt {
 		public uint position = 0;
 		private LocalisationIdDropdown localisationDropdown = null;
 		private GenericClassSelectorDropdown genericDropdown = null;
+		public override bool IsCustomSerializer => true;
 
 		public const string UnitySerializerID = nameof(CSerializerObjectUnityEditor);
 
@@ -462,8 +463,8 @@ namespace UbiArt {
 
 			EditorGUI.indentLevel = 0;
 			if (EditorGUI.DropdownButton(rect, new GUIContent(genPreview), FocusType.Passive)) {
-				if (genericDropdown == null || genericDropdown.type != t) {
-					genericDropdown = new GenericClassSelectorDropdown(new UnityEditor.IMGUI.Controls.AdvancedDropdownState()) {
+				if (genericDropdown == null || genericDropdown.type != t || genericDropdown.context != Context) {
+					genericDropdown = new GenericClassSelectorDropdown(Context, new UnityEditor.IMGUI.Controls.AdvancedDropdownState()) {
 						name = $"Generic<{genTypeName}>",
 						type = t
 					};

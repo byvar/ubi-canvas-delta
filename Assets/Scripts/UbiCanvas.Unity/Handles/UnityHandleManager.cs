@@ -102,7 +102,7 @@ public class UnityHandleManager : MonoBehaviour {
 		foreach (Transform tf in currentSelectedObject.transform) {
 			var bez = tf.GetComponent<UnityBezierRenderer>();
 			if (bez != null) {
-				var positions = bez.GetPositions().ToArray();
+				var positions = bez.GetPositions(applyInverseScale: true).ToArray();
 				Points = new UnityHandle[positions.Length];
 				for (int i = 0; i < positions.Length / 2; i++) {
 					// Position

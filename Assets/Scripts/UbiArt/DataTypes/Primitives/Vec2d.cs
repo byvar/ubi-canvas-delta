@@ -48,6 +48,10 @@ namespace UbiArt {
 				x * sin + y * cos);
 		}
 
+		public float Angle() {
+			return MathF.Atan2(y, x);
+		}
+
 		public static Vec2d Left => new Vec2d(-1,0);
 		public static Vec2d Right => new Vec2d(1, 0);
 		public static Vec2d Up => new Vec2d(0, 1);

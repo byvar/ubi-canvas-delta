@@ -56,8 +56,10 @@ namespace UbiArt.ITF {
 						meshAnimData = new Nullable<MeshAnimData>(new MeshAnimData());
 						meshFluidData = new Nullable<MeshFluidData>(new MeshFluidData());
 						meshOverlayData = new Nullable<MeshOverlayData>(new MeshOverlayData());
-						UseTemplatePrimitiveParams = false;
-						useStaticFog = true;
+						if (UseTemplatePrimitiveParams) { // Hack to see if frise has been modified or not
+							UseTemplatePrimitiveParams = false;
+							useStaticFog = true;
+						}
 					}
 				}
 			}

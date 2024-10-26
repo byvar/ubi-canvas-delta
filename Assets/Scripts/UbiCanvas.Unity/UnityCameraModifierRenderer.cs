@@ -46,11 +46,23 @@ public class UnityCameraModifierRenderer : MonoBehaviour {
 		if (aabb.MIN == null) aabb.MIN = new Vec2d();
 		if (aabb.MAX == null) aabb.MAX = new Vec2d();
 
+		var p1 = new Vec2d(aabb.MIN.x, aabb.MIN.y);
+		var p2 = new Vec2d(aabb.MIN.x, aabb.MAX.y);
+		var p3 = new Vec2d(aabb.MAX.x, aabb.MAX.y);
+		var p4 = new Vec2d(aabb.MAX.x, aabb.MIN.y);
+		if (PickableForSelection?.ANGLE != null) {
+			var a = PickableForSelection.ANGLE;
+			p1 = p1.Rotate(-a);
+			p2 = p2.Rotate(-a);
+			p3 = p3.Rotate(-a);
+			p4 = p4.Rotate(-a);
+		}
+
 		line.SetPositions(new Vector3[]{
-			new Vector3(aabb.MIN.x, aabb.MIN.y, 0),
-			new Vector3(aabb.MIN.x, aabb.MAX.y, 0),
-			new Vector3(aabb.MAX.x, aabb.MAX.y, 0),
-			new Vector3(aabb.MAX.x, aabb.MIN.y, 0),
+			new Vector3(p1.x, p1.y, 0),
+			new Vector3(p2.x, p2.y, 0),
+			new Vector3(p3.x, p3.y, 0),
+			new Vector3(p4.x, p4.y, 0),
 		});
 	}
 

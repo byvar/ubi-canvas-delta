@@ -4,10 +4,10 @@ namespace UbiArt.ITF {
 		public Placeholder enterShape;
 		public Vec2d enterPoint0;
 		public Vec2d enterPoint1;
-		public float playerSpeedMultiplier;
-		public float travelSpeed;
-		public float scale;
-		public float catchCooldown;
+		public float playerSpeedMultiplier = 1f;
+		public float travelSpeed = 1f;
+		public float scale = 0.5f;
+		public float catchCooldown = 0.1f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			enterShape = s.SerializeObject<Placeholder>(enterShape, name: "enterShape");

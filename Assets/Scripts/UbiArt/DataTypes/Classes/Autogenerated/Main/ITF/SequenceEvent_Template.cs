@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		public string Channel = "";
 		public int Selected = -1;
 		public bool DisabledForTesting;
-		public uint uid = 0xFFFFFFFF;
+		public uint uid = uint.MaxValue;
 		public event_mode EventMode;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

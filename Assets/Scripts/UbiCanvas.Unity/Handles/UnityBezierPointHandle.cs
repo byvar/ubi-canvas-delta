@@ -16,8 +16,8 @@ public class UnityBezierPointHandle : UnityHandle {
 	public Vector3 PreviousScale { get; set; }
 	public UnityBezierPointHandle MainPoint;
 	public Vector3 DataPosition => MainPoint != null
-		? UnityBezier.GetTangent(PointIndex, addPosition: true).GetUnityVector(invertZ: true)
-		: UnityBezier.GetPosition(PointIndex).GetUnityVector(invertZ: true);
+		? UnityBezier.GetTangent(PointIndex, addPosition: true, applyInverseScale: true).GetUnityVector(invertZ: true)
+		: UnityBezier.GetPosition(PointIndex, applyInverseScale: true).GetUnityVector(invertZ: true);
 	// Use this for initialization
 	void Start() {
 	}
@@ -60,13 +60,13 @@ public class UnityBezierPointHandle : UnityHandle {
 				// This is a tangent line
 				if (diff.x > min / Mathf.Abs(scale.x) || diff.y > min / Mathf.Abs(scale.y)) {
 					var localTangent = relativePoint;
-					UnityBezier.SetTangent(PointIndex, new Vec2d(localTangent.x, localTangent.y), addPosition: true);
+					UnityBezier.SetTangent(PointIndex, new Vec2d(localTangent.x, localTangent.y), addPosition: true, applyInverseScale: true);
 				}
 			} else {
 				if (diff.x > min / Mathf.Abs(scale.x) || diff.y > min / Mathf.Abs(scale.y) || diff.z > min / Mathf.Abs(scale.z)) {
 					//Node.pos = new UbiArt.Vec3d(relativePoint.x, relativePoint.y, -relativePoint.z);
 					var pos = new Vec3d(relativePoint.x, relativePoint.y, -relativePoint.z);
-					UnityBezier.SetPosition(PointIndex, pos, addPosition: true);
+					UnityBezier.SetPosition(PointIndex, pos, addPosition: true, applyInverseScale: true);
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_FriendlyBTAIComponent : Ray_AINetworkComponent {
+	public partial class Ray_FriendlyBTAIComponent : BTAIComponent {
 		public ObjectPath targetWaypoint;
 		public ObjectPath respawnPoint;
 		public int rescued;

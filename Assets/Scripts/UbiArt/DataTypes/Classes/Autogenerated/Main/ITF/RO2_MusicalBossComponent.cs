@@ -1,9 +1,9 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_MusicalBossComponent : ActorComponent {
-		public float bpm;
-		public float triggerDistance;
-		public float volume;
+		public float bpm = 180.18f;
+		public float triggerDistance = 6;
+		public float volume = -2;
 		public float fadeAfterCheckpoint;
 		public uint currentNodeIndex;
 		protected override void SerializeImpl(CSerializerObject s) {

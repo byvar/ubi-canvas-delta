@@ -39,7 +39,11 @@ public class UnityBezierRenderer : MonoBehaviour {
 			points.Add(currentPos);
 		}
 		Renderer.positionCount = points.Count;
-		Renderer.SetPositions(points.Select(s => s.GetUnityVector(invertZ: true)).ToArray());
+		var scale = PickableForSelection.SCALE ?? Vec2d.One;
+		var inverseScale = (scale.x != 0 && scale.y != 0) ? new Vec3d(1f / scale.x, 1f / scale.y, 1f) : Vec3d.One;
+		Renderer.SetPositions(points.Select(s => (s * inverseScale).GetUnityVector(invertZ: true)).ToArray());
+		Renderer.startWidth = scale.y * 0.10f;
+		Renderer.endWidth = scale.x * 0.10f;
 	}
 
 	Vec3d[] GetPointsForSegment(Vec3d currentPos, RO2_BezierNode node1, RO2_BezierNode node2) {
@@ -72,44 +76,59 @@ public class UnityBezierRenderer : MonoBehaviour {
 
 	}
 
-	public IEnumerable<Vec3d> GetPositions() {
+	public IEnumerable<Vec3d> GetPositions(bool applyInverseScale = false) {
+		var scale = applyInverseScale ? (PickableForSelection.SCALE ?? Vec2d.One) : Vec2d.One;
+		var inverseScale = (applyInverseScale && scale.x != 0 && scale.y != 0) ? new Vec3d(1f / scale.x, 1f / scale.y, 1f) : Vec3d.One;
+
 		Vec3d currentPos = new Vec3d();
 		for (int i = 0; i < Branch.nodes.Count; i++) {
 			var n = Branch.nodes[i];
 			currentPos += n.pos;
-			yield return currentPos;
-			yield return currentPos + new Vec3d(n.tangent?.x ?? 0f, n.tangent?.y ?? 0f, 0f);
+			yield return currentPos * inverseScale;
+			yield return (currentPos + new Vec3d(n.tangent?.x ?? 0f, n.tangent?.y ?? 0f, 0f)) * inverseScale;
 		}
 	}
-	public Vec3d GetPosition(int index) {
+	public Vec3d GetPosition(int index, bool applyInverseScale = false) {
+		var scale = applyInverseScale ? (PickableForSelection.SCALE ?? Vec2d.One) : Vec2d.One;
+		var inverseScale = (applyInverseScale && scale.x != 0 && scale.y != 0) ? new Vec3d(1f / scale.x, 1f / scale.y, 1f) : Vec3d.One;
+
 		Vec3d currentPos = new Vec3d();
 		for (int i = 0; i <= index; i++) {
 			var n = Branch.nodes[i];
 			currentPos += n.pos;
 		}
-		return currentPos;
+		return currentPos * inverseScale;
 	}
-	public Vec3d GetTangent(int index, bool addPosition = false) {
-		
+	public Vec3d GetTangent(int index, bool addPosition = false, bool applyInverseScale = false) {
+		var scale = applyInverseScale ? (PickableForSelection.SCALE ?? Vec2d.One) : Vec2d.One;
+		var inverseScale = (applyInverseScale && scale.x != 0 && scale.y != 0) ? new Vec3d(1f / scale.x, 1f / scale.y, 1f) : Vec3d.One;
+
+
 		var n = Branch.nodes[index];
 		var tangent = new Vec3d(n.tangent?.x ?? 0f, n.tangent?.y ?? 0f, 0f);
 		if (addPosition) {
-			return GetPosition(index) + tangent;
+			return GetPosition(index, applyInverseScale: applyInverseScale) + tangent * inverseScale;
 		} else {
-			return tangent;
+			return tangent * inverseScale;
 		}
 	}
-	public void SetTangent(int index, Vec2d vec, bool addPosition = false) {
-		var pos = addPosition ? GetPosition(index) : Vec3d.Zero;
+	public void SetTangent(int index, Vec2d vec, bool addPosition = false, bool applyInverseScale = false) {
+		var scale = applyInverseScale ? (PickableForSelection.SCALE ?? Vec2d.One) : Vec2d.One;
+		var inverseScale = (applyInverseScale && scale.x != 0 && scale.y != 0) ? new Vec3d(1f / scale.x, 1f / scale.y, 1f) : Vec3d.One;
+
+		var pos = addPosition ? GetPosition(index, applyInverseScale: applyInverseScale) : Vec3d.Zero;
 		var tang = vec - new Vec2d(pos.x, pos.y);
 		var n = Branch.nodes[index];
-		n.tangent = tang;
+		n.tangent = tang * scale;
 	}
-	public void SetPosition(int index, Vec3d vec, bool addPosition = false) {
-		var pos = addPosition ? GetPosition(index) : Vec3d.Zero;
+	public void SetPosition(int index, Vec3d vec, bool addPosition = false, bool applyInverseScale = false) {
+		var scale = applyInverseScale ? (PickableForSelection.SCALE ?? Vec2d.One) : Vec2d.One;
+		var inverseScale = (applyInverseScale && scale.x != 0 && scale.y != 0) ? new Vec3d(1f / scale.x, 1f / scale.y, 1f) : Vec3d.One;
+
+		var pos = addPosition ? GetPosition(index, applyInverseScale: applyInverseScale) : Vec3d.Zero;
 		var posDiff = vec - pos;
 		var n = Branch.nodes[index];
-		n.pos = n.pos + posDiff;
+		n.pos = n.pos + (posDiff * new Vec3d(scale.x, scale.y, 1f));
 	}
 
 

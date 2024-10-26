@@ -2,7 +2,7 @@ namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.RFR | GameFlags.LegendsAndUp)]
 	public partial class SequencePlayerComponent : ActorComponent {
 		public uint bankState = 0xFFFFFFFF;
-		public bool allowPrefetch;
+		public bool allowPrefetch = true;
 		public bool useCustomAABB;
 		public EditableShape customAABB;
 		public bool overrideActorAABB;

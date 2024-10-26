@@ -216,11 +216,11 @@ namespace UbiArt
 
 			// Link Tags
 			"After", "Ambiance", "Ambiance_Off", "Angle", "AngleOffset", "Delay", "Anim", "AnimBone", "Attack", "AutoStart",
-			"BaseJump", "Before", "BlendFrise", "BoneName", "Branch", "Breakable", "Bubo", "Cam", "Camera", "ChangeScale", "Checkpoint", "CineOutro", "Curve",
-			"Death", "Delay", "Disabled", "Disappear", "Door", "Drag", "Duration", "Eject", "Fishing", "Flame", "Flip", "FollowCam", "Ghost", "Hang",
+			"BaseJump", "Before", "BlendFrise", "BoneName", "Branch", "Breakable", "Bubo", "Cam", "Camera", "ChangeScale", "Cheat", "Checkpoint", "CineOutro", "Curve",
+			"DangerZone", "Death", "Delay", "Disabled", "Disappear", "Door", "Drag", "Duration", "EntranceDoor", "Eject", "Final", "Fishing", "Flame", "Flip", "FollowCam", "Ghost", "Hang",
 			"IgnoreCamera", "Keep_Orientation", "Lock", "Lookat", "LookatPhase", "MaxSpeed", "MinSpeed", "Moving", "NoLook", "NoTree", "Node", "Number",
-			"Offset", "ProceduralBone", "RadarTarget", "Roll", "RopeEnd", "SafeDistance", "Simple_Teleport", "Spawn", "SpawnPos", "Speed", "SpeedMax", "Screenshot",
-			"TakeCamera", "Target", "Teleport", "TouchScreen", "Torture", "Trigger", "Type", "Waypoint",
+			"Offset", "ProceduralBone", "RadarTarget", "Roll", "RopeEnd", "SafeDistance", "Secret", "Simple_Teleport", "Spawn", "SpawnPos", "Speed", "SpeedMax", "Screenshot",
+			"TakeCamera", "Target", "Teleport", "Timer", "TouchScreen", "Torture", "Tower", "Trigger", "Type", "Waypoint",
 
 			// Animation inputs
 			"Move", "Jump", "Angle", "IsSprinting", "Speed", "Stance", "UTurn", "InAir", "IsPathBlocked",
@@ -244,16 +244,23 @@ namespace UbiArt
 			"StunBullet", "Stunned", "WallOrientation", "WindForce", "IsNaked", "InputLumsColor", "IsInAir",
 
 			// Common BTAI node names
-			"ReceiveHit", "ReceiveCrush", "Roaming", "RoamingUnderwater", "Idle", "SpotTarget", "Charge", "Stun", "TickleGeneric", "Drown",
+			"Alive", "Appear", "AppearBackground", "AppearBackground_Ladders", "AppearBackground_Ninja", "AppearFromGround", "AppearParachute",
+			"Charge", "CheckDeath", "Drown", "FindAttackTarget", "Idle", 
+			"RangedAttack", "ReceiveHit", "ReceiveCrush", "Roaming", "RoamingInAir", "RoamingUnderwater",
+			"Sleep", "SpotTarget", "Stun", "TickleGeneric", "UTurnToTarget",
 
-			// RO2: Familiies
-			"Rayman", "Globox", "Barbara", "Teensy",
+			// Facts
+			"RO2_AIFact_AttackTarget", "RO2_AIFact_CheckDeath", "RO2_AIFact_Drag",
+			"RO2_AIFact_TriggerDeath", "RO2_AIFact_TurnipDrag", "RO2_AIFact_UseRoaming",
+
+			// RO2: Familiies (+ 4th player from Origins)
+			"Rayman", "Globox", "Barbara", "Teensy", "Teensy_Mago",
 
 			// Bones
 			"Root",
 
 			// Inputs
-			"Axis", "Press", "Hold", "Trigger_Left", "Trigger_Right",
+			"Axis", "Press", "Hold", "Trigger_Left", "Trigger_Right", "Left_Thumb", "Right_Thumb",
 			"Button_A", "Button_X", "Button_Y", "Button_B", "Button_Back", "Button_Start",
 			"DPad_Up", "DPad_Down", "DPad_Left", "DPad_Right",
 
@@ -321,7 +328,7 @@ namespace UbiArt
 				else if (type == typeof(Path))
 				{
 					Path p = ((Path)obj);
-					if (!p.IsNull)
+					if (!Path.IsNull(p))
 					{
 						StringCache[p.stringID] = p.FullPath;
 					}
@@ -329,7 +336,7 @@ namespace UbiArt
 				else if (type == typeof(PathRef))
 				{
 					PathRef p = ((PathRef)obj);
-					if (!p.IsNull)
+					if (!Path.IsNull(p))
 					{
 						StringCache[p.stringID] = p.FullPath;
 					}

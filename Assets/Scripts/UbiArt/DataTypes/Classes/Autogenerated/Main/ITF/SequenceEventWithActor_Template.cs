@@ -3,7 +3,7 @@ namespace UbiArt.ITF {
 	public partial class SequenceEventWithActor_Template : SequenceEvent_Template {
 		public ObjectPath TargetFriendlyName;
 		public bool DisableComponentsActor = true;
-		public StringID TargetID;
+		public StringID TargetID; // this is the stringID of TargetFriendlyName.FullPath
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			TargetFriendlyName = s.SerializeObject<ObjectPath>(TargetFriendlyName, name: "TargetFriendlyName");

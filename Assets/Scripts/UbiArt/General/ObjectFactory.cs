@@ -4990,6 +4990,22 @@ namespace UbiArt {
 			{ 0x497E354F, typeof(ITF.Ray_PlatformEnemyAIComponent) },
 			{ 0x6DCD096F, typeof(ITF.PastaBackwardDirEventTrigger) },
 			{ 0x5B4D1307, typeof(ITF.PastaForwardDirEventTrigger) },
+			{ 0x2D587170, typeof(ITF.Ray_PlayerCostumePriceComponent) },
+			{ 0x50723518, typeof(ITF.Ray_LandOfTheDeadTeleportComponent) },
+			{ 0xDB2C4AF7, typeof(ITF.Ray_DeadGuyBTAIComponent) },
+			{ 0xA9F50599, typeof(ITF.Ray_BreakableCageComponent) },
+			{ 0xCBEE8793, typeof(ITF.Ray_SequenceSwitchComponent) },
+			{ 0x46F8F176, typeof(ITF.Ray_SequenceSwitchComponent_Template) },
+			{ 0x14BA51EB, typeof(ITF.Ray_LevelTitleComponent) },
+			{ 0xD27FE03E, typeof(ITF.Ray_LevelTitleComponent_Template) },
+			{ 0x9BBBC36B, typeof(ITF.Ray_StargateNodeComponent) },
+			{ 0xD2215529, typeof(ITF.Ray_StargateComponent) },
+			{ 0x981DEA2F, typeof(ITF.Ray_ActivationSequenceTriggerComponent) },
+			{ 0x77B64056, typeof(ITF.Ray_ActivationSequenceStoneComponent) },
+			{ 0xE1DF31DD, typeof(ITF.Ray_ActivationSequenceVisualComponent) },
+			{ 0x940FCDF9, typeof(ITF.Ray_StargateManagerAIComponent) },
+			{ 0x30AC4847, typeof(ITF.Ray_StargateManagerAIComponent_Template) },
+			{ 0xF689BFA5, typeof(ITF.Ray_CrystalKingAIComponent) },
 
 
 			// Mini

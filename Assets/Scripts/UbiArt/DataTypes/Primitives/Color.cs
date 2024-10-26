@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 namespace UbiArt {
 	public class Color : ICSerializable {
@@ -52,6 +53,29 @@ namespace UbiArt {
 				}
 			}
 			return new Color(r,g,b,a);
+		}
+		public static Color Interpolate(Color c1, Color c2, float lerp) {
+			float r = 0, g = 0, b = 0, a = 0;
+			lerp = MathF.Min(MathF.Max(lerp,0), 1);
+			if (lerp == 0) {
+				r = c1.r;
+				g = c1.g;
+				b = c1.b;
+				a = c1.a;
+			} else if (lerp == 1) {
+				r = c2.r;
+				g = c2.g;
+				b = c2.b;
+				a = c2.a;
+			} else {
+				float interp(float a, float b, float f) => (float)(a * (1.0 - f) + (b * f));
+				r = interp(c1.r, c2.r, lerp);
+				g = interp(c1.g, c2.g, lerp);
+				b = interp(c1.b, c2.b, lerp);
+				a = interp(c1.a, c2.a, lerp);
+
+			}
+			return new Color(r, g, b, a);
 		}
 
 		public override string ToString() {

@@ -1,7 +1,7 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_MusicHeadTriggerComponent_Template : ActorComponent_Template {
-		public float sqrRadius;
+		public float sqrRadius = 16f;
 		public Generic<Event> _event;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

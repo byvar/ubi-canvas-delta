@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_TalkingBubbleComponent_Template : CSerializable {
+	public partial class Ray_TalkingBubbleComponent_Template : ActorComponent_Template {
 		public StringID textBone;
 		public float maxZoom;
 		public float maxRatio;

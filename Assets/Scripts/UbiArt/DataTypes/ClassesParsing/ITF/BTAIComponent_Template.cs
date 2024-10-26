@@ -3,7 +3,7 @@
 namespace UbiArt.ITF {
 	public partial class BTAIComponent_Template {
 		public override ActorComponent_Template Convert(Context context, Actor_Template actor, Settings oldSettings, Settings newSettings) {
-			base.Convert(context, actor, oldSettings, newSettings);
+			var baseResult = base.Convert(context, actor, oldSettings, newSettings);
 			if ((oldSettings.Game == Game.RA || oldSettings.Game == Game.RM) && newSettings.Game == Game.RL) {
 				var root = behaviorTree.root?.node?.obj;
 				if (behaviorTree != null) {
@@ -52,7 +52,7 @@ namespace UbiArt.ITF {
 						}
 						if (nodesToCopy == null) {
 							if (treeNode.obj is BTDeciderHasFact_Template factDecider) {
-								var factToRemove = new StringID(0x84E2B5AB); // "Got Hurt" fact
+								var factToRemove = new StringID("RO2_AIFact_CheckDeath"); // "Got Hurt" fact
 								if (factDecider.factsHave?.Contains(factToRemove) ?? false) {
 									//factDecider.factsHave.Remove(factToRemove);
 									if (factDecider.factsHave.Count == 1) {
@@ -76,7 +76,7 @@ namespace UbiArt.ITF {
 					}
 				}
 			}
-			return this;
+			return baseResult;
 		}
 	}
 }

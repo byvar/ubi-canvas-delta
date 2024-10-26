@@ -179,7 +179,7 @@ public class UnityPickable : MonoBehaviour {
 							spr = sprLoc;
 						}
 					}
-					if (spr == null && ssa.RELATIVEPATH != null && !ssa.RELATIVEPATH.IsNull) {
+					if (spr == null && !Path.IsNull(ssa.RELATIVEPATH)) {
 						if (ssa.RELATIVEPATH.filename.EndsWith("_graph.isc")) {
 							spr = c.GetIcon("isc_graph", selected);
 						} else if (ssa.RELATIVEPATH.filename.EndsWith("_fx.isc")) {

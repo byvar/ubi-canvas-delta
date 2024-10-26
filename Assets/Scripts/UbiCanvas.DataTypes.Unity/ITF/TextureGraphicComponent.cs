@@ -33,6 +33,7 @@ namespace UbiArt.ITF {
 			if (tpl != null) {
 				var pos = tpl?.posOffset?.GetUnityVector() ?? Vector2.zero;
 				tex_gao.transform.localPosition = new Vector3(pos.x, pos.y, -tpl.zOffset);
+				tex_gao.transform.localRotation = tpl?.angleOffset?.GetUnityQuaternion() ?? Quaternion.identity;
 
 				var scl = tpl?.size?.GetUnityVector() ?? Vector2.one;
 				tex_gao.transform.localScale = new Vector3(scl.x, scl.y, 1f);

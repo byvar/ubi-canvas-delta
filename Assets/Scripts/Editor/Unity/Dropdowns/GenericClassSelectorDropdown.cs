@@ -12,8 +12,10 @@ class GenericClassSelectorDropdown : AdvancedDropdown {
 	public string name;
 	public Rect rect;
 	public Type type;
+	public Context context;
 
-	public GenericClassSelectorDropdown(AdvancedDropdownState state) : base(state) {
+	public GenericClassSelectorDropdown(Context context, AdvancedDropdownState state) : base(state) {
+		this.context = context;
 		minimumSize = new UnityEngine.Vector2(50, 400f);
 	}
 
@@ -28,7 +30,7 @@ class GenericClassSelectorDropdown : AdvancedDropdown {
 			if (type.IsAssignableFrom(c.Value)) {
 				var attr = (GamesAttribute)Attribute.GetCustomAttribute(c.Value, typeof(GamesAttribute));
 				if (attr != null) {
-					var settings = Controller.MainContext?.Settings;
+					var settings = context?.Settings;
 					if (settings != null) {
 						if (!attr.HasGame(settings.Game) || !attr.HasPlatform(settings.Platform)) {
 							// This generic class is not supported by the current mode. Don't show it
