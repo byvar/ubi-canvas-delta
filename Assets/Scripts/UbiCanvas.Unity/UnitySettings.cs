@@ -50,6 +50,7 @@ public class UnitySettings {
 	private static readonly Dictionary<string, Mode> cmdModeNameDict = new() 
 	{
 		{ "ro_pc", Mode.RaymanOriginsPC },
+		{ "ro_vita", Mode.RaymanOriginsPSVita },
 		{ "rl_pc", Mode.RaymanLegendsPC },
 		{ "rl_vita", Mode.RaymanLegendsPSVita },
 		{ "ra_android", Mode.RaymanAdventuresAndroid },

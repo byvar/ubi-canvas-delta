@@ -31,6 +31,7 @@ namespace UbiArt.ITF {
 		public Vec2d Vector2__6;
 		public Vec2d Vector2__7;
 		public float float__8;
+		public int vitaProperty;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.EngineVersion == EngineVersion.RO) {
@@ -45,6 +46,9 @@ namespace UbiArt.ITF {
 					locFileName = s.Serialize<string>(locFileName, name: "locFileName");
 					defaultSelectedByInstance = s.Serialize<int>(defaultSelectedByInstance, name: "defaultSelectedByInstance");
 					align = s.Serialize<Align>(align, name: "align");
+					if (s.Settings.Platform == GamePlatform.Vita) {
+						vitaProperty = s.Serialize<int>(vitaProperty, name: nameof(vitaProperty));
+					}
 				}
 			} else if (s.Settings.Game == Game.RL) {
 				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {

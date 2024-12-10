@@ -17,6 +17,7 @@ namespace UbiArt.ITF {
 		public bool whiteFade;
 		public bool pauseGameSounds;
 		public FontTextArea.Style subsFontTextStyle;
+		public int vitaInt;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RO) {
@@ -25,6 +26,10 @@ namespace UbiArt.ITF {
 				fadeInTime = s.Serialize<float>(fadeInTime, name: "fadeInTime");
 				fadeOutTime = s.Serialize<float>(fadeOutTime, name: "fadeOutTime");
 				playFromMemory = s.Serialize<bool>(playFromMemory, name: "playFromMemory");
+				if (s.Settings.Platform == GamePlatform.Vita) {
+					playFromMemory = s.Serialize<bool>(playFromMemory, name: "playFromMemory");
+					vitaInt = s.Serialize<int>(vitaInt, name: "vitaInt");
+				}
 			} else if (s.Settings.Game == Game.COL) {
 				video = s.SerializeObject<Path>(video, name: "video");
 				audioTracks = s.SerializeObject<CListP<uint>>(audioTracks, name: "audioTracks");

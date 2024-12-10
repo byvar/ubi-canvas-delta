@@ -11,6 +11,7 @@ UNITY_DEFINE_INSTANCED_PROP(uniform float4, _ColorFactor); // Primitive Params
 UNITY_DEFINE_INSTANCED_PROP(uniform float4, _LightConfig);
 UNITY_DEFINE_INSTANCED_PROP(uniform float4, _ColorFog);
 UNITY_DEFINE_INSTANCED_PROP(uniform float4, _PrimitiveParams1);
+UNITY_DEFINE_INSTANCED_PROP(uniform float4, _VertexAnimParams);
 
 UNITY_DEFINE_INSTANCED_PROP(uniform float4, _UseTextures); // Textures
 UNITY_DEFINE_INSTANCED_PROP(uniform float4, _UseTextures2);
@@ -87,11 +88,24 @@ v2f process_vert(appdata v) {
 	o.uv4 = v.texcoord3;
 	o.color = v.color;
 
+	float4 vertexAdd = float4(0.0 , 0.0, 0.0, 0.0);
+	float4 animSpeed = o.uv2;
+	if(_VertexAnimParams.x == 1 && (animSpeed.x != 0 || animSpeed.y != 0 || animSpeed.z != 0)) {
+		// Animate vertex position
+		float4 animTime = animSpeed * _Time.y * _VertexAnimParams.z // global speed
+			+ o.uv3.z // animSync
+			+ _VertexAnimParams.y; // global anim sync
+		float4 sinTime = float4(sin(animTime.x + o.uv2.z), sin(animTime.y + o.uv2.w), 0.0, 0.0);
+		vertexAdd = o.uv3 * sinTime;
+		//float4 vertexAdd4 = o.uv3 * sinTime;
+		//vertexAdd = float4(vertexAdd4.x, vertexAdd4.y, 0, 0);
+	}
+
 	/*float4x4 modelMatrix = unity_ObjectToWorld;
 	float4x4 modelMatrixInverse = unity_WorldToObject;
 	float3 normalDirection, multipliedPosition;*/
 
-	o.pos = UnityObjectToClipPos(v.vertex);
+	o.pos = UnityObjectToClipPos(v.vertex + vertexAdd);
 	o.screenPos = ComputeScreenPos(o.pos);
 	return o;
 }

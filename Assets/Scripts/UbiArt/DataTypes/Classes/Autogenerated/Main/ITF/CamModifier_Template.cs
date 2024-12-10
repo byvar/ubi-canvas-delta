@@ -63,6 +63,9 @@ namespace UbiArt.ITF {
 		public float cameraDriftDelay = float.MaxValue;
 		public float controllerDriftDelay;
 
+		public Vec2d vitaVector1;
+		public Vec2d vitaVector2;
+
 		
 
 		protected override void SerializeImpl(CSerializerObject s) {
@@ -83,6 +86,10 @@ namespace UbiArt.ITF {
 				zoneScaleAtDepthMin = s.SerializeObject<Vec2d>(zoneScaleAtDepthMin, name: "zoneScaleAtDepthMin");
 				zoneScaleAtDepthMax = s.SerializeObject<Vec2d>(zoneScaleAtDepthMax, name: "zoneScaleAtDepthMax");
 				zoneScaleSpeed = s.Serialize<float>(zoneScaleSpeed, name: "zoneScaleSpeed");
+				if (s.Settings.Platform == GamePlatform.Vita) {
+					vitaVector1 = s.SerializeObject<Vec2d>(vitaVector1, name: "vitaVector1");
+					vitaVector2 = s.SerializeObject<Vec2d>(vitaVector2, name: "vitaVector2");
+				}
 				cameraDecenteringOffsetAtSpeedMin = s.SerializeObject<Vec2d>(cameraDecenteringOffsetAtSpeedMin, name: "cameraDecenteringOffsetAtSpeedMin");
 				cameraDecenteringOffsetAtSpeedMax = s.SerializeObject<Vec2d>(cameraDecenteringOffsetAtSpeedMax, name: "cameraDecenteringOffsetAtSpeedMax");
 				cameraDecenteringSpeedMin = s.SerializeObject<Vec2d>(cameraDecenteringSpeedMin, name: "cameraDecenteringSpeedMin");

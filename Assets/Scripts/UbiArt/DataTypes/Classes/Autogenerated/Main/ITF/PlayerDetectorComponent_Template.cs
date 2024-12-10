@@ -12,6 +12,9 @@ namespace UbiArt.ITF {
 		public int playerId;
 		public int playerToDetect;
 		public bool allowAIControlledPlayer;
+
+		public int vitaProperty;
+
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RO) {
@@ -20,6 +23,9 @@ namespace UbiArt.ITF {
 				firstPlayerOnly = s.Serialize<bool>(firstPlayerOnly, name: "firstPlayerOnly");
 				allPlayerInMode = s.Serialize<uint>(allPlayerInMode, name: "allPlayerInMode");
 				maxDetectionRadius = s.Serialize<float>(maxDetectionRadius, name: "maxDetectionRadius");
+				if (s.Settings.Platform == GamePlatform.Vita) {
+					vitaProperty = s.Serialize<int>(vitaProperty, name: nameof(vitaProperty));
+				}
 			} else if (s.Settings.Game == Game.RL) {
 				allowDeadActors = s.Serialize<bool>(allowDeadActors, name: "allowDeadActors");
 				firstPlayerOnly = s.Serialize<bool>(firstPlayerOnly, name: "firstPlayerOnly");

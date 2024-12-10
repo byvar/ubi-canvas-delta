@@ -267,8 +267,13 @@ namespace UbiArt {
 			throw new NotImplementedException();
 		}
 
-		public override void DoCompressed(Action action, string name = null) {
-			throw new NotImplementedException();
+		public override void DoCompressed(Action action, 
+			long? compressedSize = null, long? decompressedSize = null, string name = null) {
+			if(!compressedSize.HasValue || !decompressedSize.HasValue)
+				throw new NotImplementedException();
+			DoEncoded(new ZlibEncoder((uint)compressedSize.Value, (uint)decompressedSize.Value), () => {
+				action();
+			});
 		}
 
 		public override void DoEndian(Action action, Endian endianness) {

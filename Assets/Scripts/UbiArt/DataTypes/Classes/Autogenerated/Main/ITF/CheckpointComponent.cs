@@ -39,7 +39,7 @@ namespace UbiArt.ITF {
 				if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 					active = s.Serialize<bool>(active, name: "active");
 				}
-				if (s.Settings.Platform == GamePlatform.Vita) {
+				if (s.Settings.Platform == GamePlatform.Vita && s.Settings.Game != Game.RO) {
 					uint__3 = s.Serialize<uint>(uint__3, name: "uint__3");
 					uint__3 = s.Serialize<uint>(uint__3, name: "uint__3");
 					uint__3 = s.Serialize<uint>(uint__3, name: "uint__3");

@@ -233,6 +233,7 @@ namespace UbiArt
 			"AirPose", "ActionPose", "OrientationPose",
 			"MoveCursor", "PrepareHitCursor", "SwimCurveCursor",
 			"AngleRangeMin", "AngleRangeMax",
+			"ChangeSize",
 
 			// Enemy animation inputs
 			"Carrying",

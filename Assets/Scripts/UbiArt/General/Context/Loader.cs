@@ -81,7 +81,7 @@ namespace UbiArt {
 
 		public List<Actor> LoadedActors = new List<Actor>();
 		public void AddLoadedActor(Actor a) {
-			if (a is not Frise) {
+			if (a is not Frise && !LoadedActors.Contains(a)) {
 				LoadedActors.Add(a);
 			}
 		}

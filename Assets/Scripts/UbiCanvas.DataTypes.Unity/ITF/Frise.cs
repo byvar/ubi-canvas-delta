@@ -186,7 +186,7 @@ namespace UbiArt.ITF {
 							}
 							mat.color = UseTemplatePrimitiveParams ? config.obj.PrimitiveParameters.colorFactor : PrimitiveParameters.colorFactor;*/
 							config.obj.textureConfigs[idTexConfig].material.FillUnityMaterialPropertyBlock(UbiArtContext, mr, index: m, shader: shader?.obj);
-							FillMaterialParams(mr, m);
+							FillMaterialParams(mr, m, useAnim: true);
 							GenericFile<GFXMaterialShader_Template> sh = config.obj.textureConfigs[idTexConfig].material.shader;
 							if (sh != null && sh.obj != null && !sh.obj.renderRegular && (sh.obj.renderBackLight || sh.obj.renderFrontLight)) {
 								mesh_anim.layer = 0;
@@ -199,7 +199,7 @@ namespace UbiArt.ITF {
 								animTex.ResetMaterial(config.obj.textureConfigs[idTexConfig], mr);
 							}
 						} else {
-							FillMaterialParams(mr, m);
+							FillMaterialParams(mr, m, useAnim: true);
 						}
 						await TimeController.WaitIfNecessary();
 					}
@@ -266,7 +266,7 @@ namespace UbiArt.ITF {
 				}
 			}
 		}
-		private void FillMaterialParams(Renderer r, int index = 0) {
+		private void FillMaterialParams(Renderer r, int index = 0, bool useAnim = false) {
 			bool hasConfig = config != null && config.obj != null;
 			//if (!hasConfig) return;
 			//GFXPrimitiveParam param = (UseTemplatePrimitiveParams && hasConfig) ? config.obj.PrimitiveParameters : PrimitiveParameters;
@@ -275,6 +275,9 @@ namespace UbiArt.ITF {
 			r.GetPropertyBlock(mpb, index);
 			GFXPrimitiveParam param = PrimitiveParameters;
 			param?.FillMaterialParams(UbiArtContext, mpb);
+			if (useAnim) {
+				mpb.SetVector("_VertexAnimParams", new Vector4(1f, Anim_SyncGlobal, (config?.obj?.VertexAnim?.animGlobalSpeed ?? 1f) * animSpeedFactor, 0));
+			}
 			r.SetPropertyBlock(mpb, index);
 		}
 	}

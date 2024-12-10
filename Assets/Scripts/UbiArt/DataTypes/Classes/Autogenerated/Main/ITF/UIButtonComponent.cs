@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class UIButtonComponent : CSerializable {
+	public partial class UIButtonComponent : UIComponent {
 		public LocalisationId lineId;
 		public float offset1;
 		public float offset2;

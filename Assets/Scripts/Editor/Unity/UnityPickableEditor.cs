@@ -5,6 +5,7 @@ using UnityEngine;
 [CustomEditor(typeof(UnityPickable))]
 public class UnityPickableEditor : Editor {
 	private static bool ShowParentBind = false;
+	private static bool EditTemplatePath = false;
 
 	/*public override bool RequiresConstantRepaint() {
 		//return base.RequiresConstantRepaint();
@@ -36,35 +37,45 @@ public class UnityPickableEditor : Editor {
 				p.pickable.xFLIPPED = isFlipped;
 				p.ResetTransformFromData();
 			}
-			if (p.pickable.templatePickable != null) {
-				if (p.pickable is UbiArt.ITF.Frise f) {
-					EditorGUILayout.TextField("FriseConfig", (string)(f?.ConfigName?.FullPath));
-				} else if (p.pickable is UbiArt.ITF.Actor a) {
-					EditorGUILayout.TextField("LUA", (string)(a?.LUA?.FullPath));
+			if (p.pickable is UbiArt.ITF.Frise f) {
+				EditTemplatePath = EditorGUILayout.Toggle("Edit FriseConfig path (save & reload)", EditTemplatePath);
+				var path = EditorGUILayout.TextField("FriseConfig", (string)(f?.ConfigName?.FullPath));
+				if (EditTemplatePath) {
+					f.ConfigName = new Path(path);
+					f.LUA = f.ConfigName;
 				}
+			} else if (p.pickable is UbiArt.ITF.Actor a) {
+				EditTemplatePath = EditorGUILayout.Toggle("Edit LUA path (save & reload)", EditTemplatePath);
+				var path = EditorGUILayout.TextField("LUA", (string)(a?.LUA?.FullPath));
+				if (EditTemplatePath) {
+					a.LUA = new Path(path);
+				}
+			}
 
-				if (p.pickable is UbiArt.ITF.Actor act &&
-					(Controller.MainContext?.Settings?.Game == Game.RA || Controller.MainContext?.Settings?.Game == Game.RM
-					|| !(p.pickable is UbiArt.ITF.Frise))) {
-					ShowParentBind = EditorGUILayout.Foldout(ShowParentBind, "parentBind");
-					if (ShowParentBind) {
-						EditorGUI.indentLevel++;
-						act.parentBind.Serialize(s, "parentBind");
-						EditorGUI.indentLevel--;
-					}
+			if (p.pickable is UbiArt.ITF.Actor act &&
+				(Controller.MainContext?.Settings?.Game == Game.RA || Controller.MainContext?.Settings?.Game == Game.RM
+				|| !(p.pickable is UbiArt.ITF.Frise))) {
+				ShowParentBind = EditorGUILayout.Foldout(ShowParentBind, "parentBind");
+				if (ShowParentBind) {
+					EditorGUI.indentLevel++;
+					act.parentBind.Serialize(s, "parentBind");
+					EditorGUI.indentLevel--;
 				}
-				if (p.pickable is UbiArt.ITF.Actor act2 &&
-					(Controller.MainContext?.Settings?.Game == Game.RA || Controller.MainContext?.Settings?.Game == Game.RM)) {
-					act2.STARTPAUSE = s.Serialize<bool>(act2.STARTPAUSE, name: "STARTPAUSE");
-				}
+			}
+			if (p.pickable is UbiArt.ITF.Actor act2 &&
+				(Controller.MainContext?.Settings?.Game == Game.RA || Controller.MainContext?.Settings?.Game == Game.RM)) {
+				act2.STARTPAUSE = s.Serialize<bool>(act2.STARTPAUSE, name: "STARTPAUSE");
+			}
+
+			if (p.pickable.templatePickable != null) {
 				if (p.pickable.templatePickable.TAGS != null) {
 					p.pickable.templatePickable.TAGS.Serialize(s, "TAGS");
 				}
-				if (p.pickable is UbiArt.ITF.SubSceneActor ssa) {
-					ssa.EMBED_SCENE = s.Serialize<bool>(ssa.EMBED_SCENE, name: "EMBED_SCENE");
-					ssa.IS_SINGLE_PIECE = s.Serialize<bool>(ssa.IS_SINGLE_PIECE, name: "IS_SINGLE_PIECE");
-					ssa.ZFORCED = s.Serialize<bool>(ssa.ZFORCED, name: "ZFORCED");
-				}
+			}
+			if (p.pickable is UbiArt.ITF.SubSceneActor ssa) {
+				ssa.EMBED_SCENE = s.Serialize<bool>(ssa.EMBED_SCENE, name: "EMBED_SCENE");
+				ssa.IS_SINGLE_PIECE = s.Serialize<bool>(ssa.IS_SINGLE_PIECE, name: "IS_SINGLE_PIECE");
+				ssa.ZFORCED = s.Serialize<bool>(ssa.ZFORCED, name: "ZFORCED");
 			}
 
 			if (GUILayout.Button("Select in game view")) {

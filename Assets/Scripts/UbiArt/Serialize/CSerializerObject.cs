@@ -68,6 +68,8 @@ namespace UbiArt {
 
 		public abstract void DoCompressed(
 			Action action,
+			long? compressedSize = null,
+			long? decompressedSize = null,
 			string name = null);
 
 		public abstract void DoEndian(

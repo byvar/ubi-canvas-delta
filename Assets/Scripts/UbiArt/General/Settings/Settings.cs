@@ -82,6 +82,17 @@ namespace UbiArt
 			EngineSignature = 0x345429C7,
 			Bundles = new[] { "bundle" }
 		};
+		public static Settings RO_Vita = new() {
+			EngineVersion = EngineVersion.RO,
+			Game = Game.RO,
+			Platform = GamePlatform.Vita,
+			Endian = Endian.Big,
+			VersionFlags = VersionFlags.Origins,
+			UsesSerializeFlags = false,
+			IpkVersion = 3,
+			EngineSignature = 0x345429C7,
+			Bundles = new[] { "bundle" }
+		};
 
 		public static Settings RJR_Android = new() {
 			EngineVersion = EngineVersion.RO,
@@ -279,6 +290,7 @@ namespace UbiArt
 			Settings? settings = mode switch
 			{
 				Mode.RaymanOriginsPC => RO_PC,
+				Mode.RaymanOriginsPSVita => RO_Vita,
 				Mode.RaymanJungleRunAndroid => RJR_Android,
 				Mode.RaymanJungleRuniOS => RJR_iOS,
 				Mode.RaymanFiestaRunAndroid => RFR_Android,

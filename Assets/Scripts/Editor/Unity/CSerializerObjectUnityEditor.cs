@@ -634,7 +634,8 @@ namespace UbiArt {
 			action();
 		}
 
-		public override void DoCompressed(Action action, string name = null) {
+		public override void DoCompressed(Action action, 
+			long? compressedSize = null, long? decompressedSize = null, string name = null) {
 			if (action == null)
 				throw new ArgumentNullException(nameof(action));
 			action();

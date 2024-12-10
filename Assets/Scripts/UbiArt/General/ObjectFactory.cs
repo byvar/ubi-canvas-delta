@@ -5006,6 +5006,7 @@ namespace UbiArt {
 			{ 0x940FCDF9, typeof(ITF.Ray_StargateManagerAIComponent) },
 			{ 0x30AC4847, typeof(ITF.Ray_StargateManagerAIComponent_Template) },
 			{ 0xF689BFA5, typeof(ITF.Ray_CrystalKingAIComponent) },
+			{ 0x441BA694, typeof(ITF.Ray_MoviePlayerComponent) },
 
 
 			// Mini
@@ -5170,6 +5171,18 @@ namespace UbiArt {
 			{ 0x581AAC2E, typeof(ITF.SectoComponent_Template) },
 			{ 0x8ABF30E1, typeof(ITF.SectoBroadcastComponent) },
 			{ 0xB2F56387, typeof(ITF.SectoBroadcastComponent_Template) },
+
+			// RO Vita only
+			{ 0x4C9083E8, typeof(ITF.GoComponent) },
+			{ 0xC61B9520, typeof(ITF.GoComponent_Template) },
+			{ 0x232B2B59, typeof(ITF.GhostComponent) },
+			{ 0x3FDC3344, typeof(ITF.GhostComponent_Template) },
+			{ 0x05EEFC41, typeof(ITF.GhostIconeComponent) },
+			{ 0x8B4650E3, typeof(ITF.GhostIconeComponent_Template) },
+			{ 0x0FF7070B, typeof(ITF.RayVita_AIRelicBehavior) },
+			{ 0x155038D2, typeof(ITF.RayVita_AIRelicBehavior_Template) },
+			{ 0x6ED6191E, typeof(ITF.RayVita_FrescoManagerAIComponent) },
+			{ 0x63AEE81C, typeof(ITF.RayVita_FrescoManagerAIComponent_Template) },
 		};
 	}
 }

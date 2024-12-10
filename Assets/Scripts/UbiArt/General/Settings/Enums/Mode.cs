@@ -5,6 +5,9 @@
 		[System.ComponentModel.Description("Rayman Origins (PC)")] 
 		RaymanOriginsPC,
 
+		[System.ComponentModel.Description("Rayman Origins (PSV)")]
+		RaymanOriginsPSVita,
+
 		[System.ComponentModel.Description("Rayman Jungle Run (Android)")]
 		RaymanJungleRunAndroid,
 
