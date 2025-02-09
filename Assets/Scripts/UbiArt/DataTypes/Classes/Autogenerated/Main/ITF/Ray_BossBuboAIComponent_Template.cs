@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_BossBuboAIComponent_Template : CSerializable {
+	public partial class Ray_BossBuboAIComponent_Template : ActorComponent_Template {
 		public StringID invisibleAnim;
 		public StringID appearAnim;
 		public StringID disappearAnim;

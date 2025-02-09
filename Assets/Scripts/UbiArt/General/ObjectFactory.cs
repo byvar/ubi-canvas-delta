@@ -1830,6 +1830,7 @@ namespace UbiArt {
 			{ 0x5D3B7B7D, typeof(ITF.RO2_AIUmbrellaBehavior_Template) },
 			{ 0x5D3FCD6E, typeof(ITF.RO2_RhythmicSequenceComponent_Template) },
 			{ 0x5D50B800, typeof(ITF.Light3DComponent_Template) },
+			{ 0x5D614B90, typeof(ITF.Ray_BossBuboAIComponent) },
 			{ 0x5D6B650C, typeof(ITF.TrajectoryFollowerComponent_Template) },
 			{ 0x5D7231ED, typeof(ITF.W1W_IphoneAdapter) },
 			{ 0x5D7B614E, typeof(ITF.RO2_UIItemLeaderboardGraphNodeComponent) },
