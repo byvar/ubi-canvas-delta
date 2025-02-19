@@ -104,7 +104,8 @@ namespace UbiArt.ITF {
 			ActorComponent InstantiateComponent(ActorComponent_Template ctpl) => ctpl?.Instantiate(UbiArtContext);
 
 			act.COMPONENTS = new CArrayO<Generic<ActorComponent>>(COMPONENTS.Select(c => new Generic<ActorComponent>(InstantiateComponent(c.obj))).ToArray());
-			return (Actor)act.Clone("act");
+			var clone = (Actor)act.Clone("act");
+			return clone;
 		}
 	}
 }

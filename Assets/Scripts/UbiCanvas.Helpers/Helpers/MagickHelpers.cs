@@ -4,20 +4,33 @@ namespace UbiCanvas.Helpers
 {
 	public static class MagickHelpers 
 	{
-		public static byte[] ExportDDSWithMipmaps(this MagickImage img, FilterType filterType = FilterType.Box) {
+		public static byte[] ExportDDSWithMipmaps(this MagickImage img, FilterType filterType = FilterType.Box, CompressionMethod compression = CompressionMethod.NoCompression) {
 			byte[] bytes = null;
 
 			using (MagickImageCollection collection = new MagickImageCollection()) {
 				img.Format = MagickFormat.Dds;
 				img.Alpha(AlphaOption.Set); // Rayman Legends needs alpha channel in uncompressed textures
-				img.Settings.SetDefine(MagickFormat.Dds, "compression", "none");
+				switch (compression) {
+					case CompressionMethod.NoCompression:
+						img.Settings.SetDefine(MagickFormat.Dds, "compression", "none");
+						break;
+					case CompressionMethod.DXT1:
+						img.Settings.SetDefine(MagickFormat.Dds, "compression", "dxt1");
+						break;
+					case CompressionMethod.DXT5:
+						img.Settings.SetDefine(MagickFormat.Dds, "compression", "dxt5");
+						break;
+
+				}
 				img.Settings.SetDefine(MagickFormat.Dds, "mipmaps", "fromlist");
 				//img.Settings.SetDefine(MagickFormat.Dds, "weight-by-alpha", false);
 				var w = img.Width;
 				var h = img.Height;
-				if (w < 32) {
-					// Issue: https://stackoverflow.com/questions/30026343/directx-11-minimum-texture-size
-					img.Settings.SetDefine(MagickFormat.Dds, "compression", "dxt5");
+				if (compression == CompressionMethod.NoCompression) {
+					if (w < 32) {
+						// Issue: https://stackoverflow.com/questions/30026343/directx-11-minimum-texture-size
+						img.Settings.SetDefine(MagickFormat.Dds, "compression", "dxt5");
+					}
 				}
 				collection.Add(img);
 

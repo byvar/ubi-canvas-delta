@@ -42,5 +42,7 @@ namespace UbiArt {
 		public static Vec3d Right => new Vec3d(1, 0, 0);
 		public static Vec3d Up => new Vec3d(0, 1, 0);
 		public static Vec3d Down => new Vec3d(0, -1, 0);
+		public static Vec3d Forward => new Vec3d(0, 0, 1);
+		public static Vec3d Backward => new Vec3d(0, 0, -1);
 	}
 }

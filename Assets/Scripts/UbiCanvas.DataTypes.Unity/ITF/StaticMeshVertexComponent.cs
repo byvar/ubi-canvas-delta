@@ -10,7 +10,6 @@ namespace UbiArt.ITF {
 	public partial class StaticMeshVertexComponent {
 		private StaticMeshVertexComponent_Template tpl;
 		private UnityAnimation ua;
-		MaterialPropertyBlock mpb;
 
 		public override void InitUnityComponent(Actor act, GameObject gao, ActorComponent_Template template, int index) {
 			base.InitUnityComponent(act, gao, template, index);
@@ -75,20 +74,9 @@ namespace UbiArt.ITF {
 
 			var zsort = mesh_static.AddComponent<UnityZSortedRenderer>();
 			zsort.Renderer = mr_static;
+			zsort.FillMaterialParams = r => FillMaterialParams(r);
 
 			return mesh_static;
-		}
-
-		private void FillMaterialParams(Renderer r, int index = 0) {
-			//bool hasConfig = config != null && config.obj != null;
-			//if (!hasConfig) return;
-			//GFXPrimitiveParam param = (UseTemplatePrimitiveParams && hasConfig) ? config.obj.PrimitiveParameters : PrimitiveParameters;
-
-			MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-			r.GetPropertyBlock(mpb, index);
-			GFXPrimitiveParam param = PrimitiveParameters;
-			param?.FillMaterialParams(UbiArtContext, mpb);
-			r.SetPropertyBlock(mpb, index);
 		}
 	}
 }

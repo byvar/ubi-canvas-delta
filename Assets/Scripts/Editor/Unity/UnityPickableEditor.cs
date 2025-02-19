@@ -59,6 +59,36 @@ public class UnityPickableEditor : Editor {
 				if (ShowParentBind) {
 					EditorGUI.indentLevel++;
 					act.parentBind.Serialize(s, "parentBind");
+
+					if (act?.parentBind?.read ?? false) {
+						if (GUILayout.Button("Recalculate position")) {
+							var tree = new PickableTree(Controller.Obj.MainScene.obj);
+							var path = Controller.Obj.MainScene.obj.FindPickable(pick => pick == p.pickable);
+
+							if (path != null) {
+								var curNode = tree.FollowObjectPath(path.Path, throwIfNotFound: false);
+								if (curNode != null) {
+									var parentBind = act.parentBind.value;
+									var linkedNode = curNode.Parent.GetNodeWithObjectPath(parentBind.parentPath, throwIfNotFound: false);
+									bool foundParent = linkedNode?.Pickable != null;
+									if (foundParent) {
+										var parentObj = linkedNode.Pickable.GetPrecreatedGameObject().GetComponent<UnityPickable>();
+										var relativePos = parentObj.transform.InverseTransformPoint(p.transform.position);
+
+										parentBind.offsetPos = new Vec3d(relativePos.x, relativePos.y, -relativePos.z);
+
+										var calculatedAngle = p.transform.eulerAngles.z - parentObj.transform.eulerAngles.z;
+										var curAngle = new Angle(parentBind.offsetAngle).EulerAngle;
+										var angleDifference = p.NormalizeEulerAngle(calculatedAngle) - p.NormalizeEulerAngle(curAngle);
+										if (Mathf.Abs(angleDifference) > 0.00005) {
+											parentBind.offsetAngle = new Angle(p.NormalizeEulerAngle(calculatedAngle), degrees: true);
+										}
+									}
+								}
+							}
+						}
+					}
+
 					EditorGUI.indentLevel--;
 				}
 			}

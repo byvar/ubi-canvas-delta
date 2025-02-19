@@ -1,7 +1,7 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.All)]
 	public partial class EventSequenceActivatePlayers : Event {
-		public bool activate;
+		public bool activate = true;
 		public bool playStart;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

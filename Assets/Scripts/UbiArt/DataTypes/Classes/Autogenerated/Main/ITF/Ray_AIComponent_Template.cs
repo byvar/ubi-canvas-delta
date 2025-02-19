@@ -9,6 +9,7 @@ namespace UbiArt.ITF {
 		public int alsoCheckEncroachedDangerousMaterials;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
+			if(this is Ray_BossBuboAIComponent_Template) return;
 			reactivateOnCheckpoint = s.Serialize<int>(reactivateOnCheckpoint, name: "reactivateOnCheckpoint");
 			customCheckpointHandling = s.Serialize<int>(customCheckpointHandling, name: "customCheckpointHandling");
 			softCollisionRadius = s.Serialize<float>(softCollisionRadius, name: "softCollisionRadius");

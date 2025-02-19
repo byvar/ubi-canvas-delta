@@ -4,13 +4,13 @@ namespace UbiArt.ITF {
 		public Path scoreLumPath;
 		public Path heartRainPath;
 		public Path heartNfcPath;
-		public float heartRainCooldown;
+		public float heartRainCooldown = 10f;
 		public Path DRCItemHeartPath;
-		public float DRCItemHeartWaitDurationMin;
-		public float DRCItemHeartWaitDurationMax;
-		public uint DRCItemHeartMinDeathCount;
-		public uint DRCItemHeartMaxDeathCount;
-		public uint DRCItemHeartMaxByCheckpoint;
+		public float DRCItemHeartWaitDurationMin = 10;
+		public float DRCItemHeartWaitDurationMax = 60;
+		public uint DRCItemHeartMinDeathCount = 4;
+		public uint DRCItemHeartMaxDeathCount = 10;
+		public uint DRCItemHeartMaxByCheckpoint = 3;
 		public Path prisonerCounterPath;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

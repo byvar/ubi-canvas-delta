@@ -163,7 +163,9 @@ public class UnityHandleManager : MonoBehaviour {
 		// Search for Bezier renderer
 		foreach (Transform tf in currentSelectedObject.transform) {
 			var bez = tf.GetComponent<UnityBezierRenderer>();
-			return bez?.Branch?.nodes?.Count * 2 ?? 0;
+			if (bez != null) {
+				return bez?.Branch?.nodes?.Count * 2 ?? 0;
+			}
 		}
 
 		return 0;

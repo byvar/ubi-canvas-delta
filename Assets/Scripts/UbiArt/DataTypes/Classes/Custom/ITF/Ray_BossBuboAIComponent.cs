@@ -7,3 +7,4 @@ namespace UbiArt.ITF {
 		public override uint? ClassCRC => 0x5D614B90;
 	}
 }
+

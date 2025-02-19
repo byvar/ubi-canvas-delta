@@ -2,8 +2,8 @@
 
 namespace UbiArt.ITF {
 	public partial class GFXPrimitiveParam {
-		public void FillMaterialParams(Context context, MaterialPropertyBlock mpb) {
-			mpb.SetColor("_ColorFactor", TotalColorFactor.GetUnityColor());
+		public void FillMaterialParams(Context context, MaterialPropertyBlock mpb, float alpha = 1f) {
+			mpb.SetColor("_ColorFactor", (TotalColorFactor * Color.White.Alpha(alpha)).GetUnityColor());
 			mpb.SetColor("_LightConfig", new Vector4(
 				FrontLightBrightness,
 				FrontLightContrast,
@@ -22,8 +22,8 @@ namespace UbiArt.ITF {
 				0f));
 			mpb.SetColor("_ColorFog", colorFog.GetUnityColor());
 		}
-		public static void FillMaterialParamsDefault(Context context, MaterialPropertyBlock mpb) {
-			mpb.SetColor("_ColorFactor", UnityEngine.Color.white);
+		public static void FillMaterialParamsDefault(Context context, MaterialPropertyBlock mpb, float alpha = 1f) {
+			mpb.SetColor("_ColorFactor", Color.White.Alpha(alpha).GetUnityColor());
 			mpb.SetColor("_LightConfig", new Vector4(0, 1, 0, 1));
 			mpb.SetColor("_ColorFog", Vector4.zero);
 			bool unityUseGlobalLighting = false;

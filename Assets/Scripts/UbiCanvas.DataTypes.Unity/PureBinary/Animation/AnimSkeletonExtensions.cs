@@ -12,7 +12,7 @@ namespace UbiArt.Animation {
 				} else if (skl.boneTagsAdv?.Count > i) {
 					tag = new StringID((uint)skl.boneTagsAdv[i]);
 				}
-				GameObject boneGao = new GameObject($"Bone {i} - {tag}");
+				GameObject boneGao = new GameObject($"Bone {i} - {tag?.ToString(skl?.UbiArtContext, shortString: true)}");
 				unityBones[i] = boneGao.AddComponent<UnityBone>();
 				unityBones[i].bind = true;
 				unityBones[i].transform.parent = gao.transform;
@@ -46,6 +46,7 @@ namespace UbiArt.Animation {
 				unityBones[i].localRotation = 0;
 				unityBones[i].bindZ = skl.bonesDyn[i].z;
 				unityBones[i].localZ = 0;
+				unityBones[i].localAlpha = 0;
 				if (context.Settings.EngineVersion <= EngineVersion.RO) {
 					unityBones[i].boneLength = skl.bonesDyn[i].boneLength;
 					unityBones[i].xScaleMultiplier = skl.bonesDyn[i].boneLength;

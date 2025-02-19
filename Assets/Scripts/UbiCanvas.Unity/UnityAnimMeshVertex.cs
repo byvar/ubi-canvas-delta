@@ -127,8 +127,8 @@ public class UnityAnimMeshVertex : MonoBehaviour {
 					Patches[i].Mesh.vertices = points.Select(p => new Vector3(p.x, p.y, 0f)).ToArray();
 					Patches[i].Mesh.uv = points.Select((p, j) => AMV.uvList[patch.uvsIndex + j].GetUnityVector()).ToArray();
 					//Patches[i].Filter.sharedMesh = Patches[i].Mesh;
-
-					AnimMeshVertexComponent.SetColor(new UnityEngine.Color(1f, 1f, 1f, patch.alphaBegin / 255f), Patches[i].Renderer);
+					var alpha = patch.alphaBegin / 255f;
+					AnimMeshVertexComponent.FillMaterialParams(Patches[i].Renderer, alpha: alpha);
 
 					var obj = Patches[i].Object;
 					if (!obj.activeSelf) obj.SetActive(true);

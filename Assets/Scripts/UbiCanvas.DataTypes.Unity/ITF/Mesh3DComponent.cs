@@ -14,7 +14,6 @@ namespace UbiArt.ITF {
 		private UnityBone[] bones;
 		//private int zValue = 0;
 		private UnityAnimation ua;
-		MaterialPropertyBlock mpb;
 
 		public override void InitUnityComponent(Actor act, GameObject gao, ActorComponent_Template template, int index) {
 			base.InitUnityComponent(act, gao, template, index);
@@ -98,18 +97,11 @@ namespace UbiArt.ITF {
 				FillMaterialParams(mr, index: 0);
 				mf.sharedMesh = mesh;
 				mr.gameObject.layer = LayerMask.NameToLayer("Default");
+
+				var zsort = meshGAO.AddComponent<UnityZSortedRenderer>();
+				zsort.Renderer = mr;
+				zsort.FillMaterialParams = r => FillMaterialParams(r);
 			}
-		}
-		private void FillMaterialParams(Renderer r, int index = 0) {
-			if (mpb == null) mpb = new MaterialPropertyBlock();
-			r.GetPropertyBlock(mpb, index);
-			if (UbiArtContext.Settings.EngineVersion > EngineVersion.RO) {
-				GFXPrimitiveParam param = PrimitiveParameters;
-				param?.FillMaterialParams(UbiArtContext, mpb);
-			} else {
-				GFXPrimitiveParam.FillMaterialParamsDefault(UbiArtContext, mpb);
-			}
-			r.SetPropertyBlock(mpb, index);
 		}
 	}
 }

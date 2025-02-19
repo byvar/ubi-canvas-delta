@@ -23,6 +23,7 @@ public class Controller : MonoBehaviour {
 	private Texture2D[] iconTextures;
 	bool displayGizmos_ = false; public bool displayGizmos = false;
 	bool displayBezier_ = false; public bool displayBezier = false;
+	bool displayCollision_ = false; public bool displayCollision = false;
 	bool playAnimations_ = true; public bool playAnimations = true;
 	public PickableSelector selector;
 	public UnityPickable SelectedObject => selector.selected;
@@ -62,6 +63,18 @@ public class Controller : MonoBehaviour {
 			fileManager: new MapViewerFileManager(),
 			systemLogger: new UnitySystemLogger(),
 			asyncController: new UniTaskAsyncController());
+
+		// Optional, add lines
+		if (MainContext.Loader.FileManager.FileExists("strings.txt")) {
+			using (var str = MainContext.Loader.FileManager.GetFileReadStream("strings.txt")) {
+				using (StreamReader r = new StreamReader(str)) {
+					while (!r.EndOfStream) {
+						var line = r.ReadLine();
+						MainContext.AddToStringCache(line);
+					}
+				}
+			}
+		}
 
 		MainContext.Loader.LoadAnimations = UnitySettings.LoadAnimations;
 		MainContext.Loader.LoadAllPaths = UnitySettings.LoadAllPaths;
@@ -227,6 +240,9 @@ public class Controller : MonoBehaviour {
 		if (UnityEngine.Input.GetKeyDown(KeyCode.G)) {
 			displayGizmos = !displayGizmos;
 		}
+		if (UnityEngine.Input.GetKeyDown(KeyCode.C)) {
+			displayCollision = !displayCollision;
+		}
 		if (UnityEngine.Input.GetKeyDown(KeyCode.B)) {
 			displayBezier = !displayBezier;
 		}
@@ -242,6 +258,10 @@ public class Controller : MonoBehaviour {
 			if (displayBezier != displayBezier_) {
 				updatedSettings = true;
 				displayBezier_ = displayBezier;
+			}
+			if (displayCollision != displayCollision_) {
+				updatedSettings = true;
+				displayCollision_ = displayCollision;
 			}
 			if (playAnimations != playAnimations_) {
 				updatedSettings = true;

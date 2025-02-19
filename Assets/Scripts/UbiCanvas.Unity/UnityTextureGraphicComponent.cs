@@ -8,6 +8,8 @@ public class UnityTextureGraphicComponent : MonoBehaviour {
 
 	private void Update() {
 		if (tgc != null && tgc.tex_renderer != null) {
+			tgc?.FillMaterialParams(tgc?.tex_renderer);
+
 			float z = transform.position.z;
 			if (z != prevZ) {
 				prevZ = z;

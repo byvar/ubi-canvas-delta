@@ -12,7 +12,6 @@ namespace UbiArt.ITF {
 		private AnimMeshVertex amv => tpl?.amv;
 		private UnityAnimation ua;
 		private Material tex_mat;
-		MaterialPropertyBlock mpb;
 
 		public override void InitUnityComponent(Actor act, GameObject gao, ActorComponent_Template template, int index) {
 			base.InitUnityComponent(act, gao, template, index);
@@ -86,24 +85,5 @@ namespace UbiArt.ITF {
 
 			return patch_gao;
 		}
-		private void FillMaterialParams(Renderer r, int index = 0) {
-			if (mpb == null) mpb = new MaterialPropertyBlock();
-			r.GetPropertyBlock(mpb, index);
-			if (UbiArtContext.Settings.EngineVersion > EngineVersion.RO) {
-				GFXPrimitiveParam param = PrimitiveParameters;
-				param?.FillMaterialParams(UbiArtContext, mpb);
-			} else {
-				GFXPrimitiveParam.FillMaterialParamsDefault(UbiArtContext, mpb);
-			}
-			r.SetPropertyBlock(mpb, index);
-		}
-
-		public void SetColor(UnityEngine.Color col, Renderer r, int index = 0) {
-			if (mpb == null) mpb = new MaterialPropertyBlock();
-			r.GetPropertyBlock(mpb, index);
-			mpb.SetColor("_ColorFactor", col);
-			r.SetPropertyBlock(mpb, index);
-		}
-
 	}
 }

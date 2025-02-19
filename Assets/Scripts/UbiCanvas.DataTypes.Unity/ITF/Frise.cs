@@ -266,18 +266,42 @@ namespace UbiArt.ITF {
 				}
 			}
 		}
-		private void FillMaterialParams(Renderer r, int index = 0, bool useAnim = false) {
+
+		public void UpdateAllMaterialParams() {
+			if (meshBuildData != null && meshBuildData.value != null) {
+				for (int m = 0; m < (mr_static?.sharedMaterials?.Length ?? 0); m++) {
+					FillMaterialParams(mr_static, m);
+				}
+				for (int m = 0; m < (mr_anim?.sharedMaterials?.Length ?? 0); m++) {
+					FillMaterialParams(mr_anim, m, useAnim: true);
+				}
+				for (int m = 0; m < (mr_overlay?.sharedMaterials?.Length ?? 0); m++) {
+					FillMaterialParams(mr_overlay, m);
+				}
+			}
+		}
+
+		protected MaterialPropertyBlock mpb;
+		private void FillMaterialParams(Renderer r, int index = 0, float alpha = 1f, bool useAnim = false) {
 			bool hasConfig = config != null && config.obj != null;
 			//if (!hasConfig) return;
 			//GFXPrimitiveParam param = (UseTemplatePrimitiveParams && hasConfig) ? config.obj.PrimitiveParameters : PrimitiveParameters;
 
-			MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+			if (mpb == null) mpb = new MaterialPropertyBlock();
 			r.GetPropertyBlock(mpb, index);
+
 			GFXPrimitiveParam param = PrimitiveParameters;
-			param?.FillMaterialParams(UbiArtContext, mpb);
+
+			if (param != null) {
+				param?.FillMaterialParams(UbiArtContext, mpb, alpha: alpha);
+			} else {
+				GFXPrimitiveParam.FillMaterialParamsDefault(UbiArtContext, mpb, alpha: alpha);
+			}
+
 			if (useAnim) {
 				mpb.SetVector("_VertexAnimParams", new Vector4(1f, Anim_SyncGlobal, (config?.obj?.VertexAnim?.animGlobalSpeed ?? 1f) * animSpeedFactor, 0));
 			}
+
 			r.SetPropertyBlock(mpb, index);
 		}
 	}

@@ -10,7 +10,6 @@ namespace UbiArt.ITF {
 	public partial class AnimLightComponent {
 		private AnimLightComponent_Template tpl;
 		private UnityAnimation ua;
-		MaterialPropertyBlock mpb;
 
 		public override void InitUnityComponent(Actor act, GameObject gao, ActorComponent_Template template, int index) {
 			base.InitUnityComponent(act, gao, template, index);
@@ -102,7 +101,7 @@ namespace UbiArt.ITF {
 					Mesh mesh = at.CreateMesh();
 					if (mesh == null) continue;
 
-					GameObject patch_gao = new GameObject($"AnimLightComponent - {bank.ID ?? bank.TextureID} - Template {i}");
+					GameObject patch_gao = new GameObject($"Anim Bank {(bank.ID ?? bank.TextureID)?.ToString(UbiArtContext, shortString: true)} - {i} [ {bank.PBK.templateKeys.GetKey(i).ToString(bank.PBK.UbiArtContext, shortString: true)} ]");
 					patch_gao.transform.SetParent(gao.transform, false);
 					patch_gao.transform.localPosition = Vector3.zero;
 					patch_gao.transform.localRotation = Quaternion.identity;
@@ -215,8 +214,8 @@ namespace UbiArt.ITF {
 
 					Mesh mesh = at.CreateMesh();
 					if (mesh == null) continue;
-					
-					GameObject patch_gao = new GameObject($"AnimLightComponent - {bank.ID ?? bank.TextureID} - Template {i}");
+
+					GameObject patch_gao = new GameObject($"Anim Bank {(bank.ID ?? bank.TextureID)?.ToString(UbiArtContext, shortString: true)} - {i} [ {bank.PBK.templateKeys.GetKey(i).ToString(bank.PBK.UbiArtContext, shortString: true)} ]");
 					patch_gao.transform.SetParent(gao.transform, false);
 					patch_gao.transform.localPosition = Vector3.zero;
 					patch_gao.transform.localRotation = Quaternion.identity;
@@ -273,6 +272,18 @@ namespace UbiArt.ITF {
 					SubAnim = sat
 				});
 			}
+			if (tpl?.animSet?.animPackage?.animPathAABB != null) {
+				foreach (var animPath in tpl?.animSet?.animPackage?.animPathAABB) {
+					if(animPath?.anim == null) continue;
+					if (anims.Any(a => a.Track == animPath.anim)) continue;
+					anims.Add(new UnityAnimation.UnityAnimationTrack() {
+						ID = animPath.name,
+						Path = animPath.path,
+						Track = animPath.anim,
+						SubAnim = null
+					});
+				}
+			}
 			ua.anims = anims.ToArray();
 			// Set default animation if possible
 			if (ua.anims.Length > 0) {
@@ -320,18 +331,6 @@ namespace UbiArt.ITF {
 			//meshUnity.SetUVs(4, Enumerable.Repeat(Vector4.one, 4).ToList());
 			return meshUnity;
 		}
-		private void FillMaterialParams(Renderer r, int index = 0) {
-			if (mpb == null) mpb = new MaterialPropertyBlock();
-			r.GetPropertyBlock(mpb, index);
-			if (UbiArtContext.Settings.EngineVersion > EngineVersion.RO) {
-				GFXPrimitiveParam param = PrimitiveParameters;
-				param?.FillMaterialParams(UbiArtContext, mpb);
-			} else {
-				GFXPrimitiveParam.FillMaterialParamsDefault(UbiArtContext, mpb);
-			}
-			r.SetPropertyBlock(mpb, index);
-		}
-
 
 
 		public void FillUnityMaterialPropertyBlock(Renderer r, int index = 0, GFXMaterialShader_Template shader = null) {
@@ -360,65 +359,5 @@ namespace UbiArt.ITF {
 			// Set property block
 			r.SetPropertyBlock(mpb, index);
 		}
-
-
-		private void SetMaterialTextures(GFXMaterialTexturePathSet textureSet, Renderer r, int index = 0) {
-			if (mpb == null) mpb = new MaterialPropertyBlock();
-			r.GetPropertyBlock(mpb, index);
-			if (textureSet != null) {
-				mpb.SetVector("_UseTextures", new Vector4(
-					textureSet.tex_diffuse != null ? 1f : 0f,
-					textureSet.tex_back_light != null ? 1f : 0f,
-					0f,
-					textureSet.tex_separateAlpha != null ? 1f : 0f));
-
-				if (textureSet.tex_diffuse != null) {
-					var t = textureSet.tex_diffuse.GetUnityTexture(UbiArtContext);
-					mpb.SetTexture("_Diffuse", t.Texture);
-					mpb.SetVector("_Diffuse_ST", new Vector4(1, t.HeightFactor, 0, 0));
-				}
-				if (textureSet.tex_back_light != null) {
-					var t = textureSet.tex_back_light.GetUnityTexture(UbiArtContext);
-					mpb.SetTexture("_BackLight", t.Texture);
-					mpb.SetVector("_BackLight_ST", new Vector4(1, t.HeightFactor, 0, 0));
-				}
-				if (textureSet.tex_separateAlpha != null) {
-					var t = textureSet.tex_separateAlpha.GetUnityTexture(UbiArtContext);
-					mpb.SetTexture("_SeparateAlpha", t.Texture);
-					mpb.SetVector("_SeparateAlpha_ST", new Vector4(1, t.HeightFactor, 0, 0));
-				}
-			}
-			r.SetPropertyBlock(mpb, index);
-		}
-		public void SetMaterialTextureOrigins(TextureCooked tex, Renderer r, int index = 0) {
-			if (r == null) return;
-			if (mpb == null) mpb = new MaterialPropertyBlock();
-			r.GetPropertyBlock(mpb, index);
-			if (r != null && tex != null) {
-				var t = tex.GetUnityTexture(UbiArtContext);
-				mpb.SetVector("_UseTextures", new Vector4(1, 0, 0, 0));
-				mpb.SetTexture("_Diffuse", t.Texture);
-				mpb.SetVector("_Diffuse_ST", new Vector4(1, t.HeightFactor, 0, 0));
-			}
-			r.SetPropertyBlock(mpb, index);
-		}
-		public void SetColor(UnityEngine.Color col, Renderer r, int index = 0) {
-			if (r == null) return;
-			if (mpb == null) mpb = new MaterialPropertyBlock();
-			r.GetPropertyBlock(mpb, index);
-			mpb.SetColor("_ColorFactor", col);
-			r.SetPropertyBlock(mpb, index);
-		}
-
-		/*private void SetMaterialTextures(Material mat) {
-			if (textureSet != null) {
-				mat.SetVector("_UseTextures", new Vector4(
-					textureSet.tex_diffuse != null ? 1f : 0f,
-					textureSet.tex_back_light != null ? 1f : 0f,
-					0f, 0f));
-				if (textureSet.tex_diffuse != null) mat.SetTexture("_Diffuse", textureSet.tex_diffuse.SquareTexture);
-				if (textureSet.tex_back_light != null) mat.SetTexture("_BackLight", textureSet.tex_back_light.SquareTexture);
-			}
-		}*/
 	}
 }

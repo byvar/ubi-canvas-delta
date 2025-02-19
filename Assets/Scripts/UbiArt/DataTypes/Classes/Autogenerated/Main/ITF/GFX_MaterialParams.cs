@@ -17,15 +17,6 @@ namespace UbiArt.ITF {
 		public float alphafadeDistMax;
 		public float alphafadeDensity;
 		public int alphafadetype;
-		public float float__0;
-		public float float__1;
-		public float float__2;
-		public float float__3;
-		public int int__4;
-		public float float__5;
-		public float float__6;
-		public float float__7;
-		public float float__8;
 		public float float__9;
 		public float float__10;
 		public float float__11;
@@ -39,15 +30,15 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.VH) {
-				float__0 = s.Serialize<float>(float__0, name: "float__0");
-				float__1 = s.Serialize<float>(float__1, name: "float__1");
-				float__2 = s.Serialize<float>(float__2, name: "float__2");
-				float__3 = s.Serialize<float>(float__3, name: "float__3");
-				int__4 = s.Serialize<int>(int__4, name: "int__4");
-				float__5 = s.Serialize<float>(float__5, name: "float__5");
-				float__6 = s.Serialize<float>(float__6, name: "float__6");
-				float__7 = s.Serialize<float>(float__7, name: "float__7");
-				float__8 = s.Serialize<float>(float__8, name: "float__8");
+				matParams0F = s.Serialize<float>(matParams0F, name: "matParams0F");
+				matParams1F = s.Serialize<float>(matParams1F, name: "matParams1F");
+				matParams2F = s.Serialize<float>(matParams2F, name: "matParams2F");
+				matParams3F = s.Serialize<float>(matParams3F, name: "matParams3F");
+				matParams0I = s.Serialize<int>(matParams0I, name: "matParams0I");
+				matParams0VX = s.Serialize<float>(matParams0VX, name: "matParams0VX");
+				matParams0VY = s.Serialize<float>(matParams0VY, name: "matParams0VY");
+				matParams0VZ = s.Serialize<float>(matParams0VZ, name: "matParams0VZ");
+				matParams0VW = s.Serialize<float>(matParams0VW, name: "matParams0VW");
 				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					float__9 = s.Serialize<float>(float__9, name: "float__9");
 					float__10 = s.Serialize<float>(float__10, name: "float__10");

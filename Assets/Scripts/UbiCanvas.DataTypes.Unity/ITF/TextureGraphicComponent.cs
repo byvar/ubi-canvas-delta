@@ -97,12 +97,5 @@ namespace UbiArt.ITF {
 			//meshUnity.SetUVs(4, Enumerable.Repeat(Vector4.one, 4).ToList());
 			return meshUnity;
 		}
-		private void FillMaterialParams(Renderer r, int index = 0) {
-			MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-			r.GetPropertyBlock(mpb, index);
-			GFXPrimitiveParam param = PrimitiveParameters;
-			param?.FillMaterialParams(UbiArtContext, mpb);
-			r.SetPropertyBlock(mpb, index);
-		}
 	}
 }

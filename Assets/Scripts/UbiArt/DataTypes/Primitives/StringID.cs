@@ -116,10 +116,14 @@ namespace UbiArt {
 
 		public override string ToString() => $"StringID(0x{stringID.ToString("X8")})";
 
-		public string ToString(Context c) {
+		public string ToString(Context c, bool shortString = false) {
 			string str = ToString();
 			if (!IsNull && c != null && c.StringCache.ContainsKey(this)) {
-				str += " - " + c.StringCache[this].Replace("\n", "\\n");
+				if (shortString) {
+					str = c.StringCache[this].Replace("\n", "\\n");
+				} else {
+					str += " - " + c.StringCache[this].Replace("\n", "\\n");
+				}
 			}
 			return str;
 		}

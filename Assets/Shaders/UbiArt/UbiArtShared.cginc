@@ -155,6 +155,7 @@ float4 process_frag(v2f i) : SV_TARGET{
 					float3 backLight = tex2D(_LightsBackLight, screenPos).xyz;
 					float3 backLightColor = float3(LightConfig.z, LightConfig.z, LightConfig.z) // Back brightness
 						+ float3(backLight * LightConfig.w); // Back contrast
+					backLightColor = float3(max(0, backLightColor.x), max(0, backLightColor.y), max(0, backLightColor.z));
 					c = clamp(float4(c.xyz + backLightColor.xyz * backLightTex.xyz, c.w), 0, 1);
 				}
 			}

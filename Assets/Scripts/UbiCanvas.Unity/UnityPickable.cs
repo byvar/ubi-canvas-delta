@@ -137,7 +137,7 @@ public class UnityPickable : MonoBehaviour {
 
 	public bool Dirty { get; set; }
 
-	private float NormalizeEulerAngle(float angle, float targetAngle = 180) {
+	public float NormalizeEulerAngle(float angle, float targetAngle = 180) {
 		while (angle < targetAngle - 180) angle += 360;
 		while (angle >= targetAngle + 180) angle -= 360;
 		return angle;

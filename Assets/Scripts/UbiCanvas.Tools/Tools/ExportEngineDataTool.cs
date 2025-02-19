@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UbiArt;
+using UbiArt.UV;
 using Path = UbiArt.Path;
 
 namespace UbiCanvas.Tools
@@ -36,6 +37,14 @@ namespace UbiCanvas.Tools
 					File.WriteAllText(exportFile, JsonConvert.SerializeObject(x, Formatting.Indented));
 				});
 			}
+
+			// Load UV Atlas manager for textures
+			Path pAtlas = new Path("", "atlascontainer.ckd");
+			context.Loader.LoadFile<UVAtlasManager>(pAtlas, x => {
+				string exportFile = System.IO.Path.Combine(outputDir, $"atlascontainer.json");
+				Directory.CreateDirectory(System.IO.Path.GetDirectoryName(exportFile));
+				File.WriteAllText(exportFile, JsonConvert.SerializeObject(x, Formatting.Indented));
+			});
 
 			await context.Loader.LoadLoop();
 		}

@@ -1,7 +1,7 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.RFR | GameFlags.LegendsAndUp)]
 	public partial class SequencePlayerComponent : ActorComponent {
-		public uint bankState = 0xFFFFFFFF;
+		public uint bankState = uint.MaxValue;
 		public bool allowPrefetch = true;
 		public bool useCustomAABB;
 		public EditableShape customAABB;

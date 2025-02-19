@@ -644,18 +644,19 @@ public class UnityWindowAtlasEditor : UnityWindow {
 					using (new Handles.DrawingScope(pointColor)) {
 						var count = patch.points.Length;
 						if(count != 4) throw new System.Exception("Unexpected patch points count!");
+						var patchPoints = patch.points.Select(p => points[p]).ToArray();
 						Vec2d[] controlPoints = AnimTemplate.GetPatchControlPoints(
 							new Vec2d[] {
-								points[patch.points[0]].uv,
-								points[patch.points[2]].uv,
-								points[patch.points[3]].uv,
-								points[patch.points[1]].uv,
+								patchPoints[0].uv,
+								patchPoints[2].uv,
+								patchPoints[3].uv,
+								patchPoints[1].uv,
 							},
 							new Vec2d[] {
-								points[patch.points[0]].normal,
-								points[patch.points[2]].normal,
-								points[patch.points[3]].normal,
-								points[patch.points[1]].normal,
+								patchPoints[0].normal,
+								patchPoints[2].normal,
+								patchPoints[3].normal,
+								patchPoints[1].normal,
 							});
 						DrawCubicBezier(rect, controlPoints[0], controlPoints[1], controlPoints[2], controlPoints[3], GetTexturePositionOnRect);
 						DrawCubicBezier(rect, controlPoints[4], controlPoints[5], controlPoints[6], controlPoints[7], GetTexturePositionOnRect);

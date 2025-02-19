@@ -32,6 +32,13 @@ namespace UbiArt.Animation {
 				return keysLegends[ind].stringID;
 			}
 		}
+		public StringID GetKey(int index) {
+			if (keys != null) {
+				return new StringID((uint)keys[index]);
+			} else {
+				return keysLegends[index];
+			}
+		}
 
 		protected override void OnPostSerialize(CSerializerObject s) {
 			base.OnPostSerialize(s);

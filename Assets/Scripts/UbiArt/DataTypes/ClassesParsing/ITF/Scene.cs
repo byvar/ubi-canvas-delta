@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define TEST_FINDPICKABLE
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -148,6 +150,12 @@ namespace UbiArt.ITF {
 			return p;
 		}
 		public SearchResult<Pickable> FindPickable(Predicate<Pickable> p, SearchFlags flags = SearchFlags.AllRecursive) {
+#if TEST_FINDPICKABLE
+			var results = FindPickables(p, flags: flags);
+			if(results.Count > 1)
+				throw new Exception("Too many pickables found");
+			return results.FirstOrDefault();
+#endif
 			if (flags.HasFlag(SearchFlags.Frise)) {
 				if (FRISE != null) {
 					foreach (var fr in FRISE) {
@@ -275,6 +283,12 @@ namespace UbiArt.ITF {
 			return null;
 		}
 		public SearchResult<Actor> FindActor(Predicate<Actor> a, SearchFlags flags = SearchFlags.Actors | SearchFlags.Recursive) {
+#if TEST_FINDPICKABLE
+			var results = FindActors(a, flags: flags);
+			if (results.Count > 1)
+				throw new Exception("Too many pickables found");
+			return results.FirstOrDefault();
+#endif
 			var pickable = FindPickable(p => a(p as Actor), flags & ~SearchFlags.Frise);
 			if (pickable != null) {
 				return new SearchResult<Actor>() {

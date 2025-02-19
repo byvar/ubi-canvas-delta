@@ -44,7 +44,7 @@ namespace UbiArt.Animation {
 			multiplierP = s.Serialize<float>(multiplierP, name: "multiplierP");
 			multiplierS = s.Serialize<float>(multiplierS, name: "multiplierS");
 			polylines = s.SerializeObject<CListO<AnimTrackPolyline>>(polylines, name: "polylines");
-			bonesLists = s.SerializeObject<CListO<AnimTrackBonesList>>(bonesLists, name: "bones");
+			bonesLists = s.SerializeObject<CListO<AnimTrackBonesList>>(bonesLists, name: "bonesLists");
 			frameEvents = s.SerializeObject<CListO<AnimTrackFrameEvents>>(frameEvents, name: "frameEvents");
 			soundEvents = s.SerializeObject<CListO<AnimTrackFrameSoundEvents>>(soundEvents, name: "soundEvents");
 			vectors = s.SerializeObject<CListO<Vec2d>>(vectors, name: "vectors");
@@ -52,7 +52,7 @@ namespace UbiArt.Animation {
 			WorldAABB = s.SerializeObject<AABB>(WorldAABB, name: "WorldAABB");
 			if (s.Settings.EngineVersion > EngineVersion.RO) {
 				skeleton = s.SerializeObject<pair<StringID, Path>>(skeleton, name: "skeleton");
-				texturePaths = s.SerializeObject<CListO<pair<StringID, Path>>>(texturePaths, name: "textures");
+				texturePaths = s.SerializeObject<CListO<pair<StringID, Path>>>(texturePaths, name: "texturePaths");
 				if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
 					bankId0 = s.Serialize<uint>(bankId0, name: "bankId0");
 				}
@@ -61,7 +61,7 @@ namespace UbiArt.Animation {
 			} else {
 				skeletonOrigins = s.SerializeObject<pair<StringID, CString>>(skeletonOrigins, name: "skeleton");
 				texturePathKeysOrigins = s.SerializeObject<KeyArray<int>>(texturePathKeysOrigins, name: "texturePathKeys");
-				texturePathsOrigins = s.SerializeObject<CListO<pair<StringID, CString>>>(texturePathsOrigins, name: "textures");
+				texturePathsOrigins = s.SerializeObject<CListO<pair<StringID, CString>>>(texturePathsOrigins, name: "texturePaths");
 				bankId0 = s.Serialize<uint>(bankId0, name: "bankId0");
 				bankId = s.Serialize<uint>(bankId, name: "bankId");
 				unk1Origins = s.SerializeObject<CListP<ulong>>(unk1Origins, name: "unk1");

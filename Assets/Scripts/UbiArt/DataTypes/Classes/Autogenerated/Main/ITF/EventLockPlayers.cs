@@ -1,9 +1,9 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.ROVersion | GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
 	public partial class EventLockPlayers : Event {
-		public bool force;
+		public bool force = true;
 		public bool stopPlayers;
-		public bool stopInputs;
+		public bool stopInputs = true;
 		public bool forceRevive;
 		public int _lock;
 		public int applyToPlayers;

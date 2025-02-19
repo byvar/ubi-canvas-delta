@@ -2,8 +2,8 @@ namespace UbiArt.ITF {
 	[Games(GameFlags.RFR | GameFlags.VH | GameFlags.RA)]
 	public partial class Spline : CSerializable {
 		public CListO<Spline.SplinePoint> Points;
-		public uint TimeLoopMode;
-		public float TimeLoop;
+		public uint TimeLoopMode; // 1 = repeat, 2 = mirror
+		public float TimeLoop; // Total spline time, (0 for no loop)
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.EngineVersion == EngineVersion.RO) {

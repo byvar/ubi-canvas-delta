@@ -55,7 +55,7 @@ public class UnityAnimation : MonoBehaviour {
 	public bool DisplayPolylines;
 	public bool DisplayInactivePolylines;
 	public bool DisplayBones;
-	public float animationSpeed = 30f;
+	public float animationSpeed = 60f;
 	public int zValue = 0;
 	bool loaded = false;
 	private Dictionary<StringID, LineRenderer> lines;
@@ -489,9 +489,10 @@ public class UnityAnimation : MonoBehaviour {
 							zs.Add(bones[boneIndex].bindZ + bones[boneIndex].localZ);
 						}
 					}
-					if (alphas.Count > 0) {
-						alc.SetColor(new UnityEngine.Color(1f, 1f, 1f, alphas.Average()), patchRenderer);
-					}
+					var alpha = 1f;
+					if (alphas.Count > 0) alpha = alphas.Average();
+					alc.FillMaterialParams(patchRenderer, alpha: alpha);
+					
 					if (zs.Count > 0) {
 						zman.zDict[patchRenderer] = transform.position.z - zs.Average() / 10000f;
 						//patchRenderers[i].transform.localPosition = new Vector3(0,0,zs.Average() / 10000f);
