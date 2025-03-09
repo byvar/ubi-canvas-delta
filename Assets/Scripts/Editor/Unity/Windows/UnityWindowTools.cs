@@ -196,6 +196,7 @@ public class UnityWindowTools : UnityWindow
 			}
 
 			logFileTool.LogInitialFiles = EditorField("Log initial files", logFileTool.LogInitialFiles);
+			logFileTool.LoadConfig = EditorField("Load config", logFileTool.LoadConfig);
 			logFileTool.LoadDependencies = EditorField("Load dependencies", logFileTool.LoadDependencies);
 
 			if (EditorButton("Deserialize"))

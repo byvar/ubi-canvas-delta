@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using UbiArt;
+using UbiArt.ITF;
 
 namespace UbiCanvas.Tools
 {
@@ -14,6 +15,7 @@ namespace UbiCanvas.Tools
 		public string Type { get; set; }
 		public string Namespace { get; set; } = "UbiArt.ITF";
 		public bool UseContainer { get; set; }
+		public bool LoadConfig { get; set; }
 		public bool LogInitialFiles { get; set; }
 		public bool AutomaticallyDetermineType { get; set; } = true;
 		public bool LoadDependencies { get; set; } = true;
@@ -27,6 +29,23 @@ namespace UbiCanvas.Tools
 				UnitySettings.Log = false;
 
 			await context.Loader.LoadInitial();
+
+			if (LoadConfig)
+			{
+				switch (context.Loader.Settings.EngineVersion)
+				{
+					case EngineVersion.RO:
+						// TODO: Support loading Origins game config
+						break;
+
+					case EngineVersion.RL:
+						context.Loader.LoadGenericFile(new Path("enginedata/gameconfig/gameconfig.isg"), isg =>
+						{
+							context.Loader.gameConfig = isg.obj as RO2_GameManagerConfig_Template;
+						});
+						break;
+				}
+			}
 
 			if (!LogInitialFiles)
 				UnitySettings.Log = originalLogValue;
