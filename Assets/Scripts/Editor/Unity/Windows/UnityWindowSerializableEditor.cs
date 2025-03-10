@@ -1,4 +1,5 @@
 ﻿using UbiArt;
+using UbiCanvas;
 using UbiCanvas.Helpers;
 using UnityEditor;
 using UnityEngine;
@@ -20,6 +21,20 @@ public class UnityWindowSerializableEditor : UnityWindow
 		titleContent.text = "Serializer";
 	}
 
+	protected Context CreateContext()
+	{
+		Context context = new(UnitySettings.GameDirs[UnitySettings.GameMode], Settings.FromMode(UnitySettings.GameMode),
+			serializerLogger: UnitySettings.Log ? new MapViewerSerializerLogger() : null,
+			fileManager: new MapViewerFileManager(),
+			systemLogger: new UnitySystemLogger(),
+			asyncController: new UniTaskAsyncController());
+
+		context.Loader.LoadAnimations = UnitySettings.LoadAnimations;
+		context.Loader.LoadAllPaths = UnitySettings.LoadAllPaths;
+
+		return context;
+	}
+
 	protected override void UpdateEditorFields()
 	{
 		base.UpdateEditorFields();
@@ -33,6 +48,7 @@ public class UnityWindowSerializableEditor : UnityWindow
 			EditorGUI.EndDisabledGroup();
 
 			if (GUILayout.Button("Save to file")) {
+				Context = CreateContext();
 				var cookedPath = Path.CookedPath(Context);
 				var cookedName = cookedPath.filename;
 				string filePath = EditorUtility.SaveFilePanel("Output file", "", cookedName, cookedPath.GetExtension());
