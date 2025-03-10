@@ -4,6 +4,9 @@ ubi-canvas is a level viewer and editor for UbiArt games such as Rayman Legends 
 The main repository is private at this time, as it contains work in progress code for the [Rayman Legends Fan DLC](https://youtu.be/-9cKtxOGoz0).
 This Δ version was created as a temporary place to host all non-DLC code for ubi-canvas. When the DLC is released, the main repository will become public again and this repository will be archived. All changes made here will then be merged back into the main repository.
 
+## Important message
+Ubi-Canvas supports converting between game modes only because it was implemented specifically for the Fan DLC. We're still working hard on it, so please be patient! It hurts a lot to see people using this incomplete code to implement half-baked conversion tools. Please respect this and wait for the full release instead.
+
 ## Contributors
 - @byvar: Reverse engineering, main developer
 - @RayCarrot: Game Tools, Settings and Serializer windows, various other additions and improvements
