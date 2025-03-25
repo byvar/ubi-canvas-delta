@@ -3,9 +3,9 @@ namespace UbiArt.ITF {
 	public partial class RO2_RotatingPlatformComponent : ActorComponent {
 		public bool rotating;
 		public Angle destinationAngle;
-		public float blendTime;
-		public float angularSpeed;
-		public bool useClockwiseRotation;
+		public float blendTime = 1;
+		public float angularSpeed = 1.5f;
+		public bool useClockwiseRotation = true;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {

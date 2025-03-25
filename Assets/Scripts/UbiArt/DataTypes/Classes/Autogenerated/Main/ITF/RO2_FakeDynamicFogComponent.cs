@@ -1,15 +1,15 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_FakeDynamicFogComponent : ActorComponent {
-		public bool hasMesh3D;
-		public bool iActivatedInit;
-		public bool DistanceLocalToSceneDepth;
-		public Color foreGroundColor;
+		public bool hasMesh3D = true;
+		public bool iActivatedInit = true;
+		public bool DistanceLocalToSceneDepth = true;
+		public Color foreGroundColor = Color.Black;
 		public float foreGroundColor_ZStart;
-		public float foreGroundColor_ZEnd;
-		public Color fogColor;
+		public float foreGroundColor_ZEnd = 10;
+		public Color fogColor = Color.White;
 		public float fogZStart;
-		public float fogZEnd;
+		public float fogZEnd = -15;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			hasMesh3D = s.Serialize<bool>(hasMesh3D, name: "hasMesh3D");

@@ -1,10 +1,11 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_GameObjectComponent_Template : CSerializable {
-		public uint networkDT;
-		public uint networkUpdateSleepTime;
+	public partial class RO2_GameObjectComponent_Template : ActorComponent_Template {
+		public uint networkDT = uint.MaxValue;
+		public uint networkUpdateSleepTime = uint.MaxValue;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
+			if(this is RO2_AdversarialModeComponent_Template) return;
 			networkDT = s.Serialize<uint>(networkDT, name: "networkDT");
 			networkUpdateSleepTime = s.Serialize<uint>(networkUpdateSleepTime, name: "networkUpdateSleepTime");
 		}

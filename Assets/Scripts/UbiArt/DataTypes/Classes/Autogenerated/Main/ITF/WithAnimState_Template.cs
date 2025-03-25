@@ -3,8 +3,8 @@ namespace UbiArt.ITF {
 	public partial class WithAnimState_Template : BasicState_Template {
 		public StringID defaultAnim;
 		public bool endCheckByAnimEvent;
-		public bool endCheckByAnimEnd;
-		public bool restartAnimIfSame;
+		public bool endCheckByAnimEnd = true;
+		public bool restartAnimIfSame = true;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			defaultAnim = s.SerializeObject<StringID>(defaultAnim, name: "defaultAnim");

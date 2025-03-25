@@ -2,15 +2,17 @@ using System;
 namespace UbiArt.ITF {
 	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
 	public partial class CharacterDebuggerComponent : ActorComponent {
-		public CharacterDebug DebugFlags;
-		public uint trajectoryPointCount;
-		public uint barFrameCount;
-		public uint beatFrameCount;
-		public Color barColor;
-		public Color beatColor;
-		public Color halfBeatColor;
-		public Color leftButtonColor;
-		public Color rightButtonColor;
+		public CharacterDebug DebugFlags =
+			CharacterDebug.Collider | CharacterDebug.Trajectory | CharacterDebug.Controller | CharacterDebug.Anim |
+			CharacterDebug.AI | CharacterDebug.SoundInputs | CharacterDebug.ActorPos | CharacterDebug.States;
+		public uint trajectoryPointCount = uint.MaxValue;
+		public uint barFrameCount = 120;
+		public uint beatFrameCount = 30;
+		public Color barColor = Color.Black;
+		public Color beatColor = Color.White;
+		public Color halfBeatColor = Color.Yellow;
+		public Color leftButtonColor = Color.Orange;
+		public Color rightButtonColor = Color.Magenta;
 		public bool logCurrentAnimation;
 		public bool alwaysShowDebug;
 		public bool writeLog;

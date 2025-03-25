@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
 namespace UbiArt {
 	public class CSerializable : ICSerializable {
@@ -28,9 +29,11 @@ namespace UbiArt {
 			s.SerializeObjectSize(GetType());
 		}
 
-		public virtual CSerializable Clone(string extension, Context context = null) {
+		// Dangerous to use without calling LoadLoop, especially if some references haven't been loaded
+		public virtual CSerializable Clone(string extension, Context context = null, bool allowLoadingReferences = false) {
 			byte[] serializedData = null;
 			context ??= UbiArtContext;
+			if (!allowLoadingReferences) context.Loader.ResolveReferences = false;
 			CSerializable result = null;
 			using (MemoryStream stream = new MemoryStream()) {
 				using (Writer writer = new Writer(stream, context.Settings.IsLittleEndian)) {
@@ -46,6 +49,13 @@ namespace UbiArt {
 					result = toRead as CSerializable;
 				}
 			}
+			if (!allowLoadingReferences) context.Loader.ResolveReferences = true;
+			return result;
+		}
+		public async Task<CSerializable> CloneAsync(string extension, Context context = null) {
+			var result = Clone(extension, context: context, allowLoadingReferences: true);
+			context ??= UbiArtContext;
+			await context?.Loader?.LoadLoop();
 			return result;
 		}
 

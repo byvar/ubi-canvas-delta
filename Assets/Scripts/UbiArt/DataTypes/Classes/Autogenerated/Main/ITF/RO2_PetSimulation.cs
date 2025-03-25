@@ -1,12 +1,12 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_PetSimulation : RO2_SoftCollisionSimulation {
-		public int SpawnBySec;
-		public float MoveCoeff;
-		public float FollowPlayerCoeff;
-		public float PlayerRepulsionCoeff;
-		public float RepulsionDistance;
-		public float DetectionDistance;
+		public int SpawnBySec = 50;
+		public float MoveCoeff = 10f;
+		public float FollowPlayerCoeff = 10f;
+		public float PlayerRepulsionCoeff = 2f;
+		public float RepulsionDistance = 1.5f;
+		public float DetectionDistance = 2f;
 		public float TimeToReact;
 		public float TimeToStartFollowing;
 		protected override void SerializeImpl(CSerializerObject s) {

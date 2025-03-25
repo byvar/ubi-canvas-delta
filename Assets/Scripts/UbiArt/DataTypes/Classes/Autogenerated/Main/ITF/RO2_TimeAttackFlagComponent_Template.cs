@@ -1,7 +1,7 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_TimeAttackFlagComponent_Template : ActorComponent_Template {
-		public float waitTime;
+		public float waitTime = 2;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			waitTime = s.Serialize<float>(waitTime, name: "waitTime");

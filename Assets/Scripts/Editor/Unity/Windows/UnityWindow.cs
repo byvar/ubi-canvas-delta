@@ -210,7 +210,10 @@ public class UnityWindow : EditorWindow {
 		if (!EnumOptions.ContainsKey(label))
 			EnumOptions[label] = getEnumOptions == null ? EnumHelpers.GetValues<T>().Select(x => x.GetDescription()).ToArray() : getEnumOptions();
 
-		return (T)(object)EditorGUI.Popup(rect ?? GetNextRect(ref YPos), label, (int)(object)value, EnumOptions[label]);
+		switch (Type.GetTypeCode(typeof(T))) {
+			case TypeCode.Byte: return (T)(object)(byte)EditorGUI.Popup(rect ?? GetNextRect(ref YPos), label, (byte)(object)value, EnumOptions[label]);
+			default: return (T)(object)EditorGUI.Popup(rect ?? GetNextRect(ref YPos), label, (int)(object)value, EnumOptions[label]);
+		}
 	}
 
 	public int EditorField(string label, int value, string[] options, bool isVisible = true, Rect? rect = null) {

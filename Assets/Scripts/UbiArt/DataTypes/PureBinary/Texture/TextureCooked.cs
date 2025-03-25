@@ -7,7 +7,6 @@ namespace UbiArt {
 		public UV.UVAtlas atlas = null;
 
 		public void Serialize(CSerializerObject s, string name) {
-			Reinit(s.Context);
 			Header = s.SerializeObject<TextureCookedHeader>(Header, name: nameof(Header));
 			var dataSize = (int)(Header?.RawDataSize ?? (s.Length - s.CurrentPosition));
 			if(s.Settings.Platform == GamePlatform.iOS && (Header?.Type ?? 0) != 0 && dataSize == 0) {
@@ -29,15 +28,6 @@ namespace UbiArt {
 		}
 		public TextureCooked(Context context) {
 			Header = new TextureCookedHeader(context);
-		}
-
-		void Reinit(Context context) {
-			if (context.HasSettings<ConversionSettings>()) {
-				var conv = context.GetSettings<ConversionSettings>();
-				if (conv.TextureConversion != null) {
-					conv.TextureConversion(context, conv, this);
-				}
-			}
 		}
 	}
 }

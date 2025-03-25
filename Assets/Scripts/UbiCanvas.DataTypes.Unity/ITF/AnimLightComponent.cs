@@ -212,7 +212,7 @@ namespace UbiArt.ITF {
 						Template = at
 					};
 
-					Mesh mesh = at.CreateMesh();
+					Mesh mesh = at.CreateMesh(); //interpCount: 4);
 					if (mesh == null) continue;
 
 					GameObject patch_gao = new GameObject($"Anim Bank {(bank.ID ?? bank.TextureID)?.ToString(UbiArtContext, shortString: true)} - {i} [ {bank.PBK.templateKeys.GetKey(i).ToString(bank.PBK.UbiArtContext, shortString: true)} ]");

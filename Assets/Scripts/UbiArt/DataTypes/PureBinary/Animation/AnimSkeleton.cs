@@ -77,17 +77,6 @@ namespace UbiArt.Animation {
 			*/
 		}
 
-		protected override void OnPreSerialize(CSerializerObject s) {
-			base.OnPreSerialize(s);
-			if (s.Context.HasSettings<ConversionSettings>()) {
-				var conv = s.Context.GetSettings<ConversionSettings>();
-				if (conv.OldSettings != null && conv.OldSettings.EngineVersion <= EngineVersion.RO && s.Settings.EngineVersion > EngineVersion.RO && version < VersionLegends) {
-					version = VersionLegends;
-				}
-			}
-			Reinit(s.Settings);
-		}
-
 		public AnimBone GetBoneFromLink(Link link) {
 			return bones.FirstOrDefault(b => b.key == link);
 		}
@@ -143,29 +132,6 @@ namespace UbiArt.Animation {
 			}
 			if (currentIndex != bones.Count) UbiArtContext.SystemLogger?.LogInfo(currentIndex + " - " + bones.Count);
 			return order;
-		}
-		public void Reinit(Settings settings) {
-			if (settings.Game == Game.RL && version >= VersionLegends) {
-				version = VersionLegends;
-				if (boneTags == null) {
-					boneTags = new CListO<StringID>();
-					if (boneTagsAdv != null) {
-						foreach (var bta in boneTagsAdv) boneTags.Add(new StringID((uint)bta));
-					}
-				}
-				if (boneTags2 == null) {
-					boneTags2 = new CListO<StringID>();
-					if (boneTags2Adv != null) {
-						foreach (var bta in boneTags2Adv) boneTags2.Add(new StringID((uint)bta));
-					}
-				}
-				if (subskeletonTags == null) {
-					subskeletonTags = new CListO<StringID>();
-					if (subskeletonTagsAdv != null) {
-						foreach (var bta in subskeletonTagsAdv) subskeletonTags.Add(new StringID((uint)bta));
-					}
-				}
-			}
 		}
 	}
 }

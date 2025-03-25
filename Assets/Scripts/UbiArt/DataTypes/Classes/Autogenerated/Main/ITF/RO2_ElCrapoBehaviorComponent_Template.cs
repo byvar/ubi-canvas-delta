@@ -1,13 +1,13 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_ElCrapoBehaviorComponent_Template : RO2_AIComponent_Template {
-		public float jumpSpeed;
-		public float bounceSpeed;
-		public float bumperSpeed;
-		public float maxSpeed;
-		public float airControl;
-		public float fullSpeedThreshold;
-		public float dangerousContactHeight;
+		public float jumpSpeed = 15;
+		public float bounceSpeed = 15;
+		public float bumperSpeed = 25;
+		public float maxSpeed = 15;
+		public float airControl = 1;
+		public float fullSpeedThreshold = 0.8f;
+		public float dangerousContactHeight = 0.5f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			jumpSpeed = s.Serialize<float>(jumpSpeed, name: "jumpSpeed");

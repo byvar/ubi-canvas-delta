@@ -314,12 +314,12 @@ public class UnityAnimation : MonoBehaviour {
 				if (bl.amountPAS > 0) { // Position Angle Scale
 					for (int p = 0; p < bl.amountPAS; p++) {
 						AnimTrackBonePAS pas = animTrack.bonePAS[bl.startPAS + p];
-						AnimTrackBonePAS next = animTrack.bonePAS[bl.startPAS + ((p + 1) % bl.amountPAS)];
+						AnimTrackBonePAS next = p < bl.amountPAS - 1 ? animTrack.bonePAS[bl.startPAS + ((p + 1) % bl.amountPAS)] : null; // Don't interpolate with start frame in loops
 						if (p == bl.amountPAS - 1 || (currentFrame >= pas.frame && currentFrame < next.frame)) {
 							Vector2 pos = pas.Position.GetUnityVector();
 							Angle rot = pas.Rotation;
 							Vector2 scl = pas.Scale.GetUnityVector();
-							if (next != pas) {
+							if (next != null && next != pas) {
 								float nextFrame = next.frame < pas.frame ? next.frame + animTrack.length : next.frame;
 								float lerp = (Mathf.Floor(currentFrame) - pas.frame) / (Mathf.Floor(nextFrame) - pas.frame); // TODO: maybe change to Math.Floor(currentFrame) if animations can't be interpolated. This fixed jittery feet for Rayman
 								pos = Vector2.Lerp(pos, next.Position.GetUnityVector(), lerp);
@@ -349,11 +349,11 @@ public class UnityAnimation : MonoBehaviour {
 					if (bl.amountZAL > 0) { // Z ALpha
 						for (int p = 0; p < bl.amountZAL; p++) {
 							AnimTrackBoneZAL zal = animTrack.boneZAL[bl.startZAL + p];
-							AnimTrackBoneZAL next = animTrack.boneZAL[bl.startZAL + ((p + 1) % bl.amountZAL)];
+							AnimTrackBoneZAL next = p < bl.amountZAL - 1 ? animTrack.boneZAL[bl.startZAL + ((p + 1) % bl.amountZAL)] : null; // Don't interpolate with start frame
 							if (p == bl.amountZAL - 1 || (currentFrame >= zal.frame && currentFrame < next.frame)) {
 								float z = zal.z;
 								float alpha = zal.alpha / 255f;
-								if (next != zal) {
+								if (next != null && next != zal) {
 									float nextFrame = next.frame < zal.frame ? next.frame + animTrack.length : next.frame;
 									float lerp = (currentFrame - zal.frame) / (nextFrame - zal.frame);
 									z = Mathf.Lerp(z, next.z, lerp);

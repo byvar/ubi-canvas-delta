@@ -1,13 +1,13 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.All)]
 	public partial class CharacterDebuggerComponent_Template : ActorComponent_Template {
-		public bool showCollider;
-		public bool showTrajectory;
-		public bool debugController;
-		public bool debugAnim;
+		public bool showCollider = true;
+		public bool showTrajectory = true;
+		public bool debugController = true;
+		public bool debugAnim = true;
 		public bool debugAnimInputs;
-		public bool debugAI;
-		public uint debugMaxTrajectory;
+		public bool debugAI = true;
+		public uint debugMaxTrajectory = 0x40;
 		public bool debugSoundInputs;
 		public bool debugActorPos;
 		protected override void SerializeImpl(CSerializerObject s) {

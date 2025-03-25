@@ -42,7 +42,7 @@ public class UnityAnimMeshVertex : MonoBehaviour {
 	public int currentPatchFrame = -1;
 	public AnimationTrack[] anims;
 	public bool playAnimation = true;
-	public float animationSpeed = 30f;
+	public float animationSpeed = 60f;
 	public int zValue = 0;
 	bool loaded = false;
 

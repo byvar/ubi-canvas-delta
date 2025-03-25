@@ -2797,6 +2797,7 @@ namespace UbiArt {
 			{ 0x475B791D, typeof(ITF.COL_CinematicDialogsTriggerComponent) },
 			{ 0x8D9BD77F, typeof(ITF.BTActionOnComponentStateSetFact_Template) },
 			{ 0x8D9BEDBC, typeof(ITF.Ray_BreakableCageComponent_Template) },
+			{ 0x8DA3A87A, typeof(ITF.ActorComponent_Template) },
 			{ 0x8DDACC87, typeof(ITF.RO2_EnemyBTAIComponent) },
 			{ 0x8DE04F71, typeof(ITF.Ray_AIStoneManAttackBehavior_Template) },
 			{ 0x8DF6B756, typeof(ITF.StatePlayAnim) },

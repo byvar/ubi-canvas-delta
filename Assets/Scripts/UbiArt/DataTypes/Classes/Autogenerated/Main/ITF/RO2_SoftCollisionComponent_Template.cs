@@ -1,10 +1,10 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.VH | GameFlags.RA)]
 	public partial class RO2_SoftCollisionComponent_Template : GraphicComponent_Template {
-		public float CellSpace;
-		public float Gravity;
-		public float MassCoeff;
-		public float Radius;
+		public float CellSpace = 1;
+		public float Gravity = 9.81f;
+		public float MassCoeff = 1;
+		public float Radius = 0.5f;
 		public bool DrawParticles;
 		public bool DrawGrid;
 		public bool DrawOwnerCells;

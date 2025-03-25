@@ -3,7 +3,7 @@ namespace UbiArt.Animation {
 	public class AnimBone : CSerializable {
 		public Link key;
 		public StringID tag;
-		public byte flags;
+		public byte flags; // & 4 => Same treatment as 0 parentKey
 		public CListO<Link> pointLinks; // links to AnimPatchPoint?
 		public Link parentKey;
 

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_GameObjectMessage_PlayerReady : CSerializable {
+	public partial class RO2_GameObjectMessage_PlayerReady : RO2_GameObjectMessage {
 		public uint playerOnlineID;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

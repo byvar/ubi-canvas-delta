@@ -148,9 +148,6 @@ namespace UbiArt {
 		}
 
 		public void Serialize(CSerializerObject s, string name) {
-			if (s.Context.HasSettings<ConversionSettings>()) {
-				ConvertPath(s.Context.GetSettings<ConversionSettings>());
-			}
 			// null path: 0, 0, -1, 0
 			folder = s.Serialize<string>(folder, options: CSerializerObject.Options.DontIncreaseMemCount);
 			filename = s.Serialize<string>(filename, options: CSerializerObject.Options.DontIncreaseMemCount);
@@ -247,11 +244,6 @@ namespace UbiArt {
 						break;
 				}
 			}
-		}
-
-		public void ConvertPath(ConversionSettings conversion) {
-			if(conversion == null) return;
-			conversion.ConvertPath(this);
 		}
 
 		public override string ToString() {

@@ -3,7 +3,7 @@ namespace UbiArt.ITF {
 	public partial class RO2_CameraZoneNeutralModifierComponent_Template : ActorComponent_Template {
 		public Vec2d zoneNeutral;
 		public float swipeSpeed;
-		public float swipeToleranceTime;
+		public float swipeToleranceTime = 0.5f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			zoneNeutral = s.SerializeObject<Vec2d>(zoneNeutral, name: "zoneNeutral");

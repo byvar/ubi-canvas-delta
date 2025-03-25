@@ -3,7 +3,7 @@ namespace UbiArt.ITF {
 	public partial class RO2_DispenserComponent_Template : ActorComponent_Template {
 		public uint goodsCount;
 		public uint lowLifeGoodsMax;
-		public float lowLifeThreshold;
+		public float lowLifeThreshold = 1;
 		public float dispenseDelay;
 		public float shakeDelay;
 		public Vec3d spawnOffset;
@@ -19,9 +19,9 @@ namespace UbiArt.ITF {
 		public Generic<Event> dispenseEvent;
 		public Generic<Event> dispenseEventPaint;
 		public Generic<Event> lowLifeEvent;
-		public bool softCollisionDisabled;
+		public bool softCollisionDisabled = true;
 		public RO2_SoftCollision_Template softCollision;
-		public bool processStim;
+		public bool processStim = true;
 		public bool processDRCStim;
 		public bool allowNonPlayerHits;
 		public bool disableWhenDone;

@@ -13,7 +13,7 @@ namespace UbiArt.ITF {
 		public StringID markerStop;
 		public bool procedural;
 		public bool sync;
-		public uint syncEighthNote;
+		public uint syncEighthNote; // Sync offset specified in "Eighth note" units = half of a single beat (in a 4/4 time signature, a single beat is 1/4 so half of that is one eighth note)
 		public float syncRatio = 1f;
 		public bool allowSyncOffset = true;
 		public float shadowMul = 1f;

@@ -3,7 +3,7 @@ namespace UbiArt.ITF {
 	public partial class RO2_SubAnchor_Template : CSerializable {
 		public StringID name;
 		public Vec3d defaultPos;
-		public Color color;
+		public Color color = Color.White;
 		public AABB clampAABB;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

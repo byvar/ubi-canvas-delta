@@ -1,17 +1,17 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_PetsComponent_Template : GraphicComponent_Template {
-		public float CellSpace;
-		public float Gravity;
-		public float MassCoeff;
-		public float RadiusMin;
-		public float RadiusMax;
-		public float SwarmCenterCoeff;
-		public uint Faction;
+		public float CellSpace = 1f;
+		public float Gravity = 9.81f;
+		public float MassCoeff = 1f;
+		public float RadiusMin = 1f;
+		public float RadiusMax = 1f;
+		public float SwarmCenterCoeff = 10f;
+		public uint Faction = uint.MaxValue;
 		public StringID WaitSoundFX;
 		public StringID WaitTrHappySoundFX;
 		public StringID HappySoundFX;
-		public bool DrawGrid;
+		public bool DrawGrid = true;
 		public bool DrawOwnerCells;
 		public bool DrawObstacles;
 		public bool DrawPlayers;

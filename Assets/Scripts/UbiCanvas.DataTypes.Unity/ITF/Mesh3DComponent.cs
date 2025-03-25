@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 namespace UbiArt.ITF {
 	public partial class Mesh3DComponent {
-		private Mesh3DComponent_Template tpl;
+		public Mesh3DComponent_Template tpl;
 		private GameObject[] patches = new GameObject[0];
 		private SkinnedMeshRenderer[] patchRenderers = new SkinnedMeshRenderer[0];
 		private GameObject skeleton_gao;
@@ -24,9 +24,17 @@ namespace UbiArt.ITF {
 			}
 		}
 
-		private void CreateGameObjects(GameObject gao) {
+		private void CreateGameObjects(GameObject parent) {
 			var context = UbiArtContext;
 			if (!context.Loader.LoadAnimations) return;
+
+			var gao = new GameObject("Mesh3DComponent");
+			gao.transform.SetParent(parent.transform, false);
+			gao.transform.localPosition = Vector3.zero;
+			gao.transform.localRotation = Quaternion.identity;
+			gao.transform.localScale = Vector3.one;
+			var unityComponent = gao.AddComponent<UnityMesh3DComponent>();
+			unityComponent.m3d = this;
 
 			Engine3D.Mesh3D usedMesh = (Engine3D.Mesh3D)(mesh3D?.Object ?? tpl.mesh3D?.Object);
 			if (usedMesh == null) {

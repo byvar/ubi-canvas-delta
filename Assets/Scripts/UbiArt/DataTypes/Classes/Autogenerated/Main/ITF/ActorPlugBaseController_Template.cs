@@ -4,8 +4,8 @@ namespace UbiArt.ITF {
 		public StringID plugID;
 		public StringID controllerID;
 		public StringID initState;
-		public uint faction;
-		public uint slotId;
+		public uint faction = 1;
+		public uint slotId = uint.MaxValue;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			plugID = s.SerializeObject<StringID>(plugID, name: "plugID");

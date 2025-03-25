@@ -277,6 +277,9 @@ namespace UbiArt
 			"RO2_PowerUp_SuperPunchBasic", "RO2_PowerUp_SuperPunchSeeking", "RO2_PowerUp_SuperPunchBasicInfinite",
 			"RO2_PowerUp_SwarmRepeller", "RO2_PowerUp_PetFollower",
 
+			// RO2_ConditionalTriggerComponent linktags
+			"Dead", "Enable", 
+
 		};
 
 

@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public StringID fxName;
 		public Generic<PhysShape> shape;
 		public uint hitLevel;
-		public uint faction;
+		public uint faction = uint.MaxValue;
 		public bool sendStim;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

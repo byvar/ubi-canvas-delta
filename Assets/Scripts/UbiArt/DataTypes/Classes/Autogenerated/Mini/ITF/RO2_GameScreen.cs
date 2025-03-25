@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RM)]
-	public partial class RO2_GameScreen : CSerializable {
+	[Games(GameFlags.RL | GameFlags.RM | GameFlags.RA)]
+	public partial class RO2_GameScreen : GameScreen {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

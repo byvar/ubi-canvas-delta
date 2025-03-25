@@ -2,7 +2,7 @@ namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_RhythmicSequenceComponent_Template : ActorComponent_Template {
 		public StringID input;
-		public bool mainViewRendering;
+		public bool mainViewRendering = true;
 		public bool remoteViewRendering;
 		public uint metronomeID;
 		protected override void SerializeImpl(CSerializerObject s) {

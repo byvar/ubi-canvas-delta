@@ -29,61 +29,6 @@ namespace UbiArt.ITF {
 			}
 		}
 
-		protected override void Reinit(Context c, Settings settings) {
-			if (previousSettings != null) {
-				if (previousSettings.Game != settings.Game) {
-					if ((previousSettings.Game == Game.RA || previousSettings.Game == Game.RM) &&
-						!(settings.Game == Game.RA || settings.Game == Game.RM)) {
-						// Check components
-						if (COMPONENTS != null && COMPONENTS.Count > 0) {
-							c.SystemLogger?.LogWarning($"Frise with components: {USERFRIENDLY}");
-						}
-						// Check parentBind
-						if (parentBind != null && !parentBind.IsNull) {
-							c.SystemLogger?.LogWarning($"Frise with parentBind: {USERFRIENDLY}");
-						}
-					}
-					if (previousSettings.EngineVersion == EngineVersion.RO && settings.EngineVersion == EngineVersion.RL) {
-						PointsList = new PolyPointList() {
-							LocalPoints = LOCAL_POINTS,
-							Loop = LOOP
-						};
-						PointsList.RecomputeData();
-						PreComputedForCook = false;
-						meshBuildData = new Nullable<MeshBuildData>(new MeshBuildData());
-						collisionData = new Nullable<CollisionData>(new CollisionData());
-						meshStaticData = new Nullable<MeshStaticData>(new MeshStaticData());
-						meshAnimData = new Nullable<MeshAnimData>(new MeshAnimData());
-						meshFluidData = new Nullable<MeshFluidData>(new MeshFluidData());
-						meshOverlayData = new Nullable<MeshOverlayData>(new MeshOverlayData());
-						if (UseTemplatePrimitiveParams) { // Hack to see if frise has been modified or not
-							UseTemplatePrimitiveParams = false;
-							useStaticFog = true;
-						}
-					}
-				}
-			}
-			base.Reinit(c, settings);
-		}
-
-		public void InitForNewFrise() {
-			LOCAL_POINTS = new CListO<PolyLineEdge>();
-			PointsList = new PolyPointList() {
-				LocalPoints = LOCAL_POINTS,
-				Loop = LOOP
-			};
-			//PointsList.RecomputeData();
-			PreComputedForCook = false;
-			meshBuildData = new Nullable<MeshBuildData>(new MeshBuildData());
-			collisionData = new Nullable<CollisionData>(new CollisionData());
-			meshStaticData = new Nullable<MeshStaticData>(new MeshStaticData());
-			meshAnimData = new Nullable<MeshAnimData>(new MeshAnimData());
-			meshFluidData = new Nullable<MeshFluidData>(new MeshFluidData());
-			meshOverlayData = new Nullable<MeshOverlayData>(new MeshOverlayData());
-			UseTemplatePrimitiveParams = true;
-			//useStaticFog = true;
-		}
-
 		protected void RecomputeLineData() {
 			PointsList?.CheckLoop();
 			PointsList?.RecomputeData();

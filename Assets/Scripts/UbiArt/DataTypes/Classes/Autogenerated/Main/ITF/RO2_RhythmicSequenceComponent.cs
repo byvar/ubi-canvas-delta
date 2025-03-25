@@ -1,12 +1,12 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_RhythmicSequenceComponent : ActorComponent {
-		public bool loop;
+		public bool loop = true;
 		public float easeIn;
 		public float easeOut;
 		public float fadeIn;
 		public float transitionTime;
-		public float blocTime;
+		public float blocTime = 2;
 		public uint type;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

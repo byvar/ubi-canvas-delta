@@ -1,7 +1,7 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.VH | GameFlags.RA)]
 	public partial class RO2_SoftCollisionComponent : GraphicComponent {
-		public uint MaxParticles;
+		public uint MaxParticles = 100;
 		public RO2_SoftCollisionSimulation Simulation;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

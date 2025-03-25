@@ -1,13 +1,13 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_AdversarialModeComponent_Template : ActorComponent_Template {
-		public float modeDuration;
-		public float respawnDuration;
-		public float retryDelay;
-		public float spawnPointDeactivationDuration;
-		public int allowCrushInMidAir;
-		public float scoreChangeBlinkDuration;
-		public float timeOutBlinkDuration;
+	public partial class RO2_AdversarialModeComponent_Template : RO2_GameObjectComponent_Template {
+		public float modeDuration = 60;
+		public float respawnDuration = 1;
+		public float retryDelay = 3;
+		public float spawnPointDeactivationDuration = 1;
+		public int allowCrushInMidAir = 1;
+		public float scoreChangeBlinkDuration = 1;
+		public float timeOutBlinkDuration = 10;
 		public int onlineWanted;
 		public Color scoreColorTeamA;
 		public Color scoreColorTeamB;

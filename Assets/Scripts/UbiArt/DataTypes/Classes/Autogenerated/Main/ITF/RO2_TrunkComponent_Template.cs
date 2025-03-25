@@ -1,18 +1,18 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_TrunkComponent_Template : ActorComponent_Template {
-		public float height;
-		public float length;
-		public Angle angularAccel;
-		public Angle angularSpeedMax;
+		public float height = 2;
+		public float length = 3;
+		public Angle angularAccel = 1.745329f;
+		public Angle angularSpeedMax = 0.6981317f;
 		public float angularFriction;
-		public float bounceFactor;
-		public float bounceFallFactor;
-		public float fallAccel;
-		public float fallSpeedMax;
-		public bool debugDraw;
+		public float bounceFactor = 0.5f;
+		public float bounceFallFactor = 0.5f;
+		public float fallAccel = 20;
+		public float fallSpeedMax = 500;
+		public bool debugDraw = true;
 		public Angle angularSpeedStart;
-		public bool fakeFreedom;
+		public bool fakeFreedom = true;
 		public Generic<PhysShape> collisionShape;
 
 		public Angle Vita_00 { get; set; }

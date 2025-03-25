@@ -1,23 +1,23 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_DuckPlugPlayableController_Template : RO2_ActorPlugTransfoController_Template {
-		public float walkSpeed;
-		public float runSpeed;
-		public float flySpeed;
-		public float wingBoost;
-		public float wingXBoost;
-		public float fallBreak;
-		public float bounceImpulse;
-		public float blendSpeedFactor;
+		public float walkSpeed = 3;
+		public float runSpeed = 7;
+		public float flySpeed = 10;
+		public float wingBoost = 0.5f;
+		public float wingXBoost = 1.05f;
+		public float fallBreak = 0.5f;
+		public float bounceImpulse = 500;
+		public float blendSpeedFactor = 1;
 		public float groundSpeedFactor;
-		public float maxForce;
-		public float breakingThreshold;
-		public float speedReduce;
-		public float speedFactorWhenHit;
-		public float fallFriction;
-		public float deadSoulSpeed;
-		public float deadSoulControl;
-		public float deadSoulForcedMove;
+		public float maxForce = 100;
+		public float breakingThreshold = -5;
+		public float speedReduce = -1.5f;
+		public float speedFactorWhenHit = 0.2f;
+		public float fallFriction = 5;
+		public float deadSoulSpeed = 15;
+		public float deadSoulControl = 1.5f;
+		public float deadSoulForcedMove = 1.2f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			walkSpeed = s.Serialize<float>(walkSpeed, name: "walkSpeed");

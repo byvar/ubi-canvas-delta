@@ -92,6 +92,12 @@ public class UnityWindowAtlasEditor : UnityWindow {
 									SaveAsPNG(tex, filePath, alphaChannelOnly: true);
 							}
 
+							/*if (t?.LinkedObject?.Header != null) {
+								var header = t.LinkedObject.Header;
+								rects = DivideRectHorizontally(GetNextRect(), 2);
+								EditorField("WrapModeU", header.WrapModeU, rect: rects[0]);
+								EditorField("WrapModeV", header.WrapModeV, rect: rects[1]);
+							}*/
 
 							var rect = GetNextRect();
 							rect = EditorGUI.PrefixLabel(rect, new GUIContent("UV Source"));
@@ -521,29 +527,21 @@ public class UnityWindowAtlasEditor : UnityWindow {
 				if (count != 4) 
 					throw new Exception("Unexpected patch points count!");
 
-				Vec2d[] controlPoints = AnimTemplate.GetPatchControlPoints(
-					new Vec2d[] {
-						points[patch.points[0]].uv,
-						points[patch.points[2]].uv,
-						points[patch.points[3]].uv,
-						points[patch.points[1]].uv,
-					},
-					new Vec2d[] {
-						points[patch.points[0]].normal,
-						points[patch.points[2]].normal,
-						points[patch.points[3]].normal,
-						points[patch.points[1]].normal,
-					});
+				drawCubicBezier(BezierHelpers.GetControlPoints<AnimPatchPoint>(
+					points[patch.points[0]],
+					points[patch.points[2]],
+					p => p.uv, p => p.normal));
+				drawCubicBezier(BezierHelpers.GetControlPoints<AnimPatchPoint>(
+					points[patch.points[3]],
+					points[patch.points[1]],
+					p => p.uv, p => p.normal));
 
-				drawCubicBezier(controlPoints[0], controlPoints[1], controlPoints[2], controlPoints[3]);
-				drawCubicBezier(controlPoints[4], controlPoints[5], controlPoints[6], controlPoints[7]);
-
-				void drawCubicBezier(Vec2d p0, Vec2d p1, Vec2d p2, Vec2d p3)
+				void drawCubicBezier(Vec2d[] controlPoints)
 				{
 					const int numPoints = 16;
 					
 					Vec2d[] bezierPoints = Enumerable.Range(0, numPoints).
-						Select(i => CalculateCubicBezierPoint(i / (float)(numPoints - 1), p0, p1, p2, p3)).
+						Select(i => BezierHelpers.CalculateCubicBezierPoint(i / (float)(numPoints - 1), controlPoints)).
 						ToArray();
 					Vector2[] pointsConv = bezierPoints.
 						Select(p => getTexturePositionOnRect(p.GetUnityVector())).
@@ -644,22 +642,15 @@ public class UnityWindowAtlasEditor : UnityWindow {
 					using (new Handles.DrawingScope(pointColor)) {
 						var count = patch.points.Length;
 						if(count != 4) throw new System.Exception("Unexpected patch points count!");
-						var patchPoints = patch.points.Select(p => points[p]).ToArray();
-						Vec2d[] controlPoints = AnimTemplate.GetPatchControlPoints(
-							new Vec2d[] {
-								patchPoints[0].uv,
-								patchPoints[2].uv,
-								patchPoints[3].uv,
-								patchPoints[1].uv,
-							},
-							new Vec2d[] {
-								patchPoints[0].normal,
-								patchPoints[2].normal,
-								patchPoints[3].normal,
-								patchPoints[1].normal,
-							});
-						DrawCubicBezier(rect, controlPoints[0], controlPoints[1], controlPoints[2], controlPoints[3], GetTexturePositionOnRect);
-						DrawCubicBezier(rect, controlPoints[4], controlPoints[5], controlPoints[6], controlPoints[7], GetTexturePositionOnRect);
+
+						DrawCubicBezier(rect, BezierHelpers.GetControlPoints<AnimPatchPoint>(
+							points[patch.points[0]],
+							points[patch.points[2]],
+							p => p.uv, p => p.normal), GetTexturePositionOnRect);
+						DrawCubicBezier(rect, BezierHelpers.GetControlPoints<AnimPatchPoint>(
+							points[patch.points[3]],
+							points[patch.points[1]],
+							p => p.uv, p => p.normal), GetTexturePositionOnRect);
 
 						/*var pt1 = points[patch.points[(0 + 0) % count]];
 						var pt2 = points[patch.points[(0 + 1) % count]];
@@ -735,25 +726,10 @@ public class UnityWindowAtlasEditor : UnityWindow {
 		}
 		GUI.EndGroup();
 	}
-
-	Vec2d CalculateCubicBezierPoint(float t, Vec2d p0, Vec2d p1, Vec2d p2, Vec2d p3) {
-		float u = 1 - t;
-		float tt = t * t;
-		float uu = u * u;
-		float uuu = uu * u;
-		float ttt = tt * t;
-
-		Vec2d p = p0 * uuu;
-		p += p1 * 3f * uu * t;
-		p += p2 * 3f * u * tt;
-		p += p3 * ttt;
-
-		return p;
-	}
-	void DrawCubicBezier(Rect rect, Vec2d p0, Vec2d p1, Vec2d p2, Vec2d p3, Func<Vector2, Vector2> GetTexturePositionOnRect) {
+	void DrawCubicBezier(Rect rect, Vec2d[] controlPoints, Func<Vector2, Vector2> GetTexturePositionOnRect) {
 		var numPoints = 16;
 		var lineSize = 0.1f;
-		Vec2d[] points = Enumerable.Range(0, numPoints).Select(i => CalculateCubicBezierPoint(i / (float)(numPoints - 1), p0,p1,p2,p3)).ToArray();
+		Vec2d[] points = Enumerable.Range(0, numPoints).Select(i => BezierHelpers.CalculateCubicBezierPoint(i / (float)(numPoints - 1), controlPoints)).ToArray();
 		Vector2[] pointsConv = points.Select(p => GetTexturePositionOnRect(p.GetUnityVector())).ToArray();
 		for (int i = 0; i < points.Length - 1; i++) {
 			Handles.DrawDottedLine(pointsConv[i], pointsConv[i+1], lineSize);

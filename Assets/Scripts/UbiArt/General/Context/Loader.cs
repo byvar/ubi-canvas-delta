@@ -30,12 +30,13 @@ namespace UbiArt {
 
 		#endregion
 
-
 		public string LoadingState = "Loading";
 
 		public bool LoadAnimations { get; set; } = false;
 		public bool LoadAllPaths { get; set; } = false;
 		public bool LoadFromIpk { get; set; } = false;
+
+		public bool ResolveReferences { get; set; } = true;
 
 		public ITF.RO2_GameManagerConfig_Template gameConfig;
 		public ITF.Ray_GameManagerConfig_Template gameConfigRO;
@@ -349,7 +350,9 @@ namespace UbiArt {
 					}
 					await Context.AsyncController.WaitIfNecessary();
 					LoadingState = state;
-					if(single) pathsToLoad.Clear();
+					if (single) {
+						pathsToLoad.Clear();
+					}
 				}
 			} finally {
 				Context.AsyncController.StopAsync();
@@ -497,6 +500,7 @@ namespace UbiArt {
 					Context.SystemLogger?.LogInfo($"{s.CurrentPointer}: Did not fully serialize file! Length: {s.Length:X8}");
 				}
 			} else {
+				if(!ResolveReferences) return;
 				pathsToLoad.Enqueue(new ObjectPlaceHolder(new Path(path), action));
 			}
 		}
@@ -517,8 +521,7 @@ namespace UbiArt {
 		}
 
 		public async Task<CSerializable> Clone(CSerializable cs, string extension) {
-			CSerializable c = cs.Clone(extension);
-			await LoadLoop();
+			CSerializable c = await cs.CloneAsync(extension);
 			return c;
 		}
 

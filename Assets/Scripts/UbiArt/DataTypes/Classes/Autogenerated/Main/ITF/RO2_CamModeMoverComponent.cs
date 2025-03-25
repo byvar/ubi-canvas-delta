@@ -1,8 +1,8 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_CamModeMoverComponent : ActorComponent {
-		public float TimeToMove;
-		public float BlendCoeff;
+		public float TimeToMove = 2;
+		public float BlendCoeff = 0.1f;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {

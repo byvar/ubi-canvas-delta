@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_AdversarialModeComponent : ActorComponent {
+	public partial class RO2_AdversarialModeComponent : RO2_GameObjectComponent {
 		public int teamEnabled;
 		public uint teamMaxMember;
 		public int scoreIsIn3D;

@@ -31,6 +31,9 @@ namespace UbiArt {
 		public static Color Red   => new Color(1, 0, 0, 1f);
 		public static Color Green => new Color(0, 1, 0, 1f);
 		public static Color Blue  => new Color(0, 0, 1, 1f);
+		public static Color Yellow => new Color(1, 1, 0, 1f);
+		public static Color Orange => new Color(1, 0.6470588f, 0, 1f);
+		public static Color Magenta => new Color(1, 0, 1, 1f);
 		public static Color Grey => new Color(0.5f, 0.5f, 0.5f, 1f);
 		public static Color Zero => new Color(0,0,0,0);
 		public static Color operator *(Color a, float b) => new Color(a.r * b, a.g * b, a.b * b, a.a * b);

@@ -19,23 +19,5 @@ namespace UbiArt.Animation {
 			templateKeys = s.SerializeObject<KeyArray<int>>(templateKeys, name: "templateKeys");
 			templates = s.SerializeObject<CListO<AnimTemplate>>(templates, name: "templates");
 		}
-
-		public void Reinit(Settings settings) {
-			if (settings.Game == Game.RL) {
-				if (version >= VersionLegends) {
-					version = VersionLegends;
-				}
-			}
-		}
-		protected override void OnPreSerialize(CSerializerObject s) {
-			base.OnPreSerialize(s);
-			if (s.Context.HasSettings<ConversionSettings>()) {
-				var conv = s.Context.GetSettings<ConversionSettings>();
-				if (conv.OldSettings != null && conv.OldSettings.EngineVersion <= EngineVersion.RO && s.Settings.EngineVersion > EngineVersion.RO) {
-					version = VersionLegends;
-				}
-			}
-			Reinit(s.Settings);
-		}
 	}
 }

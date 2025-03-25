@@ -102,33 +102,5 @@ namespace UbiArt.Animation {
 				texs[index] = tex;
 			});
 		}
-		protected override void OnPreSerialize(CSerializerObject s) {
-			base.OnPreSerialize(s);
-			if (s.Context.HasSettings<ConversionSettings>()) {
-				var conv = s.Context.GetSettings<ConversionSettings>();
-				if (conv.OldSettings != null && conv.OldSettings.EngineVersion <= EngineVersion.RO && s.Settings.EngineVersion > EngineVersion.RO) {
-					version = VersionLegends;
-
-					// Convert to Legends
-					if (skeletonOrigins != null && skeleton == null) {
-						skeleton = new pair<StringID, Path>(skeletonOrigins.Item1, new Path(skeletonOrigins.Item2));
-					}
-					if (texturePathsOrigins != null && texturePaths == null) {
-						texturePaths = new CListO<pair<StringID, Path>>();
-						for(int i = 0; i < texturePathKeysOrigins.keysLegends.Count; i++) {
-							var pathIndex = texturePathKeysOrigins.values[i];
-							var path = new Path(texturePathsOrigins[pathIndex].Item2);
-							texturePaths.Add(new pair<StringID, Path>(texturePathKeysOrigins.keysLegends[i], path));
-						}
-					}
-				}
-			}
-			Reinit(s.Settings);
-		}
-		public void Reinit(Settings settings) {
-			if (settings.Game == Game.RL && version >= VersionLegends) {
-				version = VersionLegends;
-			}
-		}
 	}
 }

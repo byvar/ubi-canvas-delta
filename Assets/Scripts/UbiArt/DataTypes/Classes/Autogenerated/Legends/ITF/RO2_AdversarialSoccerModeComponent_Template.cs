@@ -1,13 +1,13 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_AdversarialSoccerModeComponent_Template : CSerializable {
+	public partial class RO2_AdversarialSoccerModeComponent_Template : RO2_AdversarialModeComponent_Template {
 		public Path ballPath;
-		public uint goalLumCount;
-		public uint goalOnFireLumCount;
-		public float goalRespawnDelay;
-		public float ballDestroyDelay;
-		public float maxBallCount;
-		public float multiBallCooldown;
+		public uint goalLumCount = 1;
+		public uint goalOnFireLumCount = 2;
+		public float goalRespawnDelay = 3;
+		public float ballDestroyDelay = 0.5f;
+		public float maxBallCount = 3;
+		public float multiBallCooldown = 1;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			ballPath = s.SerializeObject<Path>(ballPath, name: "ballPath");

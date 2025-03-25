@@ -1,24 +1,24 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_TrunkComponent : ActorComponent {
-		public Vec2d max;
-		public float heightUnderLeftCorner;
-		public float heightUnderRightCorner;
-		public float hookLengthLeft;
-		public float hookLengthRight;
+		public Vec2d max = new Vec2d(2, 1);
+		public float heightUnderLeftCorner = -3;
+		public float heightUnderRightCorner = -3;
+		public float hookLengthLeft = 1;
+		public float hookLengthRight = 1;
 		public bool onlyOneTrigger;
 		public bool setUpEnabled;
-		public float osciSummitHeight;
-		public Angle osciAngularAccel;
-		public Angle osciAngularSpeedInit;
-		public bool acceptCheckPointSave;
+		public float osciSummitHeight = 20;
+		public Angle osciAngularAccel = 0.04363323f;
+		public Angle osciAngularSpeedInit = 0.02617994f;
+		public bool acceptCheckPointSave = true;
 		public RO2_TrunkComponent.RO2_TrunkCorner cornerLowerLeft;
 		public RO2_TrunkComponent.RO2_TrunkCorner cornerLowerRight;
 		public RO2_TrunkComponent.RO2_TrunkCorner cornerUpperLeft;
 		public RO2_TrunkComponent.RO2_TrunkCorner cornerUpperRight;
 		public float checkpointAngle;
 		public Vec2d checkpointPos;
-		public bool isStill;
+		public bool isStill = true;
 		public bool trunkIsStoped;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
@@ -51,7 +51,7 @@ namespace UbiArt.ITF {
 		[Games(GameFlags.RA)]
 		public partial class RO2_TrunkCorner : CSerializable {
 			public Vec2d localPos;
-			public Color color;
+			public Color color = Color.White;
 			public bool isPined;
 			public Angle angularSpeed;
 			public bool isInCol;

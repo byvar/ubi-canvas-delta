@@ -41,11 +41,7 @@ namespace UbiArt {
 		public override object Serialize(object obj, Type type, string name = null, Options options = Options.None) {
 			if (name == null) name = $"({type.GetFormattedName()})";
 			if (type.IsEnum) {
-				if (type.GetCustomAttributes<FlagsAttribute>().Any()) {
-					obj = EditorGUILayout.EnumFlagsField(name, (Enum)obj);
-				} else {
-					obj = EditorGUILayout.EnumPopup(name, (Enum)obj);
-				}
+				obj = EnumField(name, obj, type);
 			} else if (Type.GetTypeCode(type) != TypeCode.Object) {
 				switch (Type.GetTypeCode(type)) {
 					case TypeCode.Boolean: obj = EditorGUILayout.Toggle(name, (bool)obj); break;
@@ -210,9 +206,18 @@ namespace UbiArt {
 			EditorGUI.indentLevel = 0;
 
 			var rects = UnityWindow.DivideRectHorizontally(rect, 3, spacing: 16f);
+			//var rects = UnityWindow.DivideRectHorizontally(rect, 4, spacing: 16f);
 			value.x = MinMaxField<float>("X", value.x, rectToUse: rects[0], labelWidth: 16);
 			value.y = MinMaxField<float>("Y", value.y, rectToUse: rects[1], labelWidth: 16);
 			value.z = MinMaxField<float>("Z", value.z, rectToUse: rects[2], labelWidth: 16);
+
+			/*var rot = MinMaxField<float>("Rot", 0, rectToUse: rects[3], labelWidth: 16);
+			if (rot != 0) {
+				var value2d = new Vec2d(value.x, value.y).Rotate(rot);
+				value.x = value2d.x;
+				value.y = value2d.y;
+				rot = 0;
+			}*/
 
 			EditorGUI.indentLevel = indentLevel;
 
@@ -320,6 +325,44 @@ namespace UbiArt {
 			EditorGUI.indentLevel = indentLevel;
 			return value;
 		}
+		public object EnumField(string name, object obj, Type type, Rect? rectToUse = null, bool prefixLabel = true, float? labelWidth = null) {
+			Rect rect = rectToUse ?? EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			if (prefixLabel) {
+				if (labelWidth.HasValue) {
+					Rect labelRect = new Rect(rect.x, rect.y, labelWidth.Value, rect.height);
+					rect = new Rect(rect.x + labelWidth.Value, rect.y, rect.width - labelWidth.Value, rect.height);
+					EditorGUI.LabelField(labelRect, name, EditorStyles.miniLabel);
+				} else {
+					rect = EditorGUI.PrefixLabel(rect, new GUIContent(name));
+				}
+			}
+			var indentLevel = EditorGUI.indentLevel;
+			EditorGUI.indentLevel = 0;
+
+
+			var enumWidth = rect.width - (EditorGUIUtility.singleLineHeight * 2);
+			var enumRect = new Rect(rect.position, new Vector2(enumWidth, rect.height));
+			var numberRect = new Rect(rect.position + new Vector2(enumWidth, 0), new Vector2(rect.width - enumWidth, rect.height));
+
+			if (type.GetCustomAttributes<FlagsAttribute>().Any()) {
+				obj = EditorGUI.EnumFlagsField(enumRect, (Enum)obj);
+			} else {
+				obj = EditorGUI.EnumPopup(enumRect, (Enum)obj);
+			}
+			switch (Type.GetTypeCode(type)) {
+				case TypeCode.Byte: obj = MinMaxField<byte>(name, (byte)obj, rectToUse: numberRect, prefixLabel: false); break;
+				case TypeCode.UInt16: obj = MinMaxField<ushort>(name, (ushort)obj, rectToUse: numberRect, prefixLabel: false); break;
+				case TypeCode.UInt32: obj = MinMaxField<uint>(name, (uint)obj, rectToUse: numberRect, prefixLabel: false); break;
+				case TypeCode.UInt64: obj = MinMaxField<ulong>(name, (ulong)obj, rectToUse: numberRect, prefixLabel: false); break;
+				case TypeCode.Int16: obj = MinMaxField<short>(name, (short)obj, rectToUse: numberRect, prefixLabel: false); break;
+				case TypeCode.Int32: obj = MinMaxField<int>(name, (int)obj, rectToUse: numberRect, prefixLabel: false); break;
+				case TypeCode.Int64: obj = MinMaxField<long>(name, (long)obj, rectToUse: numberRect, prefixLabel: false); break;
+			}
+
+			EditorGUI.indentLevel = indentLevel;
+			return obj;
+		}
+		
 		public void DrawPathRef(string name, ref PathRef p) {
 			if (p == null) p = new PathRef();
 			//EditorGUILayout.PrefixLabel(name);
@@ -515,11 +558,7 @@ namespace UbiArt {
 			TypeCode typeCode = Type.GetTypeCode(type);
 
 			if (type.IsEnum) {
-				if (type.GetCustomAttributes<FlagsAttribute>().Any()) {
-					obj = EditorGUILayout.EnumFlagsField(name, (Enum)obj);
-				} else {
-					obj = EditorGUILayout.EnumPopup(name, (Enum)obj);
-				}
+				obj = EnumField(name, obj, type);
 			} else if (typeCode == TypeCode.Object) {
 				if (type == typeof(CString)) {
 					obj = new CString(EditorGUILayout.TextField(name, ((CString)obj)?.str));

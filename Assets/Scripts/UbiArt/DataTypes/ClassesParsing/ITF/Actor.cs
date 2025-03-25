@@ -21,47 +21,6 @@ namespace UbiArt.ITF {
 
 		protected override void OnPreSerialize(CSerializerObject s) {
 			base.OnPreSerialize(s);
-			Reinit(s.Context, s.Settings);
-		}
-
-		protected Settings previousSettings = null;
-		protected virtual void Reinit(Context c, Settings settings) {
-			if (previousSettings != null) {
-				if (previousSettings.Game != settings.Game || previousSettings.Platform != settings.Platform) {
-					//COMPONENTS = null;
-					//LUA = new Path("enginedata/actortemplates/subscene.tpl");
-					if (COMPONENTS != null && COMPONENTS.Count > 0) {
-						List<Generic<ActorComponent>> RemovedComponents = new List<Generic<ActorComponent>>();
-						// Check components, remove all that don't have the right gameflags
-						for (int i = 0; i < COMPONENTS.Count; i++) {
-							var compobj = COMPONENTS[i].obj;
-							var newobj = compobj?.Convert(c, this, previousSettings, settings);
-							if (newobj != compobj || compobj == null) {
-								if (newobj == null) {
-									RemovedComponents.Add(COMPONENTS[i]);
-								} else {
-									COMPONENTS[i].obj = newobj;
-									COMPONENTS[i].className = new StringID(newobj.ClassCRC.Value);
-								}
-								compobj = newobj;
-							}
-							if (compobj != null) {
-								var attr = (GamesAttribute)Attribute.GetCustomAttribute(compobj.GetType(), typeof(GamesAttribute));
-								if (attr != null) {
-									if (!attr.HasGame(settings.Game) || !attr.HasPlatform(settings.Platform)) {
-										c.SystemLogger?.LogInfo("Removing actor component: {0}", compobj.GetType());
-										RemovedComponents.Add(COMPONENTS[i]);
-									}
-								}
-							}
-						}
-						foreach (var comp in RemovedComponents) {
-							COMPONENTS.Remove(comp);
-						}
-					}
-				}
-			}
-			previousSettings = settings;
 		}
 
 		/// <summary>

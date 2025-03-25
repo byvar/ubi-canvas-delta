@@ -1,7 +1,7 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL | GameFlags.RA)]
 	public partial class RO2_BuboBTAIComponent : BTAIComponent {
-		public bool crushable;
+		public bool crushable = true;
 		public bool triggerActivator;
 		public bool delayTrigger;
 		protected override void SerializeImpl(CSerializerObject s) {
