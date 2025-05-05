@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		public float cameraFollowDistance;
 		public uint samplePerEdge;
 		public StringID connectFxName;
-		public Placeholder bezierRenderer;
+		public BezierCurveRenderer_Template bezierRenderer;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			speed = s.Serialize<float>(speed, name: "speed");
@@ -20,7 +20,7 @@ namespace UbiArt.ITF {
 			cameraFollowDistance = s.Serialize<float>(cameraFollowDistance, name: "cameraFollowDistance");
 			samplePerEdge = s.Serialize<uint>(samplePerEdge, name: "samplePerEdge");
 			connectFxName = s.SerializeObject<StringID>(connectFxName, name: "connectFxName");
-			bezierRenderer = s.SerializeObject<Placeholder>(bezierRenderer, name: "bezierRenderer");
+			bezierRenderer = s.SerializeObject<BezierCurveRenderer_Template>(bezierRenderer, name: "bezierRenderer");
 		}
 		public override uint? ClassCRC => 0x86786731;
 	}

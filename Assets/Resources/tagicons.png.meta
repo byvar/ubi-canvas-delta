@@ -1010,7 +1010,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: light_back
+      name: back_lgt_resolver
       rect:
         serializedVersion: 2
         x: 131
@@ -1019,7 +1019,7 @@ TextureImporter:
         height: 59
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 59, z: 0, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1031,7 +1031,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: light_back_s
+      name: back_lgt_resolver_s
       rect:
         serializedVersion: 2
         x: 194
@@ -1052,7 +1052,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: light_front
+      name: front_lgt_resolver
       rect:
         serializedVersion: 2
         x: 259
@@ -1073,7 +1073,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: light_front_s
+      name: front_lgt_resolver_s
       rect:
         serializedVersion: 2
         x: 323
@@ -1094,7 +1094,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: light_normal
+      name: backfront_lgt_resolver
       rect:
         serializedVersion: 2
         x: 387
@@ -1115,7 +1115,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: light_normal_s
+      name: backfront_lgt_resolver_s
       rect:
         serializedVersion: 2
         x: 451
@@ -1308,7 +1308,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 771
+        y: 772
         width: 63
         height: 59
       alignment: 0
@@ -1581,7 +1581,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 258
-        y: 706
+        y: 707
         width: 60
         height: 60
       alignment: 0
@@ -1892,7 +1892,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: collectible_disabled
+      name: collectible_s
       rect:
         serializedVersion: 2
         x: 322
@@ -2375,7 +2375,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tagicons_83
+      name: todo
       rect:
         serializedVersion: 2
         x: 133
@@ -2396,7 +2396,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tagicons_84
+      name: todo_s
       rect:
         serializedVersion: 2
         x: 199
@@ -3572,7 +3572,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tagicons_140
+      name: metafrieze
       rect:
         serializedVersion: 2
         x: 194
@@ -3593,7 +3593,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tagicons_141
+      name: metafrieze_s
       rect:
         serializedVersion: 2
         x: 258
@@ -4035,6 +4035,10 @@ TextureImporter:
       amb_s: 21300018
       back_lgt_frieze: 21300032
       back_lgt_frieze_s: 21300034
+      back_lgt_resolver: 21300036
+      back_lgt_resolver_s: 21300038
+      backfront_lgt_resolver: 21300044
+      backfront_lgt_resolver_s: 21300046
       bone: 21300232
       breakable: 21300082
       breakable_s: 21300084
@@ -4043,7 +4047,7 @@ TextureImporter:
       checkpoint: 21300086
       checkpoint_s: 21300088
       collectible: 21300118
-      collectible_disabled: 21300120
+      collectible_s: 21300120
       dig: 21300070
       dig_s: 21300072
       enemy: 21300090
@@ -4062,6 +4066,8 @@ TextureImporter:
       frieze_s: 21300002
       front_lgt_frieze: 21300316
       front_lgt_frieze_s: 21300318
+      front_lgt_resolver: 21300040
+      front_lgt_resolver_s: 21300042
       isc: 21300290
       isc_2: 21300288
       isc_2_s: 21300302
@@ -4089,15 +4095,11 @@ TextureImporter:
       ld_frieze: 21300142
       ld_frieze_s: 21300144
       light: 21300258
-      light_back: 21300036
-      light_back_s: 21300038
-      light_front: 21300040
-      light_front_s: 21300042
-      light_normal: 21300044
-      light_normal_s: 21300046
       light_s: 21300260
       logic: 21300146
       logic_s: 21300148
+      metafrieze: 21300280
+      metafrieze_s: 21300282
       mus: 21300048
       mus_s: 21300050
       particle: 21300004
@@ -4138,8 +4140,6 @@ TextureImporter:
       tagicons_137: 21300274
       tagicons_138: 21300276
       tagicons_14: 21300028
-      tagicons_140: 21300280
-      tagicons_141: 21300282
       tagicons_147: 21300294
       tagicons_148: 21300296
       tagicons_149: 21300298
@@ -4156,8 +4156,6 @@ TextureImporter:
       tagicons_34: 21300068
       tagicons_57: 21300114
       tagicons_58: 21300116
-      tagicons_83: 21300166
-      tagicons_84: 21300168
       tagicons_85: 21300170
       tagicons_86: 21300172
       tagicons_93: 21300186
@@ -4166,6 +4164,8 @@ TextureImporter:
       tagicons_96: 21300192
       tagicons_97: 21300194
       tagicons_98: 21300196
+      todo: 21300166
+      todo_s: 21300168
       trajectory: 21300284
       trajectory_s: 21300286
       trigger: 21300122

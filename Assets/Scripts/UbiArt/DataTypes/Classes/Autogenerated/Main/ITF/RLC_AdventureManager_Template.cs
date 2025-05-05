@@ -2,7 +2,7 @@ namespace UbiArt.ITF {
 	[Games(GameFlags.RA)]
 	public partial class RLC_AdventureManager_Template : TemplateObj {
 		public CMap<StringID, Generic<RLC_Map>> maps;
-		public CMap<StringID, RLC_Adventure> adventures;
+		public CMap<StringID, Generic<RLC_Adventure>> adventures;
 		public CMap<PathRef, uint> deprecatedMaps;
 		public CMap<PathRef, uint> deprecatedAdventures;
 		public CMap<uint, RLC_MagnifyingGlass> MagnifyingGlassWeight;
@@ -130,7 +130,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			maps = s.SerializeObject<CMap<StringID, Generic<RLC_Map>>>(maps, name: "maps");
-			adventures = s.SerializeObject<CMap<StringID, RLC_Adventure>>(adventures, name: "adventures");
+			adventures = s.SerializeObject<CMap<StringID, Generic<RLC_Adventure>>>(adventures, name: "adventures");
 			deprecatedMaps = s.SerializeObject<CMap<PathRef, uint>>(deprecatedMaps, name: "deprecatedMaps");
 			deprecatedAdventures = s.SerializeObject<CMap<PathRef, uint>>(deprecatedAdventures, name: "deprecatedAdventures");
 			MagnifyingGlassWeight = s.SerializeObject<CMap<uint, RLC_MagnifyingGlass>>(MagnifyingGlassWeight, name: "MagnifyingGlassWeight");

@@ -104,6 +104,7 @@ namespace UbiArt {
 			BacklightEmmissive = 2,
 			PVRTC = 3,
 			ATC = 4,
+			ASTC = 5
 		}
 	}
 }

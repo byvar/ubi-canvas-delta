@@ -160,9 +160,10 @@ public class UnityPickable : MonoBehaviour {
 					foreach (string tag in t.TAGS) {
 						Sprite sprLoc = c.GetIcon(tag, selected);
 						if (sprLoc == null) {
-							print("Frieze: Untreated tag " + tag);
+							print($"Frieze {pickable.USERFRIENDLY}: Untreated tag " + tag);
 						}
-						spr = sprLoc;
+						if (spr == null)
+							spr = sprLoc;
 					}
 				}
 				if (spr == null) {
@@ -174,9 +175,10 @@ public class UnityPickable : MonoBehaviour {
 						foreach (string tag in t.TAGS) {
 							Sprite sprLoc = c.GetIcon(tag, selected);
 							if (sprLoc == null) {
-								print("SubSceneActor: Untreated tag " + tag);
+								print($"SubSceneActor {a.USERFRIENDLY}: Untreated tag " + tag);
 							}
-							spr = sprLoc;
+							if (spr == null)
+								spr = sprLoc;
 						}
 					}
 					if (spr == null && !Path.IsNull(ssa.RELATIVEPATH)) {
@@ -201,9 +203,10 @@ public class UnityPickable : MonoBehaviour {
 							if(string.IsNullOrWhiteSpace(tag)) continue;
 							Sprite sprLoc = c.GetIcon(tag, selected);
 							if (sprLoc == null) {
-								print("Actor: Untreated tag " + tag);
+								print($"Actor {a.USERFRIENDLY}: Untreated tag " + tag);
 							}
-							spr = sprLoc;
+							if(spr == null)
+								spr = sprLoc;
 						}
 					}
 					if (spr == null) {

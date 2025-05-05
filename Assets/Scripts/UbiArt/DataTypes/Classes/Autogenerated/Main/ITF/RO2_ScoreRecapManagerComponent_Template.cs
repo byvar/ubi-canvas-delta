@@ -10,9 +10,9 @@ namespace UbiArt.ITF {
 		public float prisonersMaxDelayShort;
 		public float prisonersMinDelayLong;
 		public float prisonersMaxDelayLong;
-		public Placeholder musicEventPrisonersStart;
-		public Placeholder musicEventLowEnd;
-		public Placeholder musicEventHighEnd;
+		public Generic<Event> musicEventPrisonersStart;
+		public Generic<Event> musicEventLowEnd;
+		public Generic<Event> musicEventHighEnd;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
@@ -25,9 +25,9 @@ namespace UbiArt.ITF {
 				prisonersMaxDelayShort = s.Serialize<float>(prisonersMaxDelayShort, name: "prisonersMaxDelayShort");
 				prisonersMinDelayLong = s.Serialize<float>(prisonersMinDelayLong, name: "prisonersMinDelayLong");
 				prisonersMaxDelayLong = s.Serialize<float>(prisonersMaxDelayLong, name: "prisonersMaxDelayLong");
-				musicEventPrisonersStart = s.SerializeObject<Placeholder>(musicEventPrisonersStart, name: "musicEventPrisonersStart");
-				musicEventLowEnd = s.SerializeObject<Placeholder>(musicEventLowEnd, name: "musicEventLowEnd");
-				musicEventHighEnd = s.SerializeObject<Placeholder>(musicEventHighEnd, name: "musicEventHighEnd");
+				musicEventPrisonersStart = s.SerializeObject<Generic<Event>>(musicEventPrisonersStart, name: "musicEventPrisonersStart");
+				musicEventLowEnd = s.SerializeObject<Generic<Event>>(musicEventLowEnd, name: "musicEventLowEnd");
+				musicEventHighEnd = s.SerializeObject<Generic<Event>>(musicEventHighEnd, name: "musicEventHighEnd");
 			} else {
 				timeBetweenLums = s.Serialize<float>(timeBetweenLums, name: "timeBetweenLums");
 				timeAppearNewPet = s.Serialize<float>(timeAppearNewPet, name: "timeAppearNewPet");

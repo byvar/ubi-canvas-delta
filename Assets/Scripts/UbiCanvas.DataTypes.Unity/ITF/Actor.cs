@@ -8,6 +8,8 @@ namespace UbiArt.ITF {
 			await base.InitGameObject();
 			if (this is Frise) return;
 			bool hasTemplate = template?.obj != null;
+			if(!hasTemplate)
+				UbiArtContext.SystemLogger?.LogWarning($"Creating object for actor without template: {USERFRIENDLY}");
 			bool hasTemplateComponents = hasTemplate && (template.obj.COMPONENTS?.Count ?? 0) == (COMPONENTS?.Count ?? 0);
 			for (int i = 0; i < (COMPONENTS?.Count ?? 0); i++) {
 				Generic<ActorComponent> ac = COMPONENTS[i];

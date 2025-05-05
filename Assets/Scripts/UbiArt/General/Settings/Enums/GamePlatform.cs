@@ -5,6 +5,7 @@
 		None, 
 		PC, 
 		iOS, 
+		AppleTV,
 		Android, 
 		WiiU, 
 		Vita, 

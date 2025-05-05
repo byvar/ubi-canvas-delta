@@ -33,6 +33,7 @@ namespace UbiArt {
 				GamePlatform.PC => HasPlatform(PlatformFlags.PC),
 				GamePlatform.Android => HasPlatform(PlatformFlags.Android),
 				GamePlatform.iOS => HasPlatform(PlatformFlags.iOS),
+				GamePlatform.AppleTV => HasPlatform(PlatformFlags.AppleTV),
 				GamePlatform.MacOS => HasPlatform(PlatformFlags.MacOS),
 				GamePlatform.Vita => HasPlatform(PlatformFlags.Vita),
 				GamePlatform.WiiU => HasPlatform(PlatformFlags.WiiU),

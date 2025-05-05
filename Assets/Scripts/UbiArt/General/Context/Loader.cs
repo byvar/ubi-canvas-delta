@@ -48,6 +48,8 @@ namespace UbiArt {
 		public Dictionary<StringID, UbiArtFile> files = new Dictionary<StringID, UbiArtFile>();
 		public List<Tuple<string, UbiArtFile>> virtualFiles = new List<Tuple<string, UbiArtFile>>();
 
+		public Dictionary<string, string> ReplacementPaths { get; set; }
+
 		public delegate void SerializeAction(CSerializerObject s);
 		public struct ObjectPlaceHolder {
 			public Path path;
@@ -124,7 +126,10 @@ namespace UbiArt {
 				}
 				return false;
 			} else {
-				return FileManager.FileExists($"{Context.BasePath}{cookedFolder}{p.folder}{p.filename}{(ckd ? ".ckd" : "")}");
+				var fullPath = p.FullPath;
+				var replacement = GetReplacementPath(fullPath);
+				if (replacement != null && FileManager.FileExists(replacement)) return true;
+				return FileManager.FileExists(Context.GetAbsoluteFilePath($"{cookedFolder}{fullPath}{(ckd ? ".ckd" : "")}"));
 			}
 		}
 		public Stream GetGameFileStream(Path p, bool ckd) {
@@ -137,7 +142,13 @@ namespace UbiArt {
 				}
 				return null;
 			} else {
-				return FileManager.GetFileReadStream($"{Context.BasePath}{cookedFolder}{p.folder}{p.filename}{(ckd ? ".ckd" : "")}");
+				var fullPath = p.FullPath;
+				var replacement = GetReplacementPath(fullPath);
+				if (replacement != null && FileManager.FileExists(replacement)) {
+					var replacementStream = FileManager.GetFileReadStream(replacement);
+					if(replacementStream != null) return replacementStream;
+				}
+				return FileManager.GetFileReadStream(Context.GetAbsoluteFilePath($"{cookedFolder}{fullPath}{(ckd ? ".ckd" : "")}"));
 			}
 		}
 		public async Task LoadBundles() {
@@ -149,7 +160,7 @@ namespace UbiArt {
 		public async Task LoadBundle(string bname) {
 			if (!Bundles.ContainsKey(bname)) {
 				string fileName = $"{bname}_{Settings.PlatformString}.ipk";
-				string fullPath = $"{Context.BasePath}{fileName}";
+				string fullPath = Context.GetAbsoluteFilePath(fileName);
 				await FileManager.PrepareBigFile(fullPath, 0);
 				if (!FileManager.FileExists(fullPath)) return;
 				BigFiles[bname] = new BinaryBigFile(Context, fileName) {
@@ -161,7 +172,11 @@ namespace UbiArt {
 		}
 		public bool AnyBundleContainsFile(Path path) => Bundles.Any(b => b.Value.ContainsFile(path));
 		public Path GetPathFromBundleByStringID(StringID id) => Bundles.Values.FirstOrDefault(b => b.GetPathByStringID(id) != null)?.GetPathByStringID(id);
-
+		public string GetReplacementPath(string path) {
+			if(ReplacementPaths == null) return null;
+			if(!ReplacementPaths.ContainsKey(path)) return null;
+			return ReplacementPaths[path];
+		}
 		public async Task<byte[]> GetFileFromBundles(Path p, bool ckd) {
 			string cookedFolder = ckd ? Settings.ITFDirectory : "";
 			Path path = ckd ? new Path($"{cookedFolder}{p.folder}", $"{p.filename}{(ckd ? ".ckd" : "")}", cooked: true) : p;
@@ -184,7 +199,7 @@ namespace UbiArt {
 			foreach (var bname in bnames) {
 				if (!Bundles.ContainsKey(bname)) {
 					string fileName = $"{bname}_{Settings.PlatformString}.ipk";
-					string fullPath = $"{Context.BasePath}{fileName}";
+					string fullPath = Context.GetAbsoluteFilePath(fileName);
 					await FileManager.PrepareBigFile(fullPath, 0);
 					if (!FileManager.FileExists(fullPath)) continue;
 					BigFiles[bname] = new BinaryBigFile(Context, fileName) {
@@ -226,7 +241,7 @@ namespace UbiArt {
 					foreach (var bname in bnames) {
 						if (!Bundles.ContainsKey(bname)) {
 							string fileName = $"{bname}_{Settings.PlatformString}.ipk";
-							string fullPath = $"{Context.BasePath}{fileName}";
+							string fullPath = Context.GetAbsoluteFilePath(fileName);
 							await FileManager.PrepareBigFile(fullPath, 0);
 							if (!FileManager.FileExists(fullPath)) continue;
 							BigFiles[bname] = new BinaryBigFile(Context, fileName) {
@@ -242,7 +257,7 @@ namespace UbiArt {
 					}
 				}
 			} else {
-				await FileManager.PrepareFile($"{Context.BasePath}{cookedFolder}{p.folder}{p.filename}{(ckd ? ".ckd" : "")}");
+				await FileManager.PrepareFile(Context.GetAbsoluteFilePath($"{cookedFolder}{p.folder}{p.filename}{(ckd ? ".ckd" : "")}"));
 			}
 		}
 
@@ -316,6 +331,8 @@ namespace UbiArt {
 								files.Add(id, new BinaryGameFile(Context, o.path.filename, o.path, ckd));
 								LoadingState = $"{state}\n{o.path.FullPath}";
 								await Context.AsyncController.WaitIfNecessary();
+							} else {
+								//Context?.SystemLogger?.LogWarning($"Path does not exist: {o.path}");
 							}
 						}
 						if (files.ContainsKey(id)) {

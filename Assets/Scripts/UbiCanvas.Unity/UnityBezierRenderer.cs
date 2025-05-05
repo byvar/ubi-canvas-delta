@@ -58,17 +58,7 @@ public class UnityBezierRenderer : MonoBehaviour {
 		return Enumerable.Range(0, numPoints).Select(i => currentPos + CalculateCubicBezierPoint(i / (float)numPoints, p0, p1, p2, p3, z0, z1)).ToArray();
 	}
 	Vec3d CalculateCubicBezierPoint(float t, Vec2d p0, Vec2d p1, Vec2d p2, Vec2d p3, float z0, float z1) {
-		float u = 1 - t;
-		float tt = t * t;
-		float uu = u * u;
-		float uuu = uu * u;
-		float ttt = tt * t;
-
-		Vec2d p = p0 * uuu;
-		p += p1 * 3f * uu * t;
-		p += p2 * 3f * u * tt;
-		p += p3 * ttt;
-
+		var p = BezierHelpers.CalculateCubicBezierPoint(t, p0, p1, p2, p3);
 		return new Vec3d(p.x, p.y, Mathf.Lerp(z0, z1, t));
 	}
 

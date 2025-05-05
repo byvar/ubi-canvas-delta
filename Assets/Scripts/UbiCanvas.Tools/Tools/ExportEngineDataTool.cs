@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UbiArt;
 using UbiArt.UV;
+using UbiCanvas.Helpers;
 using Path = UbiArt.Path;
 
 namespace UbiCanvas.Tools
@@ -26,8 +27,8 @@ namespace UbiCanvas.Tools
 			string itfDir = context.Settings.ITFDirectory;
 
 			foreach (string configFile in Directory.GetFiles(
-				         System.IO.Path.Combine(context.BasePath, itfDir, "enginedata"),
-				         "*.isg.ckd", SearchOption.AllDirectories))
+							System.IO.Path.Combine(context.BasePath, itfDir, "enginedata"),
+							"*.isg.ckd", SearchOption.AllDirectories))
 			{
 				string relativePath = configFile.Substring(configFile.IndexOf("enginedata"));
 				context.Loader.LoadGenericFile(new Path(relativePath), x =>

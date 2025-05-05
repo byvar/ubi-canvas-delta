@@ -4,13 +4,13 @@ namespace UbiArt.ITF {
 		public Path video;
 		public int audioTrack;
 		public bool videoTrack;
-		public bool autoPlay;
+		public bool autoPlay = true;
 		public float fadeInTime;
 		public float fadeOutTime;
 		public bool playFromMemory;
 		public bool playToTexture;
 		public bool loop;
-		public bool sound;
+		public bool sound = true;
 		public bool mainthread;
 		public CListP<uint> audioTracks;
 		public bool playFade;

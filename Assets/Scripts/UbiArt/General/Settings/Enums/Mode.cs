@@ -32,6 +32,9 @@
 		[System.ComponentModel.Description("Rayman Adventures (iOS)")]
 		RaymanAdventuresiOS,
 
+		[System.ComponentModel.Description("Rayman Adventures (Apple TV)")]
+		RaymanAdventuresATV,
+
 		[System.ComponentModel.Description("Rayman Mini (MacOS)")] 
 		RaymanMiniMacOS,
 

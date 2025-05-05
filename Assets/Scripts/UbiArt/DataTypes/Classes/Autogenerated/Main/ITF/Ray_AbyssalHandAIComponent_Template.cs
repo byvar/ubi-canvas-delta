@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public float handBackwardSpeed;
 		public float handEscapeSpeed;
 		public float handAcceleration;
-		public Placeholder bezierRenderer;
+		public BezierCurveRenderer_Template bezierRenderer;
 		public Placeholder detectionShape;
 		public float handLightDistance;
 		public Angle handRotationSpeed;
@@ -23,7 +23,7 @@ namespace UbiArt.ITF {
 			handBackwardSpeed = s.Serialize<float>(handBackwardSpeed, name: "handBackwardSpeed");
 			handEscapeSpeed = s.Serialize<float>(handEscapeSpeed, name: "handEscapeSpeed");
 			handAcceleration = s.Serialize<float>(handAcceleration, name: "handAcceleration");
-			bezierRenderer = s.SerializeObject<Placeholder>(bezierRenderer, name: "bezierRenderer");
+			bezierRenderer = s.SerializeObject<BezierCurveRenderer_Template>(bezierRenderer, name: "bezierRenderer");
 			detectionShape = s.SerializeObject<Placeholder>(detectionShape, name: "detectionShape");
 			handLightDistance = s.Serialize<float>(handLightDistance, name: "handLightDistance");
 			handRotationSpeed = s.SerializeObject<Angle>(handRotationSpeed, name: "handRotationSpeed");

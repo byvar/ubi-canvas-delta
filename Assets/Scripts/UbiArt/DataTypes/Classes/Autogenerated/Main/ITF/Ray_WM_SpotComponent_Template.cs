@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_WM_SpotComponent_Template : CSerializable {
+	public partial class Ray_WM_SpotComponent_Template : ActorComponent_Template {
 		public StringID closedAnim;
 		public StringID newAnim;
 		public StringID cannotEnterAnim;

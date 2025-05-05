@@ -3,7 +3,7 @@ namespace UbiArt.ITF {
 	public partial class RLC_Adventure : CSerializable {
 		public PathRef Path;
 		public uint AdventureIdMin;
-		public uint AdventureIdMax;
+		public uint AdventureIdMax = uint.MaxValue;
 		public Enum_GraphicalFamily GraphicalFamily;
 		public uint Difficulty;
 		public uint LuaIndex;

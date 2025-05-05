@@ -55,6 +55,7 @@ public class UnitySettings {
 		{ "rl_vita", Mode.RaymanLegendsPSVita },
 		{ "ra_android", Mode.RaymanAdventuresAndroid },
 		{ "ra_ios", Mode.RaymanAdventuresiOS },
+		{ "ra_atv", Mode.RaymanAdventuresATV },
 		{ "rm_mac", Mode.RaymanMiniMacOS },
 		{ "col_pc", Mode.ChildOfLightPC },
 	};

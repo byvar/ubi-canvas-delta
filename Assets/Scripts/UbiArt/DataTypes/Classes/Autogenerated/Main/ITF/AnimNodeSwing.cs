@@ -1,15 +1,8 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RO | GameFlags.RL)]
-	public partial class AnimNodeSwing : CSerializable {
-		public Placeholder leafs;
-		public Placeholder childData;
+	[Games(GameFlags.ROVersion | GameFlags.RL | GameFlags.RA | GameFlags.RM)]
+	public partial class AnimNodeSwing : BlendTreeNodeChooseBranch<AnimTreeResult> {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.Settings.Game == Game.RL) {
-				leafs = s.SerializeObject<Placeholder>(leafs, name: "leafs");
-				childData = s.SerializeObject<Placeholder>(childData, name: "childData");
-			} else {
-			}
 		}
 		public override uint? ClassCRC => 0x73BAE590;
 	}

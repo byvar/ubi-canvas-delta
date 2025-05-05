@@ -1,14 +1,14 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
 	public partial class RO2_DRCTrappedComponent_Template : ActorComponent_Template {
-		public Placeholder trappedShape;
+		public Generic<PhysShape> trappedShape;
 		public StringID animOff;
 		public StringID animTrapped;
 		public StringID revealedFx;
 		public StringID activatedFx;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			trappedShape = s.SerializeObject<Placeholder>(trappedShape, name: "trappedShape");
+			trappedShape = s.SerializeObject<Generic<PhysShape>>(trappedShape, name: "trappedShape");
 			animOff = s.SerializeObject<StringID>(animOff, name: "animOff");
 			animTrapped = s.SerializeObject<StringID>(animTrapped, name: "animTrapped");
 			revealedFx = s.SerializeObject<StringID>(revealedFx, name: "revealedFx");

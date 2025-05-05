@@ -9,18 +9,14 @@ namespace UbiArt.ITF {
 		public Enum_SpawnPosRef SpawnPosRef;
 		public uint KEY;
 		public CArrayO<StringID> BoneGroups;
-		public Path Path__0;
-		public CArrayO<Generic<Event>> CArray_Generic_Event__1;
-		public bool bool__2;
-		public EventSpawn EventSpawn__3;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.VH) {
-				Path__0 = s.SerializeObject<Path>(Path__0, name: "Path__0");
-				CArray_Generic_Event__1 = s.SerializeObject<CArrayO<Generic<Event>>>(CArray_Generic_Event__1, name: "CArray<Generic<Event>>__1");
-				bool__2 = s.Serialize<bool>(bool__2, name: "bool__2");
+				actorToSpawn = s.SerializeObject<Path>(actorToSpawn, name: "actorToSpawn");
+				onSpawnEvents = s.SerializeObject<CArrayO<Generic<Event>>>(onSpawnEvents, name: "onSpawnEvents");
+				autoStart = s.Serialize<bool>(autoStart, name: "autoStart");
 				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
-					EventSpawn__3 = s.SerializeObject<EventSpawn>(EventSpawn__3, name: "EventSpawn__3");
+					spawnDataAutoStart = s.SerializeObject<EventSpawn>(spawnDataAutoStart, name: "spawnDataAutoStart");
 				}
 			} else {
 				actorToSpawn = s.SerializeObject<Path>(actorToSpawn, name: "actorToSpawn");

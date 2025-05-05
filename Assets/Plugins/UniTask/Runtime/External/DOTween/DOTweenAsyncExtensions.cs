@@ -16,14 +16,14 @@ namespace Cysharp.Threading.Tasks
         Kill,
         KillWithCompleteCallback,
         Complete,
-        CompleteWithSeqeunceCallback,
+        CompleteWithSequenceCallback,
         CancelAwait,
 
         // AndCancelAwait
         KillAndCancelAwait,
         KillWithCompleteCallbackAndCancelAwait,
         CompleteAndCancelAwait,
-        CompleteWithSeqeunceCallbackAndCancelAwait
+        CompleteWithSequenceCallbackAndCancelAwait
     }
 
     public static class DOTweenAsyncExtensions
@@ -143,24 +143,21 @@ namespace Cysharp.Threading.Tasks
                 TaskPool.RegisterSizeGetter(typeof(TweenConfiguredSource), () => pool.Size);
             }
 
-            static readonly TweenCallback EmptyTweenCallback = () => { };
-
             readonly TweenCallback onCompleteCallbackDelegate;
-            readonly TweenCallback onUpdateDelegate;
 
             Tween tween;
             TweenCancelBehaviour cancelBehaviour;
             CancellationToken cancellationToken;
+            CancellationTokenRegistration cancellationRegistration;
             CallbackType callbackType;
             bool canceled;
 
-            TweenCallback originalUpdateAction;
+            TweenCallback originalCompleteAction;
             UniTaskCompletionSourceCore<AsyncUnit> core;
 
             TweenConfiguredSource()
             {
                 onCompleteCallbackDelegate = OnCompleteCallbackDelegate;
-                onUpdateDelegate = OnUpdate;
             }
 
             public static IUniTaskSource Create(Tween tween, TweenCancelBehaviour cancelBehaviour, CancellationToken cancellationToken, CallbackType callbackType, out short token)
@@ -180,39 +177,85 @@ namespace Cysharp.Threading.Tasks
                 result.cancelBehaviour = cancelBehaviour;
                 result.cancellationToken = cancellationToken;
                 result.callbackType = callbackType;
-
-                result.originalUpdateAction = tween.onUpdate;
                 result.canceled = false;
-
-                if (result.originalUpdateAction == result.onUpdateDelegate)
-                {
-                    result.originalUpdateAction = null;
-                }
-
-                tween.onUpdate = result.onUpdateDelegate;
 
                 switch (callbackType)
                 {
                     case CallbackType.Kill:
+                        result.originalCompleteAction = tween.onKill;
                         tween.onKill = result.onCompleteCallbackDelegate;
                         break;
                     case CallbackType.Complete:
+                        result.originalCompleteAction = tween.onComplete;
                         tween.onComplete = result.onCompleteCallbackDelegate;
                         break;
                     case CallbackType.Pause:
+                        result.originalCompleteAction = tween.onPause;
                         tween.onPause = result.onCompleteCallbackDelegate;
                         break;
                     case CallbackType.Play:
+                        result.originalCompleteAction = tween.onPlay;
                         tween.onPlay = result.onCompleteCallbackDelegate;
                         break;
                     case CallbackType.Rewind:
+                        result.originalCompleteAction = tween.onRewind;
                         tween.onRewind = result.onCompleteCallbackDelegate;
                         break;
                     case CallbackType.StepComplete:
+                        result.originalCompleteAction = tween.onStepComplete;
                         tween.onStepComplete = result.onCompleteCallbackDelegate;
                         break;
                     default:
                         break;
+                }
+
+                if (result.originalCompleteAction == result.onCompleteCallbackDelegate)
+                {
+                    result.originalCompleteAction = null;
+                }
+
+                if (cancellationToken.CanBeCanceled)
+                {
+                    result.cancellationRegistration = cancellationToken.RegisterWithoutCaptureExecutionContext(x =>
+                    {
+                        var source = (TweenConfiguredSource)x;
+                        switch (source.cancelBehaviour)
+                        {
+                            case TweenCancelBehaviour.Kill:
+                            default:
+                                source.tween.Kill(false);
+                                break;
+                            case TweenCancelBehaviour.KillAndCancelAwait:
+                                source.canceled = true;
+                                source.tween.Kill(false);
+                                break;
+                            case TweenCancelBehaviour.KillWithCompleteCallback:
+                                source.tween.Kill(true);
+                                break;
+                            case TweenCancelBehaviour.KillWithCompleteCallbackAndCancelAwait:
+                                source.canceled = true;
+                                source.tween.Kill(true);
+                                break;
+                            case TweenCancelBehaviour.Complete:
+                                source.tween.Complete(false);
+                                break;
+                            case TweenCancelBehaviour.CompleteAndCancelAwait:
+                                source.canceled = true;
+                                source.tween.Complete(false);
+                                break;
+                            case TweenCancelBehaviour.CompleteWithSequenceCallback:
+                                source.tween.Complete(true);
+                                break;
+                            case TweenCancelBehaviour.CompleteWithSequenceCallbackAndCancelAwait:
+                                source.canceled = true;
+                                source.tween.Complete(true);
+                                break;
+                            case TweenCancelBehaviour.CancelAwait:
+                                source.RestoreOriginalCallback();
+                                source.core.TrySetCanceled(source.cancellationToken);
+                                break;
+                        }
+                    }, result);
                 }
 
                 TaskTracker.TrackActiveTask(result, 3);
@@ -228,7 +271,7 @@ namespace Cysharp.Threading.Tasks
                     if (this.cancelBehaviour == TweenCancelBehaviour.KillAndCancelAwait
                         || this.cancelBehaviour == TweenCancelBehaviour.KillWithCompleteCallbackAndCancelAwait
                         || this.cancelBehaviour == TweenCancelBehaviour.CompleteAndCancelAwait
-                        || this.cancelBehaviour == TweenCancelBehaviour.CompleteWithSeqeunceCallbackAndCancelAwait
+                        || this.cancelBehaviour == TweenCancelBehaviour.CompleteWithSequenceCallbackAndCancelAwait
                         || this.cancelBehaviour == TweenCancelBehaviour.CancelAwait)
                     {
                         canceled = true;
@@ -240,78 +283,8 @@ namespace Cysharp.Threading.Tasks
                 }
                 else
                 {
+                    originalCompleteAction?.Invoke();
                     core.TrySetResult(AsyncUnit.Default);
-                }
-            }
-
-            void OnUpdate()
-            {
-                originalUpdateAction?.Invoke();
-
-                if (!cancellationToken.IsCancellationRequested)
-                {
-                    return;
-                }
-
-                switch (this.cancelBehaviour)
-                {
-                    case TweenCancelBehaviour.Kill:
-                    default:
-                        this.tween.Kill(false);
-                        break;
-                    case TweenCancelBehaviour.KillAndCancelAwait:
-                        this.canceled = true;
-                        this.tween.Kill(false);
-                        break;
-                    case TweenCancelBehaviour.KillWithCompleteCallback:
-                        this.tween.Kill(true);
-                        break;
-                    case TweenCancelBehaviour.KillWithCompleteCallbackAndCancelAwait:
-                        this.canceled = true;
-                        this.tween.Kill(true);
-                        break;
-                    case TweenCancelBehaviour.Complete:
-                        this.tween.Complete(false);
-                        break;
-                    case TweenCancelBehaviour.CompleteAndCancelAwait:
-                        this.canceled = true;
-                        this.tween.Complete(false);
-                        break;
-                    case TweenCancelBehaviour.CompleteWithSeqeunceCallback:
-                        this.tween.Complete(true);
-                        break;
-                    case TweenCancelBehaviour.CompleteWithSeqeunceCallbackAndCancelAwait:
-                        this.canceled = true;
-                        this.tween.Complete(true);
-                        break;
-                    case TweenCancelBehaviour.CancelAwait:
-                        // replace to empty(avoid callback after Canceled(instance is returned to pool.)
-                        switch (callbackType)
-                        {
-                            case CallbackType.Kill:
-                                tween.onKill = EmptyTweenCallback;
-                                break;
-                            case CallbackType.Complete:
-                                tween.onComplete = EmptyTweenCallback;
-                                break;
-                            case CallbackType.Pause:
-                                tween.onPause = EmptyTweenCallback;
-                                break;
-                            case CallbackType.Play:
-                                tween.onPlay = EmptyTweenCallback;
-                                break;
-                            case CallbackType.Rewind:
-                                tween.onRewind = EmptyTweenCallback;
-                                break;
-                            case CallbackType.StepComplete:
-                                tween.onStepComplete = EmptyTweenCallback;
-                                break;
-                            default:
-                                break;
-                        }
-
-                        this.core.TrySetCanceled(this.cancellationToken);
-                        break;
                 }
             }
 
@@ -339,10 +312,10 @@ namespace Cysharp.Threading.Tasks
                     case TweenCancelBehaviour.CompleteAndCancelAwait:
                         tween.Complete(false);
                         break;
-                    case TweenCancelBehaviour.CompleteWithSeqeunceCallback:
+                    case TweenCancelBehaviour.CompleteWithSequenceCallback:
                         tween.Complete(true);
                         break;
-                    case TweenCancelBehaviour.CompleteWithSeqeunceCallbackAndCancelAwait:
+                    case TweenCancelBehaviour.CompleteWithSequenceCallbackAndCancelAwait:
                         tween.Complete(true);
                         break;
                     case TweenCancelBehaviour.CancelAwait:
@@ -381,36 +354,41 @@ namespace Cysharp.Threading.Tasks
             {
                 TaskTracker.RemoveTracking(this);
                 core.Reset();
-                tween.onUpdate = originalUpdateAction;
+                cancellationRegistration.Dispose();
 
+                RestoreOriginalCallback();
+
+                tween = default;
+                cancellationToken = default;
+                originalCompleteAction = default;
+                return pool.TryPush(this);
+            }
+
+            void RestoreOriginalCallback()
+            {
                 switch (callbackType)
                 {
                     case CallbackType.Kill:
-                        tween.onKill = null;
+                        tween.onKill = originalCompleteAction;
                         break;
                     case CallbackType.Complete:
-                        tween.onComplete = null;
+                        tween.onComplete = originalCompleteAction;
                         break;
                     case CallbackType.Pause:
-                        tween.onPause = null;
+                        tween.onPause = originalCompleteAction;
                         break;
                     case CallbackType.Play:
-                        tween.onPlay = null;
+                        tween.onPlay = originalCompleteAction;
                         break;
                     case CallbackType.Rewind:
-                        tween.onRewind = null;
+                        tween.onRewind = originalCompleteAction;
                         break;
                     case CallbackType.StepComplete:
-                        tween.onStepComplete = null;
+                        tween.onStepComplete = originalCompleteAction;
                         break;
                     default:
                         break;
                 }
-
-                tween = default;
-                cancellationToken = default;
-                originalUpdateAction = default;
-                return pool.TryPush(this);
             }
         }
     }

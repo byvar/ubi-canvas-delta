@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_WMContentUnlockComponent : CSerializable {
+	public partial class Ray_WMContentUnlockComponent : ActorComponent {
 		public Vec2d RELATIVEPOS;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

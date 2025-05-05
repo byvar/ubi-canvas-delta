@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		public bool SwitchExtremityStop;
 		public uint SwitchTexturePipeExtremity;
 		public bool IsFriendlyNameValid;
-		public Placeholder FriezePath;
+		public CArrayO<ObjectPath> FriezePath;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 					PointsList = s.SerializeObject<PolyPointList>(PointsList, name: "PointsList");
 				}
 				if (s.HasFlags(SerializeFlags.Group_Data)) {
-					FriezePath = s.SerializeObject<Placeholder>(FriezePath, name: "FriezePath");
+					FriezePath = s.SerializeObject<CArrayO<ObjectPath>>(FriezePath, name: "FriezePath");
 					PrimitiveParameters = s.SerializeObject<CListO<GFXPrimitiveParam>>(PrimitiveParameters, name: "PrimitiveParameters");
 					ConfigCRC = s.Serialize<uint>(ConfigCRC, name: "ConfigCRC");
 				}

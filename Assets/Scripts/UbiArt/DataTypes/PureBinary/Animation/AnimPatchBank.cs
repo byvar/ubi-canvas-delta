@@ -4,6 +4,7 @@ namespace UbiArt.Animation {
 	public class AnimPatchBank : CSerializable {
 		public const uint VersionLegends = 0x10;
 		public const uint VersionFiestaRun = 0xD;
+		public const uint VersionOrigins = 0xD;
 
 		public uint version;
 		public Link bankId;
