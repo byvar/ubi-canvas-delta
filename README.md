@@ -37,7 +37,7 @@ Video tutorial by Lapislalipek:
 [![Video tutorial](https://img.youtube.com/vi/WxAQ_zB3MZs/default.jpg)](https://youtu.be/WxAQ_zB3MZs)
 
 PBK Editing video tutorial by byvar:
-[!PBK Editing](https://img.youtube.com/vi/x1ZgASWpKBs/default.jpg)](https://youtu.be/x1ZgASWpKBs)
+[![PBK Editing](https://img.youtube.com/vi/x1ZgASWpKBs/default.jpg)](https://youtu.be/x1ZgASWpKBs)
 
 ## Controls
 - Game view: Shift to toggle camera controls, and WASD to move around after that. Press L to toggle lighting on/off, and G for gizmos.
