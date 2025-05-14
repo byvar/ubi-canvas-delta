@@ -15,9 +15,9 @@ namespace UbiArt.ITF {
 		public uint maxBonusTeensy;
 		public TeaKey key;
 		public Color textHighlightColor;
-		public CArrayO<CString> debugMenuMapListRO;
-		public CArrayO<CString> mapListPressConf;
-		public CArrayO<CString> menus;
+		public CArrayP<CString> debugMenuMapListRO;
+		public CArrayP<CString> mapListPressConf;
+		public CArrayP<CString> menus;
 		public CArrayO<Path> luaIncludes;
 		public CArrayO<Path> inputs;
 		public CArrayO<MusicTheme> musicThemes;
@@ -44,9 +44,9 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RO) {
-				debugMenuMapListRO = s.SerializeObject<CArrayO<CString>>(debugMenuMapListRO, name: "debugMenuMapList");
-				mapListPressConf = s.SerializeObject<CArrayO<CString>>(mapListPressConf, name: "mapListPressConf");
-				menus = s.SerializeObject<CArrayO<CString>>(menus, name: "menus");
+				debugMenuMapListRO = s.SerializeObject<CArrayP<CString>>(debugMenuMapListRO, name: "debugMenuMapList");
+				mapListPressConf = s.SerializeObject<CArrayP<CString>>(mapListPressConf, name: "mapListPressConf");
+				menus = s.SerializeObject<CArrayP<CString>>(menus, name: "menus");
 				luaIncludes = s.SerializeObject<CArrayO<Path>>(luaIncludes, name: "luaIncludes");
 				inputs = s.SerializeObject<CArrayO<Path>>(inputs, name: "inputs");
 				musicThemes = s.SerializeObject<CArrayO<MusicTheme>>(musicThemes, name: "musicThemes");

@@ -11,7 +11,7 @@ namespace UbiArt.ITF {
 		public float sprintTargetSpeedBlendFactor;
 		public float sprintSpeedBlendFactor;
 		public float zOffset;
-		public Placeholder followersAdjustOffsets;
+		public CListO<Vec3d> followersAdjustOffsets;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			startNode = s.Serialize<BasicString>(startNode, name: "startNode");
@@ -24,7 +24,7 @@ namespace UbiArt.ITF {
 			sprintTargetSpeedBlendFactor = s.Serialize<float>(sprintTargetSpeedBlendFactor, name: "sprintTargetSpeedBlendFactor");
 			sprintSpeedBlendFactor = s.Serialize<float>(sprintSpeedBlendFactor, name: "sprintSpeedBlendFactor");
 			zOffset = s.Serialize<float>(zOffset, name: "zOffset");
-			followersAdjustOffsets = s.SerializeObject<Placeholder>(followersAdjustOffsets, name: "followersAdjustOffsets");
+			followersAdjustOffsets = s.SerializeObject<CListO<Vec3d>>(followersAdjustOffsets, name: "followersAdjustOffsets");
 		}
 		public override uint? ClassCRC => 0x71D40CBF;
 	}

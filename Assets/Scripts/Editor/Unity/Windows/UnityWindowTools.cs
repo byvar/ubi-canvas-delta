@@ -215,7 +215,7 @@ public class UnityWindowTools : UnityWindow
 
 					UnityWindowSerializableEditor window = GetWindow<UnityWindowSerializableEditor>(false, "Serializer", true);
 					window.Path = path;
-					window.Context = context;
+					window.SetContext(context);
 				}
 
 				ExecuteTask(edit());

@@ -41,6 +41,13 @@ public class UnityWindowBundle : UnityWindow {
 				//DrawFoldout("Actors", l.act);
 				DrawFoldout("Frise Config", l.fcg);
 				DrawFoldout("Actor Templates", l.tpl);
+				DrawFoldout("Patch banks", l.pbk);
+				Dictionary<StringID, ICSerializable> variousDict = new Dictionary<StringID, ICSerializable>();
+				var atlasContainer = l.Context.Cache.Get<UbiArt.UV.UVAtlasManager>("atlascontainer");
+				if (atlasContainer != null) {
+					variousDict["atlascontainer"] = atlasContainer;
+				}
+				DrawFoldout("Various", variousDict);
 				bool canExport = false;
 				if(UnitySettings.Export_UseRaw)
 					canExport = !string.IsNullOrEmpty(UnitySettings.Export_OutputPathFolder);
@@ -54,6 +61,8 @@ public class UnityWindowBundle : UnityWindow {
 					//GetSelectedPaths(selection, l.act);
 					GetSelectedPaths(selection, l.fcg);
 					GetSelectedPaths(selection, l.tpl);
+					GetSelectedPaths(selection, l.pbk);
+					GetSelectedPaths(selection, variousDict);
 
 					async UniTask writeBundle() {
 						using (Controller.MainContext) {

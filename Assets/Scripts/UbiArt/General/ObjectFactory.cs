@@ -5023,6 +5023,8 @@ namespace UbiArt {
 			{ 0xBB4CE09E, typeof(ITF.Ray_WM_WorldSpotComponent) },
 			{ 0x58187F74, typeof(ITF.Ray_PauseActorComponent_Template) },
 			{ 0x97131C70, typeof(ITF.Ray_WM_WorldSpotComponent_Template) },
+			{ 0x7E68E054, typeof(ITF.Ray_WM_ControllerComponent) },
+			{ 0x8E1B47C1, typeof(ITF.Ray_PlayerHudScoreComponent) },
 
 			// Mini
 			{ 0x6F81A08D, typeof(ITF.FluidBankComponent_Template) },

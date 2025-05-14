@@ -5,12 +5,14 @@ using System.Linq;
 using UbiArt;
 using System.IO;
 using UnityEngine;
+using UbiCanvas.Helpers;
 
 class FileSelectionDropdown : AdvancedDropdown {
 	public string selection = null;
 	public string directory;
 	public string[] extensions;
 	public Mode mode;
+	public bool displayFullPaths;
 	public string[] files;
 	public string name;
 	//public SerializedProperty property;
@@ -62,7 +64,9 @@ class FileSelectionDropdown : AdvancedDropdown {
 			Add(folderNode, rest, fullPath, id);
 		} else {
 			// File
-			parent.AddChild(new AdvancedDropdownItem(path) {
+			var name = displayFullPaths ? fullPath : path;
+			name = name?.RemoveCKD();
+			parent.AddChild(new AdvancedDropdownItem(name) {
 				id = id
 			});
 		}

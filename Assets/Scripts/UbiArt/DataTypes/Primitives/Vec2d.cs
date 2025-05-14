@@ -29,7 +29,9 @@ namespace UbiArt {
 
 		[IgnoreDataMember]
 		public double Magnitude => Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-		
+		[IgnoreDataMember]
+		public float MagnitudeFloat => MathF.Sqrt(MathF.Pow(x, 2) + MathF.Pow(y, 2));
+
 		public static Vec2d operator +(Vec2d a, Vec2d b) => new Vec2d(a.x + b.x, a.y + b.y);
 		public static Vec2d operator -(Vec2d a, Vec2d b) => new Vec2d(a.x - b.x, a.y - b.y);
 		public static Vec2d operator *(Vec2d a, Vec2d b) => new Vec2d(a.x * b.x, a.y * b.y);

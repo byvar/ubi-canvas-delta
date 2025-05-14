@@ -24,5 +24,10 @@ namespace UbiCanvas.Helpers
 			te.SelectAll();
 			te.Copy();
 		}
+
+		public static string RemoveCKD(this string str) {
+			if (str != null && str.EndsWith(".ckd")) str = str.Substring(0, str.Length - 4);
+			return str;
+		}
 	}
 }

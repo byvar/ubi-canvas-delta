@@ -18,27 +18,27 @@ namespace UbiArt.ITF {
 				BlendMode blendDst = BlendMode.OneMinusSrcAlpha;
 				ZWrite zwrite = ZWrite.On;
 				switch (shader.blendmode) {
-					case GFXMaterialShader_Template.GFX_BLEND.ALPHA:
+					case GFXMaterialShader_Template.GFX_BLENDMODE.ALPHA:
 						blendSrc = BlendMode.SrcAlpha;
 						blendDst = BlendMode.OneMinusSrcAlpha;
 						break;
-					case GFXMaterialShader_Template.GFX_BLEND.ALPHAPREMULT:
+					case GFXMaterialShader_Template.GFX_BLENDMODE.ALPHAPREMULT:
 						blendSrc = BlendMode.One;
 						blendDst = BlendMode.OneMinusSrcAlpha;
 						break;
-					case GFXMaterialShader_Template.GFX_BLEND.ADD:
+					case GFXMaterialShader_Template.GFX_BLENDMODE.ADD:
 						blendSrc = BlendMode.One;
 						blendDst = BlendMode.One;
 						break;
-					case GFXMaterialShader_Template.GFX_BLEND.ADDALPHA:
+					case GFXMaterialShader_Template.GFX_BLENDMODE.ADDALPHA:
 						blendSrc = BlendMode.SrcAlpha;
 						blendDst = BlendMode.One;
 						break;
-					case GFXMaterialShader_Template.GFX_BLEND.MUL:
+					case GFXMaterialShader_Template.GFX_BLENDMODE.MUL:
 						blendSrc = BlendMode.DstColor;
 						blendDst = BlendMode.Zero;
 						break;
-					case GFXMaterialShader_Template.GFX_BLEND.MUL2X:
+					case GFXMaterialShader_Template.GFX_BLENDMODE.MUL2X:
 						blendSrc = BlendMode.DstColor;
 						blendDst = BlendMode.SrcColor;
 						break;

@@ -79,6 +79,7 @@ namespace UbiArt {
 		public Dictionary<StringID, ICSerializable> isc => Context.Cache.Structs.GetValueOrDefault(typeof(ContainerFile<ITF.Scene>));
 		public Dictionary<StringID, ICSerializable> anm => Context.Cache.Structs.GetValueOrDefault(typeof(Animation.AnimTrack));
 		public Dictionary<StringID, ICSerializable> tex => Context.Cache.Structs.GetValueOrDefault(typeof(TextureCooked));
+		public Dictionary<StringID, ICSerializable> pbk => Context.Cache.Structs.GetValueOrDefault(typeof(Animation.AnimPatchBank));
 		public Dictionary<StringID, Path> Paths { get; private set; } = new Dictionary<StringID, Path>();
 		public Dictionary<StringID, Path> CookedPaths { get; private set; } = new Dictionary<StringID, Path>();
 

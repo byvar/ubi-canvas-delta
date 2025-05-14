@@ -12,7 +12,14 @@ public class UnityWindowSerializableEditor : UnityWindow
 
 	// Set these when creating the window!
 	public Path Path { get; set; }
-	public Context Context { get; set; }
+	public Context Context => _context;
+	private Context _context;
+	public void SetContext(Context context) {
+		if (_context != null) {
+			_context.Dispose();
+		}
+		_context = context;
+	}
 
 	private void OnEnable()
 	{

@@ -12,20 +12,20 @@ namespace UbiArt.ITF {
 		public bool normalMapLighting;
 		public bool textureBlend;
 		public CListO<GFXMatAnimImpostor> animInTex;
-		public GFX_MAT materialtype;
-		public GFX_MAT2 materialtype2;
-		public GFX_MAT3 materialtype3;
-		public GFX_MAT_SHADER lightingType;
+		public GFX_MATERIAL_TYPE materialtype;
+		public GFX_MATERIAL_TYPE_2 materialtype2;
+		public GFX_MATERIAL_TYPE_3 materialtype3;
+		public GFXMaterialLightingShader lightingType;
 		public GFX_MaterialParams matParams;
-		public GFX_BLEND blendmode = GFX_BLEND.ALPHA;
+		public GFX_BLENDMODE blendmode = GFX_BLENDMODE.ALPHA;
 		public int renderToTexture;
 		public bool renderGenerateBack;
 		public COL_GFXMaterialShader_Layer_Template Layer1;
-		public GFX_BLEND BlendLayer2;
+		public GFX_BLENDMODE BlendLayer2;
 		public COL_GFXMaterialShader_Layer_Template Layer2;
-		public GFX_BLEND BlendLayer3;
+		public GFX_BLENDMODE BlendLayer3;
 		public COL_GFXMaterialShader_Layer_Template Layer3;
-		public GFX_BLEND BlendLayer4;
+		public GFX_BLENDMODE BlendLayer4;
 		public COL_GFXMaterialShader_Layer_Template Layer4;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
@@ -42,10 +42,10 @@ namespace UbiArt.ITF {
 				if (s.Settings.Platform != GamePlatform.Vita) {
 					animInTex = s.SerializeObject<CListO<GFXMatAnimImpostor>>(animInTex, name: "animInTex");
 				}
-				materialtype2 = s.Serialize<GFX_MAT2>(materialtype2, name: "materialtype");
-				lightingType = s.Serialize<GFX_MAT_SHADER>(lightingType, name: "lightingType");
+				materialtype2 = s.Serialize<GFX_MATERIAL_TYPE_2>(materialtype2, name: "materialtype");
+				lightingType = s.Serialize<GFXMaterialLightingShader>(lightingType, name: "lightingType");
 				matParams = s.SerializeObject<GFX_MaterialParams>(matParams, name: "matParams");
-				blendmode = s.Serialize<GFX_BLEND>(blendmode, name: "blendmode");
+				blendmode = s.Serialize<GFX_BLENDMODE>(blendmode, name: "blendmode");
 			} else if (s.Settings.Game == Game.COL) {
 				flags = s.Serialize<uint>(flags, name: "flags");
 				renderRegular = s.Serialize<bool>(renderRegular, name: "renderRegular", options: CSerializerObject.Options.BoolAsByte);
@@ -57,16 +57,16 @@ namespace UbiArt.ITF {
 				separateAlpha = s.Serialize<bool>(separateAlpha, name: "separateAlpha", options: CSerializerObject.Options.BoolAsByte);
 				textureBlend = s.Serialize<bool>(textureBlend, name: "textureBlend", options: CSerializerObject.Options.BoolAsByte);
 				animInTex = s.SerializeObject<CListO<GFXMatAnimImpostor>>(animInTex, name: "animInTex"); 
-				materialtype3 = s.Serialize<GFX_MAT3>(materialtype3, name: "materialtype");
-				lightingType = s.Serialize<GFX_MAT_SHADER>(lightingType, name: "lightingType");
+				materialtype3 = s.Serialize<GFX_MATERIAL_TYPE_3>(materialtype3, name: "materialtype");
+				lightingType = s.Serialize<GFXMaterialLightingShader>(lightingType, name: "lightingType");
 				matParams = s.SerializeObject<GFX_MaterialParams>(matParams, name: "matParams");
-				blendmode = s.Serialize<GFX_BLEND>(blendmode, name: "blendmode");
+				blendmode = s.Serialize<GFX_BLENDMODE>(blendmode, name: "blendmode");
 				Layer1 = s.SerializeObject<COL_GFXMaterialShader_Layer_Template>(Layer1, name: "Layer1");
-				BlendLayer2 = s.Serialize<GFX_BLEND>(BlendLayer2, name: "BlendLayer2");
+				BlendLayer2 = s.Serialize<GFX_BLENDMODE>(BlendLayer2, name: "BlendLayer2");
 				Layer2 = s.SerializeObject<COL_GFXMaterialShader_Layer_Template>(Layer2, name: "Layer2");
-				BlendLayer3 = s.Serialize<GFX_BLEND>(BlendLayer3, name: "BlendLayer3");
+				BlendLayer3 = s.Serialize<GFX_BLENDMODE>(BlendLayer3, name: "BlendLayer3");
 				Layer3 = s.SerializeObject<COL_GFXMaterialShader_Layer_Template>(Layer3, name: "Layer3");
-				BlendLayer4 = s.Serialize<GFX_BLEND>(BlendLayer4, name: "BlendLayer4");
+				BlendLayer4 = s.Serialize<GFX_BLENDMODE>(BlendLayer4, name: "BlendLayer4");
 				Layer4 = s.SerializeObject<COL_GFXMaterialShader_Layer_Template>(Layer4, name: "Layer4");
 			} else {
 				flags = s.Serialize<uint>(flags, name: "flags");
@@ -80,13 +80,13 @@ namespace UbiArt.ITF {
 				normalMapLighting = s.Serialize<bool>(normalMapLighting, name: "normalMapLighting");
 				textureBlend = s.Serialize<bool>(textureBlend, name: "textureBlend");
 				animInTex = s.SerializeObject<CListO<GFXMatAnimImpostor>>(animInTex, name: "animInTex");
-				materialtype = s.Serialize<GFX_MAT>(materialtype, name: "materialtype");
-				lightingType = s.Serialize<GFX_MAT_SHADER>(lightingType, name: "lightingType");
+				materialtype = s.Serialize<GFX_MATERIAL_TYPE>(materialtype, name: "materialtype");
+				lightingType = s.Serialize<GFXMaterialLightingShader>(lightingType, name: "lightingType");
 				matParams = s.SerializeObject<GFX_MaterialParams>(matParams, name: "matParams");
-				blendmode = s.Serialize<GFX_BLEND>(blendmode, name: "blendmode");
+				blendmode = s.Serialize<GFX_BLENDMODE>(blendmode, name: "blendmode");
 			}
 		}
-		public enum GFX_MAT {
+		public enum GFX_MATERIAL_TYPE {
 			[Serialize("GFX_MAT_DEFAULT"      )] DEFAULT = 0,
 			[Serialize("GFX_MAT_REFRACTION"   )] REFRACTION = 1,
 			[Serialize("GFX_MAT_PATCH"        )] PATCH = 2,
@@ -95,12 +95,26 @@ namespace UbiArt.ITF {
 			[Serialize("GFX_MAT_ALPHAFADE"    )] ALPHAFADE = 5,
 			[Serialize("GFX_MAT_FRIEZEOVERLAY")] FRIEZEOVERLAY = 6,
 			[Serialize("GFX_MAT_REFLECTION"   )] REFLECTION = 7,
+			GFX_MAT_FLUID_PARTICULE = 0x8,
+			GFX_MAT_FLUID = 0x9,
+			GFX_MAT_HIDDEN_MASK = 0xA,
+			GFX_MAT_FLUID_STENCILPREPASS = 0xB,
+			GFX_MAT_INVALID = -1,
 		}
-		public enum GFX_MAT_SHADER {
+		public enum GFXMaterialLightingShader {
 			[Serialize("GFX_MAT_SHADER_DEFAULT"      )] DEFAULT = 0,
 			[Serialize("GFX_MAT_SHADER_LIGHT_LAYERED")] LIGHT_LAYERED = 1,
+			GFX_MAT_SHADER_LIGHT_LAYERED_DEFAULT_BACK_FLAG = 0x2,
+			GFX_MAT_SHADER_LIGHT_LAYERED_DEFAULT_BACK = 0x3,
+			GFX_MAT_SHADER_LIGHT_LAYERED_DEFAULT_FRONT_FLAG = 0x4,
+			GFX_MAT_SHADER_LIGHT_LAYERED_DEFAULT_FRONT = 0x5,
+			GFX_MAT_SHADER_LIGHT_LAYERED_DEFAULT = 0x7,
+			GFX_MAT_SHADER_LIGHT_USE_TANGENT_LIGHT = 0x8,
+			GFX_MAT_SHADER_LIGHT_LAYERED_TANGENTLIGHT = 0x9,
+			GFX_MAT_SHADER_LIGHT_LAYERED_LAST = 0x9,
+			GFX_MAT_SHADER_INVALID = -1,
 		}
-		public enum GFX_BLEND {
+		public enum GFX_BLENDMODE {
 			[Serialize("GFX_BLEND_UNKNOWN"          )] UNKNOWN = 0,
 			[Serialize("GFX_BLEND_COPY"             )] COPY = 1,
 			[Serialize("GFX_BLEND_ALPHA"            )] ALPHA = 2,
@@ -121,9 +135,11 @@ namespace UbiArt.ITF {
 			[Serialize("GFX_BLEND_MUL2X"            )] MUL2X = 17,
 			[Serialize("GFX_BLEND_ALPHATOCOLOR"     )] ALPHATOCOLOR = 18,
 			[Serialize("GFX_BLEND_IALPHATOCOLOR"    )] IALPHATOCOLOR = 19,
+			SETTOCOLOR = 20,
 			[Serialize("GFX_BLEND_SCREEN"           )] SCREEN = 21,
+			NUMBER = 22,
 		}
-		public enum GFX_MAT2 {
+		public enum GFX_MATERIAL_TYPE_2 {
 			[Serialize("GFX_MAT_DEFAULT"      )] DEFAULT = 0,
 			[Serialize("GFX_MAT_REFRACTION"   )] REFRACTION = 1,
 			[Serialize("GFX_MAT_PATCH"        )] PATCH = 2,
@@ -132,9 +148,14 @@ namespace UbiArt.ITF {
 			[Serialize("GFX_MAT_ALPHAFADE"    )] ALPHAFADE = 5,
 			[Serialize("GFX_MAT_FRIEZEOVERLAY")] FRIEZEOVERLAY = 6,
 			[Serialize("GFX_MAT_REFLECTION"   )] REFLECTION = 7,
+			FLUID_PARTICULE = 0x8,
+			FLUID = 0x9,
+			HIDDEN_MASK = 0xA,
+			FLUID_STENCILPREPASS = 0xB,
 			[Serialize("Value_12")] Value_12 = 12,
+			INVALID = -1,
 		}
-		public enum GFX_MAT3 {
+		public enum GFX_MATERIAL_TYPE_3 {
 			[Serialize("GFX_MAT_DEFAULT"      )] DEFAULT = 0,
 			[Serialize("GFX_MAT_REFRACTION"   )] REFRACTION = 1,
 			[Serialize("GFX_MAT_PATCH"        )] PATCH = 2,
@@ -143,11 +164,16 @@ namespace UbiArt.ITF {
 			[Serialize("GFX_MAT_ALPHAFADE"    )] ALPHAFADE = 5,
 			[Serialize("GFX_MAT_FRIEZEOVERLAY")] FRIEZEOVERLAY = 6,
 			[Serialize("GFX_MAT_REFLECTION"   )] REFLECTION = 7,
+			FLUID_PARTICULE = 0x8,
+			FLUID = 0x9,
+			HIDDEN_MASK = 0xA,
+			FLUID_STENCILPREPASS = 0xB,
 			[Serialize("Value_12")] Value_12 = 12,
 			[Serialize("Value_13")] Value_13 = 13,
 			[Serialize("Value_14")] Value_14 = 14,
 			[Serialize("Value_15")] Value_15 = 15,
 			[Serialize("Value_16")] Value_16 = 16,
+			INVALID = -1,
 		}
 		
 		public override uint? ClassCRC => 0xE6A935E1;

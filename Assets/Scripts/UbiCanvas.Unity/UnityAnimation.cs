@@ -18,6 +18,49 @@ public class UnityAnimation : MonoBehaviour {
 		public UnityPatch[] Patches { get; set; }
 		public TextureBankPath TextureBankPath { get; set; }
 		public Path TexturePathOrigins { get; set; }
+
+		public void ResetPatches(GameObject gao, GameObject skeleton_gao, AnimSkeleton skeleton, UnityBone[] bones, AnimLightComponent alc) {
+			if (Patches != null) {
+				foreach (var p in Patches) {
+					if(p?.Object != null)
+						Destroy(p.Object);
+				}
+			}
+			Patches = new UnityAnimation.UnityPatch[PBK.templates.Count];
+
+			for (int i = 0; i < PBK.templates.Count; i++) {
+				skeleton.ResetBones(Controller.MainContext, bones);
+				AnimTemplate at = PBK.templates[i];
+				Patches[i] = new UnityAnimation.UnityPatch() {
+					Template = at
+				};
+
+				Mesh mesh = at.CreateMesh(); //interpCount: 4);
+				if (mesh == null) continue;
+
+				GameObject patch_gao = new GameObject($"Anim Bank {(ID ?? TextureID)?.ToString(PBK.UbiArtContext, shortString: true)} - {i} [ {PBK.templateKeys.GetKey(i).ToString(PBK.UbiArtContext, shortString: true)} ]");
+				patch_gao.transform.SetParent(gao.transform, false);
+				patch_gao.transform.localPosition = Vector3.zero;
+				patch_gao.transform.localRotation = Quaternion.identity;
+				patch_gao.transform.localScale = Vector3.one;
+
+				UnityBone[] mesh_bones = at.GetBones(at.UbiArtContext, mesh, skeleton_gao, skeleton, bones);
+				//Transform[] mesh_bones = at.GetBones(mesh, skeleton_gao, skeleton, bones);
+				//MeshFilter mf = patch_gao.AddComponent<MeshFilter>();
+				//mf.sharedMesh = mesh;
+				SkinnedMeshRenderer mr = patch_gao.AddComponent<SkinnedMeshRenderer>();
+				mr.bones = mesh_bones.Select(b => b != null ? b.transform : null).ToArray();
+				mr.sharedMesh = mesh;
+				alc.SetPatchMaterial(mr, this);
+
+				// Root bone
+				List<int> roots = at.GetRootIndices();
+				if (roots.Count > 0) mr.rootBone = mr.bones[roots[0]];
+
+				Patches[i].Object = patch_gao;
+				Patches[i].Renderer = mr;
+			}
+		}
 	}
 	public class UnityPatch {
 		public AnimTemplate Template { get; set; }
@@ -30,6 +73,10 @@ public class UnityAnimation : MonoBehaviour {
 		public Path Path { get; set; }
 		public AnimTrack Track { get; set; }
 		public SubAnim_Template SubAnim { get; set; }
+
+		public override string ToString() {
+			return $"{ID?.ToString(Track?.UbiArtContext, shortString: true)} - {Path.GetFilenameWithoutExtension(removeCooked: true)}";
+		}
 	}
 	//public AnimLightComponent animLightComponent;
 	public AnimTrack animTrack => Animation?.Track;
@@ -66,10 +113,10 @@ public class UnityAnimation : MonoBehaviour {
 
 	public void Start() {
 	}
-	public void Init() {
+	public void Init(float time = 0) {
 		Context l = Controller.MainContext;
 		if (animIndex >= 0 && skeleton != null) {
-			currentFrame = 0;
+			currentFrame = time;
 			currentBMLFrame = -1;
 			skeleton.ResetBones(l, bones);
 			InitLines();
@@ -78,6 +125,15 @@ public class UnityAnimation : MonoBehaviour {
 			UpdateAnimation();
 		}
 		loaded = true;
+	}
+
+	public void ResetPatches(Predicate<UnityPatchBank> pbkFilter = null) {
+		foreach (var pbk in AllPatchBanks) {
+			if(pbkFilter == null || pbkFilter(pbk))
+				pbk.ResetPatches(transform.parent.gameObject, gameObject, skeleton, bones, alc);
+		}
+		skeleton.ResetBones(skeleton.UbiArtContext, bones);
+		Init(currentFrame);
 	}
 
 	void WarnCircularInterpolation(AnimTrack anim) {

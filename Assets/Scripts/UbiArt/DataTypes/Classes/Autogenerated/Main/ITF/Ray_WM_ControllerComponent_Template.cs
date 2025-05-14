@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_WM_ControllerComponent_Template : CSerializable {
+	public partial class Ray_WM_ControllerComponent_Template : ActorComponent_Template {
 		public float moveX;
 		public float moveFactorMultiplier;
 		public StringID standAnim;
@@ -8,9 +8,9 @@ namespace UbiArt.ITF {
 		public StringID jumpAnim;
 		public StringID swimAnim;
 		public StringID flyAnim;
-		public Placeholder leadAbility;
-		public Placeholder followAbility;
-		public Placeholder heartShield;
+		public Ray_WM_LeadAbility_Template leadAbility;
+		public Ray_WM_FollowAbility_Template followAbility;
+		public Ray_HeartShield_Template heartShield;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			moveX = s.Serialize<float>(moveX, name: "moveX");
@@ -20,9 +20,9 @@ namespace UbiArt.ITF {
 			jumpAnim = s.SerializeObject<StringID>(jumpAnim, name: "jumpAnim");
 			swimAnim = s.SerializeObject<StringID>(swimAnim, name: "swimAnim");
 			flyAnim = s.SerializeObject<StringID>(flyAnim, name: "flyAnim");
-			leadAbility = s.SerializeObject<Placeholder>(leadAbility, name: "leadAbility");
-			followAbility = s.SerializeObject<Placeholder>(followAbility, name: "followAbility");
-			heartShield = s.SerializeObject<Placeholder>(heartShield, name: "heartShield");
+			leadAbility = s.SerializeObject<Ray_WM_LeadAbility_Template>(leadAbility, name: "leadAbility");
+			followAbility = s.SerializeObject<Ray_WM_FollowAbility_Template>(followAbility, name: "followAbility");
+			heartShield = s.SerializeObject<Ray_HeartShield_Template>(heartShield, name: "heartShield");
 		}
 		public override uint? ClassCRC => 0x2B26168C;
 	}

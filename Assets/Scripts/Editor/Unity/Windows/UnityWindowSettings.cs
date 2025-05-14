@@ -40,6 +40,7 @@ public class UnityWindowSettings : UnityWindow {
 		string buttonString = "No level file selected";
 		if (UnitySettings.SelectedLevelFile != null) {
 			buttonString = Path.GetFileName(UnitySettings.SelectedLevelFile);
+			if (buttonString.EndsWith(".ckd")) buttonString = buttonString.Substring(0, buttonString.Length - 4);
 		}
 		Rect rect = GetNextRect(vPaddingBottom: 4f);
 		rect = EditorGUI.PrefixLabel(rect, new GUIContent("Selected file"));
@@ -60,10 +61,11 @@ public class UnityWindowSettings : UnityWindow {
 					$"*.{ExtensionScene2}{(s.Cooked ? ".ckd" : "")}",
 				};
 
-				if (Dropdown == null || Dropdown.directory != directory || Dropdown.extensions == null || !Enumerable.SequenceEqual(Dropdown.extensions, extensions) || Dropdown.mode != UnitySettings.GameMode) {
+				if (Dropdown == null || Dropdown.directory != directory || Dropdown.extensions == null || !Enumerable.SequenceEqual(Dropdown.extensions, extensions) || Dropdown.mode != UnitySettings.GameMode || Dropdown.displayFullPaths != UnitySettings.DisplayFullPathsInDropdowns) {
 					Dropdown = new FileSelectionDropdown(new UnityEditor.IMGUI.Controls.AdvancedDropdownState(), directory, extensions) {
 						name = "Scene files",
-						mode = UnitySettings.GameMode
+						mode = UnitySettings.GameMode,
+						displayFullPaths = UnitySettings.DisplayFullPathsInDropdowns
 					};
 				}
 				Dropdown.Show(rect);
@@ -75,7 +77,7 @@ public class UnityWindowSettings : UnityWindow {
 			Dirty = true;
 		}
 		if (UnitySettings.SelectedLevelFile != null) {
-			EditorGUI.TextArea(GetNextRect(), UnitySettings.SelectedLevelFile);
+			EditorGUI.TextArea(GetNextRect(), UnitySettings.SelectedLevelFile?.RemoveCKD());
 		}
 
 		// Directories
@@ -110,6 +112,7 @@ public class UnityWindowSettings : UnityWindow {
 
 		UnitySettings.LoadAnimations = EditorField("Load Animations", UnitySettings.LoadAnimations);
 		UnitySettings.LoadAllPaths = EditorField("Load all paths", UnitySettings.LoadAllPaths);
+		UnitySettings.DisplayFullPathsInDropdowns = EditorField("Display paths in dropdowns", UnitySettings.DisplayFullPathsInDropdowns);
 
 		if (EditorGUI.EndChangeCheck() || Dirty) {
 			UnitySettings.Save();

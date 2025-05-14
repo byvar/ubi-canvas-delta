@@ -4,8 +4,8 @@ namespace UbiArt.ITF {
 		public float relativeWidth;
 		public float relativeSpacing;
 		public float actualWidthPercent;
-		public Placeholder relativeAdditionalMargin;
-		public Placeholder pressToJoinRelativeAdditionalMargin;
+		public Margin relativeAdditionalMargin;
+		public Margin pressToJoinRelativeAdditionalMargin;
 		public float fadeInDuration;
 		public float visibleDuration;
 		public float fadeOutDuration;
@@ -49,8 +49,8 @@ namespace UbiArt.ITF {
 			relativeWidth = s.Serialize<float>(relativeWidth, name: "relativeWidth");
 			relativeSpacing = s.Serialize<float>(relativeSpacing, name: "relativeSpacing");
 			actualWidthPercent = s.Serialize<float>(actualWidthPercent, name: "actualWidthPercent");
-			relativeAdditionalMargin = s.SerializeObject<Placeholder>(relativeAdditionalMargin, name: "relativeAdditionalMargin");
-			pressToJoinRelativeAdditionalMargin = s.SerializeObject<Placeholder>(pressToJoinRelativeAdditionalMargin, name: "pressToJoinRelativeAdditionalMargin");
+			relativeAdditionalMargin = s.SerializeObject<Margin>(relativeAdditionalMargin, name: "relativeAdditionalMargin");
+			pressToJoinRelativeAdditionalMargin = s.SerializeObject<Margin>(pressToJoinRelativeAdditionalMargin, name: "pressToJoinRelativeAdditionalMargin");
 			fadeInDuration = s.Serialize<float>(fadeInDuration, name: "fadeInDuration");
 			visibleDuration = s.Serialize<float>(visibleDuration, name: "visibleDuration");
 			fadeOutDuration = s.Serialize<float>(fadeOutDuration, name: "fadeOutDuration");

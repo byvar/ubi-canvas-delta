@@ -67,10 +67,12 @@ public class UnityShapeRenderer : MonoBehaviour {
 			
 			switch (shape) {
 				case PhysShapePolygon poly:
-					Renderer.positionCount = poly.Points.Count;
-					points = poly.Points.Select(p => Vector3.Scale(new Vector3(p.x, p.y, 0) + baseOffset, scale)).ToArray();
-					ChangeForUseShapeTransform();
-					Renderer.SetPositions(points);
+					if (poly.Points != null) {
+						Renderer.positionCount = poly.Points.Count;
+						points = poly.Points.Select(p => Vector3.Scale(new Vector3(p.x, p.y, 0) + baseOffset, scale)).ToArray();
+						ChangeForUseShapeTransform();
+						Renderer.SetPositions(points);
+					}
 					break;
 				case PhysShapeCircle circle:
 					var pointsCount = 16;

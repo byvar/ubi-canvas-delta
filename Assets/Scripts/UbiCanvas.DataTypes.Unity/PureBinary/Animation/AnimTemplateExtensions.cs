@@ -30,17 +30,16 @@ namespace UbiArt.Animation {
 				}
 				//unityBones[i].bindRotation = bonesDyn[i].angle - unityBones[i].globalAngle;
 				unityBones[i].bindScale = atl.bonesDyn[i].scale.GetUnityVector() / skeleton.bonesDyn[boneIndex].scale.GetUnityVector();
-				unityBones[i].bindScale = new Vector3(
+				unityBones[i].bindScale = new Vector2(
 					unityBones[i].bindScale.y, // Why (y,x)?
-					unityBones[i].bindScale.x,
-					unityBones[i].bindScale.z);
+					unityBones[i].bindScale.x);
 				
 				if (atl.bones[i].parentKey.stringID != 0) {
 					AnimBone parent = atl.GetBoneFromLink(atl.bones[i].parentKey);
 					int parentIndex = skeleton.GetBoneIndexFromTag(parent.tag);
-					unityBones[i].parent = skeletonBones[parentIndex];
+					unityBones[i].Parent = skeletonBones[parentIndex];
 				} else {
-					unityBones[i].parent = null;
+					unityBones[i].Parent = null;
 				}
 			}
 			int[] updateOrder = atl.GetBonesUpdateOrder(null);
@@ -94,10 +93,9 @@ namespace UbiArt.Animation {
 				}
 				//unityBones[i].bindRotation = bonesDyn[i].angle - unityBones[i].globalAngle;
 				unityBones[i].bindScale = atl.bonesDyn[i].scale.GetUnityVector();
-				unityBones[i].bindScale = new Vector3(
+				unityBones[i].bindScale = new Vector2(
 					unityBones[i].bindScale.y, // Why (y,x)?
-					unityBones[i].bindScale.x,
-					unityBones[i].bindScale.z);
+					unityBones[i].bindScale.x);
 			}
 			int[] updateOrder = atl.GetBonesUpdateOrder(null);
 			for (int i = 0; i < updateOrder.Length; i++) {
@@ -121,9 +119,9 @@ namespace UbiArt.Animation {
 				if (atl.bones[i].parentKey.stringID != 0) {
 					AnimBone parent = atl.GetBoneFromLink(atl.bones[i].parentKey);
 					int parentIndex = skeleton.GetBoneIndexFromTag(parent.tag);
-					b.parent = unityBones[parentIndex].GetComponent<UnityBone>();
+					b.Parent = unityBones[parentIndex].GetComponent<UnityBone>();
 				} else {
-					b.parent = null;
+					b.Parent = null;
 				}
 				b.localPosition = atl.bonesDyn[i].position.GetUnityVector();
 				b.localScale = atl.bonesDyn[i].scale.GetUnityVector();
@@ -132,19 +130,23 @@ namespace UbiArt.Animation {
 			}
 		}
 		public static void ResetBonesLocal(this AnimTemplate atl, Transform[] unityBones) {
-			for (int i = 0; i < atl.bones.Count; i++) {
+			int[] updateOrder = atl.GetBonesUpdateOrder(null);
+			for (int u = 0; u < updateOrder.Length; u++) {
+				var i = updateOrder[u];
+				if (unityBones[i] == null) continue;
 				UnityBone b = unityBones[i].GetComponent<UnityBone>();
+
 				if (atl.bones[i].parentKey.stringID != 0) {
 					AnimBone parent = atl.GetBoneFromLink(atl.bones[i].parentKey);
 					if (parent != null) {
-						b.parent = unityBones[atl.bones.IndexOf(parent)].GetComponent<UnityBone>();
+						b.Parent = unityBones[atl.bones.IndexOf(parent)].GetComponent<UnityBone>();
 					} else {
-						b.parent = null;
+						b.Parent = null;
 					}
 				} else {
-					b.parent = null;
+					b.Parent = null;
 				}
-				if (b.parent != null) {
+				if (b.Parent != null) {
 					b.localPosition = atl.bonesDyn[i].position.GetUnityVector();
 				} else {
 					var posVector = atl.bonesDyn[i].position.GetUnityVector();
@@ -152,28 +154,23 @@ namespace UbiArt.Animation {
 				}
 				b.localScale = atl.bonesDyn[i].scale.GetUnityVector();
 				b.localRotation = atl.bonesDyn[i].angle;
+
 				b.UpdateBone();
 			}
 		}
 		public static void ResetBonesZeroLocal(this AnimTemplate atl, Transform[] unityBones) {
-			for (int i = 0; i < atl.bones.Count; i++) {
+			int[] updateOrder = atl.GetBonesUpdateOrder(null);
+			for (int u = 0; u < updateOrder.Length; u++) {
+				var i = updateOrder[u];
 				UnityBone b = unityBones[i].GetComponent<UnityBone>();
-				b.parent = null;
-				b.localPosition = Vector3.zero;
-				b.localScale = Vector3.one;
-				b.localRotation = new Angle(0);
-				b.UpdateBone();
+				b.Reset();
 			}
 		}
 		public static void ResetBonesZero(this AnimTemplate atl, Transform[] unityBones, AnimSkeleton skeleton) {
 			for (int i = 0; i < atl.bones.Count; i++) {
 				int boneIndex = skeleton.GetBoneIndexFromTag(atl.bones[i].tag);
 				UnityBone b = unityBones[boneIndex].GetComponent<UnityBone>();
-				b.parent = null;
-				b.localPosition = Vector3.zero;
-				b.localScale = Vector3.one;
-				b.localRotation = new Angle(0);
-				b.UpdateBone();
+				b.Reset();
 			}
 		}
 		private class TemplateMeshVertex {

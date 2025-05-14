@@ -172,6 +172,8 @@ namespace UbiArt {
 			// Add specific checks here
 			if(type == typeof(ITF.ObjectPath))
 				return true;
+			if(type == typeof(CString))
+				return true;
 
 			return false;
 		}

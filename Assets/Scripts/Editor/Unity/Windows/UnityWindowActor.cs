@@ -46,6 +46,7 @@ public class UnityWindowActor : UnityWindow {
 				string buttonString = "No actor file selected";
 				if (SelectedActorFile != null) {
 					buttonString = System.IO.Path.GetFileName(SelectedActorFile);
+					if (buttonString.EndsWith(".ckd")) buttonString = buttonString.Substring(0, buttonString.Length - 4);
 				}
 				rect = EditorGUI.PrefixLabel(rect, new GUIContent("Actor file"));
 				if (EditorGUI.DropdownButton(rect, new GUIContent(buttonString), FocusType.Passive)) {
@@ -53,10 +54,12 @@ public class UnityWindowActor : UnityWindow {
 					if (!directory.EndsWith("/")) directory += "/";
 					while (directory.Contains("//")) directory = directory.Replace("//", "/");
 
-					if (recheckFiles || Dropdown == null || Dropdown.directory != directory || Dropdown.extensions == null || !Enumerable.SequenceEqual(Dropdown.extensions, extensions) || Dropdown.mode != c.Settings.Mode) {
+					if (recheckFiles || Dropdown == null || Dropdown.directory != directory || Dropdown.extensions == null || !Enumerable.SequenceEqual(Dropdown.extensions, extensions) || Dropdown.mode != c.Settings.Mode
+						|| Dropdown.displayFullPaths != UnitySettings.DisplayFullPathsInDropdowns) {
 						Dropdown = new FileSelectionDropdown(new UnityEditor.IMGUI.Controls.AdvancedDropdownState(), directory, extensions) {
 							name = "Actor files",
-							mode = c.Settings.Mode
+							mode = c.Settings.Mode,
+							displayFullPaths = UnitySettings.DisplayFullPathsInDropdowns
 						};
 						recheckFiles = false;
 					}
@@ -68,7 +71,7 @@ public class UnityWindowActor : UnityWindow {
 					Dirty = true;
 				}
 				if (!string.IsNullOrEmpty(SelectedActorFile)) {
-					EditorGUI.TextArea(GetNextRect(), SelectedActorFile);
+					EditorGUI.TextArea(GetNextRect(), SelectedActorFile?.RemoveCKD());
 				}
 				EditorGUI.BeginDisabledGroup(string.IsNullOrEmpty(SelectedActorFile));
 				UbiArt.ITF.Scene sc = Controller.Obj.MainScene.obj;

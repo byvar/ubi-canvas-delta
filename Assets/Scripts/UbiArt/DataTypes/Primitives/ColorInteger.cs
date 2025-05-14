@@ -11,15 +11,14 @@ namespace UbiArt {
 			uint gc = Math.Max(0, Math.Min(255, (uint)(g * 255f))) & 0xFF;
 			uint bc = Math.Max(0, Math.Min(255, (uint)(b * 255f))) & 0xFF;
 			uint ac = Math.Max(0, Math.Min(255, (uint)(a * 255f))) & 0xFF;
-			colorBytes = (rc | (gc << 8) | (bc << 16) | (ac << 24));
+			colorBytes = (bc | (gc << 8) | (rc << 16) | (ac << 24));
 		}
 
-		public float R => ((colorBytes >> 0) & 0xFF) / 255f;
-		public float G => ((colorBytes >> 8) & 0xFF) / 255f;
-		public float B => ((colorBytes >> 16) & 0xFF) / 255f;
 		public float A => ((colorBytes >> 24) & 0xFF) / 255f;
-		// Note: on X360: A R G B
-		// Currently I have it like A B G R...
+		public float R => ((colorBytes >> 16) & 0xFF) / 255f;
+		public float G => ((colorBytes >> 8) & 0xFF) / 255f;
+		public float B => ((colorBytes >> 0) & 0xFF) / 255f;
+		// Order: A R G B (top bits -> bottom bits)
 
 		public void Serialize(CSerializerObject s, string name) {
 			colorBytes = s.Serialize<uint>(colorBytes);
