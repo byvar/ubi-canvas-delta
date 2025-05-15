@@ -524,7 +524,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 					uvToolsRect = GetNextRect();
 					rectsRect = EditorGUI.PrefixLabel(uvToolsRect, new GUIContent("Custom UV operation"));
 					rects = DivideRectHorizontally(rectsRect, 4);
-					CustomUVOperationMultiplyUniform = MinMaxField<float>("Mul", CustomUVOperationMultiplyUniform, rectToUse: rects[0], labelWidth: 32, limitLower: 0.001f, limitUpper: 100f);
+					CustomUVOperationMultiplyUniform = CustomFloatField("Mul", CustomUVOperationMultiplyUniform, rectToUse: rects[0], labelWidth: 32, limitLower: 0.001f, limitUpper: 100f);
 					CustomUVOperationAdd = Vec2dField(rects[1], CustomUVOperationAdd, name: "Add", labelWidth: 32);
 					CustomUVOperationUnit = (UVUnit)GUI.Toolbar(rects[2], (int)CustomUVOperationUnit, new string[] { "UV", "Pixels" });
 					if (EditorButton("Apply", rect: rects[3])) {
@@ -1749,8 +1749,11 @@ public class UnityWindowAtlasEditor : UnityWindow {
 			if (CurrentUVEditAction == UVEditAction.None) {
 				if (e == null) e = Event.current;
 				if (e != null) {
-					var normalSelectionSize = NormalSelectionSize;
-					var handleRect = new Rect(endPos.x - normalSelectionSize / 2, endPos.y - normalSelectionSize / 2, normalSelectionSize, normalSelectionSize);
+					var normalSelectionSize = (endPos - startPos).magnitude * 1.75f; /*NormalSelectionSize * ZoomFactor*/;
+					var midPos = startPos + (endPos - startPos) / 2;
+					var handleRect = new Rect(
+						midPos.x - normalSelectionSize / 2, midPos.y - normalSelectionSize / 2,
+						normalSelectionSize, normalSelectionSize);
 					int id = GUIUtility.GetControlID(FocusType.Passive);
 					switch (e.GetTypeForControl(id)) {
 						case EventType.MouseDown:
@@ -1872,11 +1875,34 @@ public class UnityWindowAtlasEditor : UnityWindow {
 		EditorGUI.indentLevel = 0;
 
 		var rects = UnityWindow.DivideRectHorizontally(rect, 2, spacing: 8f);
-		value.x = MinMaxField<float>("X", value.x, rectToUse: rects[0], labelWidth: 16);
-		value.y = MinMaxField<float>("Y", value.y, rectToUse: rects[1], labelWidth: 16);
+		value.x = CustomFloatField("X", value.x, rectToUse: rects[0], labelWidth: 16);
+		value.y = CustomFloatField("Y", value.y, rectToUse: rects[1], labelWidth: 16);
 
 		EditorGUI.indentLevel = indentLevel;
 
+		return value;
+	}
+
+	public float CustomFloatField(string name, float value, Rect? rectToUse = null, bool prefixLabel = true, float? labelWidth = null,
+		float? limitLower = null, float? limitUpper = null) {
+		Rect rect = rectToUse ?? GetNextRect(ref YPos);
+		if (prefixLabel) {
+			if (labelWidth.HasValue) {
+				Rect labelRect = new Rect(rect.x, rect.y, labelWidth.Value, rect.height);
+				rect = new Rect(rect.x + labelWidth.Value, rect.y, rect.width - labelWidth.Value, rect.height);
+				EditorGUI.LabelField(labelRect, name, EditorStyles.miniLabel);
+			} else {
+				rect = EditorGUI.PrefixLabel(rect, new GUIContent(name));
+			}
+		}
+		var indentLevel = EditorGUI.indentLevel;
+		EditorGUI.indentLevel = 0;
+
+		var backgroundColor = GUI.backgroundColor;
+		value = EditorGUI.FloatField(rect, value);
+		if (limitUpper.HasValue && value  > limitUpper.Value) value = limitUpper.Value;
+		if (limitLower.HasValue && value < limitLower.Value) value = limitLower.Value;
+		EditorGUI.indentLevel = indentLevel;
 		return value;
 	}
 	#endregion
