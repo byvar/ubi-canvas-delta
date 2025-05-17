@@ -92,10 +92,11 @@ namespace UbiArt.Animation {
 					unityBones[i].xScaleMultiplier = atl.bonesDyn[i].boneLength;
 				}
 				//unityBones[i].bindRotation = bonesDyn[i].angle - unityBones[i].globalAngle;
-				unityBones[i].bindScale = atl.bonesDyn[i].scale.GetUnityVector();
-				unityBones[i].bindScale = new Vector2(
+				unityBones[i].bindScale = Vector2.one;
+				//unityBones[i].bindScale = atl.bonesDyn[i].scale.GetUnityVector();
+				/*unityBones[i].bindScale = new Vector2(
 					unityBones[i].bindScale.y, // Why (y,x)?
-					unityBones[i].bindScale.x);
+					unityBones[i].bindScale.x);*/
 			}
 			int[] updateOrder = atl.GetBonesUpdateOrder(null);
 			for (int i = 0; i < updateOrder.Length; i++) {
@@ -129,7 +130,7 @@ namespace UbiArt.Animation {
 				b.UpdateBone();
 			}
 		}
-		public static void ResetBonesLocal(this AnimTemplate atl, Transform[] unityBones) {
+		public static void ResetBonesLocal(this AnimTemplate atl, Transform[] unityBones, bool invert = true) {
 			int[] updateOrder = atl.GetBonesUpdateOrder(null);
 			for (int u = 0; u < updateOrder.Length; u++) {
 				var i = updateOrder[u];
@@ -146,7 +147,7 @@ namespace UbiArt.Animation {
 				} else {
 					b.Parent = null;
 				}
-				if (b.Parent != null) {
+				if (b.Parent != null || !invert) {
 					b.localPosition = atl.bonesDyn[i].position.GetUnityVector();
 				} else {
 					var posVector = atl.bonesDyn[i].position.GetUnityVector();

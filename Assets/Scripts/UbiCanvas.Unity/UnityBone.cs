@@ -77,7 +77,7 @@ public class UnityBone : MonoBehaviour {
 				globalAngle = bindRotation + localRotation;
 			}
 			computedScale = Vector2.Scale(localScale, bindScale);
-
+			//computedScale = localScale;
 			if (c.Settings.EngineVersion == EngineVersion.RO) {
 				globalScale = new Vector2(computedScale.x * xScaleMultiplier, computedScale.y);
 			} else {
@@ -126,12 +126,12 @@ public class UnityBone : MonoBehaviour {
 					globalPosition = transform.localPosition;
 
 					// Now reverse the other calculations
-					if (IsPBKEditor) {
-						localScale = new Vector2(computedScale.x / localScale.y, localScale.y);
-						bindScale = new Vector2(localScale.y, localScale.x);
-					} else {
-						localScale = Vector2.Scale(computedScale, new Vector3(1 / bindScale.x, 1 / bindScale.y));
-					}
+					//if (IsPBKEditor) {
+						//localScale = new Vector2(computedScale.x / localScale.y, localScale.y);
+						//bindScale = new Vector2(localScale.y, localScale.x);
+					//} else {
+					localScale = Vector2.Scale(computedScale, new Vector3(1 / bindScale.x, 1 / bindScale.y));
+					//}
 
 					if (Parent != null) {
 						var rotatedPos3d = globalPosition - Parent.globalPosition;
