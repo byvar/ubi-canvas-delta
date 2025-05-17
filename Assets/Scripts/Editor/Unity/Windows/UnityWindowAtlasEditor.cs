@@ -536,7 +536,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 								break;
 							case UVUnit.Pixels:
 								var uTex = tex.GetUnityTexture(Controller.MainContext).Texture;
-								var add = CustomUVOperationAdd / new Vec2d(uTex.width, uTex.height);
+								var add = CustomUVOperationAdd / new Vec2d(uTex.width, uTex.width);
 								ApplyUVOperation(pbk, mul, add);
 								break;
 						}

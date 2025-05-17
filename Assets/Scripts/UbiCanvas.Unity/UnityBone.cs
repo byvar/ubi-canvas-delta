@@ -155,9 +155,9 @@ public class UnityBone : MonoBehaviour {
 						localRotation = new Angle().SetUnityQuaternion(transform.localRotation, previous: localRotation);
 					}
 					localScale = globalScale;
-					if (IsPBKEditor) {
+					/*if (IsPBKEditor) {
 						bindScale = new Vector2(localScale.y, localScale.x);
-					}
+					}*/
 				}
 
 				if (IsPBKEditor) {
