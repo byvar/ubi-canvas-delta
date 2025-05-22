@@ -74,6 +74,7 @@ public class UnityPatchPointEditor : MonoBehaviour {
 		Vector3 oldPosConv = new Vector3(oldPos.x, oldPos.y, 0f);
 		if (newPos != oldPosConv) {
 			UpdatePosition(newPos);
+			patch.Changed = true;
 		}
 	}
 	public void UpdatePosition(Vector3 newPos) {
@@ -96,6 +97,7 @@ public class UnityPatchPointEditor : MonoBehaviour {
 		if (transform.localPosition != unityPos) {
 			transform.localPosition = unityPos;
 			UpdateMesh(unityPos, uv.GetUnityVector());
+			patch.Changed = true;
 		}
 	}
 	public void UpdateMesh(Vector3 newPos, Vector2 newUV) {
@@ -118,6 +120,7 @@ public class UnityPatchPointEditor : MonoBehaviour {
 		if (Mathf.Abs(oldAngle - newAngle) > 0.005f) {
 			//Debug.Log($"Updating {transform.parent.name}.{gameObject.name} normal: {boneNormal} - {transformedUVNormal}");
 			GlobalNormal = transformedUVNormal;
+			patch.Changed = true;
 		}
 	}
 	public void InitBone(UnityBone bone) {
@@ -133,6 +136,7 @@ public class UnityPatchPointEditor : MonoBehaviour {
 				_bone = bone;
 				var pbkBone = patch.Template.bones[boneIndex];
 				Point.local.boneId = new Link(pbkBone.key.stringID);
+				patch.Changed = true;
 			} else {
 				bone = _bone;
 			}

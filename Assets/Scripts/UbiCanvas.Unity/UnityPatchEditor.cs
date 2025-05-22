@@ -22,6 +22,8 @@ public class UnityPatchEditor : MonoBehaviour {
 	public Vec2d UVScaleInverse => Vec2d.One / UVScale;
 	public AnimTemplate Template => pbk.templates[templateIndex];
 	private Dictionary<PatchPointLine, LineRenderer> lines = new Dictionary<PatchPointLine, LineRenderer>();
+	public bool Changed { get; set; } = false;
+	public bool autoSync = true;
 
 	private void Start() {
 		CreateMesh();
@@ -37,6 +39,20 @@ public class UnityPatchEditor : MonoBehaviour {
 		}
 		foreach (var l in lines) {
 			UpdateLinePositions(l.Value, l.Key);
+		}
+		if (Changed && autoSync) {
+			Changed = false;
+			Sync();
+		}
+	}
+
+	void Sync() {
+		var unityAnimations = FindObjectsOfType<UnityAnimation>().Where(a => a.AllPatchBanks != null && a.AllPatchBanks.Any(p => p.PBK == pbk));
+		if (unityAnimations.Any()) {
+			var tpl = Template;
+			foreach (var ua in unityAnimations) {
+				ua.ResetPatches(pbkFilter: p => p.PBK == pbk, templateFilter: p => p == tpl);
+			}
 		}
 	}
 

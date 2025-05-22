@@ -12,7 +12,7 @@ public class UnityAnimationEditor : Editor {
 		UnityAnimation ua = target as UnityAnimation;
 		if (ua != null && ua.anims != null) {
 			var newInd = ua.animIndex;
-			string locIdPreview = "None";
+			string locIdPreview = "Bind Pose";
 			if(newInd >= 0 && newInd < (ua.anims?.Length ?? 0))
 				locIdPreview = ua.anims[newInd].ToString();
 

@@ -20,15 +20,27 @@ public class UnityAnimation : MonoBehaviour {
 		public Path TexturePathOrigins { get; set; }
 
 		public void ResetPatches(GameObject gao, GameObject skeleton_gao, AnimSkeleton skeleton, UnityBone[] bones, AnimLightComponent alc) {
-			if (Patches != null) {
-				foreach (var p in Patches) {
-					if(p?.Object != null)
-						Destroy(p.Object);
+			if (Patches == null || Patches.Length != PBK.templates.Count) {
+				if (Patches != null) {
+					foreach (var p in Patches) {
+						if (p?.Object != null)
+							Destroy(p.Object);
+					}
 				}
+				Patches = new UnityAnimation.UnityPatch[PBK.templates.Count];
 			}
-			Patches = new UnityAnimation.UnityPatch[PBK.templates.Count];
 
 			for (int i = 0; i < PBK.templates.Count; i++) {
+				ResetSinglePatch(i, gao, skeleton_gao, skeleton, bones, alc);
+			}
+		}
+
+		public void ResetSinglePatch(int i, GameObject gao, GameObject skeleton_gao, AnimSkeleton skeleton, UnityBone[] bones, AnimLightComponent alc) {
+			if (Patches != null && i < Patches.Length) {
+				var p = Patches[i];
+				if (p?.Object != null)
+					Destroy(p.Object);
+
 				skeleton.ResetBones(Controller.MainContext, bones);
 				AnimTemplate at = PBK.templates[i];
 				Patches[i] = new UnityAnimation.UnityPatch() {
@@ -36,7 +48,7 @@ public class UnityAnimation : MonoBehaviour {
 				};
 
 				Mesh mesh = at.CreateMesh(); //interpCount: 4);
-				if (mesh == null) continue;
+				if (mesh == null) return;
 
 				GameObject patch_gao = new GameObject($"Anim Bank {(ID ?? TextureID)?.ToString(PBK.UbiArtContext, shortString: true)} - {i} [ {PBK.templateKeys.GetKey(i).ToString(PBK.UbiArtContext, shortString: true)} ]");
 				patch_gao.transform.SetParent(gao.transform, false);
@@ -127,13 +139,27 @@ public class UnityAnimation : MonoBehaviour {
 		loaded = true;
 	}
 
-	public void ResetPatches(Predicate<UnityPatchBank> pbkFilter = null) {
+	public void ResetPatches(Predicate<UnityPatchBank> pbkFilter = null, Predicate<AnimTemplate> templateFilter = null) {
 		foreach (var pbk in AllPatchBanks) {
-			if(pbkFilter == null || pbkFilter(pbk))
-				pbk.ResetPatches(transform.parent.gameObject, gameObject, skeleton, bones, alc);
+			if (templateFilter == null) {
+				if (pbkFilter == null || pbkFilter(pbk))
+					pbk.ResetPatches(transform.parent.gameObject, gameObject, skeleton, bones, alc);
+			} else {
+				if (pbk.Patches != null) {
+					for (int i = 0; i < pbk.Patches.Length; i++) {
+						if(templateFilter(pbk.Patches[i].Template))
+							pbk.ResetSinglePatch(i, transform.parent.gameObject, gameObject, skeleton, bones, alc);
+					}
+				}
+			}
 		}
-		skeleton.ResetBones(skeleton.UbiArtContext, bones);
+		if (!(animIndex >= 0 && skeleton != null)) {
+			skeleton.ResetBones(skeleton.UbiArtContext, bones);
+		}
 		Init(currentFrame);
+		if (bones != null) {
+			skeleton.UpdateBones(bones);
+		}
 	}
 
 	void WarnCircularInterpolation(AnimTrack anim) {

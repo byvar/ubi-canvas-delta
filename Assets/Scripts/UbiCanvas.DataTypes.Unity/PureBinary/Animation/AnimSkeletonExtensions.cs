@@ -55,6 +55,9 @@ namespace UbiArt.Animation {
 			}
 
 			// Calculate T Pose
+			skl.UpdateBones(unityBones);
+		}
+		public static void UpdateBones(this AnimSkeleton skl, UnityBone[] unityBones) {
 			int[] updateOrder = skl.GetBonesUpdateOrder();
 			for (int i = 0; i < updateOrder.Length; i++) {
 				unityBones[updateOrder[i]].UpdateBone();

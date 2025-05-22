@@ -21,7 +21,7 @@ class AnimationsDropdown : AdvancedDropdown {
 
 	protected override AdvancedDropdownItem BuildRoot() {
 		var root = new AdvancedDropdownItem(name);
-		root.AddChild(new AdvancedDropdownItem("All") {
+		root.AddChild(new AdvancedDropdownItem("Bind Pose") {
 			id = -1
 		});
 		if (animations != null) {
