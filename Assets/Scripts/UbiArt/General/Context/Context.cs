@@ -216,10 +216,10 @@ namespace UbiArt
 
 			// Link Tags
 			"After", "Ambiance", "Ambiance_Off", "Angle", "AngleOffset", "Delay", "Anim", "AnimBone", "Attack", "AutoStart",
-			"BaseJump", "Before", "BlendFrise", "BoneName", "Branch", "Breakable", "Bubo", "Cam", "Camera", "ChangeScale", "Cheat", "Checkpoint", "CineOutro", "Curve",
+			"BaseJump", "Before", "BlendFrise", "BoneName", "Branch", "Breakable", "Bubo", "Cam", "Camera", "ChangeScale", "Cheat", "Checkpoint", "CineOutro", "Critic", "Curve",
 			"DangerZone", "Death", "Delay", "Disabled", "Disappear", "Door", "Drag", "Duration", "EntranceDoor", "Eject", "Final", "Fishing", "Flame", "Flip", "FollowCam", "Ghost", "Hang",
 			"IgnoreCamera", "Keep_Orientation", "Lock", "Lookat", "LookatPhase", "MaxSpeed", "MinSpeed", "Moving", "NoLook", "NoTree", "Node", "Number",
-			"Offset", "ProceduralBone", "RadarTarget", "Roll", "RopeEnd", "SafeDistance", "Secret", "Simple_Teleport", "Spawn", "SpawnPos", "Speed", "SpeedMax", "Screenshot",
+			"OneWay", "Offset", "ProceduralBone", "RadarTarget", "Roll", "RopeEnd", "SafeDistance", "Secret", "Simple_Teleport", "Spawn", "SpawnPos", "Speed", "SpeedMax", "Screenshot",
 			"TakeCamera", "Target", "Teleport", "Timer", "TouchScreen", "Torture", "Tower", "Trigger", "Type", "Waypoint",
 
 			// Animation inputs
@@ -280,6 +280,9 @@ namespace UbiArt
 
 			// RO2_ConditionalTriggerComponent linktags
 			"Dead", "Enable", 
+
+			// Unknown
+			"Infinit", "Period"
 
 		};
 

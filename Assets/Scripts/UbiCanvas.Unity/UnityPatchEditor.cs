@@ -102,6 +102,7 @@ public class UnityPatchEditor : MonoBehaviour {
 			UbiArt.ITF.GFXPrimitiveParam.FillMaterialParamsDefault(tpl.UbiArtContext, mpb, alpha: 1f);
 
 			mpb.SetVector("_UseTextures", new Vector4(1, 0, 0, 0));
+			mpb.SetVector("_UseTextures2", new Vector4(0, 0, 0, 0));
 			var t = texture.GetUnityTexture(Controller.MainContext);
 			mpb.SetTexture("_Diffuse", t.Texture);
 			mpb.SetVector("_Diffuse_ST", new Vector4(1, t.HeightFactor, 0, 0));

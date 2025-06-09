@@ -170,7 +170,7 @@ public class UnityBone : MonoBehaviour {
 				}
 
 				foreach (var child in Children)
-					child.UpdateBone(controlTransform: true, updateRecursive: updateRecursive);
+					child.UpdateBone(controlTransform: true, updateRecursive: true);
 			}
 		}
 

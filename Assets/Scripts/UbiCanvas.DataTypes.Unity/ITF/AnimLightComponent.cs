@@ -297,7 +297,7 @@ namespace UbiArt.ITF {
 				mpb.SetVector("_ShaderParams2", new Vector4(
 					(int)shader.materialtype2,
 					(int)shader.blendmode,
-					0f,
+					(int)shader.lightingType,
 					0f));
 			}
 

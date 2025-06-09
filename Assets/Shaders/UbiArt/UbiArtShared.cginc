@@ -128,6 +128,7 @@ float4 process_frag(v2f i) : SV_TARGET{
 	if (UseTextures.x == 1) {
 		float4 ColorFactor = UNITY_ACCESS_INSTANCED_PROP(Props, _ColorFactor);
 		float4 ShaderParams = UNITY_ACCESS_INSTANCED_PROP(Props, _ShaderParams);
+		float4 ShaderParams2 = UNITY_ACCESS_INSTANCED_PROP(Props, _ShaderParams2);
 		
 		if(_EnableGlobalLighting == 1 && PrimitiveParams1.y == 1 && _EnableLighting == 1) { // UseGlobalLighting
 			ColorFactor = float4(lerp(ColorFactor.xyz, _GlobalColor.xyz, _GlobalColor.w), ColorFactor.w);
@@ -137,11 +138,15 @@ float4 process_frag(v2f i) : SV_TARGET{
 		c = c + i.color * ColorFactor * texColor;
 
 		if(ShaderParams.x == 1) {
-			if (_EnableLighting == 1 /*&& ShaderParams.y == 0 && ShaderParams.z == 0*/) {
+			if (_EnableLighting == 1 && ShaderParams2.z != 0 /*&& ShaderParams.y == 0 && ShaderParams.z == 0*/) {
 				float4 backLightTex = float4(0,0,0,0);
 				if (UseTextures.y == 1) {
 					backLightTex = tex2D(_BackLight, i.uv1);
-					backLightTex.w = 0; // TODO: Fix issue where backlight alpha is set to 1 by default if it's missing
+
+					// Fix issue where backlight alpha is set to 1 by default if it's missing in DXT1 textures
+					if(UseTextures2.w == 1) {
+						backLightTex.w = 0;
+					}
 				}
 				float2 screenPos = i.screenPos.xy / i.screenPos.w;
 				float4 LightConfig = UNITY_ACCESS_INSTANCED_PROP(Props, _LightConfig); // Front brightness, front contrast, Back brightness, back contrast

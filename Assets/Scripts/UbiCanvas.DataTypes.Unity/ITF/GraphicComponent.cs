@@ -34,6 +34,11 @@ namespace UbiArt.ITF {
 					textureSet.tex_back_light != null ? 1f : 0f,
 					0f,
 					textureSet.tex_separateAlpha != null ? 1f : 0f));
+				mpb.SetVector("_UseTextures2", new Vector4(
+					0f,
+					0f,
+					0f,
+					textureSet.tex_back_light?.GetUnityTexture(UbiArtContext)?.Texture?.format == TextureFormat.DXT1 ? 1f : 0f));
 
 				if (textureSet.tex_diffuse != null) {
 					var t = textureSet.tex_diffuse.GetUnityTexture(UbiArtContext);

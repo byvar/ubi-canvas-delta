@@ -34,7 +34,7 @@ public class UnityAnimationEditor : Editor {
 			}
 
 			GUILayout.BeginHorizontal();
-			GUI.enabled = newInd > 0;
+			GUI.enabled = newInd >= 0; // Allow -1 = bind pose
 			if (GUILayout.Button("Previous")) newInd--;
 			GUI.enabled = (newInd < ua.anims.Length - 1);
 			if (GUILayout.Button("Next")) newInd++;

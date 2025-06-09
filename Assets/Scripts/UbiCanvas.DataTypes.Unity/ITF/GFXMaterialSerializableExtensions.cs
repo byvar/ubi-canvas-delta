@@ -26,7 +26,7 @@ namespace UbiArt.ITF {
 				mpb.SetVector("_ShaderParams2", new Vector4(
 					(int)shader.materialtype2,
 					(int)shader.blendmode,
-					0f,
+					(int)shader.lightingType,
 					0f));
 			}
 			if (gfxmat.textureSet != null) {
@@ -35,6 +35,11 @@ namespace UbiArt.ITF {
 					gfxmat.textureSet.tex_back_light != null ? 1f : 0f,
 					0f,
 					gfxmat.textureSet.tex_separateAlpha != null ? 1f : 0f));
+				mpb.SetVector("_UseTextures2", new Vector4(
+					0f,
+					0f,
+					0f,
+					gfxmat.textureSet.tex_back_light?.GetUnityTexture(c)?.Texture?.format == TextureFormat.DXT1 ? 1f : 0f));
 				if (gfxmat.textureSet.tex_diffuse != null) {
 					mpb.SetTexture("_Diffuse", gfxmat.textureSet.tex_diffuse.GetUnityTexture(c).Texture);
 					mpb.SetVector("_Diffuse_ST", new Vector4(1,1,0,0));
