@@ -83,24 +83,30 @@ namespace UbiArt.Animation {
 		public int GetBoneIndexFromTag(StringID tag) {
 			if (UbiArtContext.Settings.Game == Game.RA || UbiArtContext.Settings.Game == Game.RM) {
 				if (boneTagsAdv.Any(b => tag.stringID == b)) {
-					return boneTagsAdv.IndexOf(boneTagsAdv.First(b => tag.stringID == b));
-				} else {
-					return -1;
+					var boneTagIndex = boneTagsAdv.IndexOf(boneTagsAdv.First(b => tag.stringID == b));
+					if (boneTagIndex != -1)
+						return (int)boneIndices[boneTagIndex].stringID;
 				}
 			} else {
-				return boneTags.IndexOf(tag);
+				var boneTagIndex = boneTags.IndexOf(tag);
+				if(boneTagIndex != -1)
+					return (int)boneIndices[boneTagIndex].stringID;
 			}
+			return -1;
 		}
 		public int GetBoneIndexFromTag2(StringID tag) {
 			if (UbiArtContext.Settings.Game == Game.RA || UbiArtContext.Settings.Game == Game.RM) {
 				if (boneTags2Adv.Any(b => tag.stringID == b)) {
-					return boneTags2Adv.IndexOf(boneTags2Adv.First(b => tag.stringID == b));
-				} else {
-					return -1;
+					var boneTagIndex = boneTags2Adv.IndexOf(boneTags2Adv.First(b => tag.stringID == b));
+					if (boneTagIndex != -1)
+						return (int)boneIndices2[boneTagIndex].stringID;
 				}
 			} else {
-				return boneTags2.IndexOf(tag);
+				var boneTagIndex = boneTags2.IndexOf(tag);
+				if (boneTagIndex != -1)
+					return (int)boneIndices[boneTagIndex].stringID;
 			}
+			return -1;
 		}
 
 		public List<int> GetRootIndices() {

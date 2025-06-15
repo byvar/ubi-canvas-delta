@@ -8,6 +8,9 @@ using UbiArt.Animation;
 using UbiArt.ITF;
 using UbiCanvas.Helpers;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class UnityAnimation : MonoBehaviour {
 	public class UnityPatchBank {
@@ -15,82 +18,99 @@ public class UnityAnimation : MonoBehaviour {
 		public StringID TextureID { get; set; }
 
 		public AnimPatchBank PBK { get; set; }
-		public UnityPatch[] Patches { get; set; }
+		public UnityAnimTemplate[] Templates { get; set; }
 		public TextureBankPath TextureBankPath { get; set; }
 		public Path TexturePathOrigins { get; set; }
 
-		public void ResetPatches(GameObject gao, GameObject skeleton_gao, AnimSkeleton skeleton, UnityBone[] bones, AnimLightComponent alc) {
-			if (Patches == null || Patches.Length != PBK.templates.Count) {
-				if (Patches != null) {
-					foreach (var p in Patches) {
+		public void ResetPatches(UnityAnimation unityAnimation) {
+			if (Templates == null || Templates.Length != PBK.templates.Count) {
+				if (Templates != null) {
+					foreach (var p in Templates) {
 						if (p?.Object != null)
 							Destroy(p.Object);
 					}
 				}
-				Patches = new UnityAnimation.UnityPatch[PBK.templates.Count];
+				Templates = new UnityAnimation.UnityAnimTemplate[PBK.templates.Count];
 			}
 
 			for (int i = 0; i < PBK.templates.Count; i++) {
-				ResetSinglePatch(i, gao, skeleton_gao, skeleton, bones, alc);
+				ResetSinglePatch(i, unityAnimation);
 			}
 		}
 
-		public void ResetSinglePatch(int i, GameObject gao, GameObject skeleton_gao, AnimSkeleton skeleton, UnityBone[] bones, AnimLightComponent alc) {
-			if (Patches != null && i < Patches.Length) {
-				var p = Patches[i];
+		public void ResetSinglePatch(int i, UnityAnimation unityAnimation) {
+			if (Templates != null && i < Templates.Length) {
+				var p = Templates[i];
 				if (p?.Object != null)
 					Destroy(p.Object);
 
-				skeleton.ResetBones(Controller.MainContext, bones);
+				//skeleton.ResetBones(Controller.MainContext, bones);
 				AnimTemplate at = PBK.templates[i];
-				Patches[i] = new UnityAnimation.UnityPatch() {
+				Templates[i] = new UnityAnimation.UnityAnimTemplate() {
 					Template = at
 				};
 
-				Mesh mesh = at.CreateMesh(); //interpCount: 4);
-				if (mesh == null) return;
-
+				var gao = unityAnimation.templatesGao;
 				GameObject patch_gao = new GameObject($"Anim Bank {(ID ?? TextureID)?.ToString(PBK.UbiArtContext, shortString: true)} - {i} [ {PBK.templateKeys.GetKey(i).ToString(PBK.UbiArtContext, shortString: true)} ]");
 				patch_gao.transform.SetParent(gao.transform, false);
 				patch_gao.transform.localPosition = Vector3.zero;
 				patch_gao.transform.localRotation = Quaternion.identity;
 				patch_gao.transform.localScale = Vector3.one;
 
-				UnityBone[] mesh_bones = at.GetBones(at.UbiArtContext, mesh, skeleton_gao, skeleton, bones);
-				//Transform[] mesh_bones = at.GetBones(mesh, skeleton_gao, skeleton, bones);
-				//MeshFilter mf = patch_gao.AddComponent<MeshFilter>();
-				//mf.sharedMesh = mesh;
-				SkinnedMeshRenderer mr = patch_gao.AddComponent<SkinnedMeshRenderer>();
-				mr.bones = mesh_bones.Select(b => b != null ? b.transform : null).ToArray();
-				mr.sharedMesh = mesh;
-				alc.SetPatchMaterial(mr, this);
+				UnityPatchRenderer pr = patch_gao.AddComponent<UnityPatchRenderer>();
+				pr.Skeleton = unityAnimation.skeleton;
+				pr.Bones = unityAnimation.bones;
+				pr.AnimTemplate = at;
 
-				// Root bone
-				List<int> roots = at.GetRootIndices();
-				if (roots.Count > 0) mr.rootBone = mr.bones[roots[0]];
+				Templates[i].Object = patch_gao;
+				Templates[i].PatchRenderer = pr;
 
-				Patches[i].Object = patch_gao;
-				Patches[i].Renderer = mr;
+				pr.Init(hLevel: (int)unityAnimation.PatchHLevel, vLevel: (int)unityAnimation.PatchVLevel);
+				pr.ProcessRenderers(mr => unityAnimation.alc.SetPatchMaterial(mr, this));
+				pr.FillUnityMaterialPropertyBlock();
 			}
 		}
 	}
-	public class UnityPatch {
+	public class UnityAnimTemplate {
 		public AnimTemplate Template { get; set; }
 		public GameObject Object { get; set; }
-		public SkinnedMeshRenderer Renderer { get; set; }
 		public bool Active { get; set; }
+		public int IndexInBML { get; set; }
+		public UnityPatchRenderer PatchRenderer { get; set; }
 	}
 	public class UnityAnimationTrack {
 		public StringID ID { get; set; }
 		public Path Path { get; set; }
 		public AnimTrack Track { get; set; }
 		public SubAnim_Template SubAnim { get; set; }
+		public Bounds Bounds { get; set; }
+		public AABB AABB { get; set; }
+		public int Index { get; set; }
 
-		public override string ToString() {
-			return $"{ID?.ToString(Track?.UbiArtContext, shortString: true)} - {Path.GetFilenameWithoutExtension(removeCooked: true)}";
+		public Bounds GetBounds() {
+			if (Bounds == default) {
+				if (AABB == null) AABB = new AABB() { MIN = Vec2d.One * -10, MAX = Vec2d.One * 10 }; // Default AABB
+				var center = (AABB.MIN + AABB.MAX) / 2f;
+				var size = (AABB.MAX - AABB.MIN);
+				Bounds = new Bounds(center.GetUnityVector(), new Vector3(size.x, size.y, 1f) * 2);
+				Bounds.Expand(10f);
+			}
+			return Bounds;
+		}
+
+		public string ToString(bool single) {
+			if (single) {
+				return Path.GetFilenameWithoutExtension(removeCooked: true);
+			} else {
+				return $"{ID?.ToString(Track?.UbiArtContext, shortString: true)} - {Path.GetFilenameWithoutExtension(removeCooked: true)}";
+			}
+		}
+
+		public class PathComparer : IEqualityComparer<UnityAnimationTrack> {
+			public bool Equals(UnityAnimationTrack x, UnityAnimationTrack y) => x.Path == y.Path;
+			public int GetHashCode(UnityAnimationTrack obj) => obj.Path.GetHashCode();
 		}
 	}
-	//public AnimLightComponent animLightComponent;
 	public AnimTrack animTrack => Animation?.Track;
 	public UnityAnimationTrack Animation {
 		get {
@@ -118,7 +138,14 @@ public class UnityAnimation : MonoBehaviour {
 	public int zValue = 0;
 	bool loaded = false;
 	private Dictionary<StringID, LineRenderer> lines;
-	private GameObject linesGao;
+	public GameObject linesGao;
+	public GameObject skeletonGao;
+	public GameObject templatesGao;
+	public uint PatchHLevel { get; set; } = 6;
+	public uint PatchVLevel { get; set; } = 6;
+	public bool ForceUpdatePatches { get; set; } = false;
+	public bool PlayFullAnimation = true;
+	public UnityAnimationTrack[] animsFull;
 
 	//private float updateCounter = 0f;
 	public float currentFrame = 0;
@@ -126,6 +153,11 @@ public class UnityAnimation : MonoBehaviour {
 	public void Start() {
 	}
 	public void Init(float time = 0) {
+		if (animsFull == null) {
+			animsFull = anims.Distinct(new UnityAnimationTrack.PathComparer())
+				//.OrderBy(o => o.Path?.filename ?? "")
+				.ToArray();
+		}
 		Context l = Controller.MainContext;
 		if (animIndex >= 0 && skeleton != null) {
 			currentFrame = time;
@@ -134,33 +166,52 @@ public class UnityAnimation : MonoBehaviour {
 			InitLines();
 			//FixCircularInterpolation(animTrack);
 			//WarnCircularInterpolation(animTrack);
-			UpdateAnimation();
 		}
 		loaded = true;
+		if (animIndex >= 0) {
+			UpdateAnimation(force: true);
+		}
 	}
 
 	public void ResetPatches(Predicate<UnityPatchBank> pbkFilter = null, Predicate<AnimTemplate> templateFilter = null) {
 		foreach (var pbk in AllPatchBanks) {
 			if (templateFilter == null) {
 				if (pbkFilter == null || pbkFilter(pbk))
-					pbk.ResetPatches(transform.parent.gameObject, gameObject, skeleton, bones, alc);
+					pbk.ResetPatches(this);
 			} else {
-				if (pbk.Patches != null) {
-					for (int i = 0; i < pbk.Patches.Length; i++) {
-						if(templateFilter(pbk.Patches[i].Template))
-							pbk.ResetSinglePatch(i, transform.parent.gameObject, gameObject, skeleton, bones, alc);
+				if (pbk.Templates != null) {
+					for (int i = 0; i < pbk.Templates.Length; i++) {
+						if(templateFilter(pbk.Templates[i].Template))
+							pbk.ResetSinglePatch(i, this);
 					}
 				}
 			}
 		}
-		if (!(animIndex >= 0 && skeleton != null)) {
+		// Resetting no longer changes bone positions 
+		/*if (!(animIndex >= 0 && skeleton != null)) {
 			skeleton.ResetBones(skeleton.UbiArtContext, bones);
-		}
+		}*/
 		Init(currentFrame);
-		if (bones != null) {
+		/*if (bones != null) {
 			skeleton.UpdateBones(bones);
-		}
+		}*/
 	}
+	/*public void ForceUpdatePatches(Predicate<UnityPatchBank> pbkFilter = null, Predicate<AnimTemplate> templateFilter = null) {
+		if (Controller.Obj.playAnimations) return; // Happens automatically in this case
+		foreach (var pbk in AllPatchBanks) {
+			if (pbkFilter == null || pbkFilter(pbk)) {
+				foreach (var p in pbk.Templates) {
+					if (templateFilter == null || templateFilter(p.Template)) {
+						// force update here and now
+						if (p.PatchRenderer == null) continue;
+						if (p.Active) {
+							p.PatchRenderer.UpdateBuffer();
+						}
+					}
+				}
+			}
+		}
+	}*/
 
 	void WarnCircularInterpolation(AnimTrack anim) {
 		if (anim == null) return;
@@ -270,6 +321,23 @@ public class UnityAnimation : MonoBehaviour {
 		}
 	}
 
+	public void InitSubObjects() {
+		if (skeletonGao == null) {
+			skeletonGao = new GameObject("Skeleton");
+			skeletonGao.transform.SetParent(transform, false);
+			skeletonGao.transform.localPosition = Vector3.zero;
+			skeletonGao.transform.localScale = Vector3.one;
+			skeletonGao.transform.localRotation = Quaternion.identity;
+		}
+		if (templatesGao == null) {
+			templatesGao = new GameObject("Templates");
+			templatesGao.transform.SetParent(transform, false);
+			templatesGao.transform.localPosition = Vector3.zero;
+			templatesGao.transform.localScale = Vector3.one;
+			templatesGao.transform.localRotation = Quaternion.identity;
+		}
+	}
+
 	public void InitLines() {
 		if(linesGao == null) linesGao = new GameObject("Polylines");
 		linesGao.SetActive(DisplayPolylines);
@@ -364,10 +432,13 @@ public class UnityAnimation : MonoBehaviour {
 				currentFrame = 0f;
 			}
 			UpdateAnimation();
+		} else if (ForceUpdatePatches) {
+			UpdatePatches();
 		}
+		ForceUpdatePatches = false;
 	}
 
-	void UpdateAnimation() {
+	void UpdateAnimation(bool force = false) {
 		if(!loaded || skeleton == null || bones == null) return;
 		Context context = Controller.MainContext;
 
@@ -375,138 +446,53 @@ public class UnityAnimation : MonoBehaviour {
 			b.visualize = DisplayBones;
 		}
 		if (animTrack != null) {
+			var subAnim = Animation.SubAnim;
 			if (animTrack.length == 0) {
 				currentFrame = 0;
+			} else if(!PlayFullAnimation
+				&& !(subAnim?.markerStart?.IsNull ?? true) && !(subAnim?.markerStop?.IsNull ?? true)) {
+				// Play between markers only
+				var start = subAnim.markerStart;
+				var stop = subAnim.markerStop;
+				var startFrame = animTrack.frameEvents?.FirstOrDefault(e => e.events?.Any(e => e.type == AnimTrackFrameEvents.AnimMarkerEvent.AnimMarkerEventType.AnimAnimationEvent && e.marker == start) ?? false)?.frame;
+				var stopFrame = animTrack.frameEvents?.FirstOrDefault(e => e.events?.Any(e => e.type == AnimTrackFrameEvents.AnimMarkerEvent.AnimMarkerEventType.AnimAnimationEvent && e.marker == stop) ?? false)?.frame;
+				if (startFrame.HasValue && stopFrame.HasValue) {
+					var duration = stopFrame.Value - startFrame.Value;
+					if (duration <= 0) {
+						currentFrame = startFrame.Value;
+					} else {
+						var curFrameRel = currentFrame - startFrame.Value;
+						if (curFrameRel < 0) curFrameRel = 0;
+						curFrameRel %= duration;
+						currentFrame = startFrame.Value + curFrameRel;
+					}
+				} else if (currentFrame >= animTrack.length) {
+					currentFrame %= animTrack.length;
+				}
 			} else if (currentFrame >= animTrack.length) {
 				currentFrame %= animTrack.length;
 			}
-			int numBones = Math.Min(animTrack.bonesLists.Count, bones.Length);
-			int rootIndex = skeleton.GetBoneIndexFromTag(new StringID("Root"));
-			bool useRoot = (alc_tpl?.useRootBone) ?? true;
-			bool useRootRotation = Animation?.SubAnim?.useRootRotation ?? true;
-			bool defaultFlip = Animation?.SubAnim?.defaultFlip ?? false;
-			for (int i = 0; i < numBones; i++) {
-				bool isRoot = i == rootIndex;
-				/*if (((!alc_tpl?.useRootBone) ?? false) && isRoot) {
-					bones[i].localPosition = Vector3.zero;
-					bones[i].localScale = Vector3.one;
-					bones[i].localRotation = 0f;
-				} else {*/
-				AnimTrackBonesList bl = animTrack.bonesLists[i];
-				if (bl.amountPAS > 0) { // Position Angle Scale
-					for (int p = 0; p < bl.amountPAS; p++) {
-						AnimTrackBonePAS pas = animTrack.bonePAS[bl.startPAS + p];
-						AnimTrackBonePAS next = p < bl.amountPAS - 1 ? animTrack.bonePAS[bl.startPAS + ((p + 1) % bl.amountPAS)] : null; // Don't interpolate with start frame in loops
-						if (p == bl.amountPAS - 1 || (currentFrame >= pas.frame && currentFrame < next.frame)) {
-							Vector2 pos = pas.Position.GetUnityVector();
-							Angle rot = pas.Rotation;
-							Vector2 scl = pas.Scale.GetUnityVector();
-							if (next != null && next != pas) {
-								float nextFrame = next.frame < pas.frame ? next.frame + animTrack.length : next.frame;
-								float lerp = (Mathf.Floor(currentFrame) - pas.frame) / (Mathf.Floor(nextFrame) - pas.frame); // TODO: maybe change to Math.Floor(currentFrame) if animations can't be interpolated. This fixed jittery feet for Rayman
-								pos = Vector2.Lerp(pos, next.Position.GetUnityVector(), lerp);
-								//rot = Mathf.LerpAngle(rot * animTrack.multiplierA, next.Rotation * animTrack.multiplierA, lerp) / animTrack.multiplierA;
-								rot = Mathf.Lerp(rot, next.Rotation, lerp);
-								scl = Vector2.Lerp(scl, next.Scale.GetUnityVector(), lerp);
-							}
-							pos *= animTrack.multiplierP;
-							rot *= animTrack.multiplierA;
-							scl *= animTrack.multiplierS;
+			var bounds = Animation.GetBounds();
+			bool isVisible = IsVisible(bounds);
+			if (isVisible || force) {
+				UpdateBonePASZAL();
 
-							if (isRoot) {
-								if (!useRoot) {
-									pos = Vector2.zero;
-									scl = Vector2.one;
-									if (!useRootRotation) rot = 0f;
-								}
-								if (defaultFlip) scl = new Vector2(-scl.x, scl.y);
-							}
+				// Activate the correct patches
+				AnimTrackBML bml = GetCurrentBML();
+				UpdateBML(bml, context);
+				UpdateBoneLength();
+				UpdateBones();
+				UpdatePatches(isVisible: isVisible);
+				UpdateLines();
 
-							bones[i].localPosition = pos;
-							bones[i].localScale = scl;
-							bones[i].localRotation = rot;
-							break;
-						}
-					}
-					if (bl.amountZAL > 0) { // Z ALpha
-						for (int p = 0; p < bl.amountZAL; p++) {
-							AnimTrackBoneZAL zal = animTrack.boneZAL[bl.startZAL + p];
-							AnimTrackBoneZAL next = p < bl.amountZAL - 1 ? animTrack.boneZAL[bl.startZAL + ((p + 1) % bl.amountZAL)] : null; // Don't interpolate with start frame
-							if (p == bl.amountZAL - 1 || (currentFrame >= zal.frame && currentFrame < next.frame)) {
-								float z = zal.z;
-								float alpha = zal.alpha / 255f;
-								if (next != null && next != zal) {
-									float nextFrame = next.frame < zal.frame ? next.frame + animTrack.length : next.frame;
-									float lerp = (currentFrame - zal.frame) / (nextFrame - zal.frame);
-									z = Mathf.Lerp(z, next.z, lerp);
-									alpha = Mathf.Lerp(alpha, next.alpha / 255f, lerp);
-								}
-								bones[i].localZ = z;
-								bones[i].localAlpha = alpha;
-								break;
-							}
-						}
-					}
+				// Configure Z for all patches
+				/*if (bml == null) {
+					bml = animTrack.bml.ToList().FindLast(b => b.frame == currentBMLFrame);
+				}*/
+				if (bml != null) {
+					ZSortBones();
 				}
-			}
-
-			// Activate the correct patches
-			AnimTrackBML bml = null;
-			if (animTrack.bml.Count > 0) {
-				// Reset BML at end of animation - except if current BML frame is the first frame
-				if (currentBMLFrame > currentFrame && currentBMLFrame != animTrack.bml[0].frame) {
-					currentBMLFrame = -1;
-				}
-				// Find last index that matches current BML
-				int currentBMLIndex = currentBMLFrame == -1 ? 0 : (animTrack.bml.ToList().FindLastIndex(b => b.frame == currentBMLFrame) % animTrack.bml.Count);
-
-				for (int i = currentBMLIndex; i < animTrack.bml.Count; i++) {
-					AnimTrackBML currentBML = animTrack.bml[i];
-					if (currentBML.frame > currentFrame) break;
-					//if ((curB.frame > currentFrame) && !(checkHigher && curB.frame > lastBmlFrame)) break;
-					bml = currentBML;
-				}
-			}
-			if (bml != null && bml.frame != currentBMLFrame) {
-				currentBMLFrame = bml.frame;
-				foreach (var pbk in AllPatchBanks) {
-					foreach(var p in pbk.Patches) p.Active = false;
-				}
-				foreach (AnimTrackBML.Entry entry in bml.entries) {
-					StringID templateId = entry.templateId;
-					var bank = LookupTextureBankId(entry.textureBankId);
-					if (bank == null) continue;
-					int ind = bank.PBK.templateKeys.GetKeyIndex(templateId);
-					if (ind != -1) {
-						bank.Patches[ind].Active = true;
-						if (context.Settings.EngineVersion == EngineVersion.RO) {
-							var texPath = GetTexturePathOrigins(entry.textureBankId);
-							if (texPath != null) {
-								if (context.Loader.tex.ContainsKey(texPath.stringID)) {
-									alc.FillUnityMaterialPropertyBlock(bank.Patches[ind].Renderer);
-									alc.SetMaterialTextureOrigins((TextureCooked)context.Loader.tex[texPath.stringID], bank.Patches[ind].Renderer);
-								}
-							}
-						}
-					}
-				}
-				foreach (var pbk in AllPatchBanks) {
-					foreach (var p in pbk.Patches) {
-						if(p?.Object == null) continue;
-						p.Object.SetActive(p.Active);
-					}
-				}
-			}
-
-			UpdateBoneLength();
-			UpdateLines();
-
-			// Configure Z for all patches
-			if (bml == null) {
-				bml = animTrack.bml.ToList().FindLast(b => b.frame == currentBMLFrame);
-			}
-			if (bml != null) {
-				ZSortBones();
+			} else {
 			}
 		} else {
 			// Bind pose
@@ -517,8 +503,167 @@ public class UnityAnimation : MonoBehaviour {
 			}
 
 			UpdateBoneLength();
+			UpdateBones();
+			UpdatePatches();
 			UpdateLines();
 			ZSortBones();
+		}
+	}
+
+	private void UpdateBonePASZAL() {
+		int numBones = Math.Min(animTrack.bonesLists.Count, bones.Length);
+		int rootIndex = skeleton.GetBoneIndexFromTag(new StringID("Root"));
+		bool useRoot = (alc_tpl?.useRootBone) ?? true;
+		bool useRootRotation = Animation?.SubAnim?.useRootRotation ?? true;
+		bool defaultFlip = Animation?.SubAnim?.defaultFlip ?? false;
+
+		for (int i = 0; i < numBones; i++) {
+			bool isRoot = i == rootIndex;
+			/*if (((!alc_tpl?.useRootBone) ?? false) && isRoot) {
+				bones[i].localPosition = Vector3.zero;
+				bones[i].localScale = Vector3.one;
+				bones[i].localRotation = 0f;
+			} else {*/
+			AnimTrackBonesList bl = animTrack.bonesLists[i];
+			if (bl.amountPAS > 0) { // Position Angle Scale
+				for (int p = 0; p < bl.amountPAS; p++) {
+					AnimTrackBonePAS pas = animTrack.bonePAS[bl.startPAS + p];
+					AnimTrackBonePAS next = p < bl.amountPAS - 1 ? animTrack.bonePAS[bl.startPAS + ((p + 1) % bl.amountPAS)] : null; // Don't interpolate with start frame in loops
+					if (p == bl.amountPAS - 1 || (currentFrame >= pas.frame && currentFrame < next.frame)) {
+						Vector2 pos = pas.Position.GetUnityVector();
+						Angle rot = pas.Rotation;
+						Vector2 scl = pas.Scale.GetUnityVector();
+						if (next != null && next != pas) {
+							float nextFrame = next.frame < pas.frame ? next.frame + animTrack.length : next.frame;
+							float lerp = (Mathf.Floor(currentFrame) - pas.frame) / (Mathf.Floor(nextFrame) - pas.frame); // TODO: maybe change to Math.Floor(currentFrame) if animations can't be interpolated. This fixed jittery feet for Rayman
+							pos = Vector2.Lerp(pos, next.Position.GetUnityVector(), lerp);
+							//rot = Mathf.LerpAngle(rot * animTrack.multiplierA, next.Rotation * animTrack.multiplierA, lerp) / animTrack.multiplierA;
+							rot = Mathf.Lerp(rot, next.Rotation, lerp);
+							scl = Vector2.Lerp(scl, next.Scale.GetUnityVector(), lerp);
+						}
+						pos *= animTrack.multiplierP;
+						rot *= animTrack.multiplierA;
+						scl *= animTrack.multiplierS;
+
+						if (isRoot) {
+							if (!useRoot) {
+								pos = Vector2.zero;
+								scl = Vector2.one;
+								if (!useRootRotation) rot = 0f;
+							}
+							if (defaultFlip) scl = new Vector2(-scl.x, scl.y);
+						}
+
+						bones[i].localPosition = pos;
+						bones[i].localScale = scl;
+						bones[i].localRotation = rot;
+						break;
+					}
+				}
+				if (bl.amountZAL > 0) { // Z ALpha
+					for (int p = 0; p < bl.amountZAL; p++) {
+						AnimTrackBoneZAL zal = animTrack.boneZAL[bl.startZAL + p];
+						AnimTrackBoneZAL next = p < bl.amountZAL - 1 ? animTrack.boneZAL[bl.startZAL + ((p + 1) % bl.amountZAL)] : null; // Don't interpolate with start frame
+						if (p == bl.amountZAL - 1 || (currentFrame >= zal.frame && currentFrame < next.frame)) {
+							float z = zal.z;
+							float alpha = zal.alpha / 255f;
+							if (next != null && next != zal) {
+								float nextFrame = next.frame < zal.frame ? next.frame + animTrack.length : next.frame;
+								float lerp = (currentFrame - zal.frame) / (nextFrame - zal.frame);
+								z = Mathf.Lerp(z, next.z, lerp);
+								alpha = Mathf.Lerp(alpha, next.alpha / 255f, lerp);
+							}
+							bones[i].localZ = z;
+							bones[i].localAlpha = alpha;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private AnimTrackBML GetCurrentBML() {
+		AnimTrackBML bml = null;
+		if (animTrack.bml.Count > 0) {
+			// Reset BML at end of animation - except if current BML frame is the first frame
+			if (currentBMLFrame > currentFrame && currentBMLFrame != animTrack.bml[0].frame) {
+				currentBMLFrame = -1;
+			}
+			// Find last index that matches current BML
+			int currentBMLIndex = currentBMLFrame == -1 ? 0 : (animTrack.bml.ToList().FindLastIndex(b => b.frame == currentBMLFrame) % animTrack.bml.Count);
+
+			for (int i = currentBMLIndex; i < animTrack.bml.Count; i++) {
+				AnimTrackBML currentBML = animTrack.bml[i];
+				if (currentBML.frame > currentFrame) break;
+				//if ((curB.frame > currentFrame) && !(checkHigher && curB.frame > lastBmlFrame)) break;
+				bml = currentBML;
+			}
+		}
+		return bml;
+	}
+	private void UpdateBML(AnimTrackBML bml, Context context) {
+		if (bml != null && bml.frame != currentBMLFrame) {
+			currentBMLFrame = bml.frame;
+			foreach (var pbk in AllPatchBanks) {
+				foreach (var p in pbk.Templates) p.Active = false;
+			}
+			int indexInBML = 0;
+			foreach (AnimTrackBML.Entry entry in bml.entries) {
+				StringID templateId = entry.templateId;
+				var bank = LookupTextureBankId(entry.textureBankId);
+				if (bank == null) continue;
+				int ind = bank.PBK.templateKeys.GetKeyIndex(templateId);
+				if (ind != -1) {
+					bank.Templates[ind].IndexInBML = indexInBML;
+					bank.Templates[ind].Active = true;
+					if (context.Settings.EngineVersion == EngineVersion.RO) {
+						var texPath = GetTexturePathOrigins(entry.textureBankId);
+						if (texPath != null) {
+							if (context.Loader.tex.ContainsKey(texPath.stringID)) {
+								bank.Templates[ind].PatchRenderer.ProcessRenderers(mr => {
+									alc.FillUnityMaterialPropertyBlock(mr);
+									alc.SetMaterialTextureOrigins((TextureCooked)context.Loader.tex[texPath.stringID], mr);
+								});
+							}
+						}
+					}
+				}
+				indexInBML++;
+			}
+			foreach (var pbk in AllPatchBanks) {
+				foreach (var p in pbk.Templates) {
+					if (p?.Object == null) continue;
+					p.Object.SetActive(p.Active);
+				}
+			}
+		} else if (bml == null) {
+			foreach (var pbk in AllPatchBanks) {
+				foreach (var p in pbk.Templates) {
+					p.Active = false;
+					if (p?.Object == null) continue;
+					p.Object.SetActive(p.Active);
+				}
+			}
+		}
+	}
+
+	private void UpdateBones() {
+		var updateOrder = skeleton.GetBonesUpdateOrder();
+		foreach (var boneIndex in updateOrder) {
+			bones[boneIndex].UpdateBone(controlTransform: true, updateRecursive: false);
+		}
+	}
+
+	private void UpdatePatches(bool isVisible = true) {
+		foreach (var pbk in AllPatchBanks) {
+			foreach (var p in pbk.Templates) {
+				if(p?.PatchRenderer == null) continue;
+				if (p.Active) {
+					p.PatchRenderer.UpdateBuffer();
+					if(isVisible) p.PatchRenderer.UpdateCollider();
+				}
+			}
 		}
 	}
 
@@ -529,7 +674,7 @@ public class UnityAnimation : MonoBehaviour {
 				AnimBoneDyn selectedDyn = null;
 				var b = bones[i];
 				foreach (var pbk in AllPatchBanks) {
-					foreach (var p in pbk.Patches) {
+					foreach (var p in pbk.Templates) {
 						if (p.Active) {
 							var atl = p.Template;
 							for (int j = 0; j < atl.bones.Count; j++) {
@@ -553,50 +698,29 @@ public class UnityAnimation : MonoBehaviour {
 
 	private void ZSortBones() {
 		ZListManager zman = Controller.Obj.zListManager;
-		foreach (var patchData in AllPatchBanks) {
-			for (int i = 0; i < patchData.Patches.Length; i++) {
-				if (patchData.Patches[i] == null || patchData.PBK.templates[i].bones.Count == 0) continue;
-				var patchRenderer = patchData.Patches[i].Renderer;
-				if(patchRenderer == null) continue;
-				bool patchActive = patchData.Patches[i].Active;
-				if (patchActive) {
-					//int boneIndex = skeleton.GetBoneIndexFromTag(pbk.templates[i].bones[0].tag);
-					int[] boneIndices = patchData.PBK.templates[i].bones.Select(b => skeleton.GetBoneIndexFromTag(b.tag)).ToArray();
-					List<float> alphas = new List<float>();
-					List<float> zs = new List<float>();
-					for (int b = 0; b < boneIndices.Length; b++) {
-						if (boneIndices[b] != -1) {
-							int boneIndex = boneIndices[b];
-							alphas.Add(bones[boneIndex].bindAlpha + bones[boneIndex].localAlpha);
-							zs.Add(bones[boneIndex].bindZ + bones[boneIndex].localZ);
-						}
-					}
-					var alpha = 1f;
-					if (alphas.Count > 0) alpha = alphas.Average();
-					alc.FillMaterialParams(patchRenderer, alpha: alpha);
-					
-					if (zs.Count > 0) {
-						zman.zDict[patchRenderer] = transform.position.z - zs.Average() / 10000f;
-						//patchRenderers[i].transform.localPosition = new Vector3(0,0,zs.Average() / 10000f);
-					} else {
-						zman.zDict[patchRenderer] = transform.position.z - (i / 10000f);
-					}
-					/*if (boneIndex != -1) {
-						patchMaterials[i].SetColor("_ColorFactor", new UnityEngine.Color(1f, 1f, 1f, bones[boneIndex].bindAlpha + bones[boneIndex].localAlpha));
-						//zman.zDict[patchRenderers[i]] = transform.position.z - (i / 10000f);
-						zman.zDict[patchRenderers[i]] = transform.position.z - (bones[boneIndex].bindZ + bones[boneIndex].localZ) / 100f;
-
-						if (anims.Count > 0 && anims[animIndex].Item1.filename.Contains("stand_back")) {
-							print(i + " - " + pbk.templates[i].bones[0].tag);
-						}
-					} else {
-						zman.zDict[patchRenderers[i]] = transform.position.z - (i / 10000f);
-					}*/
-				} else {
-					if (zman.zDict.ContainsKey(patchRenderer)) {
-						zman.zDict.Remove(patchRenderer);
-					}
-				}
+		var activePatches = AllPatchBanks
+			.SelectMany(pbk => pbk.Templates.Where(p => p.PatchRenderer != null && p.Active))
+			.OrderBy(p => p.IndexInBML)
+			.SelectMany(p => p.PatchRenderer.Patches)
+			.OrderBy(p => p.Z);
+		// Back to front
+		int i = 0;
+		foreach (var patch in activePatches) {
+			if(patch?.Renderer == null) continue;
+			alc.FillMaterialParams(patch.Renderer, alpha: patch.Alpha);
+			zman.zDict[patch.Renderer] = transform.position.z - (i / 10000f);
+			if (Animation != null) {
+				patch.Renderer.localBounds = Animation.GetBounds();
+			}
+			i++;
+		}
+		var inactivePatches = AllPatchBanks
+			.SelectMany(pbk => pbk.Templates.Where(p => p.PatchRenderer != null && !p.Active))
+			.SelectMany(p => p.PatchRenderer.Patches);
+		foreach (var patch in inactivePatches) {
+			if (patch?.Renderer == null) continue;
+			if (zman.zDict.ContainsKey(patch.Renderer)) {
+				zman.zDict.Remove(patch.Renderer);
 			}
 		}
 	}
@@ -626,5 +750,52 @@ public class UnityAnimation : MonoBehaviour {
 			return new Path(texPath.Item2.str);
 		}
 		return null;
+	}
+
+	public bool IsVisible(Bounds bounds) {
+		bool isVisible = false;
+		bounds = TransformBounds(bounds);
+
+		// Game View
+		Camera gameCam = Camera.main;
+		if (gameCam != null) {
+			Plane[] gamePlanes = GeometryUtility.CalculateFrustumPlanes(gameCam);
+			if (GeometryUtility.TestPlanesAABB(gamePlanes, bounds)) {
+				isVisible = true;
+				//Debug.Log("Visible: game view");
+			}
+		}
+
+#if UNITY_EDITOR
+		// Scene View
+		SceneView sceneView = SceneView.lastActiveSceneView;
+		if (sceneView != null && sceneView.camera != null) {
+			Plane[] scenePlanes = GeometryUtility.CalculateFrustumPlanes(sceneView.camera);
+			if (GeometryUtility.TestPlanesAABB(scenePlanes, bounds)) {
+				isVisible = true;
+				//Debug.Log("Visible: scene view");
+			}
+		}
+#endif
+		return isVisible;
+	}
+	public Bounds TransformBounds(Bounds localBounds) {
+		Vector3 center = transform.TransformPoint(localBounds.center);
+
+		// Transform the extents to world space axes
+		Vector3 extents = localBounds.extents;
+		Vector3 axisX = transform.TransformVector(extents.x, 0, 0);
+		Vector3 axisY = transform.TransformVector(0, extents.y, 0);
+		Vector3 axisZ = transform.TransformVector(0, 0, extents.z);
+
+		// Sum their absolute values to get world extents
+		Vector3 worldExtents =
+			new Vector3(
+				Mathf.Abs(axisX.x) + Mathf.Abs(axisY.x) + Mathf.Abs(axisZ.x),
+				Mathf.Abs(axisX.y) + Mathf.Abs(axisY.y) + Mathf.Abs(axisZ.y),
+				Mathf.Abs(axisX.z) + Mathf.Abs(axisY.z) + Mathf.Abs(axisZ.z)
+			);
+
+		return new Bounds(center, worldExtents * 2);
 	}
 }

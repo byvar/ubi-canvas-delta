@@ -11,6 +11,7 @@ class AnimationsDropdown : AdvancedDropdown {
 	public string name;
 	public Rect rect;
 	public UnityAnimation.UnityAnimationTrack[] animations;
+	public bool PlayFullAnimation;
 
 	public AnimationsDropdown(AdvancedDropdownState state) : base(state) {
 		minimumSize = new UnityEngine.Vector2(50, 400f);
@@ -28,9 +29,9 @@ class AnimationsDropdown : AdvancedDropdown {
 			for (int i = 0; i < animations.Length; i++) {
 				var a = animations[i];
 
-				var name = a.ToString();
+				var name = a.ToString(PlayFullAnimation);
 				root.AddChild(new AdvancedDropdownItem(name) {
-					id = i
+					id = a.Index
 				});
 			}
 		}

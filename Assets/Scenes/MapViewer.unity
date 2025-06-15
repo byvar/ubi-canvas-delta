@@ -396,6 +396,7 @@ GameObject:
   - component: {fileID: 534669904}
   - component: {fileID: 534669903}
   - component: {fileID: 534669906}
+  - component: {fileID: 534669907}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -504,6 +505,18 @@ MonoBehaviour:
   otherCameras:
   - {fileID: 844852600}
   - {fileID: 1301541515}
+--- !u!114 &534669907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b54b537353efab4b93b691e568d1bcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &567146445
 GameObject:
   m_ObjectHideFlags: 0
@@ -750,6 +763,7 @@ MonoBehaviour:
   baseLightMaterial: {fileID: 2100000, guid: 9baaa1d88e0444447bd915b938cab340, type: 2}
   collideMaterial: {fileID: 0}
   collideTransparentMaterial: {fileID: 0}
+  hiddenMaterial: {fileID: 2100000, guid: b212853fe7545684691bb0c62901cdf1, type: 2}
   loadingScreen: {fileID: 63262021}
   zListManager: {fileID: 929858122}
   displayGizmos: 0

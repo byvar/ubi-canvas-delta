@@ -36,11 +36,11 @@ namespace UbiArt.ITF {
 			if (!UbiArtContext.Loader.LoadAnimations) return;
 
 			// Create skeleton
-			var skeleton_gao = new GameObject("AnimLightComponent - Skeleton");
-			skeleton_gao.transform.SetParent(gao.transform, false);
-			skeleton_gao.transform.localPosition = Vector3.zero;
-			skeleton_gao.transform.localRotation = Quaternion.identity;
-			skeleton_gao.transform.localScale = Vector3.one;
+			var animation_gao = new GameObject("AnimLightComponent - Animation");
+			animation_gao.transform.SetParent(gao.transform, false);
+			animation_gao.transform.localPosition = Vector3.zero;
+			animation_gao.transform.localRotation = Quaternion.identity;
+			animation_gao.transform.localScale = Vector3.one;
 
 			// Collect resources
 			ICSerializable[] resources = tpl.animSet.resources;
@@ -48,8 +48,6 @@ namespace UbiArt.ITF {
 			ICSerializable sklRes = resources.Where(res => res is AnimSkeleton).FirstOrDefault();
 			AnimSkeleton skeleton = sklRes != null ? (AnimSkeleton)sklRes : null;
 			if (skeleton == null) return;
-
-			var bones = skeleton.CreateBones(c, skeleton_gao);
 
 			// Create list of patchbanks
 			List<UnityAnimation.UnityPatchBank> pbksOrigins = new List<UnityAnimation.UnityPatchBank>();
@@ -87,12 +85,10 @@ namespace UbiArt.ITF {
 			}
 
 			// Create templates
-			foreach (var pbk in unityPBKs.Concat(unityPBKsOrigins)) {
-				var bank = pbk.Value;
-				bank.ResetPatches(gao, skeleton_gao, skeleton, bones, this);
-			}
-			skeleton.ResetBones(c, bones);
-			ua = skeleton_gao.AddComponent<UnityAnimation>();
+			ua = animation_gao.AddComponent<UnityAnimation>();
+			ua.InitSubObjects();
+			var skeleton_gao = ua.skeletonGao;
+			var bones = skeleton.CreateBones(c, skeleton_gao);
 			ua.transform.localScale = new Vector3(tpl?.scale?.x ?? 1f, tpl?.scale?.y ?? 1f, 1f);
 			ua.transform.localPosition = new Vector3(tpl?.posOffset?.x ?? 1f, tpl?.posOffset?.y ?? 1f, -(tpl?.depthOffset ?? 0f));
 			ua.transform.localRotation = tpl?.angleOffset?.GetUnityQuaternion() ?? Quaternion.identity;
@@ -100,9 +96,22 @@ namespace UbiArt.ITF {
 			ua.skeleton = skeleton;
 			ua.alc = this;
 			ua.alc_tpl = tpl;
+			if (tpl.patchLevel != 0) {
+				ua.PatchHLevel = tpl.patchLevel;
+				ua.PatchVLevel = tpl.patchLevel;
+			} else {
+				// These are only used if patchLevel is 0
+				if (tpl.patchHLevel != 0) ua.PatchHLevel = tpl.patchHLevel;
+				if (tpl.patchVLevel != 0) ua.PatchVLevel = tpl.patchVLevel;
+			}
 			ua.patchBanks = unityPBKs;
 			ua.patchBanksOrigins = unityPBKsOrigins;
 			ua.AllPatchBanks = unityPBKs.Concat(unityPBKsOrigins).Select(v => v.Value).Distinct().ToArray();
+			foreach (var pbk in unityPBKs.Concat(unityPBKsOrigins)) {
+				var bank = pbk.Value;
+				bank.ResetPatches(ua);
+			}
+			skeleton.ResetBones(c, bones);
 			/*List<Path> animPaths = new List<Path>();
 			foreach (SubAnim_Template sat in tpl.animSet.animations) {
 				animPaths.Add(sat.name);
@@ -119,11 +128,15 @@ namespace UbiArt.ITF {
 						ID = sat.friendlyName,
 						Path = resourceList[resourceIndex],
 						Track = resources[resourceIndex] as AnimTrack,
-						SubAnim = sat
+						SubAnim = sat,
+						AABB = tpl.animSet.animAABB
 					});
 				}
 			}
 			ua.anims = anims.ToArray();
+			for (int i = 0; i < ua.anims.Length; i++) {
+				ua.anims[i].Index = i;
+			}
 			if (ua.anims.Length > 0) {
 				ua.animIndex = 0;
 			}
@@ -143,12 +156,11 @@ namespace UbiArt.ITF {
 			if(skeleton == null) return;
 
 			// Create skeleton
-			var skeleton_gao = new GameObject("AnimLightComponent - Skeleton");
-			skeleton_gao.transform.SetParent(gao.transform, false);
-			skeleton_gao.transform.localPosition = Vector3.zero;
-			skeleton_gao.transform.localRotation = Quaternion.identity;
-			skeleton_gao.transform.localScale = Vector3.one;
-			var bones = skeleton.CreateBones(c, skeleton_gao);
+			var animation_gao = new GameObject("AnimLightComponent - Animation");
+			animation_gao.transform.SetParent(gao.transform, false);
+			animation_gao.transform.localPosition = Vector3.zero;
+			animation_gao.transform.localRotation = Quaternion.identity;
+			animation_gao.transform.localScale = Vector3.one;
 
 			// Create list of texture banks
 			Dictionary<StringID, TextureBankPath> textureBanks = new Dictionary<StringID, TextureBankPath>();
@@ -168,14 +180,9 @@ namespace UbiArt.ITF {
 				}).ToDictionary(tb => tb.ID);
 
 			// Create templates
-			foreach (var pbk in unityPBKs) {
-				var bank = pbk.Value;
-				bank.ResetPatches(gao, skeleton_gao, skeleton, bones, this);
-			}
-
-
-			skeleton.ResetBones(c, bones);
-			ua = skeleton_gao.AddComponent<UnityAnimation>();
+			ua = animation_gao.AddComponent<UnityAnimation>();
+			ua.InitSubObjects();
+			var bones = skeleton.CreateBones(c, ua.skeletonGao);
 			ua.transform.localScale = new Vector3(tpl?.scale?.x ?? 1f, tpl?.scale?.y ?? 1f, 1f);
 			ua.transform.localPosition = new Vector3(tpl?.posOffset?.x ?? 1f, tpl?.posOffset?.y ?? 1f, -(tpl?.depthOffset ?? 0f));
 			ua.transform.localRotation = tpl?.angleOffset?.GetUnityQuaternion() ?? Quaternion.identity;
@@ -185,6 +192,19 @@ namespace UbiArt.ITF {
 			ua.AllPatchBanks = unityPBKs.Select(v => v.Value).Distinct().ToArray();
 			ua.alc = this;
 			ua.alc_tpl = tpl;
+			if (tpl.patchLevel != 0) {
+				ua.PatchHLevel = tpl.patchLevel;
+				ua.PatchVLevel = tpl.patchLevel;
+			} else {
+				// These are only used if patchLevel is 0
+				if (tpl.patchHLevel != 0) ua.PatchHLevel = tpl.patchHLevel;
+				if (tpl.patchVLevel != 0) ua.PatchVLevel = tpl.patchVLevel;
+			}
+			foreach (var pbk in unityPBKs) {
+				var bank = pbk.Value;
+				bank.ResetPatches(ua);
+			}
+			skeleton.ResetBones(c, bones);
 
 
 			List<UnityAnimation.UnityAnimationTrack> anims = new List<UnityAnimation.UnityAnimationTrack>();
@@ -210,16 +230,24 @@ namespace UbiArt.ITF {
 			if (tpl?.animSet?.animPackage?.animPathAABB != null) {
 				foreach (var animPath in tpl?.animSet?.animPackage?.animPathAABB) {
 					if(animPath?.anim == null) continue;
-					if (anims.Any(a => a.Track == animPath.anim)) continue;
+					var existingAnims = anims.Where(a => a.Track == animPath.anim);
+					foreach (var a in existingAnims) {
+						a.AABB = animPath.aabb;
+					}
+					if (existingAnims.Any()) continue;
 					anims.Add(new UnityAnimation.UnityAnimationTrack() {
 						ID = animPath.name,
 						Path = animPath.path,
 						Track = animPath.anim,
+						AABB = animPath.aabb,
 						SubAnim = null
 					});
 				}
 			}
 			ua.anims = anims.ToArray();
+			for (int i = 0; i < ua.anims.Length; i++) {
+				ua.anims[i].Index = i;
+			}
 			// Set default animation if possible
 			if (ua.anims.Length > 0) {
 				ua.animIndex = 0;

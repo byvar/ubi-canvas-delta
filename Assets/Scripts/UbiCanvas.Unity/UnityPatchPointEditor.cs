@@ -13,7 +13,6 @@ public class UnityPatchPointEditor : MonoBehaviour {
 	public UnityPatchEditor patch;
 
 	public int pointIndex = -1;
-	public List<int> vertices = new List<int>();
 	public AnimPatchPoint Point => pointIndex > -1 ?
 		patch.Template.patchPoints[pointIndex] : null;
 	public Vec2d GlobalNormal {
@@ -74,15 +73,13 @@ public class UnityPatchPointEditor : MonoBehaviour {
 		Vector3 oldPosConv = new Vector3(oldPos.x, oldPos.y, 0f);
 		if (newPos != oldPosConv) {
 			UpdatePosition(newPos);
-			patch.Changed = true;
+			patch.UpdateMesh();
 		}
 	}
 	public void UpdatePosition(Vector3 newPos) {
 		// Calculate new UV from position
 		var uvScaleInverse = patch.UVScaleInverse.GetUnityVector();
 		var newUV = Vector2.Scale(AverageTransformation.ApplyInverse(newPos), uvScaleInverse);
-
-		UpdateMesh(newPos, newUV);
 
 		// Update data
 		GlobalPosition = new Vec2d(newPos.x, newPos.y);
@@ -96,19 +93,12 @@ public class UnityPatchPointEditor : MonoBehaviour {
 		var unityPos = new Vector3(pos.x, pos.y, 0f);
 		if (transform.localPosition != unityPos) {
 			transform.localPosition = unityPos;
-			UpdateMesh(unityPos, uv.GetUnityVector());
-			patch.Changed = true;
+			patch.SetChanged();
 		}
 	}
-	public void UpdateMesh(Vector3 newPos, Vector2 newUV) {
-		var vs = patch.bakedMesh.vertices;
-		var uv = patch.bakedMesh.uv;
-		foreach (var v in vertices) {
-			vs[v] = newPos;
-			uv[v] = newUV;
-		}
-		patch.bakedMesh.vertices = vs;
-		patch.bakedMesh.uv = uv;
+	public void UpdateNormalFromUV() {
+		if (AverageTransformation == null) return;
+		CheckUpdateLocalNormal();
 	}
 	public void CheckUpdateLocalNormal() {
 		var uvNormal = Point.normal * patch.UVScale;
@@ -120,7 +110,7 @@ public class UnityPatchPointEditor : MonoBehaviour {
 		if (Mathf.Abs(oldAngle - newAngle) > 0.005f) {
 			//Debug.Log($"Updating {transform.parent.name}.{gameObject.name} normal: {boneNormal} - {transformedUVNormal}");
 			GlobalNormal = transformedUVNormal;
-			patch.Changed = true;
+			patch.SetChanged();
 		}
 	}
 	public void InitBone(UnityBone bone) {
@@ -136,7 +126,7 @@ public class UnityPatchPointEditor : MonoBehaviour {
 				_bone = bone;
 				var pbkBone = patch.Template.bones[boneIndex];
 				Point.local.boneId = new Link(pbkBone.key.stringID);
-				patch.Changed = true;
+				patch.SetChanged();
 			} else {
 				bone = _bone;
 			}

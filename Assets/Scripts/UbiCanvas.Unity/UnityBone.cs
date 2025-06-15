@@ -16,9 +16,9 @@ public class UnityBone : MonoBehaviour {
 	public Vector2 computedScale = Vector2.one;
 	public Vector2 globalScale = Vector2.one;
 	public float boneLength = 0f;
-	public float xScaleMultiplier = 1f;
 	public float localZ = 0;
 	public float bindZ = 0;
+	public float globalZ = 0;
 	public float bindAlpha = 1f;
 	public float localAlpha = 0f;
 	
@@ -31,6 +31,7 @@ public class UnityBone : MonoBehaviour {
 
 	public List<UnityBone> Children { get; set; } = new List<UnityBone>();
 	private UnityBone _parent;
+	[UnityEngine.SerializeField]
 	public UnityBone Parent {
 		get => _parent;
 		set {
@@ -52,8 +53,6 @@ public class UnityBone : MonoBehaviour {
 		if (update) UpdateBone();
 	}
 	void Update() {
-		if (Controller.Obj.playAnimations && !IsPBKEditor)
-			UpdateBone();
 		UpdateVisual();
 	}
 
@@ -70,6 +69,10 @@ public class UnityBone : MonoBehaviour {
 				float xPos = (Parent.computedScale.x) * (bindPosition.x + localPosition.x + Parent.boneLength);
 				float yPos = -(Parent.computedScale.y) * (bindPosition.y + localPosition.y);
 				var rotatedPos = new Vec2d(xPos, yPos).Rotate(Parent.globalAngle);
+				/*var rotationVector = new Vec2d(Mathf.Cos(Parent.globalAngle), Mathf.Sin(Parent.globalAngle));
+				var x = Vector2.Dot(new Vec2d(xPos, yPos).GetUnityVector(), rotationVector.GetUnityVector());
+				var y = Vector2.Dot(new Vec2d(yPos, -xPos).GetUnityVector(), rotationVector.GetUnityVector());
+				var rotatedPos = new Vec2d(x, y);*/
 				globalPosition = Parent.globalPosition + new Vector3(rotatedPos.x, rotatedPos.y, 0f);
 			} else {
 				// Check ITF::AnimInfo::ComputeBonesFromLocalToWorld
@@ -79,12 +82,13 @@ public class UnityBone : MonoBehaviour {
 			computedScale = Vector2.Scale(localScale, bindScale);
 			//computedScale = localScale;
 			if (c.Settings.EngineVersion == EngineVersion.RO) {
-				globalScale = new Vector2(computedScale.x * xScaleMultiplier, computedScale.y);
+				globalScale = new Vector2(computedScale.x * boneLength, computedScale.y);
 			} else {
 				globalScale = computedScale;
 			}
 			rotation = new Angle(globalAngle).GetUnityQuaternion();
 			position = globalPosition;
+			globalZ = bindZ + localZ;// + Parent?.globalZ ?? 0;
 		} else {
 			globalScale = localScale;
 			if (Parent != null) {
@@ -95,6 +99,7 @@ public class UnityBone : MonoBehaviour {
 				rotation = new Angle(localRotation).GetUnityQuaternion();
 			}
 			position = globalPosition;
+			globalZ = localZ;
 		}
 		scale = new Vector3(globalScale.x, globalScale.y, 1f);
 		if (controlTransform) {
@@ -116,12 +121,7 @@ public class UnityBone : MonoBehaviour {
 				//Debug.Log($"{position} - {rotation} - {scale}");
 				globalScale = new Vector2(transform.localScale.x, transform.localScale.y);
 				if (bind) {
-					if (c.Settings.EngineVersion == EngineVersion.RO) {
-						computedScale = new Vector2(globalScale.x / xScaleMultiplier,
-							globalScale.y);
-					} else {
-						computedScale = globalScale;
-					}
+					computedScale = globalScale;
 					globalAngle = new Angle().SetUnityQuaternion(transform.localRotation, previous: globalAngle);
 					globalPosition = transform.localPosition;
 

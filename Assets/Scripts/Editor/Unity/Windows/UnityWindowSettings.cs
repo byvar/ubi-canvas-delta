@@ -113,6 +113,7 @@ public class UnityWindowSettings : UnityWindow {
 		UnitySettings.LoadAnimations = EditorField("Load Animations", UnitySettings.LoadAnimations);
 		UnitySettings.LoadAllPaths = EditorField("Load all paths", UnitySettings.LoadAllPaths);
 		UnitySettings.DisplayFullPathsInDropdowns = EditorField("Display paths in dropdowns", UnitySettings.DisplayFullPathsInDropdowns);
+		UnitySettings.UseHighResolutionBezierPatches = EditorField("Use inaccurate hi-res patches", UnitySettings.UseHighResolutionBezierPatches);
 
 		if (EditorGUI.EndChangeCheck() || Dirty) {
 			UnitySettings.Save();

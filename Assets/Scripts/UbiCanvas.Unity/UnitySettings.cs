@@ -34,6 +34,7 @@ public class UnitySettings {
     public static bool LoadAllPaths { get; set; }
 
 	public static bool DisplayFullPathsInDropdowns { get; set; } = false;
+	public static bool UseHighResolutionBezierPatches { get; set; }
 	
 	// Export window
 	public static bool Export_UseRaw { get; set; } = false;
@@ -115,6 +116,7 @@ public class UnitySettings {
 		Export_OutputPathFolder = s.SerializeString(nameof(Export_OutputPathFolder), Export_OutputPathFolder);
 
 		DisplayFullPathsInDropdowns = s.SerializeBool(nameof(DisplayFullPathsInDropdowns), DisplayFullPathsInDropdowns);
+		UseHighResolutionBezierPatches = s.SerializeBool(nameof(UseHighResolutionBezierPatches), UseHighResolutionBezierPatches);
 
 
 		modeString = s.SerializeString(nameof(Tools_BuildModIPK_GameMode), Tools_BuildModIPK_GameMode.ToString());

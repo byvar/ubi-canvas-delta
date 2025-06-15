@@ -5,7 +5,7 @@ namespace UbiArt.Animation {
 	// See: ITF::AnimTemplate::serialize
 	public class AnimTemplate : CSerializable {
 		public KeyArray<int> boneKeys;
-		public float unkfloat;
+		public float boneScaleY;
 		public CListO<AnimBone> bones;
 		public CListO<AnimBoneDyn> bonesDyn;
 		public CListO<AnimPatchPoint> patchPoints;
@@ -15,7 +15,7 @@ namespace UbiArt.Animation {
 			base.SerializeImpl(s);
 			boneKeys = s.SerializeObject<KeyArray<int>>(boneKeys, name: "boneKeys");
 			if (s.Settings.EngineVersion <= EngineVersion.RO) {
-				unkfloat = s.Serialize<float>(unkfloat, name: "unkfloat");
+				boneScaleY = s.Serialize<float>(boneScaleY, name: "boneScaleY");
 			}
 			bones = s.SerializeObject<CListO<AnimBone>>(bones, name: "bones");
 			bonesDyn = s.SerializeObject<CListO<AnimBoneDyn>>(bonesDyn, name: "bonesDyn");

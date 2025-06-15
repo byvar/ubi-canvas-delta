@@ -17,6 +17,7 @@ public class Controller : MonoBehaviour {
 	public Material baseLightMaterial;
 	public Material collideMaterial;
 	public Material collideTransparentMaterial;
+	public Material hiddenMaterial;
 	public LoadingScreen loadingScreen;
 	public ZListManager zListManager;
 	private Sprite[] icons;

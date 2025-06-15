@@ -489,9 +489,6 @@ public class UnityWindowAtlasEditor : UnityWindow {
 							CreateTemplateGameObject(pbk, CurrentPBKTemplate);
 						}
 					}
-					if (EditorButton("Sync changes with animations")) {
-						SyncChangesWithAnimations(pbk);
-					}
 
 					var uvToolsRect = GetNextRect();
 					var rectsRect = EditorGUI.PrefixLabel(uvToolsRect, new GUIContent("Quick UV Operations"));
@@ -1145,6 +1142,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 				bool isEditable = hasPatchEditors || isBatchDragUVOnly;
 
 				bool recalculatePatchEditors = false;
+				bool syncWithAnimations = false;
 
 				// Draw points
 				foreach (var point in tpl.patchPoints) {
@@ -1164,6 +1162,8 @@ public class UnityWindowAtlasEditor : UnityWindow {
 									unityPoint.UpdatePositionFromUV();
 								}
 							}
+						} else {
+							syncWithAnimations = true;
 						}
 					}
 					var normalTest = point.uv + (point.normal * NormalLength);
@@ -1175,13 +1175,25 @@ public class UnityWindowAtlasEditor : UnityWindow {
 						var newNormal = (newEndposTex - point.uv) / NormalLength;
 						var normalized = newNormal.Normalize();
 						point.normal = normalized;
-						if (hasPatchEditors && isBatchDragUVOnly) {
-							recalculatePatchEditors = true;
+						if (hasPatchEditors) {
+							if (isBatchDragUVOnly) {
+								recalculatePatchEditors = true;
+							} else {
+								foreach (var pe in patchEditors) {
+									var unityPoint = pe.points.FirstOrDefault(p => p.Point == point);
+									unityPoint.UpdateNormalFromUV();
+								}
+							}
+						} else {
+							syncWithAnimations = true;
 						}
 					}
 
 					pointIndex++;
 
+				}
+				if (syncWithAnimations) {
+					SyncChangesWithAnimations(pbk, tpl);
 				}
 				if (recalculatePatchEditors) {
 					foreach (var pe in patchEditors) {
@@ -1462,11 +1474,12 @@ public class UnityWindowAtlasEditor : UnityWindow {
 		var unityTex = SelectedTexture.GetUnityTexture(Controller.MainContext);
 		patchEditor.AspectRatio = (float)unityTex.Texture.width / unityTex.Texture.height;
 	}
-	void SyncChangesWithAnimations(AnimPatchBank pbk) {
+	void SyncChangesWithAnimations(AnimPatchBank pbk, AnimTemplate tpl = null) {
+		if (Controller.Obj.playAnimations) return; // Happens automatically in this case
 		var unityAnimations = FindObjectsOfType<UnityAnimation>().Where(a => a.AllPatchBanks != null && a.AllPatchBanks.Any(p => p.PBK == pbk));
 		if (unityAnimations.Any()) {
 			foreach (var ua in unityAnimations) {
-				ua.ResetPatches(pbkFilter: p => p.PBK == pbk);
+				ua.ForceUpdatePatches = true; //.ForceUpdatePatches(pbkFilter: p => p.PBK == pbk, templateFilter: tpl != null ? (t => t == tpl) : null);
 			}
 		}
 	}
@@ -1502,6 +1515,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 				pe.ResetUVs();
 			}
 		}
+		SyncChangesWithAnimations(pbk);
 	}
 	void ApplyUVOperation(UVAtlas atlas, Vec2d multiplier, Vec2d add) {
 		if (atlas.uvData != null) {

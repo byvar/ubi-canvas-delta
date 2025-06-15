@@ -13,7 +13,6 @@ public class UnityPatchEditor : MonoBehaviour {
 	public AnimPatchBank pbk;
 	public int templateIndex;
 	public TextureCooked texture;
-	public Mesh bakedMesh;
 	public UnityBone[] bones;
 	public int[] updateOrder;
 	public List<UnityPatchPointEditor> points = new List<UnityPatchPointEditor>();
@@ -22,8 +21,8 @@ public class UnityPatchEditor : MonoBehaviour {
 	public Vec2d UVScaleInverse => Vec2d.One / UVScale;
 	public AnimTemplate Template => pbk.templates[templateIndex];
 	private Dictionary<PatchPointLine, LineRenderer> lines = new Dictionary<PatchPointLine, LineRenderer>();
-	public bool Changed { get; set; } = false;
-	public bool autoSync = true;
+	private bool changed = false;
+	public UnityPatchRenderer PatchRenderer;
 
 	private void Start() {
 		CreateMesh();
@@ -40,63 +39,52 @@ public class UnityPatchEditor : MonoBehaviour {
 		foreach (var l in lines) {
 			UpdateLinePositions(l.Value, l.Key);
 		}
-		if (Changed && autoSync) {
-			Changed = false;
+		if (changed) {
+			changed = false;
 			Sync();
 		}
 	}
 
 	void Sync() {
+		if (Controller.Obj.playAnimations) return; // Happens automatically in this case
 		var unityAnimations = FindObjectsOfType<UnityAnimation>().Where(a => a.AllPatchBanks != null && a.AllPatchBanks.Any(p => p.PBK == pbk));
 		if (unityAnimations.Any()) {
 			var tpl = Template;
 			foreach (var ua in unityAnimations) {
-				ua.ResetPatches(pbkFilter: p => p.PBK == pbk, templateFilter: p => p == tpl);
+				ua.ForceUpdatePatches = true; //.ForceUpdatePatches(pbkFilter: p => p.PBK == pbk, templateFilter: p => p == tpl);
 			}
 		}
 	}
 
 	void CreateMesh() {
 		var tpl = Template;
-		var mesh = tpl.CreateMesh();
-		if (mesh != null) {
-			/*GameObject patch_gao = new GameObject($"{patchIndex} [ {pbk.templateKeys.GetKey(patchIndex).ToString(pbk.UbiArtContext, shortString: true)} ]");
-			//patch_gao.transform.SetParent(gao.transform, false);
-			patch_gao.transform.localPosition = Vector3.zero;
-			patch_gao.transform.localRotation = Quaternion.identity;
-			patch_gao.transform.localScale = Vector3.one;
-			patch_gao.transform.SetParent(transform, false);*/
-			var patch_gao = gameObject;
+		
+		var patch_gao = gameObject;
+		var mesh_bones = tpl.GetBonesLocal(tpl.UbiArtContext, null, patch_gao);
+		updateOrder = tpl.GetBonesUpdateOrder(null);
+		for(int i = 0; i < mesh_bones.Length; i++) {
+			var bone = mesh_bones[i];
+			bone.PBKBone = tpl.bonesDyn[i];
+			bone.IsPBKEditor = true;
+			bone.visualize = true;
+		}
+		bones = mesh_bones;
+		Material tex_mat = UbiArt.ITF.GFXMaterialShader_Template.GetShaderMaterial();
 
-			//UnityBone[] mesh_bones = at.GetBones(c, mesh, skeleton_gao, skeleton, bones);
-			var mesh_bones = tpl.GetBonesLocal(tpl.UbiArtContext, mesh, patch_gao);
-			updateOrder = tpl.GetBonesUpdateOrder(null);
-			for(int i = 0; i < mesh_bones.Length; i++) {
-				var bone = mesh_bones[i];
-				bone.PBKBone = tpl.bonesDyn[i];
-				bone.IsPBKEditor = true;
-				bone.visualize = true;
-			}
-			bones = mesh_bones;
-			Material tex_mat = UbiArt.ITF.GFXMaterialShader_Template.GetShaderMaterial();
-			//Transform[] mesh_bones = at.GetBones(mesh, skeleton_gao, skeleton, bones);
-			//MeshFilter mf = patch_gao.AddComponent<MeshFilter>();
-			//mf.sharedMesh = mesh;
-			SkinnedMeshRenderer smr = patch_gao.AddComponent<SkinnedMeshRenderer>();
-			smr.bones = mesh_bones.Select(b => b != null ? b.transform : null).ToArray();
-			smr.sharedMaterial = tex_mat;
-			smr.sharedMesh = mesh;
-			bakedMesh = new Mesh();
-			smr.BakeMesh(bakedMesh, false);
-			
-			Destroy(smr); // Get rid of skinned mesh render
+		UnityPatchRenderer pr = patch_gao.AddComponent<UnityPatchRenderer>();
+		pr.Skeleton = null;
+		pr.Bones = bones;
+		pr.AnimTemplate = tpl;
+		pr.IsPBKEditor = true;
+		PatchRenderer = pr;
 
-			MeshRenderer mr = patch_gao.AddComponent<MeshRenderer>();
+		var bounds = new Bounds(Vector3.zero, Vector3.one * 20);
+
+		pr.Init(hLevel: 15, vLevel: 15); // Higher res to match lines from Atlas Editor
+		var mpb = new MaterialPropertyBlock();
+		pr.ProcessRenderers(mr => {
+			mr.localBounds = bounds;
 			mr.sharedMaterial = tex_mat;
-			MeshFilter mf = patch_gao.AddComponent<MeshFilter>();
-			mf.sharedMesh = bakedMesh;
-
-			var mpb = new MaterialPropertyBlock();
 			mr.GetPropertyBlock(mpb, 0);
 
 			UbiArt.ITF.GFXPrimitiveParam.FillMaterialParamsDefault(tpl.UbiArtContext, mpb, alpha: 1f);
@@ -107,11 +95,12 @@ public class UnityPatchEditor : MonoBehaviour {
 			mpb.SetTexture("_Diffuse", t.Texture);
 			mpb.SetVector("_Diffuse_ST", new Vector4(1, t.HeightFactor, 0, 0));
 			mr.SetPropertyBlock(mpb, 0);
+		});
+		pr.FillUnityMaterialPropertyBlock();
 
-			//FillMaterialParams(mr);
-			//SetMaterialTextures(bank.TextureBankPath.textureSet, mr);
-			//FillUnityMaterialPropertyBlock(mr, shader: bank?.TextureBankPath?.shader?.obj);
-		}
+		//FillMaterialParams(mr);
+		//SetMaterialTextures(bank.TextureBankPath.textureSet, mr);
+		//FillUnityMaterialPropertyBlock(mr, shader: bank?.TextureBankPath?.shader?.obj);
 	}
 
 	void CreatePoints() {
@@ -137,8 +126,7 @@ public class UnityPatchEditor : MonoBehaviour {
 			points.Add(ppe);
 		}
 		List<Link> pointLinks = atl.patches.SelectMany(p => p.points).Distinct().ToList();
-		Vector3[] vertices = null;
-		if(bakedMesh != null) vertices = bakedMesh.vertices;
+
 		for (int i = 0; i < pointLinks.Count; i++) {
 			//var p = atl.GetPointFromLink(pointLinks[i]);
 			var p = atl.patchPoints.FindItemIndex(pp => pp.key == pointLinks[i]);
@@ -147,10 +135,7 @@ public class UnityPatchEditor : MonoBehaviour {
 			var globalPos = unityPoint.GlobalPosition;
 			var unityPos = new Vector3(globalPos.x, globalPos.y, 0f);
 			unityPoint.transform.localPosition = unityPos;
-			unityPoint.vertices.Add(i);
-			vertices[i] = unityPos;
 		}
-		if (bakedMesh != null) bakedMesh.vertices = vertices;
 		RecalculatePointTransformations();
 	}
 
@@ -187,21 +172,15 @@ public class UnityPatchEditor : MonoBehaviour {
 		}
 	}
 	public void ResetUVs() {
-		if (bakedMesh != null) {
-			var atl = Template;
-			List<Link> pointLinks = atl.patches.SelectMany(p => p.points).Distinct().ToList();
-			var uvs = bakedMesh.uv;
-			//var verts = bakedMesh.vertices;
-			for (int i = 0; i < pointLinks.Count; i++) {
-				//var p = atl.GetPointFromLink(pointLinks[i]);
-				var p = atl.patchPoints.FindItemIndex(pp => pp.key == pointLinks[i]);
-				if (p == -1) continue;
-				uvs[i] = atl.patchPoints[p].uv.GetUnityVector();
-				//verts[i] = points[p].GlobalPosition.GetUnityVector();
-			}
-			bakedMesh.uv = uvs;
-			//bakedMesh.vertices = verts;
-		}
+		SetChanged();
+	}
+
+	public void SetChanged() {
+		changed = true;
+		UpdateMesh();
+	}
+	public void UpdateMesh() {
+		PatchRenderer.UpdateBuffer(updateUV: true);
 	}
 
 	void CreateLines() {

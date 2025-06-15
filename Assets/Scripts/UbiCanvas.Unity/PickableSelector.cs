@@ -30,41 +30,42 @@ public class PickableSelector : MonoBehaviour {
             System.Array.Sort(hits, (x, y) => (x.distance.CompareTo(y.distance))); // Sort on distance to the camera
 			System.Array.Sort(hits, (x, y) => (Get2DDistanceToOrigin(x).CompareTo(Get2DDistanceToOrigin(y)))); // After this, sort on distance of impact point to transform
 			var friseEditor = FindObjectOfType<UnityHandleManager>();
-            if (controller.displayGizmos) {
-                for (int i = 0; i < hits.Length; i++) {
+			for (int i = 0; i < hits.Length; i++) {
+				var patchRenderer = hits[i].transform.GetComponent<UnityPatchRenderer>();
+				if (controller.displayGizmos || patchRenderer != null) {
 					// the object identified by hit.transform was clicked
 					UnityHandle handle = hits[i].transform.GetComponentInParent<UnityHandle>();
-                    if (handle != null) {
-                        if (UnityEngine.Input.GetMouseButtonDown(0)) {
-                            IsSelecting = true;
-                        }
-                        if (IsSelecting) {
-                            if (cam.IsPanningWithThreshold()) {
-                                IsSelecting = false;
-                            } else {
-                                friseEditor.SelectedPoint = handle;
-                            }
-                        }
-                        break;
-                    }
-                    UnityPickable pb = hits[i].transform.GetComponentInParent<UnityPickable>();
-                    if (pb != null) {
-                        highlighted = pb;
-                        if (UnityEngine.Input.GetMouseButtonDown(0)) {
-                            IsSelecting = true;
-                        }
-                        //UpdateHighlight();
-                        if (IsSelecting) {
-                            if (cam.IsPanningWithThreshold()) {
-                                IsSelecting = false;
-                            } else if (UnityEngine.Input.GetMouseButtonUp(0)) {
-                                Select(pb, view: true);
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
+					if (handle != null) {
+						if (UnityEngine.Input.GetMouseButtonDown(0)) {
+							IsSelecting = true;
+						}
+						if (IsSelecting) {
+							if (cam.IsPanningWithThreshold()) {
+								IsSelecting = false;
+							} else {
+								friseEditor.SelectedPoint = handle;
+							}
+						}
+						break;
+					}
+					UnityPickable pb = hits[i].transform.GetComponentInParent<UnityPickable>();
+					if (pb != null) {
+						highlighted = pb;
+						if (UnityEngine.Input.GetMouseButtonDown(0)) {
+							IsSelecting = true;
+						}
+						//UpdateHighlight();
+						if (IsSelecting) {
+							if (cam.IsPanningWithThreshold()) {
+								IsSelecting = false;
+							} else if (UnityEngine.Input.GetMouseButtonUp(0)) {
+								Select(pb, view: true);
+							}
+						}
+						break;
+					}
+				}
+			}
         }
     }
 
