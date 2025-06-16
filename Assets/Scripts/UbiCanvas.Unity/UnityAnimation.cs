@@ -560,23 +560,23 @@ public class UnityAnimation : MonoBehaviour {
 						break;
 					}
 				}
-				if (bl.amountZAL > 0) { // Z ALpha
-					for (int p = 0; p < bl.amountZAL; p++) {
-						AnimTrackBoneZAL zal = animTrack.boneZAL[bl.startZAL + p];
-						AnimTrackBoneZAL next = p < bl.amountZAL - 1 ? animTrack.boneZAL[bl.startZAL + ((p + 1) % bl.amountZAL)] : null; // Don't interpolate with start frame
-						if (p == bl.amountZAL - 1 || (currentFrame >= zal.frame && currentFrame < next.frame)) {
-							float z = zal.z;
-							float alpha = zal.alpha / 255f;
-							if (next != null && next != zal) {
-								float nextFrame = next.frame < zal.frame ? next.frame + animTrack.length : next.frame;
-								float lerp = (currentFrame - zal.frame) / (nextFrame - zal.frame);
-								z = Mathf.Lerp(z, next.z, lerp);
-								alpha = Mathf.Lerp(alpha, next.alpha / 255f, lerp);
-							}
-							bones[i].localZ = z;
-							bones[i].localAlpha = alpha;
-							break;
+			}
+			if (bl.amountZAL > 0) { // Z ALpha
+				for (int p = 0; p < bl.amountZAL; p++) {
+					AnimTrackBoneZAL zal = animTrack.boneZAL[bl.startZAL + p];
+					AnimTrackBoneZAL next = p < bl.amountZAL - 1 ? animTrack.boneZAL[bl.startZAL + ((p + 1) % bl.amountZAL)] : null; // Don't interpolate with start frame
+					if (p == bl.amountZAL - 1 || (currentFrame >= zal.frame && currentFrame < next.frame)) {
+						float z = zal.z;
+						float alpha = zal.alpha / 255f;
+						if (next != null && next != zal) {
+							float nextFrame = next.frame < zal.frame ? next.frame + animTrack.length : next.frame;
+							float lerp = (currentFrame - zal.frame) / (nextFrame - zal.frame);
+							z = Mathf.Lerp(z, next.z, lerp);
+							alpha = Mathf.Lerp(alpha, next.alpha / 255f, lerp);
 						}
+						bones[i].localZ = z;
+						bones[i].localAlpha = alpha;
+						break;
 					}
 				}
 			}

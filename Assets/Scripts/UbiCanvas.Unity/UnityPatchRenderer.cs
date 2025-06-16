@@ -229,8 +229,8 @@ public class UnityPatchRenderer : MonoBehaviour {
 		var rotated = scaled.Rotate(boneAngle);
 		var translated = rotated + new Vec2d(bonePos.x, bonePos.y);
 
-		//var scaleSign = Mathf.Sign(boneScale.x * boneScale.y);
-		var scaleSign = Mathf.Sign(boneScale.y);
+		var scaleSign = Mathf.Sign(boneScale.x * boneScale.y);
+		//var scaleSign = Mathf.Sign(boneScale.y);
 
 		var globalNormal = (point.Point.local.normal * new Vec2d(scaleSign, 1)).Rotate(boneAngle);
 
