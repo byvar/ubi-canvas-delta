@@ -17,12 +17,16 @@ public class UnityPatchPointEditor : MonoBehaviour {
 		patch.Template.patchPoints[pointIndex] : null;
 	public Vec2d GlobalNormal {
 		get {
+			var boneScale = bone?.globalScale ?? Vector2.one;
+			var scaleSign = Mathf.Sign(boneScale.x * boneScale.y);
 			var globalAngle = (bone?.globalAngle ?? 0f);
-			return Point.local.normal.Rotate(globalAngle);
+			return (Point.local.normal * new Vec2d(scaleSign, 1)).Rotate(globalAngle);
 		}
 		set {
+			var boneScale = bone?.globalScale ?? Vector2.one;
+			var scaleSign = Mathf.Sign(boneScale.x * boneScale.y);
 			var globalAngle = (bone?.globalAngle ?? 0f);
-			Point.local.normal = value.Rotate(-globalAngle);
+			Point.local.normal = value.Rotate(-globalAngle) * new Vec2d(scaleSign, 1);
 		}
 	}
 	public Vec2d GlobalPosition {

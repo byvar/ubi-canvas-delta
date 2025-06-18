@@ -144,11 +144,11 @@ public class UnityWindowAtlasEditor : UnityWindow {
 					DrawCubicBezier(handleSize, z, BezierHelpers.GetControlPoints<UnityPatchPointEditor>(
 						unityPoints[0],
 						unityPoints[2],
-						p => new Vec2d(p.transform.position.x, p.transform.position.y), p => p.GlobalNormal.Rotate(-patchEditorRot), flip: true));
+						p => new Vec2d(p.transform.position.x, p.transform.position.y), p => p.GlobalNormal.Rotate(-patchEditorRot), flip0: true, flip1: true));
 					DrawCubicBezier(handleSize, z, BezierHelpers.GetControlPoints<UnityPatchPointEditor>(
 						unityPoints[3],
 						unityPoints[1],
-						p => new Vec2d(p.transform.position.x, p.transform.position.y), p => p.GlobalNormal.Rotate(-patchEditorRot), flip: true));
+						p => new Vec2d(p.transform.position.x, p.transform.position.y), p => p.GlobalNormal.Rotate(-patchEditorRot), flip0: true, flip1: true));
 					AddBoundary(patch.points[0], patch.points[1]);
 					AddBoundary(patch.points[2], patch.points[3]);
 				}

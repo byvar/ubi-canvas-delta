@@ -46,7 +46,7 @@ public class UnityPatchRenderer : MonoBehaviour {
 		public AnimPatch Patch { get; set; }
 		public int Index { get; set; }
 		public float Z { get; set; }
-		public bool IsFlipped { get; set; }
+		//public bool IsFlipped { get; set; }
 		public bool DrawPatch { get; set; }
 		public float Alpha { get; set; }
 		public PointData[] Points { get; set; }
@@ -127,7 +127,7 @@ public class UnityPatchRenderer : MonoBehaviour {
 			//patch.Z = patch.Points.FirstOrDefault()?.Z ?? 0f;//(p => p.Z);
 			patch.Z = patch.Points.Average(p => p.Z);
 			patch.Alpha = patch.Points.Average(p => p.Alpha);
-			patch.IsFlipped = patch.Points.Any(p => p.IsFlipped);
+			//patch.IsFlipped = patch.Points.Any(p => p.IsFlipped);
 			patch.DrawPatch = patch.Points.All(p => p.BoneExists);
 			//patch.GameObject.name = $"{patch.Index} - {patch.Z} | S{patch.Points.Average(p => p.ZSkeleton)} | L{patch.Points.Average(p => p.ZLocal)} | T{patch.Points.Average(p => p.ZTemplate)}";
 			if(patch.GameObject.activeSelf != patch.DrawPatch)
@@ -153,11 +153,13 @@ public class UnityPatchRenderer : MonoBehaviour {
 					new Vec2d(p0.Position.x, p0.Position.y),
 					new Vec2d(p1.Position.x, p1.Position.y),
 					new Vec2d(p0.Normal.x, p0.Normal.y),
-					new Vec2d(p1.Normal.x, p1.Normal.y), flip: flip);
+					new Vec2d(p1.Normal.x, p1.Normal.y),
+					flip0: p0.IsFlipped ^ flip,
+					flip1: p1.IsFlipped ^ flip);
 				if (updateUV) {
 					var cpUV = BezierHelpers.GetControlPoints(
 						p0.Point.uv, p1.Point.uv,
-						p0.Point.normal, p1.Point.normal, flip: flipUV);
+						p0.Point.normal, p1.Point.normal, flip0: flipUV, flip1: flipUV);
 					for (int i = 0; i < 4; i++) {
 						patch.patchPoints[start + i] = new Vector4(cpPos[i].x, cpPos[i].y, cpUV[i].x, cpUV[i].y);
 					}
@@ -167,10 +169,10 @@ public class UnityPatchRenderer : MonoBehaviour {
 					}
 				}
 			}
-			bool patchFlipped = patch.IsFlipped;
+			//bool patchFlipped = patch.IsFlipped;
 			//bool flipPos = false;//points[0].IsFlipped != points[1].IsFlipped;
-			DoForIndices(0, 2, 0, flip: !patch.IsFlipped, flipUV: false);
-			DoForIndices(1, 3, 4, flip: patch.IsFlipped, flipUV: true);
+			DoForIndices(0, 2, 0, flip: true, flipUV: false);
+			DoForIndices(1, 3, 4, flip: false, flipUV: true);
 			patch.SetData();
 			/*var cpPos = BezierHelpers.GetControlPoints(
 				p0.local.pos, p1.local.pos,
@@ -224,12 +226,13 @@ public class UnityPatchRenderer : MonoBehaviour {
 				tplScale.y, // Why (y,x)?
 				tplScale.x);
 		}
+		Vec2d localBoneScale = boneDynLocal.scale;
 
 		var scaled = (point.Point.local.pos) * boneScale / tplScale;
 		var rotated = scaled.Rotate(boneAngle);
 		var translated = rotated + new Vec2d(bonePos.x, bonePos.y);
 
-		var scaleSign = Mathf.Sign(boneScale.x * boneScale.y);
+		var scaleSign = Mathf.Sign(boneScale.x * boneScale.y) * Mathf.Sign(localBoneScale.x * localBoneScale.y);
 		//var scaleSign = Mathf.Sign(boneScale.y);
 
 		var globalNormal = (point.Point.local.normal * new Vec2d(scaleSign, 1)).Rotate(boneAngle);
@@ -237,7 +240,7 @@ public class UnityPatchRenderer : MonoBehaviour {
 		point.Position = translated;
 		point.Normal = globalNormal;
 		point.Z = bone.globalZ; // It doesn't seem to use the template Z value! :(
-		point.IsFlipped = boneScale.x < 0;
+		point.IsFlipped = (boneScale.x * localBoneScale.x) < 0;
 		point.Alpha = bone.bindAlpha + bone.localAlpha;
 
 		point.ZLocal = bone.localZ;

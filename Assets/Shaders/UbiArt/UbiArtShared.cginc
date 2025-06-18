@@ -10,6 +10,7 @@ UNITY_DEFINE_INSTANCED_PROP(uniform float4, _LightConfig);
 UNITY_DEFINE_INSTANCED_PROP(uniform float4, _ColorFog);
 UNITY_DEFINE_INSTANCED_PROP(uniform float4, _PrimitiveParams1);
 UNITY_DEFINE_INSTANCED_PROP(uniform float4, _VertexAnimParams);
+UNITY_DEFINE_INSTANCED_PROP(uniform float4, _VertexAnimParams2);
 
 UNITY_DEFINE_INSTANCED_PROP(uniform float4, _UseTextures); // Textures
 UNITY_DEFINE_INSTANCED_PROP(uniform float4, _UseTextures2);
@@ -99,8 +100,9 @@ v2f process_vert(appdata v) {
 	o.uv3 = v.texcoord2;
 	o.uv4 = v.texcoord3;
 	
-	float4 vertexAdd = float4(0.0 , 0.0, 0.0, 0.0);
-	if(_VertexAnimParams.x >= 1) {
+    float4 vertexAdd = float4(0.0, 0.0, 0.0, 0.0);
+    float4 VertexAnimParams = UNITY_ACCESS_INSTANCED_PROP(Props, _VertexAnimParams);
+	if(VertexAnimParams.x >= 1) {
 		// Based on Origins PC shader: frize_PNC3T_VS
 		/*
 		g_vconst1.x = cos( (timeCur *global_speed) +global_sync )
@@ -115,11 +117,11 @@ v2f process_vert(appdata v) {
 
 		uv3.x = amplitude X vertex
 		uv3.y = amplitude Y vertex
-		uv3.z = cos( synchro_vertex). RL: not cos
-		uv3.w = sin( synchro_vertex). RL: not sin
+		uv3.z = cos( synchro_vertex). RL: vertex time offset
+		uv3.w = sin( synchro_vertex). RL: vertex rotation offset
 
-		uv4.x = cos( angle_vertex)
-		uv4.y = sin( angle_vertex)
+		uv4.x = cos( angle_vertex). RL: no longer used?
+		uv4.y = sin( angle_vertex). RL: no longer used?
 		*/
 		// Animate vertex position
 		float timeCur = _Time.y;
@@ -127,40 +129,50 @@ v2f process_vert(appdata v) {
 		float global_speed =  _VertexAnimParams.z;
 		float global_rotation = timeCur * _VertexAnimParams.w;
         float global_time = (timeCur * global_speed) + global_sync;
-		float4 g_vconst1 = float4(
-			cos( global_time ),
-			sin( global_time ),
-			cos( global_rotation ),
-			sin( global_rotation ));
 
 		float4 uv2 = o.uv2;
 		float4 uv3 = o.uv3;
 		float2 uv4 = o.uv4;
+        
+        float cosAngle, sinAngle;
+        float x1, y1, x2, y2;
+        
 		if(_VertexAnimParams.x >= 2) { // RL
-			uv2.z = cos(uv2.z);
-			uv2.w = sin(uv2.w);
-			float synchro_vertex = uv3.z;
-			uv3.z = cos(synchro_vertex);
-			uv3.w += sin(synchro_vertex);
-		}
-
-		float cosTime = g_vconst1.x * uv3.z - g_vconst1.y * uv3.w;                  
-		float sinTime = g_vconst1.y * uv3.z + g_vconst1.x * uv3.w;
+            float4 VertexAnimParams2 = UNITY_ACCESS_INSTANCED_PROP(Props, _VertexAnimParams2);
+            
+            // From Rayman Adventures readable fxb shaders
+            float time = global_time + uv3.z;
+            float angle = uv3.w + global_rotation;
+            
+            x1 = (cos(((time * uv2.x) + uv2.z)) * uv3.x) * VertexAnimParams2.x;
+            y1 = (sin(((time * uv2.y) + uv2.w)) * uv3.y) * VertexAnimParams2.x;
+            
+            cosAngle = cos(angle);
+            sinAngle = sin(angle);
+        }
+        else
+        {
+            float4 g_vconst1 = float4(
+				cos(global_time),
+				sin(global_time),
+				cos(global_rotation),
+				sin(global_rotation));
+			
+			// Rotate time by synchro_vertex
+            float cosTime = g_vconst1.x * uv3.z - g_vconst1.y * uv3.w;
+            float sinTime = g_vconst1.y * uv3.z + g_vconst1.x * uv3.w;
                      
-		float x1 = (cosTime * uv2.x + uv2.z) * uv3.x;
-		float y1 = (sinTime * uv2.y + uv2.w) * uv3.y;
+            x1 = (cosTime * uv2.x + uv2.z) * uv3.x;
+            y1 = (sinTime * uv2.y + uv2.w) * uv3.y;
+            
+            cosAngle = uv4.x * g_vconst1.z - uv4.y * g_vconst1.w;
+            sinAngle = uv4.x * g_vconst1.w + uv4.y * g_vconst1.z;
+        }
 
-		if(uv4.x == 0 && uv4.y == 0) {
-			vertexAdd = float4(x1, y1, 0, 0);
-		} else {
-			float cosAngle = uv4.x * g_vconst1.z - uv4.y * g_vconst1.w;
-			float sinAngle = uv4.x * g_vconst1.w + uv4.y * g_vconst1.z;
-
-			float x2 = x1 * cosAngle - y1 * sinAngle;
-			float y2 = x1 * sinAngle + y1 * cosAngle;
-			vertexAdd = float4(x2, y2, 0, 0);
-		}
-	}
+        x2 = x1 * cosAngle - y1 * sinAngle;
+        y2 = x1 * sinAngle + y1 * cosAngle;
+        vertexAdd = float4(x2, y2, 0, 0);
+    }
 
 	
 	float4 BezierParams = UNITY_ACCESS_INSTANCED_PROP(Props, _BezierParams);

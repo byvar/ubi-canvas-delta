@@ -287,7 +287,13 @@ namespace UbiArt.ITF {
 			}
 
 			if (useAnim) {
-				mpb.SetVector("_VertexAnimParams", new Vector4(UbiArtContext.Settings.EngineVersion >= EngineVersion.RL ? 2f : 1f, Anim_SyncGlobal, (config?.obj?.VertexAnim?.animGlobalSpeed ?? 1f) * animSpeedFactor, (config?.obj?.VertexAnim?.animGlobalRotSpeed ?? 1f)));
+				mpb.SetVector("_VertexAnimParams", new Vector4(
+					UbiArtContext.Settings.EngineVersion >= EngineVersion.RL ? 2f : 1f,
+					Anim_SyncGlobal,
+					(config?.obj?.VertexAnim?.animGlobalSpeed ?? 1f) * animSpeedFactor,
+					(config?.obj?.VertexAnim?.animGlobalRotSpeed ?? 1f)));
+				mpb.SetVector("_VertexAnimParams2", new Vector4(
+					animAmplitudeFactor, 0, 0, 0));
 			}
 
 			r.SetPropertyBlock(mpb, index);
