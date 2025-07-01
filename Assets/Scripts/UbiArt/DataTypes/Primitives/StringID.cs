@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace UbiArt {
@@ -23,92 +24,73 @@ namespace UbiArt {
 		}
 
 		public StringID(string str) : this(str != null ? ASCIIEncoding.ASCII.GetBytes(str) : null) {}
-		public StringID(byte[] array) {
+		public StringID(byte[] array, uint? length = null) {
 			if (array == null) {
 				stringID = 0xFFFFFFFF;
 				return;
 			}
-
-
-			uint v2; // r11@1
-			uint v3; // r4@1
-			uint pos; // r9@1
-			uint left; // r10@1
-			uint v6; // r6@1
-			uint v0; // r5@1
-			uint v15; // r5@3
-			uint v23; // r4@3
-			uint v31; // r0@3
-			uint v32; // r5@3
-			uint v33; // r4@3
-			uint v34; // r3@3
-			uint v35; // r5@3
-			uint v36; // r4@3
-			uint v37; // r3@3
-			uint v38; // r6@4
-			uint v39; // r2@16
-			uint v40; // r3@16
-			uint v41; // r0@16
-			uint v42; // r2@16
-			uint v43; // r3@16
-			uint v44; // r0@16
-			uint v45; // r2@16
-			uint v46;
-			uint length = (uint)array.Length;
-			v2 = length;
-			v0 = 0x9E3779B9;
-			v3 = 0x9E3779B9;
-			pos = 0;
-			v6 = 0;
-			uint[] upper = new uint[length];
-			for (int j = 0; j < length; j++) {
-				upper[j] = ToUp(array[j]);
+			if (!length.HasValue) {
+				length = (uint)array.Length;
 			}
+
+
+			// Jenkins lookup3 hash but with different init values
+			const uint InitVal = 0x9E3779B9; // Golden ratio
+			uint a = InitVal, b = InitVal, c = 0;
+			uint pos = 0;
+
+			// Reuse the same array for performance
+			byte[] upper = array;
+
+			// StringID is generated for uppercase strings only
+			for (int i = 0; i < length; i++) {
+				upper[i] = ToUp(array[i]);
+			}
+
+			// Process 12-byte blocks
 			while (pos + 12 <= length) {
-				v15 = upper[pos + 0] + v0 + (upper[pos + 1] << 8) + (upper[pos + 2] << 16) + (upper[pos + 3] << 24);
-				v23 = upper[pos + 4] + v3 + (upper[pos + 5] << 8) + (upper[pos + 6] << 16) + (upper[pos + 7] << 24);
-				v31 = upper[pos + 8] + v6 + (upper[pos + 9] << 8) + (upper[pos + 10] << 16) + (upper[pos + 11] << 24);
-				v32 = (v15 - v23 - v31) ^ (v31 >> 13);
-				v33 = (v23 - v31 - v32) ^ (v32 << 8);
-				v34 = (v31 - v32 - v33) ^ (v33 >> 13);
-				v35 = (v32 - v33 - v34) ^ (v34 >> 12);
-				v36 = (v33 - v34 - v35) ^ (v35 << 16);
-				v37 = (v34 - v35 - v36) ^ (v36 >> 5);
-				v0 = (v35 - v36 - v37) ^ (v37 >> 3);
-				v3 = (v36 - v37 - v0) ^ (v0 << 10);
-				v6 = (v37 - v0 - v3) ^ (v3 >> 15);
+				a += upper[pos] | (uint)(upper[pos + 1] << 8) | (uint)(upper[pos + 2] << 16) | (uint)(upper[pos + 3] << 24);
+				b += upper[pos + 4] | (uint)(upper[pos + 5] << 8) | (uint)(upper[pos + 6] << 16) | (uint)(upper[pos + 7] << 24);
+				c += upper[pos + 8] | (uint)(upper[pos + 9] << 8) | (uint)(upper[pos + 10] << 16) | (uint)(upper[pos + 11] << 24);
+
+				Mix(ref a, ref b, ref c);
 				pos += 12;
 			}
-			v38 = v6 + v2;
-			left = length - pos;
-			if (left > 0) {
-				if (left >= 11) v38 += upper[pos + 10] << 24;
-				if (left >= 10) v38 += upper[pos + 9] << 16;
-				if (left >= 9) v38 += upper[pos + 8] << 8;
-				if (left >= 8) v3 += upper[pos + 7] << 24;
-				if (left >= 7) v3 += upper[pos + 6] << 16;
-				if (left >= 6) v3 += upper[pos + 5] << 8;
-				if (left >= 5) v3 += upper[pos + 4];
-				if (left >= 4) v0 += upper[pos + 3] << 24;
-				if (left >= 3) v0 += upper[pos + 2] << 16;
-				if (left >= 2) v0 += upper[pos + 1] << 8;
-				if (left >= 1) v0 += upper[pos + 0];
+
+			// Remaining bytes
+			c += length.Value;
+			switch (length - pos) {
+				case 11: c += (uint)upper[pos + 10] << 24; goto case 10;
+				case 10: c += (uint)upper[pos + 9] << 16; goto case 9;
+				case 9: c += (uint)upper[pos + 8] << 8; goto case 8;
+				case 8: b += (uint)upper[pos + 7] << 24; goto case 7;
+				case 7: b += (uint)upper[pos + 6] << 16; goto case 6;
+				case 6: b += (uint)upper[pos + 5] << 8; goto case 5;
+				case 5: b += upper[pos + 4]; goto case 4;
+				case 4: a += (uint)upper[pos + 3] << 24; goto case 3;
+				case 3: a += (uint)upper[pos + 2] << 16; goto case 2;
+				case 2: a += (uint)upper[pos + 1] << 8; goto case 1;
+				case 1: a += upper[pos + 0]; break;
 			}
-			v39 = (v0 - v3 - v38) ^ (v38 >> 13);
-			v40 = (v3 - v38 - v39) ^ (v39 << 8);
-			v41 = (v38 - v39 - v40) ^ (v40 >> 13);
-			v42 = (v39 - v40 - v41) ^ (v41 >> 12);
-			v43 = (v40 - v41 - v42) ^ (v42 << 16);
-			v44 = (v41 - v42 - v43) ^ (v43 >> 5);
-			v45 = (v42 - v43 - v44) ^ (v44 >> 3);
-			v46 = (v43 - v44 - v45) ^ (v45 << 10);
-			stringID = (v44 - v45 - v46) ^ (v46 >> 15);
+
+			Mix(ref a, ref b, ref c);
+			stringID = c;
 		}
-		static uint ToUp(uint result) {
-			if (result >= 97 && result <= 97 + 0x19) {
-				result = result - 32;
-			}
-			return result;
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		static byte ToUp(byte c) {
+			return (c >= 'a' && c <= 'z') ? (byte)(c - 32) : c;
+		}
+		// Jenkins lookup3 mix function
+		private static void Mix(ref uint a, ref uint b, ref uint c) {
+			a -= b; a -= c; a ^= (c >> 13);
+			b -= c; b -= a; b ^= (a << 8);
+			c -= a; c -= b; c ^= (b >> 13);
+			a -= b; a -= c; a ^= (c >> 12);
+			b -= c; b -= a; b ^= (a << 16);
+			c -= a; c -= b; c ^= (b >> 5);
+			a -= b; a -= c; a ^= (c >> 3);
+			b -= c; b -= a; b ^= (a << 10);
+			c -= a; c -= b; c ^= (b >> 15);
 		}
 		public static implicit operator StringID(string s) {
 			return new StringID(s);

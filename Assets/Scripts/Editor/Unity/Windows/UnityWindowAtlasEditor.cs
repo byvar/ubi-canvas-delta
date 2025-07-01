@@ -1173,7 +1173,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 					if (newEndPos != endPos) {
 						var newEndposTex = GetTexturePos(newEndPos).GetUbiArtVector();
 						var newNormal = (newEndposTex - point.uv) / NormalLength;
-						var normalized = newNormal.Normalize();
+						var normalized = newNormal.NormalizeDouble();
 						point.normal = normalized;
 						if (hasPatchEditors) {
 							if (isBatchDragUVOnly) {
@@ -1503,7 +1503,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 			foreach (var point in template.patchPoints) {
 				if (rot != 0) {
 					point.uv = center + ((point.uv - center).Rotate(Mathf.Deg2Rad * rot));
-					point.normal = point.normal.Rotate(Mathf.Deg2Rad * rot).Normalize();
+					point.normal = point.normal.Rotate(Mathf.Deg2Rad * rot).NormalizeDouble();
 				}
 				point.uv = point.uv * multiplier + add;
 			}

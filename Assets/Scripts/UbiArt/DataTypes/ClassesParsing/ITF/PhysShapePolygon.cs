@@ -11,7 +11,7 @@
 			for (int i = 0; i < count; i++) {
 				var pt1 = Points[i];
 				var pt2 = Points[(i+1) % count];
-				distances[i] = (float)(pt2 - pt1).Magnitude;
+				distances[i] = (pt2 - pt1).Norm;
 				if (distances[i] < 9.999999e-11) {
 					distances[i] = 0;
 					edge.Add(Vec2d.Zero);

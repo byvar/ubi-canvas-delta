@@ -272,6 +272,7 @@ B_Bar_Mouth
 B_Bar_Nose
 B_Bar_Eyes
 B_Bar_Helmet
+B_Bar_Helmet02
 B_Bar_Wing_01_L
 B_Bar_Wing_01_R
 B_Bar_Wing_02_L
@@ -287,6 +288,7 @@ B_Bar_Braid_03_R
 B_Bar_Braid_04_L
 B_Bar_Braid_04_R
 B_Bar_FX1
+B_Bar_Polyline_Punch
 B_Bar_SkirtBack
 B_Bar_Skirt_Back
 B_Bar_Skirt_Front

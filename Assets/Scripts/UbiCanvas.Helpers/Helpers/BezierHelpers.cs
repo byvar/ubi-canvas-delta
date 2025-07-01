@@ -21,7 +21,7 @@ namespace UbiCanvas.Helpers {
 			return CalculateCubicBezierPoint(t, points[0], points[1], points[2], points[3]);
 		}
 		public static Vec2d[] GetControlPoints(Vec2d point0, Vec2d point1, Vec2d normal0, Vec2d normal1, bool flip0 = false, bool flip1 = false) {
-			var N01 = (float)(point0 - point1).Magnitude * 0.5f;
+			var N01 = (float)(point0 - point1).NormDouble * 0.5f;
 			return new Vec2d[] {
 				point0,
 				point0 + new Vec2d(-normal0.y, normal0.x) * N01 * (flip0 ? -1 : 1),

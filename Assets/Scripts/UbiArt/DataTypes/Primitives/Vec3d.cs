@@ -27,7 +27,9 @@ namespace UbiArt {
 		public static Vec3d Invalid => new Vec3d(float.MaxValue, float.MaxValue, float.MaxValue);
 
 		[IgnoreDataMember]
-		public double Magnitude => Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2) + Math.Pow(z, 2));
+		public double NormDouble => Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2) + Math.Pow(z, 2));
+		[IgnoreDataMember]
+		public float Norm => MathF.Sqrt(x*x + y*y + z*z);
 
 		public static Vec3d operator +(Vec3d a, Vec3d b) => new Vec3d(a.x + b.x, a.y + b.y, a.z + b.z);
 		public static Vec3d operator -(Vec3d a, Vec3d b) => new Vec3d(a.x - b.x, a.y - b.y, a.z - b.z);
@@ -36,7 +38,14 @@ namespace UbiArt {
 		public static Vec3d operator *(Vec3d a, float b) => new Vec3d(a.x * b, a.y * b, a.z * b);
 		public static Vec3d operator /(Vec3d a, float b) => new Vec3d(a.x / b, a.y / b, a.z / b);
 		public static Vec3d operator -(Vec3d a) => new Vec3d(-a.x, -a.y, -a.z);
-		public Vec3d Normalize() => (x != 0 || y != 0 || z != 0) ? this / (float)Magnitude : this;
+		public Vec3d NormalizeDouble() => (x != 0 || y != 0 || z != 0) ? this / (float)NormDouble : this;
+		public Vec3d Normalize() {
+			var magnitudeFloat = Norm;
+			if (magnitudeFloat == 0)
+				return Vec3d.Zero;
+			else
+				return this / magnitudeFloat;
+		}
 
 		public static Vec3d Left => new Vec3d(-1, 0, 0);
 		public static Vec3d Right => new Vec3d(1, 0, 0);

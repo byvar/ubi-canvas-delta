@@ -26,7 +26,7 @@
 				if (nextEdge != null) {
 					EdgeVector = nextEdge.POS - AbsolutePosition;
 					EdgeDirection = EdgeVector.Normalize();
-					EdgeLength = (float)EdgeVector.Magnitude;
+					EdgeLength = EdgeVector.Norm;
 					EdgeNormal = new Vec2d(-EdgeDirection.y, EdgeDirection.x);
 				}
 			}

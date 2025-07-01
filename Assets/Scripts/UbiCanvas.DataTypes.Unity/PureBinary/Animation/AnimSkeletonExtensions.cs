@@ -45,6 +45,7 @@ namespace UbiArt.Animation {
 				unityBones[i].localScale = Vector2.one;
 				unityBones[i].localRotation = 0;
 				unityBones[i].bindZ = skl.bonesDyn[i].z;
+				unityBones[i].bindAlpha = skl.bonesDyn[i].alpha;
 				unityBones[i].localZ = 0;
 				unityBones[i].localAlpha = 0;
 				if (context.Settings.EngineVersion <= EngineVersion.RO) {

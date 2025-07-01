@@ -92,10 +92,18 @@ public class UnityAnimation : MonoBehaviour {
 				if (AABB == null) AABB = new AABB() { MIN = Vec2d.One * -10, MAX = Vec2d.One * 10 }; // Default AABB
 				var center = (AABB.MIN + AABB.MAX) / 2f;
 				var size = (AABB.MAX - AABB.MIN);
-				Bounds = new Bounds(center.GetUnityVector(), new Vector3(size.x, size.y, 1f) * 2);
+				Vector3 centerUnity = center.GetUnityVector();
+				var sizeUnity = new Vector3(size.x, size.y, 1f);
+				if(!IsValid(centerUnity)) centerUnity = Vector3.zero;
+				if(!IsValid(sizeUnity)) sizeUnity = new Vector3(10, 10, 1);
+				Bounds = new Bounds(centerUnity, sizeUnity * 2);
 				Bounds.Expand(10f);
 			}
 			return Bounds;
+		}
+		public static bool IsValid(Vector3 v) {
+			return !float.IsNaN(v.x) && !float.IsNaN(v.y) && !float.IsNaN(v.z) &&
+				   !float.IsInfinity(v.x) && !float.IsInfinity(v.y) && !float.IsInfinity(v.z);
 		}
 
 		public string ToString(bool single) {
@@ -707,7 +715,7 @@ public class UnityAnimation : MonoBehaviour {
 		int i = 0;
 		foreach (var patch in activePatches) {
 			if(patch?.Renderer == null) continue;
-			alc.FillMaterialParams(patch.Renderer, alpha: patch.Alpha);
+			alc.FillMaterialParams(patch.Renderer, alpha: 1f);//patch.Alpha);
 			zman.zDict[patch.Renderer] = transform.position.z - (i / 10000f);
 			if (Animation != null) {
 				patch.Renderer.localBounds = Animation.GetBounds();

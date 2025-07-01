@@ -48,7 +48,7 @@ public class UnityPatchRenderer : MonoBehaviour {
 		public float Z { get; set; }
 		//public bool IsFlipped { get; set; }
 		public bool DrawPatch { get; set; }
-		public float Alpha { get; set; }
+		//public float Alpha { get; set; }
 		public PointData[] Points { get; set; }
 
 		public GameObject GameObject { get; set; }
@@ -126,7 +126,7 @@ public class UnityPatchRenderer : MonoBehaviour {
 		foreach (var patch in Patches) {
 			//patch.Z = patch.Points.FirstOrDefault()?.Z ?? 0f;//(p => p.Z);
 			patch.Z = patch.Points.Average(p => p.Z);
-			patch.Alpha = patch.Points.Average(p => p.Alpha);
+			//patch.Alpha = patch.Points.Average(p => p.Alpha);
 			//patch.IsFlipped = patch.Points.Any(p => p.IsFlipped);
 			patch.DrawPatch = patch.Points.All(p => p.BoneExists);
 			//patch.GameObject.name = $"{patch.Index} - {patch.Z} | S{patch.Points.Average(p => p.ZSkeleton)} | L{patch.Points.Average(p => p.ZLocal)} | T{patch.Points.Average(p => p.ZTemplate)}";
@@ -140,10 +140,11 @@ public class UnityPatchRenderer : MonoBehaviour {
 			//for(int i = 0; i < patchesSorted.Length; i++) {
 			//var patch = patchesSorted[i];
 			if (!patch.DrawPatch || patch.Patch?.points?.Length != 4) continue;
-			for (int j = 0; j < 4; j++) {
-				patch.colorTable[j] = Vector4.one;
-			}
 			var points = patch.Points;
+			patch.colorTable[0] = new Vector4(1, 1, 1, points[0].Alpha);
+			patch.colorTable[1] = new Vector4(1, 1, 1, points[2].Alpha);
+			patch.colorTable[2] = new Vector4(1, 1, 1, points[1].Alpha);
+			patch.colorTable[3] = new Vector4(1, 1, 1, points[3].Alpha);
 			// bezier: 0-2, 3-1
 
 			void DoForIndices(int index1, int index2, int start, bool flip = false, bool flipUV = true) {

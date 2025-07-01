@@ -8,7 +8,7 @@ namespace UbiArt.Animation {
 		public Angle angle;
 		public float z;
 		public Vec2d scale;
-		public float float6;
+		public float alpha;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			globalPosition = s.SerializeObject<Vec2d>(globalPosition, name: "globalPosition");
@@ -20,7 +20,7 @@ namespace UbiArt.Animation {
 			angle = s.SerializeObject<Angle>(angle, name: "angle");
 			z = s.Serialize<float>(z, name: "z");
 			scale = s.SerializeObject<Vec2d>(scale, name: "scale");
-			float6 = s.Serialize<float>(float6, name: "float6");
+			alpha = s.Serialize<float>(alpha, name: "alpha");
 		}
 		/*
 		Example:

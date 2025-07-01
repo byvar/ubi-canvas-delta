@@ -121,7 +121,16 @@ public class UnityBone : MonoBehaviour {
 				//Debug.Log($"{position} - {rotation} - {scale}");
 				globalScale = new Vector2(transform.localScale.x, transform.localScale.y);
 				if (bind) {
-					computedScale = globalScale;
+					if (c.Settings.EngineVersion == EngineVersion.RO) {
+						//  globalScale = new Vector2(computedScale.x * boneLength, computedScale.y);
+						if (boneLength != 0) {
+							computedScale = new Vector2(globalScale.x / boneLength, computedScale.y);
+						} else {
+							computedScale = globalScale;
+						}
+					} else {
+						computedScale = globalScale;
+					}
 					globalAngle = new Angle().SetUnityQuaternion(transform.localRotation, previous: globalAngle);
 					globalPosition = transform.localPosition;
 

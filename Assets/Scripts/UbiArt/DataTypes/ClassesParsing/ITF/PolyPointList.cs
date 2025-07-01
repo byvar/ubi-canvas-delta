@@ -47,8 +47,8 @@ namespace UbiArt.ITF {
 			} else {
 				var vec = LocalPoints[i + 1].POS - pt.POS;
 				pt.Vector = vec;
-				pt.Length = (float)vec.Magnitude;
-				LocalPoints[i].NormalizedVector = pt.Length != 0 ? new Vec2d(vec.x / pt.Length, vec.y / pt.Length) : Vec2d.Zero;
+				pt.Length = vec.Norm;
+				pt.NormalizedVector = pt.Length != 0 ? new Vec2d(vec.x / pt.Length, vec.y / pt.Length) : Vec2d.Zero;
 			}
 		}
 	}

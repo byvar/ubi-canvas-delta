@@ -28,10 +28,14 @@ namespace UbiArt {
 		public static Vec2d Infinity => new Vec2d(float.MaxValue, float.MaxValue); // 0x7F7FFFFF: NOT float.PositiveInfinity!
 
 		[IgnoreDataMember]
-		public double Magnitude => Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+		public double NormDouble => Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 		[IgnoreDataMember]
-		public float MagnitudeFloat => MathF.Sqrt(MathF.Pow(x, 2) + MathF.Pow(y, 2));
+		public float Norm => MathF.Sqrt(SquareNorm);
+		[IgnoreDataMember]
+		public float SquareNorm => y * y + x * x;
 
+		public static float Dot(Vec2d a, Vec2d b) => a.x * b.x + a.y * b.y;
+		public static float Cross(Vec2d a, Vec2d b) => a.x * b.y - b.x * a.y;
 		public static Vec2d operator +(Vec2d a, Vec2d b) => new Vec2d(a.x + b.x, a.y + b.y);
 		public static Vec2d operator -(Vec2d a, Vec2d b) => new Vec2d(a.x - b.x, a.y - b.y);
 		public static Vec2d operator *(Vec2d a, Vec2d b) => new Vec2d(a.x * b.x, a.y * b.y);
@@ -39,7 +43,16 @@ namespace UbiArt {
 		public static Vec2d operator *(Vec2d a, float b) => new Vec2d(a.x * b, a.y * b);
 		public static Vec2d operator /(Vec2d a, float b) => new Vec2d(a.x / b, a.y / b);
 		public static Vec2d operator -(Vec2d a) => new Vec2d(-a.x, -a.y);
-		public Vec2d Normalize() => (x != 0 || y != 0) ? this / (float)Magnitude : this;
+		public Vec2d NormalizeDouble() => (x != 0 || y != 0) ? this / (float)NormDouble : this;
+		public Vec2d Normalize() {
+			var magnitudeFloat = Norm;
+			if(magnitudeFloat <= MIN_NORM)
+				return Vec2d.Zero;
+			else
+				return this / magnitudeFloat;
+		}
+
+		const float MIN_NORM = 0.00001f;
 
 		// In radians
 		public Vec2d Rotate(float angle) {
@@ -49,6 +62,8 @@ namespace UbiArt {
 				x * cos - y * sin,
 				x * sin + y * cos);
 		}
+		public Vec2d RotateAround(Vec2d center, float angle)
+			=> center + (this - center).Rotate(angle);
 
 		public float Angle() {
 			return MathF.Atan2(y, x);

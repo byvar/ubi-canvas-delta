@@ -108,7 +108,7 @@ public class UnityPatchPointEditor : MonoBehaviour {
 		var uvNormal = Point.normal * patch.UVScale;
 		var boneNormal = GlobalNormal;
 		var rot = AverageTransformation.Rotation;
-		var transformedUVNormal = uvNormal.Rotate(rot).Normalize();
+		var transformedUVNormal = uvNormal.Rotate(rot).NormalizeDouble();
 		var oldAngle = boneNormal.Angle();
 		var newAngle = transformedUVNormal.Angle();
 		if (Mathf.Abs(oldAngle - newAngle) > 0.005f) {
