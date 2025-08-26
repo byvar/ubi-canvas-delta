@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
-	public partial class SoundConfig_Template : CSerializable {
+	public partial class SoundConfig_Template : TemplateObj {
 		public CListO<WwiseItem> WwiseLookUpTable;
 		public CListO<PathRef> WwiseBankList;
 		public CListO<WwiseEngineEvent> WwiseEngineEventList;

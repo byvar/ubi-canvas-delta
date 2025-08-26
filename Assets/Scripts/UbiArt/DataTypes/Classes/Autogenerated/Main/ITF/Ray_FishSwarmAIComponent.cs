@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_FishSwarmAIComponent : Ray_BossPlantArenaAIComponent {
+	public partial class Ray_FishSwarmAIComponent : Ray_AIComponent {
 		public float widthZone;
 		public float heightZone;
 		public Color frontColor;

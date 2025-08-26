@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_PersistentGameData_ISD : CSerializable {
+	public partial class Ray_PersistentGameData_ISD : PersistentGameData_ISD {
 		public CArrayO<PackedObjectPath> pickedUpLums;
 		public CArrayO<PackedObjectPath> takenTooth;
 		public CArrayO<PackedObjectPath> alreadySeenCutScenes;

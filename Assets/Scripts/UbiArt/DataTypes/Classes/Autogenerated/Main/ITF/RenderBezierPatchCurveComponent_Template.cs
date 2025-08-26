@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class RenderBezierPatchCurveComponent_Template : CSerializable {
+	public partial class RenderBezierPatchCurveComponent_Template : GraphicComponent_Template {
 		public BezierCurveRenderer_Template bezierRenderer;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

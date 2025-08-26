@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.RFR)]
-	public partial class Ray_BlackSwarmSpawnerComponent_Template : CSerializable {
+	public partial class Ray_BlackSwarmSpawnerComponent_Template : ActorComponent_Template {
 		public float activationDistance;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

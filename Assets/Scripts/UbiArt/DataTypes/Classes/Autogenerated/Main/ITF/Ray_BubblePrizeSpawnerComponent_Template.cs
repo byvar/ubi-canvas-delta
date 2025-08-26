@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_BubblePrizeSpawnerComponent_Template : CSerializable {
+	public partial class Ray_BubblePrizeSpawnerComponent_Template : ActorComponent_Template {
 		public Path bubblePath;
 		public uint bubbleCount;
 		public float timeBetweenBubble;

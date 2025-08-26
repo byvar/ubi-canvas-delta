@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_WM_PanelComponent : CSerializable {
+	public partial class Ray_WM_PanelComponent : ActorComponent {
 		public StringID tag;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

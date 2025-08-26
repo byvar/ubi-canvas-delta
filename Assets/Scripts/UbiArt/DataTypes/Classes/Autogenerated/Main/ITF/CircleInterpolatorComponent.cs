@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.LegendsAndUp)]
+	[Games(GameFlags.RO | GameFlags.LegendsAndUp)]
 	public partial class CircleInterpolatorComponent : InterpolatorComponent {
 		public float innerRadius;
 		public float outerRadius;

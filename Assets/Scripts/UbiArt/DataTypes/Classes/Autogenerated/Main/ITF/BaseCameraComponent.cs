@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.RL | GameFlags.RAVersion)]
+	[Games(GameFlags.ROVersion | GameFlags.RL | GameFlags.RAVersion)]
 	public partial class BaseCameraComponent : ActorComponent {
 		public int remote;
 		protected override void SerializeImpl(CSerializerObject s) {

@@ -24,7 +24,7 @@ namespace UbiArt.ITF {
 		public Path actNose;
 		public StringID boneNose;
 		public float zOffsetNose;
-		public Placeholder musics;
+		public CListO<EventPlayMusic> musics;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			countDownAttack = s.Serialize<float>(countDownAttack, name: "countDownAttack");
@@ -50,7 +50,7 @@ namespace UbiArt.ITF {
 			actNose = s.SerializeObject<Path>(actNose, name: "actNose");
 			boneNose = s.SerializeObject<StringID>(boneNose, name: "boneNose");
 			zOffsetNose = s.Serialize<float>(zOffsetNose, name: "zOffsetNose");
-			musics = s.SerializeObject<Placeholder>(musics, name: "musics");
+			musics = s.SerializeObject<CListO<EventPlayMusic>>(musics, name: "musics");
 		}
 		public override uint? ClassCRC => 0xE1BA946D;
 	}

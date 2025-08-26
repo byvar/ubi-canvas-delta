@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.ROVersion | GameFlags.RLVersion)]
-	public partial class ControlFilter : CSerializable {
+	public partial class ControlFilter : SoundModifier {
 		public ProceduralInputData input;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

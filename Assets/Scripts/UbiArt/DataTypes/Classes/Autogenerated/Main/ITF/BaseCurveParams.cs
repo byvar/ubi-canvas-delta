@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
+	[Games(GameFlags.ROVersion | GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
 	public partial class BaseCurveParams : CSerializable {
 		public float xofs;
 		public float yofs;

@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RFR | GameFlags.LegendsAndUp)]
+	[Games(GameFlags.RO | GameFlags.RFR | GameFlags.LegendsAndUp)]
 	public partial class CameraDetectorComponent : ShapeDetectorComponent {
 		public bool remote;
 		protected override void SerializeImpl(CSerializerObject s) {

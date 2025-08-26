@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AISwordFishBehavior_Template : TemplateAIBehavior {
+	public partial class Ray_AISwordFishBehavior_Template : Ray_AIGroundBaseBehavior_Template {
 		public Generic<AIAction_Template> idle;
 		public Generic<AIAction_Template> anticipation;
 		public Generic<AIAction_Template> attack;

@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.LegendsAndUp)]
+	[Games(GameFlags.All)]
 	public partial class PlayAnimOnWeightChangeComponent : ActorComponent {
 		public int isActive = 1;
 		protected override void SerializeImpl(CSerializerObject s) {

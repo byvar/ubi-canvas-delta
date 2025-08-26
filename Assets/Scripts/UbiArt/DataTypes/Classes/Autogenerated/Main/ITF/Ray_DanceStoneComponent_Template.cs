@@ -1,9 +1,9 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_DanceStoneComponent_Template : CSerializable {
+	public partial class Ray_DanceStoneComponent_Template : ActorComponent_Template {
 		public int dancerShouldFlip;
-		public Placeholder upTempo;
-		public Placeholder downTempo;
+		public Ray_DanceStoneComponent_Template.Tempo upTempo;
+		public Ray_DanceStoneComponent_Template.Tempo downTempo;
 		public float syncRatio;
 		public float syncOffset;
 		public uint numTemposToUnlock;
@@ -14,8 +14,8 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			dancerShouldFlip = s.Serialize<int>(dancerShouldFlip, name: "dancerShouldFlip");
-			upTempo = s.SerializeObject<Placeholder>(upTempo, name: "upTempo");
-			downTempo = s.SerializeObject<Placeholder>(downTempo, name: "downTempo");
+			upTempo = s.SerializeObject<Ray_DanceStoneComponent_Template.Tempo>(upTempo, name: "upTempo");
+			downTempo = s.SerializeObject<Ray_DanceStoneComponent_Template.Tempo>(downTempo, name: "downTempo");
 			syncRatio = s.Serialize<float>(syncRatio, name: "syncRatio");
 			syncOffset = s.Serialize<float>(syncOffset, name: "syncOffset");
 			numTemposToUnlock = s.Serialize<uint>(numTemposToUnlock, name: "numTemposToUnlock");
@@ -25,6 +25,17 @@ namespace UbiArt.ITF {
 			numLumPowerReward = s.Serialize<uint>(numLumPowerReward, name: "numLumPowerReward");
 		}
 		public override uint? ClassCRC => 0xA0D4FA77;
+
+		[Games(GameFlags.RO)]
+		public class Tempo : CSerializable {
+			public float min;
+			public float max;
+			protected override void SerializeImpl(CSerializerObject s) {
+				base.SerializeImpl(s);
+				min = s.Serialize<float>(min, name: "min");
+				max = s.Serialize<float>(max, name: "max");
+			}
+		}
 	}
 }
 

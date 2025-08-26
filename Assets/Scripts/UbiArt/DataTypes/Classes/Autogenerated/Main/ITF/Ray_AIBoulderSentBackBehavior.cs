@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AIBoulderSentBackBehavior : CSerializable {
+	public partial class Ray_AIBoulderSentBackBehavior : AIBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

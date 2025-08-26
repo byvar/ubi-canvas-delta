@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.LegendsAndUp)]
+	[Games(GameFlags.RO | GameFlags.LegendsAndUp)]
 	public partial class AIPlayAnimAction : AIAction {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

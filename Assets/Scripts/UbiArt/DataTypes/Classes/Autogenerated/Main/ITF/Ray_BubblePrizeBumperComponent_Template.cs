@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RFR)]
+	[Games(GameFlags.RO | GameFlags.RFR)]
 	public partial class Ray_BubblePrizeBumperComponent_Template : Ray_ChildLaunchComponent_Template {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

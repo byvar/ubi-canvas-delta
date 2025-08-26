@@ -2,9 +2,9 @@ namespace UbiArt.ITF {
 	[Games(GameFlags.RA)]
 	public partial class RO2_GhostColor : CSerializable {
 		public StringID colorConfigName;
-		public Color ghostFactorColorDefault;
-		public Color ghostFactorColorMin;
-		public Color ghostFactorColorMax;
+		public Color ghostFactorColorDefault = Color.White;
+		public Color ghostFactorColorMin = Color.White;
+		public Color ghostFactorColorMax = Color.White;
 		public Color ghostFogColorDefault;
 		public Color ghostFogColorMin;
 		public Color ghostFogColorMax;

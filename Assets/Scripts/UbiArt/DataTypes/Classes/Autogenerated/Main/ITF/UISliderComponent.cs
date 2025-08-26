@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RL | GameFlags.RAVersion)]
+	[Games(GameFlags.RO | GameFlags.RL | GameFlags.RAVersion)]
 	public partial class UISliderComponent : UIItemBasic {
 		public StringID itemCursorID;
 		public StringID itemBarID;

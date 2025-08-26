@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Loading_Template : CSerializable {
+	public partial class Loading_Template : TemplateObj {
 		public CString filename;
 		public CString filenameRU;
 		public float cameraz;

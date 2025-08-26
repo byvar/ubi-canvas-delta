@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AIAlInfernoPatrolBehavior : CSerializable {
+	public partial class Ray_AIAlInfernoPatrolBehavior : Ray_AIGroundBaseMovementBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

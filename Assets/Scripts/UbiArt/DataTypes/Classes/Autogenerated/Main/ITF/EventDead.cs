@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.LegendsAndUp)]
+	[Games(GameFlags.All)]
 	public partial class EventDead : Event {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

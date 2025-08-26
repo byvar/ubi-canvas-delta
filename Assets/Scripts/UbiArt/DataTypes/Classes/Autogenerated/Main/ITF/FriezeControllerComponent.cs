@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RL | GameFlags.RA)]
+	[Games(GameFlags.RO | GameFlags.RL | GameFlags.RA)]
 	public partial class FriezeControllerComponent : LinkComponent {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

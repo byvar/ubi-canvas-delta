@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.RM)]
-	public partial class AIRoamingBehavior : CSerializable {
+	public partial class AIRoamingBehavior : AIBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

@@ -59,12 +59,20 @@ namespace UbiArt.ITF {
 			}
 		}
 		[Games(GameFlags.RO | GameFlags.RL)]
-		public partial class StateStargate : CSerializable {
+		public partial class StateStargate : Ray_PlayerControllerComponent.Ray_State {
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
 			}
 			public override uint? ClassCRC => 0xB7FAF178;
 		}
+		[Games(GameFlags.RO)]
+		public partial class Ray_State : PlayerControllerState {
+			protected override void SerializeImpl(CSerializerObject s) {
+				base.SerializeImpl(s);
+			}
+		}
+
+
 		public override uint? ClassCRC => 0xA9E2930D;
 	}
 }

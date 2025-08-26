@@ -217,9 +217,9 @@ namespace UbiArt
 			// Link Tags
 			"After", "Ambiance", "Ambiance_Off", "Angle", "AngleOffset", "Delay", "Anim", "AnimBone", "Attack", "AutoStart",
 			"BaseJump", "Before", "BlendFrise", "BoneName", "Branch", "Breakable", "Bubo", "Cam", "Camera", "ChangeScale", "Cheat", "Checkpoint", "CineOutro", "Critic", "Curve",
-			"DangerZone", "Death", "Delay", "Disabled", "Disappear", "Door", "Drag", "Duration", "EntranceDoor", "Eject", "Final", "Fishing", "Flame", "Flip", "FollowCam", "Ghost", "Hang",
-			"IgnoreCamera", "Keep_Orientation", "Lock", "Lookat", "LookatPhase", "MaxSpeed", "MinSpeed", "Moving", "NoLook", "NoTree", "Node", "Number",
-			"OneWay", "Offset", "ProceduralBone", "RadarTarget", "Roll", "RopeEnd", "SafeDistance", "Secret", "Simple_Teleport", "Spawn", "SpawnPos", "Speed", "SpeedMax", "Screenshot",
+			"DangerZone", "Death", "Delay", "Disabled", "Disappear", "Door", "Drag", "Duration", "EntranceDoor", "Eject", "ExcludedDetection", "Final", "Fishing", "Flame", "Flip", "FollowCam", "Ghost", "Hang",
+			"Invincible", "IgnoreCamera", "Keep_Orientation", "Lock", "Lookat", "LookatPhase", "MaxSpeed", "MegaBubo", "MinSpeed", "Moving", "NoLook", "NoTree", "Node", "Number",
+			"OneWay", "Offset", "ProceduralBone", "RadarTarget", "Roll", "RopeEnd", "Rotation", "SafeDistance", "Secret", "SecondBubo", "SequenceNum", "Simple_Teleport", "Spawn", "SpawnPos", "Speed", "SpeedMax", "Screenshot",
 			"TakeCamera", "Target", "Teleport", "Timer", "TouchScreen", "Torture", "Tower", "Trigger", "Type", "Waypoint",
 
 			// Animation inputs
@@ -229,7 +229,7 @@ namespace UbiArt
 			"WaitType", "DeathType", "HangType", "IdleTime",
 			"GroundAngle", "OnLoop", "BounceToLayer",
 			"PunchDistance", "PunchLevel", "PunchOrientation", "PunchHitType", "PunchReleaseResult", "PunchWalk",
-			"ReceivedHitLevel", "ReceivedHitType",
+			"ReceiveHitCrash", "ReceivedHitLevel", "ReceivedHitType",
 			"AirPose", "ActionPose", "OrientationPose",
 			"MoveCursor", "PrepareHitCursor", "SwimCurveCursor",
 			"AngleRangeMin", "AngleRangeMax",
@@ -238,17 +238,20 @@ namespace UbiArt
 			// Enemy animation inputs
 			"Carrying",
 			"ReceivedHitCount", "ReceivedHitDirection",
-			"AnimCursor", "OrientationCursor", "TargetCursor",
+			"AnimCursor", "OrientationCursor", "TargetCursor", "DialogMood",
 			"BlockingContact", "BoneAlpha", "EjectionState", "Fight", "FishingMode",
 			"HasCage", "HasFruit", "Health", "HurtMode",
-			"MoveAttack", "ParachuteMode", "Pedestal", "PerformCharge", "SplinterCell", "State",
-			"StunBullet", "Stunned", "WallOrientation", "WindForce", "IsNaked", "InputLumsColor", "IsInAir",
+			"MoveAttack", "ParachuteMode", "Pedestal", "PerformCharge", "PerformHit", "SplinterCell", "State",
+			"StunBullet", "Stunned", "WallHeight", "WallOrientation", "WindForce", "IsNaked", "InputLumsColor", "IsInAir",
+
+			// Friendly animation inputs
+			"Darktoonified",
 
 			// Common BTAI node names
-			"Alive", "Appear", "AppearBackground", "AppearBackground_Ladders", "AppearBackground_Ninja", "AppearFromGround", "AppearParachute",
-			"Charge", "CheckDeath", "Drown", "FindAttackTarget", "Idle", 
+			"Alive", "Appear", "AppearBackground", "AppearBackground_Ladders", "AppearBackground_Ninja", "AppearFromGround", "AppearParachute", "AttackTarget",
+			"Bubblized", "Charge", "CheckDeath", "Drown", "FindAttackTarget", "GoToWaypoint", "Idle", "Pedestal_Order", "PlayFree", "PlayGreet",
 			"RangedAttack", "ReceiveHit", "ReceiveCrush", "Roaming", "RoamingInAir", "RoamingUnderwater",
-			"Sleep", "SpotTarget", "Stun", "TickleGeneric", "UTurnToTarget",
+			"Sleep", "SOS", "SpotTarget", "Stun", "TickleGeneric", "UseTeleport", "UTurnToTarget", "Wait",
 
 			// Facts
 			"RO2_AIFact_AttackTarget", "RO2_AIFact_CheckDeath", "RO2_AIFact_Drag",
@@ -261,10 +264,12 @@ namespace UbiArt
 			"Root",
 
 			// Inputs
-			"Axis", "Press", "Hold", "Trigger_Left", "Trigger_Right", "Left_Thumb", "Right_Thumb",
+			"Axis", "Press", "Hold", "Release",
+			"Trigger_Left", "Trigger_Right", "Left_Thumb", "Right_Thumb",
 			"Button_A", "Button_X", "Button_Y", "Button_B", "Button_Back", "Button_Start",
 			"DPad_Up", "DPad_Down", "DPad_Left", "DPad_Right",
 			"Left_Shoulder", "Right_Shoulder",
+			"Stick_LX", "Stick_LY", "Stick_RX", "Stick_RY",
 
 			// Generic events
 			"Open", "Close",
@@ -282,7 +287,7 @@ namespace UbiArt
 			"Dead", "Enable", 
 
 			// Unknown
-			"Infinit", "Period"
+			"Infinit", "Period", "Interpolation"
 
 		};
 

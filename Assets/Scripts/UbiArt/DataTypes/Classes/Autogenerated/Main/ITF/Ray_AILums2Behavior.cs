@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.ROVersion)]
-	public partial class Ray_AILums2Behavior : CSerializable {
+	public partial class Ray_AILums2Behavior : AIBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

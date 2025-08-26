@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_TextBubbleBehavior_Template : CSerializable {
+	public partial class Ray_TextBubbleBehavior_Template : TemplateAIBehavior {
 		public StringID textBoneName;
 		public Placeholder sleepAction;
 		public Placeholder openAction;

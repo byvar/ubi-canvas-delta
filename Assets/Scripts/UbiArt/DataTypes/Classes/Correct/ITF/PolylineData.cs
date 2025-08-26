@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.VH | GameFlags.RA | GameFlags.RJR | GameFlags.RFR)]
+	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.VH | GameFlags.RA)]
 	public partial class PolylineData : CSerializable {
 		public CArrayO<Vec2d> points;
 		public Path gameMaterial;

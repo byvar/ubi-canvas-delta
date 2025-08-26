@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class CurveFollowerComponent_Template : CSerializable {
+	public partial class CurveFollowerComponent_Template : ActorComponent_Template {
 		public float speed;
 		public int loop;
 		protected override void SerializeImpl(CSerializerObject s) {

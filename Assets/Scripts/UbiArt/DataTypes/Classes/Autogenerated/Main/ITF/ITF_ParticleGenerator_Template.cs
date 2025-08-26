@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.ROVersion | GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
-	public partial class ITF_ParticleGenerator_Template : CSerializable {
+	public partial class ITF_ParticleGenerator_Template : TemplateObj {
 		public uint computeAABB;
 		public uint useAnim;
 		public bool useAnim_ { get => useAnim != 0; set => useAnim = (value ? (uint)1 : 0); }

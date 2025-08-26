@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_WM_LeadAbility_Template : CSerializable {
+	public partial class Ray_WM_LeadAbility_Template : Ray_WM_BaseAbility_Template {
 		public BasicString startNode;
 		public Angle findMoveAngle;
 		public Angle reverseMoveAngle;

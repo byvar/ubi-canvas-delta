@@ -27,8 +27,16 @@ class GenericClassSelectorDropdown : AdvancedDropdown {
 		
 		List<KeyValuePair<uint, Type>> types = new List<KeyValuePair<uint, Type>>();
 		foreach (var c in ObjectFactory.classes) {
-			if (type.IsAssignableFrom(c.Value)) {
-				var attr = (GamesAttribute)Attribute.GetCustomAttribute(c.Value, typeof(GamesAttribute));
+			var objectFactoryType = c.Value;
+			if (objectFactoryType.ContainsGenericParameters && type.IsGenericType) {
+				try {
+					objectFactoryType = objectFactoryType.MakeGenericType(type.GetGenericArguments());
+				} catch (Exception) {
+					continue;
+				}
+			}
+			if (type.IsAssignableFrom(objectFactoryType)) {
+				var attr = (GamesAttribute)Attribute.GetCustomAttribute(objectFactoryType, typeof(GamesAttribute));
 				if (attr != null) {
 					var settings = context?.Settings;
 					if (settings != null) {
@@ -38,7 +46,7 @@ class GenericClassSelectorDropdown : AdvancedDropdown {
 						}
 					}
 				}
-				types.Add(c);
+				types.Add(new KeyValuePair<uint, Type>(c.Key, objectFactoryType));
 			}
 		}
 		int CompareTypeName(KeyValuePair<uint, Type> a, KeyValuePair<uint, Type> b) {

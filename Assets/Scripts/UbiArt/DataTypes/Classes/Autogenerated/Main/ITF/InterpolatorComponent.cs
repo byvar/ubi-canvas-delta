@@ -1,11 +1,10 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RL | GameFlags.RAVersion)]
+	[Games(GameFlags.RO | GameFlags.RL | GameFlags.RAVersion)]
 	public partial class InterpolatorComponent : ActorComponent {
 		public StringID input;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.VH || s.Settings.Game == Game.COL) {
-			} else {
+			if (s.Settings.Game is Game.RA or Game.RM) {
 				input = s.SerializeObject<StringID>(input, name: "input");
 			}
 		}

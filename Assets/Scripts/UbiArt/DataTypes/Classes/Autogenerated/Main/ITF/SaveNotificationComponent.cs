@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.LegendsAndUp)]
+	[Games(GameFlags.RO | GameFlags.LegendsAndUp)]
 	public partial class SaveNotificationComponent : ActorComponent {
 		public CListP<uint> saveReasons;
 		protected override void SerializeImpl(CSerializerObject s) {

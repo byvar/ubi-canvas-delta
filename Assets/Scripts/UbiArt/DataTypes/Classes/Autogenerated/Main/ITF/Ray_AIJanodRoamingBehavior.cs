@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AIJanodRoamingBehavior : CSerializable {
+	public partial class Ray_AIJanodRoamingBehavior : Ray_AIJanodRoamingBaseBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

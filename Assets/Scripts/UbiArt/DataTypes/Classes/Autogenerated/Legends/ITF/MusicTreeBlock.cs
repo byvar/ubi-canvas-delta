@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RLVersion)]
-	public partial class MusicTreeBlock : CSerializable {
+	public partial class MusicTreeBlock : MusicTreeNode {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

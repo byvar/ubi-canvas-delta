@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_PlayerOffScreenIconComponent_Template : CSerializable {
+	public partial class Ray_PlayerOffScreenIconComponent_Template : ActorComponent_Template {
 		public StringID arrowBoneName;
 		public Vec2d screenBorder;
 		public float fadeInDelay;

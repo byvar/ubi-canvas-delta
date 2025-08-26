@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RO || s.Settings.Game == Game.RFR || s.Settings.Game == Game.RJR) {
-				if (this is Ray_BossBuboAIComponent_Template) return;
+				if (this is Ray_BossBuboAIComponent_Template or Ray_BossBirdPawnAIComponent_Template) return;
 				registerToAIManager = s.Serialize<bool>(registerToAIManager, name: "registerToAIManager");
 				faction = s.Serialize<uint>(faction, name: "faction");
 				health = s.Serialize<int>(health, name: "health");

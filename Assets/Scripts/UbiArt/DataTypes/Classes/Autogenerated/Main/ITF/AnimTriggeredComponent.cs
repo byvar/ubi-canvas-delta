@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.LegendsAndUp)]
+	[Games(GameFlags.RO | GameFlags.LegendsAndUp)]
 	public partial class AnimTriggeredComponent : ActorComponent {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

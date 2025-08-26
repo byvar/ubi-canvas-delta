@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_ShooterGameModeParameters : CSerializable {
+	public partial class Ray_ShooterGameModeParameters : GameModeParameters {
 		public CArrayO<PlayerData> playersDataList;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RL | GameFlags.VH | GameFlags.RA)]
+	[Games(GameFlags.RO | GameFlags.RL | GameFlags.VH | GameFlags.RA)]
 	public partial class BTNode_Template : CSerializable {
 		public StringID name;
 		protected override void SerializeImpl(CSerializerObject s) {

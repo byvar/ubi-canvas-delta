@@ -1,6 +1,8 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_ShooterControllerComponent : CSerializable {
+	public partial class Ray_ShooterControllerComponent : Ray_BasicPlayerControllerComponent {
+		public override uint? ClassCRC => 0xECB49574;
+
 		[Games(GameFlags.RO)]
 		public partial class StateNormal : CSerializable {
 			protected override void SerializeImpl(CSerializerObject s) {
@@ -47,6 +49,13 @@ namespace UbiArt.ITF {
 				base.SerializeImpl(s);
 			}
 			public override uint? ClassCRC => 0xE9642E27;
+		}
+		[Games(GameFlags.RO | GameFlags.RL)]
+		public partial class StateVacuum : CSerializable {
+			protected override void SerializeImpl(CSerializerObject s) {
+				base.SerializeImpl(s);
+			}
+			public override uint? ClassCRC => 0x218BBB77;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AILivingStoneStaticBehavior : CSerializable {
+	public partial class Ray_AILivingStoneStaticBehavior : Ray_AIGroundBaseBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

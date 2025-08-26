@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.LegendsAndUp)]
+	[Games(GameFlags.All)]
 	public partial class PhysComponent : ActorComponent {
 		public float Mass = 1f;
 		public float Friction = 0.5f;

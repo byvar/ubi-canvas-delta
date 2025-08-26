@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class UIMenuPageComponent : CSerializable {
+	public partial class UIMenuPageComponent : ActorComponent {
 		public uint TriggerButton;
 		public Vec3d RelativePosFromCamera;
 		protected override void SerializeImpl(CSerializerObject s) {

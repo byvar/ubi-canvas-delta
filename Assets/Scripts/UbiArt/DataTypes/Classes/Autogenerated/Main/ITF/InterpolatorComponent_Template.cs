@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RL | GameFlags.RAVersion)]
+	[Games(GameFlags.RO | GameFlags.RL | GameFlags.RAVersion)]
 	public partial class InterpolatorComponent_Template : ActorComponent_Template {
 		public StringID input;
 		public bool useMainCharacter;
@@ -19,6 +19,9 @@ namespace UbiArt.ITF {
 				canUseTouchScreenPlayers = s.Serialize<bool>(canUseTouchScreenPlayers, name: "canUseTouchScreenPlayers", options: CSerializerObject.Options.BoolAsByte);
 				ignoreZ = s.Serialize<bool>(ignoreZ, name: "ignoreZ", options: CSerializerObject.Options.BoolAsByte);
 				view = s.Serialize<View>(view, name: "view");
+			} else if (s.Settings.Game == Game.RO || s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR) {
+				input = s.SerializeObject<StringID>(input, name: "input");
+				useMainCharacter = s.Serialize<bool>(useMainCharacter, name: "useMainCharacter");
 			} else {
 				input = s.SerializeObject<StringID>(input, name: "input");
 				useMainCharacter = s.Serialize<bool>(useMainCharacter, name: "useMainCharacter");

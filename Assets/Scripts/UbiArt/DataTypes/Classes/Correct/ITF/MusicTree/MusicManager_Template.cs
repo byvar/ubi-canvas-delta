@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class MusicManager_Template : CSerializable {
+	public partial class MusicManager_Template : TemplateObj {
 		public MusicPartSet_Template musicPartSet;
 		public MusicTree_Template musicTree;
 		public CArrayO<InputDesc> inputs;

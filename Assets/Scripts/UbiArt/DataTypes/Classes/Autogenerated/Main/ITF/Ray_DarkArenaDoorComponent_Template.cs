@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_DarkArenaDoorComponent_Template : Ray_DarktoonTrapHoleComponent_Template {
+	public partial class Ray_DarkArenaDoorComponent_Template : ArenaDoorComponent_Template {
 		public StringID hitAnim;
 		public StringID idleAnim;
 		protected override void SerializeImpl(CSerializerObject s) {

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_ElevatorAIComponent_Template : CSerializable {
+	public partial class Ray_ElevatorAIComponent_Template : ActorComponent_Template {
 		public float timeStuckTop;
 		public float clampForceMin;
 		public float clampForceMax;

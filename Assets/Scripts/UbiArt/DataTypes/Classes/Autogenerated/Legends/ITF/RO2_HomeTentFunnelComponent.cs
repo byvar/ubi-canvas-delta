@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_HomeTentFunnelComponent : CSerializable {
+	public partial class RO2_HomeTentFunnelComponent : RO2_HomeComponent {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

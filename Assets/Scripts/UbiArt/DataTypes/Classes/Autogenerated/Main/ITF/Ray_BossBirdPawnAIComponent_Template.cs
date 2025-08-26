@@ -1,7 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.RFR)]
-	public partial class Ray_BossBirdPawnAIComponent_Template : CSerializable {
-		public uint faction;
+	public partial class Ray_BossBirdPawnAIComponent_Template : Ray_AIComponent_Template {
 		public float gravity;
 		public float scale;
 		public float xMax;

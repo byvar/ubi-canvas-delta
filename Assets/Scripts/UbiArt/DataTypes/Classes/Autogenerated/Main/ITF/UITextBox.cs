@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
+	[Games(GameFlags.RO | GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
 	public partial class UITextBox : UIComponent {
 		public uint style;
 		public Vec2d offset;

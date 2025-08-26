@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.RL | GameFlags.RAVersion)]
+	[Games(GameFlags.ROVersion | GameFlags.RL | GameFlags.RAVersion)]
 	public partial class EventSwimingPlouf : Event {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

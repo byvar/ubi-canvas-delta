@@ -8,8 +8,10 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 				useTempateFogParams = s.Serialize<int>(useTempateFogParams, name: "useTempateFogParams");
-				dynamicFogColor = s.SerializeObject<Color>(dynamicFogColor, name: "dynamicFogColor");
-				dynamicFogMaxDepth = s.Serialize<float>(dynamicFogMaxDepth, name: "dynamicFogMaxDepth");
+				if (useTempateFogParams == 0) {
+					dynamicFogColor = s.SerializeObject<Color>(dynamicFogColor, name: "dynamicFogColor");
+					dynamicFogMaxDepth = s.Serialize<float>(dynamicFogMaxDepth, name: "dynamicFogMaxDepth");
+				}
 			}
 		}
 		public override uint? ClassCRC => 0x4FDAE284;

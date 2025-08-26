@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.RL | GameFlags.RM)]
-	public partial class AnimSkeletonResource : CSerializable {
+	public partial class AnimSkeletonResource : Resource {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

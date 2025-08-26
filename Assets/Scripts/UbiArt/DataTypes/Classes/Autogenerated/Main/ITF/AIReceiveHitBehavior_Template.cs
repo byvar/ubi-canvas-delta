@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.VH | GameFlags.RA)]
+	[Games(GameFlags.RO | GameFlags.VH | GameFlags.RA)]
 	public partial class AIReceiveHitBehavior_Template : TemplateAIBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

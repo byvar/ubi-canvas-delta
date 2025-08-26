@@ -31,7 +31,7 @@ namespace UbiArt.ITF {
 			spawnFragmentsNb = s.Serialize<uint>(spawnFragmentsNb, name: "spawnFragmentsNb");
 			spawnFragmentsDeltaAngle = s.SerializeObject<Angle>(spawnFragmentsDeltaAngle, name: "spawnFragmentsDeltaAngle");
 			spawnFragmentsStartAngle = s.SerializeObject<Angle>(spawnFragmentsStartAngle, name: "spawnFragmentsStartAngle");
-			if (s.Settings.Game == Game.RO && s.HasFlags(SerializeFlags.Group_Data)) {
+			if (s.Settings.Game == Game.RO && s.HasFlags(SerializeFlags.Group_Data) && !s.HasProperties(SerializerProperties.Binary)) {
 				dbgDrawExplodeRadius = s.Serialize<int>(dbgDrawExplodeRadius, name: "dbgDrawExplodeRadius");
 			}
 			reward = s.SerializeObject<Generic<Ray_EventSpawnReward>>(reward, name: "reward");

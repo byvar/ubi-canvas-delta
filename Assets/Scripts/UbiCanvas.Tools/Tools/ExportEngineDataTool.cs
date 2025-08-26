@@ -21,7 +21,7 @@ namespace UbiCanvas.Tools
 
 		public override async Task InvokeAsync(string outputDir)
 		{
-			using Context context = CreateContext();
+			using Context context = CreateContext(loadStrings: true);
 			await context.Loader.LoadInitial();
 
 			string itfDir = context.Settings.ITFDirectory;

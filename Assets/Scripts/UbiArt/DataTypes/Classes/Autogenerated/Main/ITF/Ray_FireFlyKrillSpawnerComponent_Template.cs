@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_FireFlyKrillSpawnerComponent_Template : CSerializable {
+	public partial class Ray_FireFlyKrillSpawnerComponent_Template : ActorComponent_Template {
 		public Path krillActorPath;
 		public float detectionRadius;
 		protected override void SerializeImpl(CSerializerObject s) {

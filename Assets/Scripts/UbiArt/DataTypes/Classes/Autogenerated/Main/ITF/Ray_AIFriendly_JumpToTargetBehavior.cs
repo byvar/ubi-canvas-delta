@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AIFriendly_JumpToTargetBehavior : CSerializable {
+	public partial class Ray_AIFriendly_JumpToTargetBehavior : Ray_AIGroundBaseBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

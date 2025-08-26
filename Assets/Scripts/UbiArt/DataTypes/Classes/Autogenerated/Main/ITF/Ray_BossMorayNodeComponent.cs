@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RFR)]
+	[Games(GameFlags.RO | GameFlags.RFR)]
 	public partial class Ray_BossMorayNodeComponent : ActorComponent {
 		public float float__0;
 		public float float__1;

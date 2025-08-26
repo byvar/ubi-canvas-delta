@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.LegendsAndUp)]
-	public partial class AIDeathBehavior : AIBehavior {
+	public partial class AIDeathBehavior : AIPlayActionsBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

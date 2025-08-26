@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_DanceEyeComponent_Template : CSerializable {
+	public partial class Ray_DanceEyeComponent_Template : ActorComponent_Template {
 		public StringID lockAnim;
 		public StringID occupiedAnim;
 		public StringID unlockAnim;

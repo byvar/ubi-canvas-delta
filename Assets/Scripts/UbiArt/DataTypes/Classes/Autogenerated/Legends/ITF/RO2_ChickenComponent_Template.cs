@@ -17,7 +17,7 @@ namespace UbiArt.ITF {
 		public StringID detectionAnim;
 		public float speed;
 		public float walkSpeed;
-		public Placeholder detectionAABB;
+		public AABB detectionAABB;
 		public float escapeSpeed;
 		public float escapeSpeed2;
 		public float escapeLength;
@@ -44,7 +44,7 @@ namespace UbiArt.ITF {
 			detectionAnim = s.SerializeObject<StringID>(detectionAnim, name: "detectionAnim");
 			speed = s.Serialize<float>(speed, name: "speed");
 			walkSpeed = s.Serialize<float>(walkSpeed, name: "walkSpeed");
-			detectionAABB = s.SerializeObject<Placeholder>(detectionAABB, name: "detectionAABB");
+			detectionAABB = s.SerializeObject<AABB>(detectionAABB, name: "detectionAABB");
 			escapeSpeed = s.Serialize<float>(escapeSpeed, name: "escapeSpeed");
 			escapeSpeed2 = s.Serialize<float>(escapeSpeed2, name: "escapeSpeed2");
 			escapeLength = s.Serialize<float>(escapeLength, name: "escapeLength");

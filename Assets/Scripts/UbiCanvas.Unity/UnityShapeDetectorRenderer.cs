@@ -55,6 +55,17 @@ public class UnityShapeDetectorRenderer : MonoBehaviour {
 			baseOffset += new Vector3(ShapeDetector?.localOffset?.x ?? 0f, ShapeDetector?.localOffset?.y ?? 0f);
 			Vector3 scale = new Vector3(ShapeDetector.localScale.x, ShapeDetector.localScale.y, 1f);
 			switch (shape) {
+				case PhysShapeBox box:
+					Renderer.positionCount = 4;
+					var vec = box.Extent;
+					var ptsBox = new Vec2d[] {
+						new Vec2d(-vec.x, -vec.y),
+						new Vec2d(-vec.x, vec.y),
+						new Vec2d(vec.x, vec.y),
+						new Vec2d(vec.x, -vec.y)
+					};
+					Renderer.SetPositions(ptsBox.Select(p => Vector3.Scale(new Vector3(p.x, p.y, 0) + baseOffset, scale)).ToArray());
+					break;
 				case PhysShapePolygon poly:
 					Renderer.positionCount = poly.Points.Count;
 					Renderer.SetPositions(poly.Points.Select(p => Vector3.Scale(new Vector3(p.x, p.y, 0) + baseOffset, scale)).ToArray());

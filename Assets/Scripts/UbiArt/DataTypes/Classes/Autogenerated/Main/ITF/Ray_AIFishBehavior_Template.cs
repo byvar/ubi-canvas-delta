@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AIFishBehavior_Template : TemplateAIBehavior {
+	public partial class Ray_AIFishBehavior_Template : Ray_AIGroundBaseBehavior_Template {
 		public Generic<AIAction_Template> struggle;
 		public Generic<AIAction_Template> release;
 		public Generic<Ray_AIReceiveCameraEjectHitAction_Template> spikeHit;

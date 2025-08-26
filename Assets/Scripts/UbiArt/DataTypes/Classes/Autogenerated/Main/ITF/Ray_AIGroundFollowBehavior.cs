@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AIGroundFollowBehavior : CSerializable {
+	public partial class Ray_AIGroundFollowBehavior : Ray_AIGroundRoamBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

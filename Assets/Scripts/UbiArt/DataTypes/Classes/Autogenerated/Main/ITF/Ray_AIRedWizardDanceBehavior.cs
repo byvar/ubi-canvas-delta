@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AIRedWizardDanceBehavior : CSerializable {
+	public partial class Ray_AIRedWizardDanceBehavior : Ray_AIGroundBaseMovementBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

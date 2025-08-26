@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using UbiArt;
 
 namespace UbiCanvas.Tools
@@ -7,7 +8,7 @@ namespace UbiCanvas.Tools
 	public abstract class GameTool
 	{
 		protected Context CreateContext(string basePath = null, Mode? mode = null,
-			bool enableSerializerLog = true, bool? loadAnimations = null, bool? loadAllPaths = null)
+			bool enableSerializerLog = true, bool? loadAnimations = null, bool? loadAllPaths = null, bool? loadStrings = null)
 		{
 			if (!mode.HasValue) mode = UnitySettings.GameMode;
 			if (basePath == null) basePath = UnitySettings.GameDirs[mode.Value];
@@ -20,6 +21,19 @@ namespace UbiCanvas.Tools
 
 			context.Loader.LoadAnimations = loadAnimations ?? UnitySettings.LoadAnimations;
 			context.Loader.LoadAllPaths = loadAllPaths ?? UnitySettings.LoadAllPaths;
+
+			if (loadStrings == true) {
+				if (context.Loader.FileManager.FileExists("strings.txt")) {
+					using (var str = context.Loader.FileManager.GetFileReadStream("strings.txt")) {
+						using (StreamReader r = new StreamReader(str)) {
+							while (!r.EndOfStream) {
+								var line = r.ReadLine();
+								context.AddToStringCache(line);
+							}
+						}
+					}
+				}
+			}
 
 			return context;
 

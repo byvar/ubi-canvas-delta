@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RA | GameFlags.VH | GameFlags.RM)]
+	[Games(GameFlags.RAVersion)]
 	public partial class SubRenderParam_Misc : SubRenderParam {
 		public GFX_VIEW_ZPASS ZPassOverride;
 		protected override void SerializeImpl(CSerializerObject s) {

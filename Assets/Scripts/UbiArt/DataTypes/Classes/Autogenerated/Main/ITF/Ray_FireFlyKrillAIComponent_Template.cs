@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_FireFlyKrillAIComponent_Template : CSerializable {
+	public partial class Ray_FireFlyKrillAIComponent_Template : ActorComponent_Template {
 		public uint nbGroups;
 		public uint nbParticles;
 		public float particleMinSize;

@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR)]
+	[Games(GameFlags.ROVersion)]
 	public partial class Ray_AILums2Component_Template : Ray_FixedAIComponent_Template {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

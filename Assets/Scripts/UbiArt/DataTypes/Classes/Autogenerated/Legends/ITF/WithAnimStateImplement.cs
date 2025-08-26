@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RLVersion)]
-	public partial class WithAnimStateImplement : CSerializable {
+	[Games(GameFlags.RO | GameFlags.RLVersion)]
+	public partial class WithAnimStateImplement : BasicStateImplement {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

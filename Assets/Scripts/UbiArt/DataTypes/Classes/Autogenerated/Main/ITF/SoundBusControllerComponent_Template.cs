@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class SoundBusControllerComponent_Template : CSerializable {
+	public partial class SoundBusControllerComponent_Template : ActorComponent_Template {
 		public Placeholder busData;
 		public Placeholder inputs;
 		protected override void SerializeImpl(CSerializerObject s) {

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_DanceDoorComponent_Template : CSerializable {
+	public partial class Ray_DanceDoorComponent_Template : ActorComponent_Template {
 		public StringID animClosed;
 		public StringID animClosedWithMusic;
 		public StringID animOpening;

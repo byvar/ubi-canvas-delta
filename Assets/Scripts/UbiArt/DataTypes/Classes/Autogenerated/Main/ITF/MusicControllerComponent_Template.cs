@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class MusicControllerComponent_Template : CSerializable {
+	public partial class MusicControllerComponent_Template : ActorComponent_Template {
 		public Placeholder musicVolume;
 		public uint metronomeType;
 		public Placeholder inputs;

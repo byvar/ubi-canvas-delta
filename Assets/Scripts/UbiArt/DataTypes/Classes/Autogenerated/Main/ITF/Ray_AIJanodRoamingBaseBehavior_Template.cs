@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR)]
+	[Games(GameFlags.ROVersion)]
 	public partial class Ray_AIJanodRoamingBaseBehavior_Template : TemplateAIBehavior {
 		public uint uint__0;
 		public float float__1;

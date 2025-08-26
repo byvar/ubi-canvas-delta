@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RM)]
-	public partial class AIFadeAction : CSerializable {
+	[Games(GameFlags.RO | GameFlags.RM)]
+	public partial class AIFadeAction : AIAction {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

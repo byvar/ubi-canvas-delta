@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AIReceiveHitBehavior : CSerializable {
+	public partial class Ray_AIReceiveHitBehavior : AIReceiveHitBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

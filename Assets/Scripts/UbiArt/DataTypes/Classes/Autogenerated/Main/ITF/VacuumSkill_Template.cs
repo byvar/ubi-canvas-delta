@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RFR | GameFlags.RO | GameFlags.RL)]
+	[Games(GameFlags.RO | GameFlags.RFR | GameFlags.RL)]
 	public partial class VacuumSkill_Template : CSerializable {
 		public PhysForceModifier vacuumForce_RO;
 		public PhysForceModifier_Template vacuumForce_RL;

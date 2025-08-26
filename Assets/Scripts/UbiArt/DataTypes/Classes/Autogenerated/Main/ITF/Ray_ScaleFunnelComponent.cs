@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RFR | GameFlags.RO)]
+	[Games(GameFlags.RO | GameFlags.RFR)]
 	public partial class Ray_ScaleFunnelComponent : ActorComponent {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

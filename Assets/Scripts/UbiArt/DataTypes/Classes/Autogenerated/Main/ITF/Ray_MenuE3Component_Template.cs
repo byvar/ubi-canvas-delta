@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_MenuE3Component_Template : CSerializable {
+	public partial class Ray_MenuE3Component_Template : ActorComponent_Template {
 		public Placeholder maps;
 		public StringID music;
 		public StringID validationSound;

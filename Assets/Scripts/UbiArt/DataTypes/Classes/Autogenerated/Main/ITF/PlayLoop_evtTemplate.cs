@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RFR | GameFlags.LegendsAndUp)]
+	[Games(GameFlags.RO | GameFlags.RFR | GameFlags.LegendsAndUp)]
 	public partial class PlayLoop_evtTemplate : SequenceEvent_Template {
 		public bool DoCompleteFrameResetAfterLoop;
 		public bool JumpMode;

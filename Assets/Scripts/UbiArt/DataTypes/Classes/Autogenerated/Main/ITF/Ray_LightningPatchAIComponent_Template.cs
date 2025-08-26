@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_LightningPatchAIComponent_Template : CSerializable {
+	public partial class Ray_LightningPatchAIComponent_Template : ActorComponent_Template {
 		public float maxLength;
 		public StringID boneName;
 		public StringID effectboneName;
@@ -21,7 +21,7 @@ namespace UbiArt.ITF {
 		public float speed;
 		public Vec2d headCenter;
 		public Vec2d tailCenter;
-		public Placeholder renderer;
+		public BezierCurveRenderer_Template renderer;
 		public float playRate;
 		public float headZOffset;
 		public float tailZOffset;
@@ -48,7 +48,7 @@ namespace UbiArt.ITF {
 			speed = s.Serialize<float>(speed, name: "speed");
 			headCenter = s.SerializeObject<Vec2d>(headCenter, name: "headCenter");
 			tailCenter = s.SerializeObject<Vec2d>(tailCenter, name: "tailCenter");
-			renderer = s.SerializeObject<Placeholder>(renderer, name: "renderer");
+			renderer = s.SerializeObject<BezierCurveRenderer_Template>(renderer, name: "renderer");
 			playRate = s.Serialize<float>(playRate, name: "playRate");
 			headZOffset = s.Serialize<float>(headZOffset, name: "headZOffset");
 			tailZOffset = s.Serialize<float>(tailZOffset, name: "tailZOffset");

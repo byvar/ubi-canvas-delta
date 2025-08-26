@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class TrajectorySpawnerComponent : CSerializable {
+	public partial class TrajectorySpawnerComponent : ActorComponent {
 		public Placeholder spawneePaths;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

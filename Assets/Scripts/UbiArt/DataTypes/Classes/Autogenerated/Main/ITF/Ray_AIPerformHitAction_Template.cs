@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.ROVersion)]
-	public partial class Ray_AIPerformHitAction_Template : AIAction_Template {
+	public partial class Ray_AIPerformHitAction_Template : AIPerformHitAction_Template {
 		public uint level;
 		public RECEIVEDHITTYPE type;
 		public StringID marker;

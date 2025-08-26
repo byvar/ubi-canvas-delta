@@ -1,9 +1,9 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
 	public partial class Ray_AIBounceRoamingBehavior_Template : TemplateAIBehavior {
-		public Placeholder bounceMove;
-		public Placeholder bounceIdle;
-		public Placeholder bounceJump;
+		public Generic<AIJumpInDirAction_Template> bounceMove;
+		public Generic<AIJumpInDirAction_Template> bounceIdle;
+		public Generic<AIJumpAction_Template> bounceJump;
 		public float minTimeToWalk;
 		public float maxTimeToWalk;
 		public float minTimeToIdle;
@@ -12,9 +12,9 @@ namespace UbiArt.ITF {
 		public float wallJumpHeight;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			bounceMove = s.SerializeObject<Placeholder>(bounceMove, name: "bounceMove");
-			bounceIdle = s.SerializeObject<Placeholder>(bounceIdle, name: "bounceIdle");
-			bounceJump = s.SerializeObject<Placeholder>(bounceJump, name: "bounceJump");
+			bounceMove = s.SerializeObject<Generic<AIJumpInDirAction_Template>>(bounceMove, name: "bounceMove");
+			bounceIdle = s.SerializeObject<Generic<AIJumpInDirAction_Template>>(bounceIdle, name: "bounceIdle");
+			bounceJump = s.SerializeObject<Generic<AIJumpAction_Template>>(bounceJump, name: "bounceJump");
 			minTimeToWalk = s.Serialize<float>(minTimeToWalk, name: "minTimeToWalk");
 			maxTimeToWalk = s.Serialize<float>(maxTimeToWalk, name: "maxTimeToWalk");
 			minTimeToIdle = s.Serialize<float>(minTimeToIdle, name: "minTimeToIdle");

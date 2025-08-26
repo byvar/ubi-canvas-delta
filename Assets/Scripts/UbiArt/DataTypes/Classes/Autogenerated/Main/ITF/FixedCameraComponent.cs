@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.LegendsAndUp | GameFlags.RO)]
+	[Games(GameFlags.RO | GameFlags.LegendsAndUp)]
 	public partial class FixedCameraComponent : BaseCameraComponent {
 		public Vec3d offset;
 		protected override void SerializeImpl(CSerializerObject s) {

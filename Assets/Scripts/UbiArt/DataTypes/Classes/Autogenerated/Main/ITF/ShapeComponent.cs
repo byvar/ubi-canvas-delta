@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.LegendsAndUp)]
+	[Games(GameFlags.All)]
 	public partial class ShapeComponent : ActorComponent {
 		public Vec2d localOffset;
 		public Vec2d localScale = Vec2d.One;

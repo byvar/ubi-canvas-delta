@@ -1,9 +1,9 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.ROVersion | GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
-	public partial class PolyLine : CSerializable {
-		public PolyPointList PolyPointList;
-		public AABB AABB;
-		public PolyLine.Connection connection;
+	public partial class PolyLine : BaseObject {
+		public PolyPointList PolyPointList = new PolyPointList();
+		public AABB AABB = new AABB();
+		public PolyLine.Connection connection = new Connection();
 		public CListO<PolyLineEdge> POINTS;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

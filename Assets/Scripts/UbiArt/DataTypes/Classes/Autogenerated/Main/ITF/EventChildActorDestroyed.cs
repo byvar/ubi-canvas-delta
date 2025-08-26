@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.ROVersion)]
-	public partial class EventChildActorDestroyed : CSerializable {
+	public partial class EventChildActorDestroyed : Event {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

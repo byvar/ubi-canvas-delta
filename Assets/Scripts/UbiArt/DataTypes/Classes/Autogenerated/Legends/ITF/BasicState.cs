@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RLVersion | GameFlags.RM)]
+	[Games(GameFlags.RO | GameFlags.RLVersion | GameFlags.RM)]
 	public partial class BasicState : CSerializable {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RFR | GameFlags.RL | GameFlags.RAVersion)]
+	[Games(GameFlags.RO | GameFlags.RFR | GameFlags.RL | GameFlags.RAVersion)]
 	public partial class AIBallisticsAction_Template : AIAction_Template {
 		public float duration;
 		public float speed;

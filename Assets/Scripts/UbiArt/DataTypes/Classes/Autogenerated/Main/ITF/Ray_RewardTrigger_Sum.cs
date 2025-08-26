@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_RewardTrigger_Sum : CSerializable {
+	public partial class Ray_RewardTrigger_Sum : Ray_RewardTrigger_Base {
 		public StringID typeToGet;
 		public uint amountToGet;
 		public int currentSessionOnly;

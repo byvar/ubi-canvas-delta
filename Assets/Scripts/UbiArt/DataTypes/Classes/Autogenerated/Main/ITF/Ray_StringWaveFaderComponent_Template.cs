@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_StringWaveFaderComponent_Template : CSerializable {
+	public partial class Ray_StringWaveFaderComponent_Template : ActorComponent_Template {
 		public float minBounceSpeed;
 		public float maxDownwardSpeed;
 		public float maxUpwardSpeed;

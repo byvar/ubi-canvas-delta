@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.ROVersion)]
-	public partial class Ray_AIAlInfernoStaticBehavior_Template : TemplateAIBehavior {
+	public partial class Ray_AIAlInfernoStaticBehavior_Template : Ray_AIGroundBaseBehavior_Template {
 		public Generic<AIAction_Template> idle;
 		public Generic<AIAction_Template> uturn;
 		public Generic<AIAction_Template> attack;

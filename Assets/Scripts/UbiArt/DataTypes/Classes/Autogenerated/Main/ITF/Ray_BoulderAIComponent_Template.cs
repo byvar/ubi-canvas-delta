@@ -1,7 +1,7 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
 	public partial class Ray_BoulderAIComponent_Template : Ray_FruitAIComponent_Template {
-		public Placeholder sentBackBehavior;
+		public Generic<Ray_AIBoulderSentBackBehavior_Template> sentBackBehavior;
 		public float maxSentBackDuration;
 		public float maxBouncesCount;
 		public float timeAfterLastBounce;
@@ -13,7 +13,7 @@ namespace UbiArt.ITF {
 		public float sentbackTornadoSpeed;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			sentBackBehavior = s.SerializeObject<Placeholder>(sentBackBehavior, name: "sentBackBehavior");
+			sentBackBehavior = s.SerializeObject<Generic<Ray_AIBoulderSentBackBehavior_Template>>(sentBackBehavior, name: "sentBackBehavior");
 			maxSentBackDuration = s.Serialize<float>(maxSentBackDuration, name: "maxSentBackDuration");
 			maxBouncesCount = s.Serialize<float>(maxBouncesCount, name: "maxBouncesCount");
 			timeAfterLastBounce = s.Serialize<float>(timeAfterLastBounce, name: "timeAfterLastBounce");

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RFR)]
-	public partial class Ray_GeyserComponent : CSerializable {
+	[Games(GameFlags.RO | GameFlags.RFR)]
+	public partial class Ray_GeyserComponent : Ray_ChildLaunchComponent {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

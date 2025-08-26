@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_PlatformChainAIComponent_Template : CSerializable {
+	public partial class Ray_PlatformChainAIComponent_Template : ActorComponent_Template {
 		public uint rollbackDepth;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

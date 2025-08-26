@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR)]
-	public partial class Ray_EventHangCoopJump : CSerializable {
+	[Games(GameFlags.ROVersion)]
+	public partial class Ray_EventHangCoopJump : Event {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

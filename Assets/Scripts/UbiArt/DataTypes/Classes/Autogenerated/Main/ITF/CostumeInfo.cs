@@ -1,12 +1,12 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RFR)]
+	[Games(GameFlags.RO | GameFlags.RFR)]
 	public partial class CostumeInfo : CSerializable {
-		public StringID StringID__0;
-		public uint uint__1;
+		public StringID id;
+		public uint prize;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			StringID__0 = s.SerializeObject<StringID>(StringID__0, name: "StringID__0");
-			uint__1 = s.Serialize<uint>(uint__1, name: "uint__1");
+			id = s.SerializeObject<StringID>(id, name: "id");
+			prize = s.Serialize<uint>(prize, name: "prize");
 		}
 	}
 }

@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.LegendsAndUp)]
+	[Games(GameFlags.All)]
 	public partial class RenderSimpleAnimComponent_Template : ActorComponent_Template {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

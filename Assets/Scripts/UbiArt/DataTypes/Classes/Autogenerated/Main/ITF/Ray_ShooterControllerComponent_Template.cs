@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_ShooterControllerComponent_Template : CSerializable {
+	public partial class Ray_ShooterControllerComponent_Template : Ray_BasicPlayerControllerComponent_Template {
 		public uint animBankState;
 		public float minLocalSpeed;
 		public float maxLocalSpeed;
@@ -26,12 +26,12 @@ namespace UbiArt.ITF {
 		public StringID gunBone;
 		public StringID swallowBone;
 		public float invincibilityTime;
-		public Placeholder vacuumSkill;
+		public VacuumSkill_Template vacuumSkill;
 		public Vec2d spitObjSpeed;
 		public Path baseSpawnBulletPath;
 		public Path deathSpawnFXPath;
-		public Placeholder heartShield;
-		public Placeholder swarmRepeller;
+		public Ray_HeartShield_Template heartShield;
+		public Ray_SwarmRepellerPowerUp_Template swarmRepeller;
 		public float bubbleStateBlendFactor;
 		public float bubbleStateLocalSpeedMax;
 		public float bubbleStatePhantomRadius;
@@ -69,12 +69,12 @@ namespace UbiArt.ITF {
 			gunBone = s.SerializeObject<StringID>(gunBone, name: "gunBone");
 			swallowBone = s.SerializeObject<StringID>(swallowBone, name: "swallowBone");
 			invincibilityTime = s.Serialize<float>(invincibilityTime, name: "invincibilityTime");
-			vacuumSkill = s.SerializeObject<Placeholder>(vacuumSkill, name: "vacuumSkill");
+			vacuumSkill = s.SerializeObject<VacuumSkill_Template>(vacuumSkill, name: "vacuumSkill");
 			spitObjSpeed = s.SerializeObject<Vec2d>(spitObjSpeed, name: "spitObjSpeed");
 			baseSpawnBulletPath = s.SerializeObject<Path>(baseSpawnBulletPath, name: "baseSpawnBulletPath");
 			deathSpawnFXPath = s.SerializeObject<Path>(deathSpawnFXPath, name: "deathSpawnFXPath");
-			heartShield = s.SerializeObject<Placeholder>(heartShield, name: "heartShield");
-			swarmRepeller = s.SerializeObject<Placeholder>(swarmRepeller, name: "swarmRepeller");
+			heartShield = s.SerializeObject<Ray_HeartShield_Template>(heartShield, name: "heartShield");
+			swarmRepeller = s.SerializeObject<Ray_SwarmRepellerPowerUp_Template>(swarmRepeller, name: "swarmRepeller");
 			bubbleStateBlendFactor = s.Serialize<float>(bubbleStateBlendFactor, name: "bubbleStateBlendFactor");
 			bubbleStateLocalSpeedMax = s.Serialize<float>(bubbleStateLocalSpeedMax, name: "bubbleStateLocalSpeedMax");
 			bubbleStatePhantomRadius = s.Serialize<float>(bubbleStatePhantomRadius, name: "bubbleStatePhantomRadius");

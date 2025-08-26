@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_RewardTrigger_Timer : CSerializable {
+	public partial class Ray_RewardTrigger_Timer : Ray_RewardTrigger_Base {
 		public StringID timer;
 		public float timeToGet;
 		public int currentSessionOnly;

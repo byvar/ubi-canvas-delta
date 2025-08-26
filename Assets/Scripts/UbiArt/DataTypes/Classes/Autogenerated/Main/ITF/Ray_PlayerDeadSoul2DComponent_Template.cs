@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_PlayerDeadSoul2DComponent_Template : CSerializable {
+	public partial class Ray_PlayerDeadSoul2DComponent_Template : ActorComponent_Template {
 		public StringID fxName;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

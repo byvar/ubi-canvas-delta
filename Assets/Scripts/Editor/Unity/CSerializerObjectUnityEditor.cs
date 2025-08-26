@@ -10,6 +10,36 @@ using UbiCanvas.Helpers;
 
 namespace UbiArt {
 	public class CSerializerObjectUnityEditor : CSerializerObject {
+		public class ClipboardData {
+			public Type Type { get; set; }
+			public byte[] Data { get; set; }
+			public Mode GameMode { get; set; }
+			public string Extension { get; set; }
+		}
+		private static ClipboardData CopiedData { get; set; }
+		private void Copy(CSerializable obj) {
+			CopiedData = new ClipboardData() {
+				Type = obj.GetType(),
+				GameMode = Context.Settings.Mode,
+				Data = obj.CloneGetBinaryData(ExtensionForCopying, context: Context),
+				Extension = ExtensionForCopying
+			};
+		}
+		private CSerializable Paste(CSerializable original, Type type) {
+			if(!CanPaste(type)) return original;
+			var newData = CSerializable.CreateFromBinaryData(CopiedData.Data, CopiedData.Type, CopiedData.Extension, Context);
+			if (foldouts.ContainsKey(original) && !foldouts.ContainsKey(newData)) {
+				foldouts[newData] = foldouts[original];
+			}
+			return newData;
+		}
+		private bool CanPaste(Type type) {
+			if (CopiedData?.Data == null || CopiedData.Type != type || CopiedData.GameMode != Context.Settings.Mode) return false;
+			return true;
+		}
+		private bool CanCopyPaste(Type type) => typeof(CSerializable).IsAssignableFrom(type);
+		public string ExtensionForCopying { get; set; } = "isc";
+
 		private Dictionary<object, bool> foldouts = new Dictionary<object, bool>();
 		public uint position = 0;
 		private LocalisationIdDropdown localisationDropdown = null;
@@ -40,6 +70,10 @@ namespace UbiArt {
 
 		public override object Serialize(object obj, Type type, string name = null, Options options = Options.None) {
 			if (name == null) name = $"({type.GetFormattedName()})";
+			if (addToName != null) {
+				name += addToName;
+				addToName = null;
+			}
 			if (type.IsEnum) {
 				obj = EnumField(name, obj, type);
 			} else if (Type.GetTypeCode(type) != TypeCode.Object) {
@@ -114,10 +148,16 @@ namespace UbiArt {
 					obj = ctor.Invoke(new object[] { });
 				}
 				if (obj is ICSerializable) {
+					Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+					if (CanCopyPaste(type)) {
+						var cs = (CSerializable)obj;
+						DrawCopyPaste(ref rect, type, ref cs);
+						obj = cs;
+					}
 					if (!foldouts.ContainsKey(obj)) {
 						foldouts[obj] = false;
 					}
-					foldouts[obj] = EditorGUILayout.Foldout(foldouts[obj], name, true);
+					foldouts[obj] = EditorGUI.Foldout(rect, foldouts[obj], name, true);
 					if (foldouts[obj]) {
 						EditorGUI.indentLevel++;
 						IncreaseLevel();
@@ -138,6 +178,41 @@ namespace UbiArt {
 		public override byte[] SerializeBytes(byte[] obj, long count) {
 			//obj = reader.ReadBytes(numBytes);
 			return obj;
+		}
+
+		string addToName = null;
+		public override bool ArrayEntryStart(string name, int index) {
+			addToName = $"[{index}]";
+			return base.ArrayEntryStart(name, index);
+		}
+
+		public override void ArrayEntryStop() {
+			addToName = null;
+			base.ArrayEntryStop();
+		}
+
+		protected const int ButtonWidth = 40;
+
+		public void DrawCopyPaste(ref Rect rect, Type type, ref CSerializable cs) {
+			if (typeof(CSerializable).IsAssignableFrom(type)) {
+				var width = ButtonWidth;
+				GUIStyle butStyle = EditorStyles.miniButtonRight;
+				if (CanPaste(type)) {
+					Rect buttonRect = new Rect(rect.x + rect.width - width, rect.y, width, rect.height);
+					rect = new Rect(rect.x, rect.y, rect.width - width, rect.height);
+					GUI.SetNextControlName("Button Paste");
+					if (GUI.Button(buttonRect, "Paste", butStyle)) {
+						cs = Paste(cs, type);
+					}
+				}
+				if (cs != null) {
+					Rect buttonRect = new Rect(rect.x + rect.width - width, rect.y, width, rect.height);
+					rect = new Rect(rect.x, rect.y, rect.width - width, rect.height);
+					GUI.SetNextControlName("Button Copy");
+					if (GUI.Button(buttonRect, "Copy", butStyle))
+						Copy(cs);
+				}
+			}
 		}
 
 		public void DrawPath(string name, ref Path p) {
@@ -307,14 +382,35 @@ namespace UbiArt {
 						value = (T)maxValue;
 					} else {
 						switch (Type.GetTypeCode(typeof(T))) {
+							case TypeCode.Int16:
+								if (short.TryParse(valueText, out short s)) value = (T)(object)s;
+								break;
 							case TypeCode.Int32:
 								if (int.TryParse(valueText, out int i)) value = (T)(object)i;
+								break;
+							case TypeCode.Int64:
+								if (long.TryParse(valueText, out long l)) value = (T)(object)l;
+								break;
+							case TypeCode.UInt16:
+								if (ushort.TryParse(valueText, out ushort us)) value = (T)(object)us;
 								break;
 							case TypeCode.UInt32:
 								if (uint.TryParse(valueText, out uint ui)) value = (T)(object)ui;
 								break;
+							case TypeCode.UInt64:
+								if (ulong.TryParse(valueText, out ulong ul)) value = (T)(object)ul;
+								break;
 							case TypeCode.Single:
 								if (float.TryParse(valueText, out float f)) value = (T)(object)f;
+								break;
+							case TypeCode.Double:
+								if(double.TryParse(valueText, out double d)) value = (T)(object)d;
+								break;
+							case TypeCode.Byte:
+								if (byte.TryParse(valueText, out byte b)) value = (T)(object)b;
+								break;
+							case TypeCode.SByte:
+								if (sbyte.TryParse(valueText, out sbyte sb)) value = (T)(object)sb;
 								break;
 							default:
 								break;
@@ -555,6 +651,12 @@ namespace UbiArt {
 			// Get the type
 			var type = typeof(T);
 
+			if (name == null) name = $"({type.GetFormattedName()})";
+			if (addToName != null) {
+				name += addToName;
+				addToName = null;
+			}
+
 			TypeCode typeCode = Type.GetTypeCode(type);
 
 			if (type.IsEnum) {
@@ -595,6 +697,10 @@ namespace UbiArt {
 			// Get the type
 			var type = typeof(T);
 			if(name == null) name = $"({type.GetFormattedName()})";
+			if (addToName != null) {
+				name += addToName;
+				addToName = null;
+			}
 			if (type == typeof(Angle)) {
 				Angle a = (Angle)(object)obj;
 				a = AngleField(name, a);
@@ -643,10 +749,16 @@ namespace UbiArt {
 				if (obj == null) {
 					obj = new T();
 				}
+				Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+				if (CanCopyPaste(typeof(T))) {
+					var cs = (CSerializable)(object)obj;
+					DrawCopyPaste(ref rect, type, ref cs);
+					obj = (T)(object)cs;
+				}
 				if (!foldouts.ContainsKey(obj)) {
 					foldouts[obj] = false;
 				}
-				foldouts[obj] = EditorGUILayout.Foldout(foldouts[obj], name, true);
+				foldouts[obj] = EditorGUI.Foldout(rect, foldouts[obj], name, true);
 				if (foldouts[obj]) {
 					EditorGUI.indentLevel++;
 					IncreaseLevel();

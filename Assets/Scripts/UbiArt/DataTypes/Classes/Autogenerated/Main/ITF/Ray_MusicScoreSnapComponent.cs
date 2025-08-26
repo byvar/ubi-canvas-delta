@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_MusicScoreSnapComponent : CSerializable {
+	public partial class Ray_MusicScoreSnapComponent : ActorComponent {
 		public float distOnCurve;
 		public float intervalNote;
 		public uint note;

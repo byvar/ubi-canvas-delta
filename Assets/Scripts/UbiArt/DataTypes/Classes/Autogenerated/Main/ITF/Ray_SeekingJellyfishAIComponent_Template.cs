@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.RFR)]
-	public partial class Ray_SeekingJellyfishAIComponent_Template : CSerializable {
+	public partial class Ray_SeekingJellyfishAIComponent_Template : ActorComponent_Template {
 		public float minSpeed;
 		public float maxSpeed;
 		public float acceleration;

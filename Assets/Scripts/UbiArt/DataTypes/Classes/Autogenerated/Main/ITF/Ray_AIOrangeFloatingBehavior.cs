@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_AIOrangeFloatingBehavior : CSerializable {
+	public partial class Ray_AIOrangeFloatingBehavior : Ray_AIWaterFloatingBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

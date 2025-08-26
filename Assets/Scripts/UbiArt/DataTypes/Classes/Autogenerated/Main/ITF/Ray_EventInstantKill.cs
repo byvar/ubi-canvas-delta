@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR)]
-	public partial class Ray_EventInstantKill : CSerializable {
+	[Games(GameFlags.ROVersion)]
+	public partial class Ray_EventInstantKill : Event {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_CheckpointComponent : CSerializable {
+	public partial class Ray_CheckpointComponent : CheckpointComponent {
 		public Placeholder SpawnPos;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

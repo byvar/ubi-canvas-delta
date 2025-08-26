@@ -29,6 +29,8 @@ namespace UbiArt
 
 		public bool IsLittleEndian => Endian == Endian.Little;
 
+		public bool IsDemo { get; set; } = false; // TODO: Replace with version tree?
+
 		public string PlatformString => Platform switch
 		{
 			GamePlatform.PC => "PC",

@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.LegendsAndUp)]
+	[Games(GameFlags.All)]
 	public partial class PhantomComponent : ShapeComponent {
 		public CArrayP<float> depthOffsets;
 		protected override void SerializeImpl(CSerializerObject s) {

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_ChangePageWithAnimComponent_Template : CSerializable {
+	public partial class Ray_ChangePageWithAnimComponent_Template : ActorComponent_Template {
 		public StringID animPlayer;
 		public StringID aspireAnim;
 		public StringID aspirePoint;

@@ -1,10 +1,8 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_EventShooterCamera_TransitionNotify : CSerializable {
-		public uint sender;
+	public partial class Ray_EventShooterCamera_TransitionNotify : Event {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			sender = s.Serialize<uint>(sender, name: "sender");
 		}
 		public override uint? ClassCRC => 0x1DE2F928;
 	}

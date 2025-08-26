@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_NautilusAIComponent : CSerializable {
+	public partial class Ray_NautilusAIComponent : ActorComponent {
 		public AngleAmount minAngle;
 		public AngleAmount maxAngle;
 		public Mode mode;

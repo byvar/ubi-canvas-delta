@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.RM)]
-	public partial class PlaySpawn_evt : CSerializable {
+	public partial class PlaySpawn_evt : SequenceEventWithActor {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

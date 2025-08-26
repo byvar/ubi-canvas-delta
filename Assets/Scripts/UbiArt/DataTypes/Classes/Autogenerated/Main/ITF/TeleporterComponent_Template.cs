@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class TeleporterComponent_Template : CSerializable {
+	public partial class TeleporterComponent_Template : ActorComponent_Template {
 		public uint INDEX;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

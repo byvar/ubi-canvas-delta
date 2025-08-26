@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR)]
-	public partial class Ray_EventFruitAttachQuery : CSerializable {
+	[Games(GameFlags.ROVersion)]
+	public partial class Ray_EventFruitAttachQuery : Event {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

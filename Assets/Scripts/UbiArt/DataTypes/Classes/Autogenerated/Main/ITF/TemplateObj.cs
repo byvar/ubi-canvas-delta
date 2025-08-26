@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RL | GameFlags.VH | GameFlags.RA)]
+	[Games(GameFlags.RO | GameFlags.RL | GameFlags.VH | GameFlags.RA)]
 	public partial class TemplateObj : TemplateObjBase {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

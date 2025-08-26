@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.RL | GameFlags.RAVersion)]
+	[Games(GameFlags.ROVersion | GameFlags.RL | GameFlags.RAVersion)]
 	public partial class BaseCameraComponent_Template : ActorComponent_Template {
 		public bool startAsMainCam;
 		public float rampUpDestinationCoeff;

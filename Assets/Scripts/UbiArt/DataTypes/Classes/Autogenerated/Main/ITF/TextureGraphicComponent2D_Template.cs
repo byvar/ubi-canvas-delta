@@ -3,16 +3,13 @@ namespace UbiArt.ITF {
 	public partial class TextureGraphicComponent2D_Template : GraphicComponent_Template {
 		public Path texture;
 		public uint rank;
-		public CArrayO<TexLanguageOverride> texOverrides;
+		public CArrayO<TexLanguageOverride> texOverrides; // ONLY in the DEMO!
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.Settings.Game == Game.RO) {
-				texture = s.SerializeObject<Path>(texture, name: "texture");
-				rank = s.Serialize<uint>(rank, name: "rank");
+			texture = s.SerializeObject<Path>(texture, name: "texture");
+			rank = s.Serialize<uint>(rank, name: "rank");
+			if (s.Settings.Game == Game.RO && s.Settings.IsDemo) {
 				texOverrides = s.SerializeObject<CArrayO<TexLanguageOverride>>(texOverrides, name: "texOverrides");
-			} else {
-				texture = s.SerializeObject<Path>(texture, name: "texture");
-				rank = s.Serialize<uint>(rank, name: "rank");
 			}
 		}
 		public override uint? ClassCRC => 0xA2ACC46E;

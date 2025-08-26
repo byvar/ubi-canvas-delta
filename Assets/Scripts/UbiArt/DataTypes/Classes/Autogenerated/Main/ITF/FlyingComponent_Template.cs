@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class FlyingComponent_Template : CSerializable {
+	public partial class FlyingComponent_Template : ActorComponent_Template {
 		public Placeholder DebugData;
 		public Placeholder FlyingComponentDebugData;
 		public float MoveVecBlendFactor;

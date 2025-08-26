@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_RewardTrigger_Event : CSerializable {
+	public partial class Ray_RewardTrigger_Event : Ray_RewardTrigger_Base {
 		public StringID eventID;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

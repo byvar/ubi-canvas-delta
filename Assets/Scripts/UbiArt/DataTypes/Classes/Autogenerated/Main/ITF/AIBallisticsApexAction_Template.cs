@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RFR | GameFlags.LegendsAndUp)]
+	[Games(GameFlags.RO | GameFlags.RFR | GameFlags.LegendsAndUp)]
 	public partial class AIBallisticsApexAction_Template : AIBallisticsAction_Template {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

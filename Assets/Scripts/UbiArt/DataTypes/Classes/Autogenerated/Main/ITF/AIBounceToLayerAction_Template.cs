@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.RL | GameFlags.RAVersion)]
+	[Games(GameFlags.ROVersion | GameFlags.RL | GameFlags.RAVersion)]
 	public partial class AIBounceToLayerAction_Template : AIAction_Template {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

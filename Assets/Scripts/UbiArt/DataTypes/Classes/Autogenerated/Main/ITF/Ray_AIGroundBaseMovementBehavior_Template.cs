@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR)]
+	[Games(GameFlags.ROVersion)]
 	public partial class Ray_AIGroundBaseMovementBehavior_Template : Ray_AIGroundBaseBehavior_Template {
 		public Generic<AIIdleAction_Template> idle;
 		public Generic<AIWalkInDirAction_Template> move;

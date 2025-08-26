@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO | GameFlags.RM)]
-	public partial class AISimplePlayAnimBehavior : CSerializable {
+	public partial class AISimplePlayAnimBehavior : AIBehavior {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

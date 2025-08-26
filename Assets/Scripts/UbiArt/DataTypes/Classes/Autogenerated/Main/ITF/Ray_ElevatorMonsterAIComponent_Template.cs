@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
-	public partial class Ray_ElevatorMonsterAIComponent_Template : CSerializable {
+	public partial class Ray_ElevatorMonsterAIComponent_Template : ActorComponent_Template {
 		public float ratioSpeed;
 		public float distanceForHit;
 		public float countDownAttack;
