@@ -7,13 +7,10 @@ namespace UbiArt.ITF {
 		public CListO<FontTemplate.Char> chars;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.Settings.Game == Game.COL) {
-			} else {
-				info = s.SerializeObject<FontTemplate.Info>(info, name: "info");
-				common = s.SerializeObject<FontTemplate.Common>(common, name: "common");
-				pages = s.SerializeObject<CListO<FontTemplate.Page>>(pages, name: "pages");
-				chars = s.SerializeObject<CListO<FontTemplate.Char>>(chars, name: "chars");
-			}
+			info = s.SerializeObject<FontTemplate.Info>(info, name: "info");
+			common = s.SerializeObject<FontTemplate.Common>(common, name: "common");
+			pages = s.SerializeObject<CListO<FontTemplate.Page>>(pages, name: "pages");
+			chars = s.SerializeObject<CListO<FontTemplate.Char>>(chars, name: "chars");
 		}
 		[Games(GameFlags.VH | GameFlags.RA)]
 		public partial class Info : CSerializable {

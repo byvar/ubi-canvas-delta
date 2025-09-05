@@ -49,6 +49,7 @@ namespace UbiArt.ITF {
 		public Vec2d highlightScale = Vec2d.One;
 		public Path highlightTexture;
 		public GFXMaterialSerializable highlightMaterial;
+		public CListO<GFXMaterialSerializable> materialList;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
@@ -111,10 +112,12 @@ namespace UbiArt.ITF {
 				is2D = s.Serialize<bool>(is2D, name: "is2D");
 				addBorders = s.Serialize<bool>(addBorders, name: "addBorders");
 				useAnimMeshVertex = s.Serialize<bool>(useAnimMeshVertex, name: "useAnimMeshVertex");
+				anims = s.SerializeObject<CListO<RenderSingleAnimData>>(anims, name: "anims");
 				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}
 				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
+				materialList = s.SerializeObject<CListO<GFXMaterialSerializable>>(materialList, name: "materialList");
 				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					frontTexture = s.SerializeObject<Path>(frontTexture, name: "frontTexture");
 				}

@@ -5,7 +5,7 @@ namespace UbiArt.ITF {
 		public Placeholder annoncementPopUpTitle;
 		public Placeholder annoncementPopUpMsgs;
 		public Placeholder annoncementPopUpValidate;
-		public Placeholder localizationPaths;
+		public CArrayO<Path> localizationPaths;
 		public Path localizationCommon;
 		public uint steamID;
 		public uint uplayID;
@@ -15,7 +15,7 @@ namespace UbiArt.ITF {
 			annoncementPopUpTitle = s.SerializeObject<Placeholder>(annoncementPopUpTitle, name: "annoncementPopUpTitle");
 			annoncementPopUpMsgs = s.SerializeObject<Placeholder>(annoncementPopUpMsgs, name: "annoncementPopUpMsgs");
 			annoncementPopUpValidate = s.SerializeObject<Placeholder>(annoncementPopUpValidate, name: "annoncementPopUpValidate");
-			localizationPaths = s.SerializeObject<Placeholder>(localizationPaths, name: "localizationPaths");
+			localizationPaths = s.SerializeObject<CArrayO<Path>>(localizationPaths, name: "localizationPaths");
 			localizationCommon = s.SerializeObject<Path>(localizationCommon, name: "localizationCommon");
 			steamID = s.Serialize<uint>(steamID, name: "steamID");
 			uplayID = s.Serialize<uint>(uplayID, name: "uplayID");

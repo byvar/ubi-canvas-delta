@@ -28,6 +28,21 @@ namespace UbiArt.ITF {
 				if (s.Settings.Platform != GamePlatform.Vita) {
 					animPackage = s.SerializeObject<AnimResourcePackage>(animPackage, name: "animPackage");
 				}
+			} else if(s.Settings.Game == Game.COL) {
+				defaultUpdate = s.Serialize<bool>(defaultUpdate, name: "defaultUpdate", options: CSerializerObject.Options.BoolAsByte);
+				draw2D = s.Serialize<bool>(draw2D, name: "draw2D", options: CSerializerObject.Options.BoolAsByte);
+				amvPath = s.SerializeObject<Path>(amvPath, name: "amvPath");
+				if (s.HasFlags(SerializeFlags.Deprecate)) {
+					texture = s.SerializeObject<Path>(texture, name: "texture");
+				}
+				material = s.SerializeObject<GFXMaterialSerializable>(material, name: "material");
+				useEditor = s.Serialize<bool>(useEditor, name: "useEditor", options: CSerializerObject.Options.BoolAsByte);
+				useDataAnims = s.Serialize<bool>(useDataAnims, name: "useDataAnims", options: CSerializerObject.Options.BoolAsByte);
+				useActorScale = s.Serialize<bool>(useActorScale, name: "useActorScale", options: CSerializerObject.Options.BoolAsByte);
+				stopDuration = s.Serialize<float>(stopDuration, name: "stopDuration");
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					animPackage = s.SerializeObject<AnimResourcePackage>(animPackage, name: "animPackage");
+				}
 			} else {
 				defaultUpdate = s.Serialize<bool>(defaultUpdate, name: "defaultUpdate");
 				draw2D = s.Serialize<bool>(draw2D, name: "draw2D");

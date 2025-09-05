@@ -61,6 +61,7 @@ namespace UbiArt.ITF {
 				showingFadeDuration = s.Serialize<float>(showingFadeDuration, name: "showingFadeDuration");
 				hidingFadeDuration = s.Serialize<float>(hidingFadeDuration, name: "hidingFadeDuration");
 			} else if (s.Settings.Game == Game.COL || s.Settings.Game == Game.RL) {
+				if (this is COL_TutorialHUD_Template) return;
 				is2D = s.Serialize<bool>(is2D, name: "is2D", options: CSerializerObject.Options.BoolAsByte);
 				showingFadeDuration = s.Serialize<float>(showingFadeDuration, name: "showingFadeDuration");
 				hidingFadeDuration = s.Serialize<float>(hidingFadeDuration, name: "hidingFadeDuration");

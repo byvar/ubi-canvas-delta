@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class Unknown_COL_20_sub_7CC7B0 : CSerializable {
+	public partial class Unknown_COL_20_sub_7CC7B0 : ActorComponent_Template {
 		public Path clothPath;
 		public Path collisionDataPath;
 		protected override void SerializeImpl(CSerializerObject s) {

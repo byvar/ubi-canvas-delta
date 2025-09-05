@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_SceneConfig_StartScreen : CSerializable {
+	public partial class COL_SceneConfig_StartScreen : COL_SceneConfig_Base {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

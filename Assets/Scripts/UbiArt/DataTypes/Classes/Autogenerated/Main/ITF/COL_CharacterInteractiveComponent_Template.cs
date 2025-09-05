@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_CharacterInteractiveComponent_Template : CSerializable {
+	public partial class COL_CharacterInteractiveComponent_Template : COL_BaseInteractiveComponent_Template {
 		public Enum_characterType characterType;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

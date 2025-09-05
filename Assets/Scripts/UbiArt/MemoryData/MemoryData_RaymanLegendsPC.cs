@@ -3256,6 +3256,8 @@ namespace UbiArt {
 			[typeof(ITF.RO2_EventFruitDetach)] = 16,
 			[typeof(ITF.RO2_WaveSpikyBallComponent_Template.RO2_WaveSpikyBall_Transition)] = 20,
 			[typeof(ITF.RO2_WaveSpikyBallComponent_Template.RO2_WaveSpikyBall_Circle)] = 40,
+			[typeof(ITF.RO2_EvilMonkeyComponent.ProjectileDesc)] = 152,
+			[typeof(ITF.RO2_PinkMonkeyComponent.ProjectileDesc)] = 148,
 		};
 
 		public static readonly Dictionary<Type, uint> RetailAlign = new Dictionary<Type, uint>() {

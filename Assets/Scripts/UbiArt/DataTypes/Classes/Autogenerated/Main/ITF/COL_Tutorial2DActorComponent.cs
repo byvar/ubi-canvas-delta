@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_Tutorial2DActorComponent : CSerializable {
+	public partial class COL_Tutorial2DActorComponent : COL_BaseTutorialActorComponent {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

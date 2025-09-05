@@ -19,6 +19,8 @@ namespace UbiArt.Animation {
 			public float eventData1;
 			public StringID polyline;
 
+			public StringID colFX;
+
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
 				type = s.Serialize<AnimMarkerEventType>(type, name: "type");
@@ -28,6 +30,9 @@ namespace UbiArt.Animation {
 				switch (type) {
 					case AnimMarkerEventType.AnimFXEvent:
 						enableFX = s.Serialize<bool>(enableFX, name: "enableFX"); // true: FX on, false: FX off
+						if (s.Settings.Game == Game.COL) {
+							colFX = s.SerializeObject<StringID>(colFX, name: "colFX");
+						}
 						break;
 					case AnimMarkerEventType.AnimAnimationEvent:
 						break;

@@ -1,7 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_UIEventShowPopUp : CSerializable {
-		public uint sender;
+	public partial class COL_UIEventShowPopUp : Event {
 		public StringID menuSceneID;
 		public Placeholder titleLocID;
 		public Placeholder msgLocID;
@@ -12,7 +11,6 @@ namespace UbiArt.ITF {
 		public uint iconSpriteIndex;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			sender = s.Serialize<uint>(sender, name: "sender");
 			menuSceneID = s.SerializeObject<StringID>(menuSceneID, name: "menuSceneID");
 			titleLocID = s.SerializeObject<Placeholder>(titleLocID, name: "titleLocID");
 			msgLocID = s.SerializeObject<Placeholder>(msgLocID, name: "msgLocID");

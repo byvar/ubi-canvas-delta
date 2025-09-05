@@ -1,8 +1,8 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_CharacterInfoHUD_Template : CSerializable {
+	public partial class COL_CharacterInfoHUD_Template : UIMenuBasic_Template {
 		public Path lightOrbsGaugeTexture;
-		public Placeholder lightOrbsGauge;
+		public GFXMaterialSerializable lightOrbsGauge;
 		public StringID lightOrbGaugePotionFx;
 		public StringID lightOrbGaugePickLightOrbFx;
 		public bool showAuroraCharacterInfoInExploration;
@@ -22,7 +22,7 @@ namespace UbiArt.ITF {
 			if (s.HasFlags(SerializeFlags.Deprecate)) {
 				lightOrbsGaugeTexture = s.SerializeObject<Path>(lightOrbsGaugeTexture, name: "lightOrbsGaugeTexture");
 			}
-			lightOrbsGauge = s.SerializeObject<Placeholder>(lightOrbsGauge, name: "lightOrbsGauge");
+			lightOrbsGauge = s.SerializeObject<GFXMaterialSerializable>(lightOrbsGauge, name: "lightOrbsGauge");
 			lightOrbGaugePotionFx = s.SerializeObject<StringID>(lightOrbGaugePotionFx, name: "lightOrbGaugePotionFx");
 			lightOrbGaugePickLightOrbFx = s.SerializeObject<StringID>(lightOrbGaugePickLightOrbFx, name: "lightOrbGaugePickLightOrbFx");
 			showAuroraCharacterInfoInExploration = s.Serialize<bool>(showAuroraCharacterInfoInExploration, name: "showAuroraCharacterInfoInExploration", options: CSerializerObject.Options.BoolAsByte);

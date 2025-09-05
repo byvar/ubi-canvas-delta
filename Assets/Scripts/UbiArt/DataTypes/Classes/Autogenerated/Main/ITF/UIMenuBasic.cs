@@ -26,6 +26,7 @@ namespace UbiArt.ITF {
 					backItem = s.SerializeObject<StringID>(backItem, name: "backItem");
 				}
 			} else if (s.Settings.Game == Game.COL) {
+				if (this is COL_TutorialHUD) return;
 				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					defaultItem = s.SerializeObject<StringID>(defaultItem, name: "defaultItem");
 					backItem = s.SerializeObject<StringID>(backItem, name: "backItem");

@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.VH | GameFlags.RA)]
+	[Games(GameFlags.ROVersion | GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
 	public partial class Trail_Template : CSerializable {
 		public Path texture;
 		public GFXMaterialSerializable material;
@@ -32,7 +32,7 @@ namespace UbiArt.ITF {
 				blendmode = s.Serialize<GFX_BLEND>(blendmode, name: "blendmode");
 				color = s.SerializeObject<Color>(color, name: "color");
 				attachBone = s.SerializeObject<StringID>(attachBone, name: "attachBone");
-			} else if(s.Settings.Game == Game.RL) {
+			} else if(s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
 				if (s.HasFlags(SerializeFlags.Deprecate)) {
 					texture = s.SerializeObject<Path>(texture, name: "texture");
 				}

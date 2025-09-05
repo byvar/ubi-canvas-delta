@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_LightPuzzlePieceComponent : CSerializable {
+	public partial class COL_LightPuzzlePieceComponent : ActorComponent {
 		public float shadowActivationRadius;
 		public float distanceFactor;
 		public float receptorRadius;

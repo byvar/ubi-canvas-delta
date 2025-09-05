@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_UIProgressBar_Template : CSerializable {
+	public partial class COL_UIProgressBar_Template : UIComponent_Template {
 		public float currentValueUpdateRate;
 		public float maxValueUpdateRate;
 		public StringID fullBarFX;

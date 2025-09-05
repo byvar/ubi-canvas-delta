@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_UIEventShowQuestValidation : CSerializable {
+	public partial class COL_UIEventShowQuestValidation : COL_UIEventShowPopUp {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

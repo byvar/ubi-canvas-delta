@@ -358,6 +358,8 @@ namespace UbiArt {
 			[typeof(ITF.RO2_BreakableAIComponent_Template.DestructionStage)] = 32,
 			[typeof(ITF.PlayAnimOnWeightChangeComponent_Template)] = 76,
 			[typeof(ITF.RO2_SlingShotComponent_Template)] = 1852,
+			[typeof(ITF.RO2_SlingShotBulletComponent_Template)] = 24,
+			[typeof(ITF.Trail3DComponent_Template)] = 1624,
 			[typeof(ITF.Trail_Template)] = 1520,
 			[typeof(ITF.AfterFxComponent_Template)] = 420,
 			[typeof(ITF.RO2_KuyALumsComponent_Template)] = 140,

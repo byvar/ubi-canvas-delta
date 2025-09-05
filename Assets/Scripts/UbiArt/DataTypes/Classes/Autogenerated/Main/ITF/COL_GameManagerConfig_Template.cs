@@ -14,7 +14,7 @@ namespace UbiArt.ITF {
 		public Path drawCameraPath;
 		public Path logoVideoIntroPath;
 		public Path loadingScenePath;
-		public Placeholder endCreditDialogData;
+		public COL_CinematicDialogData endCreditDialogData;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			startScenePath = s.SerializeObject<Path>(startScenePath, name: "startScenePath");
@@ -30,7 +30,7 @@ namespace UbiArt.ITF {
 			drawCameraPath = s.SerializeObject<Path>(drawCameraPath, name: "drawCameraPath");
 			logoVideoIntroPath = s.SerializeObject<Path>(logoVideoIntroPath, name: "logoVideoIntroPath");
 			loadingScenePath = s.SerializeObject<Path>(loadingScenePath, name: "loadingScenePath");
-			endCreditDialogData = s.SerializeObject<Placeholder>(endCreditDialogData, name: "endCreditDialogData");
+			endCreditDialogData = s.SerializeObject<COL_CinematicDialogData>(endCreditDialogData, name: "endCreditDialogData");
 		}
 		public override uint? ClassCRC => 0x29AEA8EE;
 	}

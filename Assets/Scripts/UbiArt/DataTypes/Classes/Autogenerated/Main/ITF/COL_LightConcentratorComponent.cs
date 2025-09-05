@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_LightConcentratorComponent : CSerializable {
+	public partial class COL_LightConcentratorComponent : ActorComponent {
 		[Description("amount of light units required to fill container")]
 		public float lightUnits;
 		[Description("accumulation rate units/second")]
@@ -8,7 +8,7 @@ namespace UbiArt.ITF {
 		[Description("loss rate, units/second")]
 		public float lossRate;
 		[Description("SuccessEvent")]
-		public Placeholder _event;
+		public EventSender _event;
 		[Description("loss rate, units/second")]
 		public Path fxPath;
 		[Description("loss rate, units/second")]
@@ -30,7 +30,7 @@ namespace UbiArt.ITF {
 			lightUnits = s.Serialize<float>(lightUnits, name: "lightUnits");
 			accumulationRate = s.Serialize<float>(accumulationRate, name: "accumulationRate");
 			lossRate = s.Serialize<float>(lossRate, name: "lossRate");
-			_event = s.SerializeObject<Placeholder>(_event, name: "event");
+			_event = s.SerializeObject<EventSender>(_event, name: "event");
 			fxPath = s.SerializeObject<Path>(fxPath, name: "fxPath");
 			fxFull = s.SerializeObject<StringID>(fxFull, name: "fxFull");
 			fxReset = s.SerializeObject<StringID>(fxReset, name: "fxReset");

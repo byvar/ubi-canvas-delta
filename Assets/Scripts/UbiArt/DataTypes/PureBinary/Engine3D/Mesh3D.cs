@@ -16,17 +16,24 @@ namespace UbiArt.Engine3D {
 		public CListO<Mesh3D.VertexUV> VertexUVs { get; set; }
 		public CListO<Mesh3D.SkinElement> SkinElements { get; set; }
 
+		public CListO<Mesh3D.COL_Vertex> COL_Vertices { get; set; }
+
 
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			Version = s.Serialize<uint>(Version, name: nameof(Version));
 			MeshID = s.SerializeObject<Link>(MeshID, name: nameof(MeshID));
 
-			Vertices = s.SerializeObject<CListO<Vec3d>>(Vertices, name: nameof(Vertices));
-			Normals = s.SerializeObject<CListO<Vec3d>>(Normals, name: nameof(Normals));
-			UVs = s.SerializeObject<CListO<Vec2d>>(UVs, name: nameof(UVs));
-			Elements = s.SerializeObject<CListO<Mesh3D.Element>>(Elements, name: nameof(Elements));
-			VertexUVs = s.SerializeObject<CListO<Mesh3D.VertexUV>>(VertexUVs, name: nameof(VertexUVs));
+			if (s.Settings.Game == Game.COL) {
+				Elements = s.SerializeObject<CListO<Mesh3D.Element>>(Elements, name: nameof(Elements));
+				COL_Vertices = s.SerializeObject<CListO<Mesh3D.COL_Vertex>>(COL_Vertices, name: nameof(COL_Vertices));
+			} else {
+				Vertices = s.SerializeObject<CListO<Vec3d>>(Vertices, name: nameof(Vertices));
+				Normals = s.SerializeObject<CListO<Vec3d>>(Normals, name: nameof(Normals));
+				UVs = s.SerializeObject<CListO<Vec2d>>(UVs, name: nameof(UVs));
+				Elements = s.SerializeObject<CListO<Mesh3D.Element>>(Elements, name: nameof(Elements));
+				VertexUVs = s.SerializeObject<CListO<Mesh3D.VertexUV>>(VertexUVs, name: nameof(VertexUVs));
+			}
 			SkinElements = s.SerializeObject<CListO<Mesh3D.SkinElement>>(SkinElements, name: nameof(SkinElements));
 		}
 
@@ -49,10 +56,14 @@ namespace UbiArt.Engine3D {
 
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
-				Vertex = s.SerializeObject<Mesh3D.TripleIndex>(Vertex, name: nameof(Vertex));
-				Normal = s.SerializeObject<Mesh3D.TripleIndex>(Normal, name: nameof(Normal));
-				UV1 = s.SerializeObject<Mesh3D.TripleIndex>(UV1, name: nameof(UV1));
-				UV2 = s.SerializeObject<Mesh3D.TripleIndex>(UV2, name: nameof(UV2));
+				if (s.Settings.Game == Game.COL) {
+					Vertex = s.SerializeObject<Mesh3D.TripleIndex>(Vertex, name: nameof(Vertex));
+				} else {
+					Vertex = s.SerializeObject<Mesh3D.TripleIndex>(Vertex, name: nameof(Vertex));
+					Normal = s.SerializeObject<Mesh3D.TripleIndex>(Normal, name: nameof(Normal));
+					UV1 = s.SerializeObject<Mesh3D.TripleIndex>(UV1, name: nameof(UV1));
+					UV2 = s.SerializeObject<Mesh3D.TripleIndex>(UV2, name: nameof(UV2));
+				}
 			}
 		}
 
@@ -88,6 +99,19 @@ namespace UbiArt.Engine3D {
 				base.SerializeImpl(s);
 				Vertex = s.Serialize<uint>(Vertex, name: nameof(Vertex));
 				UV = s.Serialize<uint>(UV, name: nameof(UV));
+			}
+		}
+
+		public class COL_Vertex : CSerializable {
+			public Vec4d Vertex { get; set; }
+			public Vec4d Normal { get; set; }
+			public Vec2d UV { get; set; }
+
+			protected override void SerializeImpl(CSerializerObject s) {
+				base.SerializeImpl(s);
+				Vertex = s.SerializeObject<Vec4d>(Vertex, name: nameof(Vertex));
+				Normal = s.SerializeObject<Vec4d>(Normal, name: nameof(Normal));
+				UV = s.SerializeObject<Vec2d>(UV, name: nameof(UV));
 			}
 		}
 

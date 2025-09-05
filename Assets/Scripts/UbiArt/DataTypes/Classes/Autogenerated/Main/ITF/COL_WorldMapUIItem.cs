@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_WorldMapUIItem : CSerializable {
+	public partial class COL_WorldMapUIItem : UIItemBasic {
 		[Description("Map Location StringID.")]
 		public StringID mapLocationID;
 		protected override void SerializeImpl(CSerializerObject s) {

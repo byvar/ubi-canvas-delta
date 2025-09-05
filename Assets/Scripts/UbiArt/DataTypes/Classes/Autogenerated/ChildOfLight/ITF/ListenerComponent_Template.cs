@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class ListenerComponent_Template : CSerializable {
+	public partial class ListenerComponent_Template : ActorComponent_Template {
 		public float zoffset;
 		public uint index;
 		protected override void SerializeImpl(CSerializerObject s) {

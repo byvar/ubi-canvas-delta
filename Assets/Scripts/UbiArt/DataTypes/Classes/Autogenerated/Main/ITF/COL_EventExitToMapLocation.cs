@@ -5,14 +5,14 @@ namespace UbiArt.ITF {
 		public StringID mapLocationId;
 		public PathRef mapPath;
 		public uint checkpointIndex;
-		public Placeholder checkpointObjectId;
+		public ObjectId checkpointObjectId;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			unlock = s.Serialize<bool>(unlock, name: "unlock", options: CSerializerObject.Options.BoolAsByte);
 			mapLocationId = s.SerializeObject<StringID>(mapLocationId, name: "mapLocationId");
 			mapPath = s.SerializeObject<PathRef>(mapPath, name: "mapPath");
 			checkpointIndex = s.Serialize<uint>(checkpointIndex, name: "checkpointIndex");
-			checkpointObjectId = s.SerializeObject<Placeholder>(checkpointObjectId, name: "checkpointObjectId");
+			checkpointObjectId = s.SerializeObject<ObjectId>(checkpointObjectId, name: "checkpointObjectId");
 		}
 		public override uint? ClassCRC => 0x8FEDB2CD;
 	}

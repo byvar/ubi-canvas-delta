@@ -1,8 +1,9 @@
 ﻿namespace UbiArt {
-	public class ObjectId : ICSerializable {
+	public class ObjectId : CSerializable, ICSerializableShortLog {
 		public long id;
 
-		public void Serialize(CSerializerObject s, string name) {
+		protected override void SerializeImpl(CSerializerObject s) {
+			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.COL) {
 				id = s.Serialize<int>((int)id);
 			} else {
@@ -13,5 +14,7 @@
 		public const int Invalid = -1;
 
 		public bool IsNull => id == Invalid;
+
+		public string SerializeLog(CSerializerObject s) => $"ObjectId({id})";
 	}
 }

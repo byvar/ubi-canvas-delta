@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_LightOrbComponent : CSerializable {
+	public partial class COL_LightOrbComponent : ActorComponent {
 		public float orbCount;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

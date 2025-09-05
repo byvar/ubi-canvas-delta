@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_WorldMapUIItem_Template : CSerializable {
+	public partial class COL_WorldMapUIItem_Template : UIItemBasic_Template {
 		public StringID locationUnlockFX;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

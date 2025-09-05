@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_LightPuzzlePieceAccumulatorComponent : CSerializable {
+	public partial class COL_LightPuzzlePieceAccumulatorComponent : COL_LightPuzzlePieceComponent {
 		[Description("")]
 		public float focusDuration;
 		protected override void SerializeImpl(CSerializerObject s) {

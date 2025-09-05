@@ -66,6 +66,7 @@ namespace UbiArt.ITF {
 					screenSpace = s.SerializeObject<Vec2d>(screenSpace, name: "screenSpace");
 				}
 			} else if (s.Settings.Game == Game.COL) {
+				if(this is COL_TutorialHUD) return;
 				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					transition = s.Serialize<bool>(transition, name: "transition");
 					display = s.Serialize<bool>(display, name: "display");

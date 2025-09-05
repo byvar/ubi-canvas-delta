@@ -1,27 +1,27 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_EvilMonkeyComponent_Template : CSerializable {
-		public uint faction;
-		public float squashDeathPenetration;
-		public float timeFight;
-		public int disabledPhys;
-		public int withShield;
-		public StringID colShield;
-		public StringID colShield2;
-		public float timeBlockingContact;
+	public partial class RO2_EvilMonkeyComponent_Template : RO2_EnemyBTAIComponent_Template {
+		public uint faction_monkey;
+		public float squashDeathPenetration_monkey;
+		public float timeFight_monkey;
+		public int disabledPhys_monkey;
+		public int withShield_monkey;
+		public StringID colShield_monkey;
+		public StringID colShield2_monkey;
+		public float timeBlockingContact_monkey;
 		public int withStilts;
 		public StringID colStilt01;
 		public StringID colStilt02;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			faction = s.Serialize<uint>(faction, name: "faction");
-			squashDeathPenetration = s.Serialize<float>(squashDeathPenetration, name: "squashDeathPenetration");
-			timeFight = s.Serialize<float>(timeFight, name: "timeFight");
-			disabledPhys = s.Serialize<int>(disabledPhys, name: "disabledPhys");
-			withShield = s.Serialize<int>(withShield, name: "withShield");
-			colShield = s.SerializeObject<StringID>(colShield, name: "colShield");
-			colShield2 = s.SerializeObject<StringID>(colShield2, name: "colShield2");
-			timeBlockingContact = s.Serialize<float>(timeBlockingContact, name: "timeBlockingContact");
+			faction_monkey = s.Serialize<uint>(faction_monkey, name: "faction");
+			squashDeathPenetration_monkey = s.Serialize<float>(squashDeathPenetration_monkey, name: "squashDeathPenetration");
+			timeFight_monkey = s.Serialize<float>(timeFight_monkey, name: "timeFight");
+			disabledPhys_monkey = s.Serialize<int>(disabledPhys_monkey, name: "disabledPhys");
+			withShield_monkey = s.Serialize<int>(withShield_monkey, name: "withShield");
+			colShield_monkey = s.SerializeObject<StringID>(colShield_monkey, name: "colShield");
+			colShield2_monkey = s.SerializeObject<StringID>(colShield2_monkey, name: "colShield2");
+			timeBlockingContact_monkey = s.Serialize<float>(timeBlockingContact_monkey, name: "timeBlockingContact");
 			withStilts = s.Serialize<int>(withStilts, name: "withStilts");
 			colStilt01 = s.SerializeObject<StringID>(colStilt01, name: "colStilt01");
 			colStilt02 = s.SerializeObject<StringID>(colStilt02, name: "colStilt02");

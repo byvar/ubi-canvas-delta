@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_CharacterStatsDebugComponent : CSerializable {
+	public partial class COL_CharacterStatsDebugComponent : ActorComponent {
 		public uint playerLevel;
 		public bool refillHPOnLevelUp;
 		public bool refillMPOnLevelUp;

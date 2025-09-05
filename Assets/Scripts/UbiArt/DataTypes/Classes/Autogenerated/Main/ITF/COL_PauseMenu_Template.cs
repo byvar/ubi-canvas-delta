@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_PauseMenu_Template : CSerializable {
+	public partial class COL_PauseMenu_Template : UIMenuBasic_Template {
 		public float skillPtsCountOffsetX;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

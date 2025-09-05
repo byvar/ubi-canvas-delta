@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RL | GameFlags.VH | GameFlags.RA)]
+	[Games(GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
 	public partial class UIItemBasic : UIItem {
 		public uint selectTextStyle;
 		public CListO<StringID> selectAnimMeshVertex;
@@ -20,6 +20,14 @@ namespace UbiArt.ITF {
 
 		public EventSender EventSender__3;
 		public EventSender EventSender__4;
+
+		public bool navigable;
+		public bool doubleClickToValidate;
+		public bool supportRightMouseButton;
+		public bool canMouseChangeSpriteIndex;
+		public uint releasedSpriteIndex;
+		public uint pressedSpriteIndex;
+
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.EngineVersion <= EngineVersion.RO) {
@@ -27,6 +35,16 @@ namespace UbiArt.ITF {
 				if (this is UISliderComponent) return;
 				selectTextStyle = s.Serialize<uint>(selectTextStyle, name: "selectTextStyle");
 				selectAnimMeshVertex = s.SerializeObject<CListO<StringID>>(selectAnimMeshVertex, name: "selectAnimMeshVertex");
+			} else if(s.Settings.Game == Game.COL) {
+				if (this is UISliderComponent) return;
+				selectTextStyle = s.Serialize<uint>(selectTextStyle, name: "selectTextStyle");
+				selectAnimMeshVertex = s.SerializeObject<CListO<StringID>>(selectAnimMeshVertex, name: "selectAnimMeshVertex");
+				navigable = s.Serialize<bool>(navigable, name: "navigable");
+				doubleClickToValidate = s.Serialize<bool>(doubleClickToValidate, name: "doubleClickToValidate");
+				supportRightMouseButton = s.Serialize<bool>(supportRightMouseButton, name: "supportRightMouseButton");
+				canMouseChangeSpriteIndex = s.Serialize<bool>(canMouseChangeSpriteIndex, name: "canMouseChangeSpriteIndex");
+				releasedSpriteIndex = s.Serialize<uint>(releasedSpriteIndex, name: "releasedSpriteIndex");
+				pressedSpriteIndex = s.Serialize<uint>(pressedSpriteIndex, name: "pressedSpriteIndex");
 			} else if (s.Settings.Game == Game.VH) {
 				selectTextStyle = s.Serialize<uint>(selectTextStyle, name: "selectTextStyle");
 				selectAnimMeshVertex = s.SerializeObject<CListO<StringID>>(selectAnimMeshVertex, name: "selectAnimMeshVertex");

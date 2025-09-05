@@ -1,11 +1,11 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_InteractComponent : CSerializable {
+	public partial class COL_InteractComponent : COL_BaseInteractiveComponent {
 		public Enum_triggerMode triggerMode;
 		public bool softSaveOnTrigger;
 		public int triggered;
-		public Placeholder onInteractEvent;
-		public Placeholder onEndInteractEvent;
+		public Generic<Event> onInteractEvent;
+		public Generic<Event> onEndInteractEvent;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			triggerMode = s.Serialize<Enum_triggerMode>(triggerMode, name: "triggerMode");
@@ -13,8 +13,8 @@ namespace UbiArt.ITF {
 			if (s.HasFlags(SerializeFlags.Group_Checkpoint)) {
 				triggered = s.Serialize<int>(triggered, name: "triggered");
 			}
-			onInteractEvent = s.SerializeObject<Placeholder>(onInteractEvent, name: "onInteractEvent");
-			onEndInteractEvent = s.SerializeObject<Placeholder>(onEndInteractEvent, name: "onEndInteractEvent");
+			onInteractEvent = s.SerializeObject<Generic<Event>>(onInteractEvent, name: "onInteractEvent");
+			onEndInteractEvent = s.SerializeObject<Generic<Event>>(onEndInteractEvent, name: "onEndInteractEvent");
 		}
 		public enum Enum_triggerMode {
 			[Serialize("Value_1")] Value_1 = 1,

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_ProjectileComponent_Template : CSerializable {
+	public partial class COL_ProjectileComponent_Template : ActorComponent_Template {
 		public float speed;
 		public float delay;
 		protected override void SerializeImpl(CSerializerObject s) {

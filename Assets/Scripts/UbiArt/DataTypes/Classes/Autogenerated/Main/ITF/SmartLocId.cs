@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RL | GameFlags.VH | GameFlags.RA)]
+	[Games(GameFlags.RLVersion | GameFlags.VH | GameFlags.RA)]
 	public partial class SmartLocId : CSerializable {
 		public string defaultText;
 		public LocalisationId locId;
@@ -8,7 +8,9 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			defaultText = s.Serialize<string>(defaultText, name: "defaultText");
 			locId = s.SerializeObject<LocalisationId>(locId, name: "locId");
-			useText = s.Serialize<bool>(useText, name: "useText");
+			if (s.Settings.Game != Game.COL) {
+				useText = s.Serialize<bool>(useText, name: "useText");
+			}
 		}
 	}
 }

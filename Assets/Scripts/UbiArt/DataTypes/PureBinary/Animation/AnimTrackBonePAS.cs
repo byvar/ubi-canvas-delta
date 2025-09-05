@@ -9,8 +9,8 @@ namespace UbiArt.Animation {
 		public short scaleY;
 
 		public Bone3D angle3D;
-		public Bone3D pos3D;
-		public Bone3D pos2_3D;
+		public Bone3D posX_3D;
+		public Bone3D posY_3D;
 		public uint col_unknown;
 
 		protected override void SerializeImpl(CSerializerObject s) {
@@ -18,8 +18,8 @@ namespace UbiArt.Animation {
 			if (s.Context.Settings.Game == Game.COL) {
 				frame = s.Serialize<ushort>(frame, name: nameof(frame));
 				angle3D = s.SerializeObject<Bone3D>(angle3D, name: nameof(angle3D));
-				pos3D = s.SerializeObject<Bone3D>(pos3D, name: nameof(pos3D));
-				pos2_3D = s.SerializeObject<Bone3D>(pos2_3D, name: nameof(pos2_3D));
+				posX_3D = s.SerializeObject<Bone3D>(posX_3D, name: nameof(posX_3D));
+				posY_3D = s.SerializeObject<Bone3D>(posY_3D, name: nameof(posY_3D));
 				scaleX = s.Serialize<short>(scaleX, name: nameof(scaleX));
 				scaleY = s.Serialize<short>(scaleY, name: nameof(scaleY));
 				col_unknown = s.Serialize<uint>(col_unknown, name: nameof(col_unknown));
@@ -47,7 +47,9 @@ namespace UbiArt.Animation {
 		}
 
 		public Vec2d Position {
-			get => new Vec2d(posX * OneOverShortMax, posY * OneOverShortMax);
+			get => (UbiArtContext?.Settings?.Game == Game.COL)
+				? new Vec2d(posX_3D.X * OneOverShortMax, posY_3D.X * OneOverShortMax)
+				: new Vec2d(posX * OneOverShortMax, posY * OneOverShortMax);
 			set {
 				posX = (short)(value.x / OneOverShortMax);
 				posY = (short)(value.y / OneOverShortMax);
@@ -61,7 +63,9 @@ namespace UbiArt.Animation {
 			}
 		}
 		public Angle Rotation {
-			get => angle * OneOverShortMax;
+			get => (UbiArtContext?.Settings?.Game == Game.COL)
+				? angle3D.X * OneOverShortMax
+				: angle * OneOverShortMax;
 			set {
 				angle = (short)(value / OneOverShortMax);
 			}

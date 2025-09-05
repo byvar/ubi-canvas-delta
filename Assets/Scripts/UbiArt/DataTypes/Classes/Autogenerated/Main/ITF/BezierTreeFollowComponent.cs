@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class BezierTreeFollowComponent : CSerializable {
+	public partial class BezierTreeFollowComponent : ActorComponent {
 		public bool isLooping;
 		public float moveSpeed;
 		public Angle maxAngle;

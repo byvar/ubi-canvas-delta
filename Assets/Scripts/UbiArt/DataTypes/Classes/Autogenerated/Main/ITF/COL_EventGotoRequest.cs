@@ -2,7 +2,7 @@ namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
 	public partial class COL_EventGotoRequest : Event {
 		public Enum_gotoRequestType gotoRequestType;
-		public Placeholder gotoTargetObject;
+		public ObjectId gotoTargetObject;
 		public Vec2d gotoTargetPosition;
 		public float gotoDuration;
 		public bool run;
@@ -10,7 +10,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			gotoRequestType = s.Serialize<Enum_gotoRequestType>(gotoRequestType, name: "gotoRequestType");
-			gotoTargetObject = s.SerializeObject<Placeholder>(gotoTargetObject, name: "gotoTargetObject");
+			gotoTargetObject = s.SerializeObject<ObjectId>(gotoTargetObject, name: "gotoTargetObject");
 			gotoTargetPosition = s.SerializeObject<Vec2d>(gotoTargetPosition, name: "gotoTargetPosition");
 			gotoDuration = s.Serialize<float>(gotoDuration, name: "gotoDuration");
 			run = s.Serialize<bool>(run, name: "run", options: CSerializerObject.Options.BoolAsByte);

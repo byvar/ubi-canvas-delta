@@ -60,7 +60,7 @@ namespace UbiArt.ITF {
 					area = s.SerializeObject<Vec2d>(area, name: "area");
 					maxWidth = s.Serialize<float>(maxWidth, name: "maxWidth");
 					rawText = s.Serialize<string>(rawText, name: "rawText");
-					locId = (LocalisationId)s.SerializeObject<StringID>((StringID)locId, name: "locId");
+					locId = (LocalisationId)s.SerializeObject<StringID>(locId != null ? (StringID)locId : null, name: "locId");
 					overridingColor = s.SerializeObject<Color>(overridingColor, name: "overridingColor");
 					scaleToMatchWithArea = s.Serialize<bool>(scaleToMatchWithArea, name: "scaleToMatchWithArea");
 					autoScrollSpeed = s.Serialize<float>(autoScrollSpeed, name: "autoScrollSpeed");

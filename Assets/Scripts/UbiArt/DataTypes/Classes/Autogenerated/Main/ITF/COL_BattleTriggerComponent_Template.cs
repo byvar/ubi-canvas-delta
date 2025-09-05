@@ -1,14 +1,14 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
 	public partial class COL_BattleTriggerComponent_Template : COL_BaseInteractiveComponent_Template {
-		public Placeholder battleSetupsConfig;
+		public COL_BattleSetupsConfig battleSetupsConfig;
 		public Enum_battleType battleType;
 		public bool playSoundOnTrigger;
 		public Vec2d fleeBattlePosOffset;
 		public float preemptiveTimeWindowAfterStun;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			battleSetupsConfig = s.SerializeObject<Placeholder>(battleSetupsConfig, name: "battleSetupsConfig");
+			battleSetupsConfig = s.SerializeObject<COL_BattleSetupsConfig>(battleSetupsConfig, name: "battleSetupsConfig");
 			battleType = s.Serialize<Enum_battleType>(battleType, name: "battleType");
 			playSoundOnTrigger = s.Serialize<bool>(playSoundOnTrigger, name: "playSoundOnTrigger", options: CSerializerObject.Options.BoolAsByte);
 			fleeBattlePosOffset = s.SerializeObject<Vec2d>(fleeBattlePosOffset, name: "fleeBattlePosOffset");

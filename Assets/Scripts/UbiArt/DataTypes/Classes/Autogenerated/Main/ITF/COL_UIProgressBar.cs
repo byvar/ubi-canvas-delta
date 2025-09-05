@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_UIProgressBar : CSerializable {
+	public partial class COL_UIProgressBar : UIComponent {
 		public float barHeight;
 		public float barWidth;
 		protected override void SerializeImpl(CSerializerObject s) {

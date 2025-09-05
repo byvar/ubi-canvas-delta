@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_MovableObjectInteractiveComponent_Template : CSerializable {
+	public partial class COL_MovableObjectInteractiveComponent_Template : COL_InteractComponent_Template {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

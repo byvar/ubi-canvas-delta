@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_SceneConfig_Credits : CSerializable {
+	public partial class COL_SceneConfig_Credits : COL_SceneConfig_Base {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

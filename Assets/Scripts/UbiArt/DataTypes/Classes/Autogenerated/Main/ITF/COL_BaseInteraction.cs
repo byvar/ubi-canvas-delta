@@ -59,7 +59,7 @@ namespace UbiArt.ITF {
 			public float displacementDuration;
 			public Vec2d positionOffset;
 			public Enum_facing facing;
-			public CListP<int> authorizedPCStates;
+			public CArrayP<int> authorizedPCStates;
 
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);
@@ -69,7 +69,7 @@ namespace UbiArt.ITF {
 					displacementDuration = s.Serialize<float>(displacementDuration, name: "displacementDuration");
 					positionOffset = s.SerializeObject<Vec2d>(positionOffset, name: "positionOffset");
 					facing = s.Serialize<Enum_facing>(facing, name: "facing");
-					authorizedPCStates = s.SerializeObject<CListP<int>>(authorizedPCStates, name: "authorizedPCStates");
+					authorizedPCStates = s.SerializeObject<CArrayP<int>>(authorizedPCStates, name: "authorizedPCStates");
 				}
 			}
 			public enum Enum_position {

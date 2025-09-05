@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RA)]
+	[Games(GameFlags.COL | GameFlags.RA)]
 	public partial class BezierBranchBaseRendererComponent : BezierBranchComponent {
 		public bool flipTexture;
 		protected override void SerializeImpl(CSerializerObject s) {

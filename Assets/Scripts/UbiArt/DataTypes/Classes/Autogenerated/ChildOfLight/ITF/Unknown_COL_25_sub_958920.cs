@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class Unknown_COL_25_sub_958920 : CSerializable {
+	public partial class Unknown_COL_25_sub_958920 : BoxInterpolatorComponent_Template {
 		public SoundGUID RTPC;
 		public bool stopOnDeactivate;
 		protected override void SerializeImpl(CSerializerObject s) {

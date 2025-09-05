@@ -1,11 +1,11 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RL | GameFlags.RAVersion)]
+	[Games(GameFlags.LegendsAndUp)]
 	public partial class SceneConfig : CSerializable {
 		public CArrayO<Generic<GameModeParameters>> gameModeParametersList;
 		public StringID OnEnterFade;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.VH) {
+			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.VH || s.Settings.Game == Game.COL) {
 				gameModeParametersList = s.SerializeObject<CArrayO<Generic<GameModeParameters>>>(gameModeParametersList, name: "gameModeParametersList");
 			} else {
 				gameModeParametersList = s.SerializeObject<CArrayO<Generic<GameModeParameters>>>(gameModeParametersList, name: "gameModeParametersList");

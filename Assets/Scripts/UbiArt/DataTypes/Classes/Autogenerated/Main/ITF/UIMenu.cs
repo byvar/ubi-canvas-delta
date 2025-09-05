@@ -11,6 +11,7 @@ namespace UbiArt.ITF {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
+				if (this is COL_TutorialHUD) return;
 				loadResource = s.Serialize<bool>(loadResource, name: "loadResource");
 				menuType2 = s.Serialize<MenuType2>(menuType2, name: "menuType");
 			} else if (s.Settings.Game == Game.VH) {

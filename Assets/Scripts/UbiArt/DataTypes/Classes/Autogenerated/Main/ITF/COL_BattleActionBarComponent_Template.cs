@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_BattleActionBarComponent_Template : CSerializable {
+	public partial class COL_BattleActionBarComponent_Template : COL_UIProgressBar_Template {
 		public int blinkIconBeforeAction;
 		public float portraitScaleEffectMultiplier;
 		public float scaleUpTime;

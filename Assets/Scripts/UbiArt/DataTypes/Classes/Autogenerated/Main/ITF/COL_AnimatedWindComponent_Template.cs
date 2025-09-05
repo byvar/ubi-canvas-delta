@@ -1,10 +1,8 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_AnimatedWindComponent_Template : CSerializable {
-		public Placeholder windAreas;
+	public partial class COL_AnimatedWindComponent_Template : WindComponent_Template {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			windAreas = s.SerializeObject<Placeholder>(windAreas, name: "windAreas");
 		}
 		public override uint? ClassCRC => 0xF5C4CC9B;
 	}

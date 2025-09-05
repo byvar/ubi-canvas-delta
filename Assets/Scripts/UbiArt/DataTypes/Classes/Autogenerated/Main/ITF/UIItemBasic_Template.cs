@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RL | GameFlags.RAVersion)]
+	[Games(GameFlags.LegendsAndUp)]
 	public partial class UIItemBasic_Template : UIItem_Template {
 		public float blinkScaleMin;
 		public float blinkScale;
@@ -31,42 +31,14 @@ namespace UbiArt.ITF {
 		public StringID actorIconUnselected;
 		public bool inverseShadowState;
 		public Vec2d actorIconOffset;
-		public float float__0;
-		public float float__1;
-		public float float__2;
-		public float float__3;
-		public float float__4;
-		public float float__5;
-		public float float__6;
-		public float float__7;
-		public float float__8;
-		public float float__9;
-		public uint uint__10;
-		public StringID StringID__11;
-		public StringID StringID__12;
-		public StringID StringID__13;
-		public bool bool__14;
-		public StringID StringID__15;
-		public StringID StringID__16;
-		public Color Color__17;
-		public Color Color__18;
-		public Color Color__19;
-		public float float__20;
-		public float float__21;
-		public float float__22;
-		public float float__23;
-		public Angle Angle__24;
-		public Angle Angle__25;
-		public StringID StringID__26;
-		public StringID StringID__27;
-		public bool bool__28;
+
 		public StringID StringID__29;
 		public StringID StringID__30;
 		public StringID StringID__31;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.EngineVersion <= EngineVersion.RO) {
-			} else if (s.Settings.Game == Game.RL) {
+			} else if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
 				if(this is UISliderComponent_Template) return;
 				blinkScaleMin = s.Serialize<float>(blinkScaleMin, name: "blinkScaleMin");
 				blinkScale = s.Serialize<float>(blinkScale, name: "blinkScale");
@@ -93,35 +65,35 @@ namespace UbiArt.ITF {
 				actorIconOffset = s.SerializeObject<Vec2d>(actorIconOffset, name: "actorIconOffset");
 				inverseShadowState = s.Serialize<bool>(inverseShadowState, name: "inverseShadowState");
 			} else if (s.Settings.Game == Game.VH) {
-				float__0 = s.Serialize<float>(float__0, name: "float__0");
-				float__1 = s.Serialize<float>(float__1, name: "float__1");
-				float__2 = s.Serialize<float>(float__2, name: "float__2");
-				float__3 = s.Serialize<float>(float__3, name: "float__3");
-				float__4 = s.Serialize<float>(float__4, name: "float__4");
-				float__5 = s.Serialize<float>(float__5, name: "float__5");
-				float__6 = s.Serialize<float>(float__6, name: "float__6");
-				float__7 = s.Serialize<float>(float__7, name: "float__7");
-				float__8 = s.Serialize<float>(float__8, name: "float__8");
-				float__9 = s.Serialize<float>(float__9, name: "float__9");
-				uint__10 = s.Serialize<uint>(uint__10, name: "uint__10");
-				StringID__11 = s.SerializeObject<StringID>(StringID__11, name: "StringID__11");
-				StringID__12 = s.SerializeObject<StringID>(StringID__12, name: "StringID__12");
-				StringID__13 = s.SerializeObject<StringID>(StringID__13, name: "StringID__13");
-				bool__14 = s.Serialize<bool>(bool__14, name: "bool__14");
-				StringID__15 = s.SerializeObject<StringID>(StringID__15, name: "StringID__15");
-				StringID__16 = s.SerializeObject<StringID>(StringID__16, name: "StringID__16");
-				Color__17 = s.SerializeObject<Color>(Color__17, name: "Color__17");
-				Color__18 = s.SerializeObject<Color>(Color__18, name: "Color__18");
-				Color__19 = s.SerializeObject<Color>(Color__19, name: "Color__19");
-				float__20 = s.Serialize<float>(float__20, name: "float__20");
-				float__21 = s.Serialize<float>(float__21, name: "float__21");
-				float__22 = s.Serialize<float>(float__22, name: "float__22");
-				float__23 = s.Serialize<float>(float__23, name: "float__23");
-				Angle__24 = s.SerializeObject<Angle>(Angle__24, name: "Angle__24");
-				Angle__25 = s.SerializeObject<Angle>(Angle__25, name: "Angle__25");
-				StringID__26 = s.SerializeObject<StringID>(StringID__26, name: "StringID__26");
-				StringID__27 = s.SerializeObject<StringID>(StringID__27, name: "StringID__27");
-				bool__28 = s.Serialize<bool>(bool__28, name: "bool__28");
+				blinkScaleMin = s.Serialize<float>(blinkScaleMin, name: "blinkScaleMin");
+				blinkScale = s.Serialize<float>(blinkScale, name: "blinkScale");
+				blinkPeriod = s.Serialize<float>(blinkPeriod, name: "blinkPeriod");
+				blinkMinBlendSpeed = s.Serialize<float>(blinkMinBlendSpeed, name: "blinkMinBlendSpeed");
+				hightlightAlphaMin = s.Serialize<float>(hightlightAlphaMin, name: "hightlightAlphaMin");
+				hightlightAlpha = s.Serialize<float>(hightlightAlpha, name: "hightlightAlpha");
+				hightlightPeriod = s.Serialize<float>(hightlightPeriod, name: "hightlightPeriod");
+				hightlightMinBlendSpeed = s.Serialize<float>(hightlightMinBlendSpeed, name: "hightlightMinBlendSpeed");
+				activatingScale = s.Serialize<float>(activatingScale, name: "activatingScale");
+				activatingDuration = s.Serialize<float>(activatingDuration, name: "activatingDuration");
+				activatingRebound = s.Serialize<uint>(activatingRebound, name: "activatingRebound");
+				animUnselected = s.SerializeObject<StringID>(animUnselected, name: "animUnselected");
+				animSelected = s.SerializeObject<StringID>(animSelected, name: "animSelected");
+				animLocked = s.SerializeObject<StringID>(animLocked, name: "animLocked");
+				needSyncBlink = s.Serialize<bool>(needSyncBlink, name: "needSyncBlink");
+				fontEffectUnselected = s.SerializeObject<StringID>(fontEffectUnselected, name: "fontEffectUnselected");
+				fontEffectSelected = s.SerializeObject<StringID>(fontEffectSelected, name: "fontEffectSelected");
+				colorFactorSelected = s.SerializeObject<Color>(colorFactorSelected, name: "colorFactorSelected");
+				colorFactorLocked = s.SerializeObject<Color>(colorFactorLocked, name: "colorFactorLocked");
+				colorFactorUnselected = s.SerializeObject<Color>(colorFactorUnselected, name: "colorFactorUnselected");
+				textLockedAlpha = s.Serialize<float>(textLockedAlpha, name: "textLockedAlpha");
+				animLockedAlpha = s.Serialize<float>(animLockedAlpha, name: "animLockedAlpha");
+				colorBlendTime = s.Serialize<float>(colorBlendTime, name: "colorBlendTime");
+				ScaleUnselected = s.Serialize<float>(ScaleUnselected, name: "ScaleUnselected");
+				uvRotationSpeedSelected = s.SerializeObject<Angle>(uvRotationSpeedSelected, name: "uvRotationSpeedSelected");
+				uvRotationSpeedUnselected = s.SerializeObject<Angle>(uvRotationSpeedUnselected, name: "uvRotationSpeedUnselected");
+				actorIconSelected = s.SerializeObject<StringID>(actorIconSelected, name: "actorIconSelected");
+				actorIconUnselected = s.SerializeObject<StringID>(actorIconUnselected, name: "actorIconUnselected");
+				inverseShadowState = s.Serialize<bool>(inverseShadowState, name: "inverseShadowState");
 				StringID__29 = s.SerializeObject<StringID>(StringID__29, name: "StringID__29");
 				StringID__30 = s.SerializeObject<StringID>(StringID__30, name: "StringID__30");
 				StringID__31 = s.SerializeObject<StringID>(StringID__31, name: "StringID__31");

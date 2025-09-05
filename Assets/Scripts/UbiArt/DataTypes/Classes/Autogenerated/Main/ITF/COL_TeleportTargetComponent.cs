@@ -1,14 +1,14 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
 	public partial class COL_TeleportTargetComponent : ActorComponent {
-		public COL_TeleportTargetComponent_ArriveFromInfos arriveFromInfos;
+		public COL_TeleportTargetComponent.COL_TeleportInfo arriveFromInfos;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			arriveFromInfos = s.SerializeObject<COL_TeleportTargetComponent_ArriveFromInfos>(arriveFromInfos, name: "arriveFromInfos");
+			arriveFromInfos = s.SerializeObject<COL_TeleportTargetComponent.COL_TeleportInfo>(arriveFromInfos, name: "arriveFromInfos");
 		}
 		public override uint? ClassCRC => 0xB1576575;
 
-		public class COL_TeleportTargetComponent_ArriveFromInfos : CSerializable {	
+		public class COL_TeleportInfo : CSerializable {	
 			public StringID interactionAction;
 			public Enum_gotoType gotoType;
 			public Vec2d gotoTargetPos;

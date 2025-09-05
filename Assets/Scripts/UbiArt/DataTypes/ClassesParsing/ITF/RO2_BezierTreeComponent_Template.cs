@@ -7,7 +7,7 @@ namespace UbiArt.ITF {
 			var component = (RO2_BezierTreeComponent)base.Instantiate(context);
 			component.branch = new RO2_BezierBranch() {
 				components = new CArrayO<Generic<RO2_BezierBranchComponent>>(
-					branchComponents.Select(c => new Generic<RO2_BezierBranchComponent>(InstantiateComponent(c.obj))).ToArray())
+					tree.branchComponents.Select(c => new Generic<RO2_BezierBranchComponent>(InstantiateComponent(c.obj))).ToArray())
 			};
 			return component;
 

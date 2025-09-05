@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_CinematicDialogsUIComponent_Template : CSerializable {
+	public partial class COL_CinematicDialogsUIComponent_Template : UIComponent_Template {
 		public StringID characterID;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_DoorComponent_Template : CSerializable {
+	public partial class COL_DoorComponent_Template : ActorComponent_Template {
 		public int startOpen;
 		public float openSpeed;
 		protected override void SerializeImpl(CSerializerObject s) {

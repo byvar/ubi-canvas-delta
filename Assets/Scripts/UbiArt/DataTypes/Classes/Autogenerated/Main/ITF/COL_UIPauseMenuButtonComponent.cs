@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_UIPauseMenuButtonComponent : CSerializable {
+	public partial class COL_UIPauseMenuButtonComponent : ActorComponent {
 		public Enum_buttonType buttonType;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

@@ -50,6 +50,7 @@ namespace UbiArt.ITF {
 				offset = s.SerializeObject<Vec2d>(offset, name: "offset");
 				attachPolyline = s.SerializeObject<StringID>(attachPolyline, name: "attachPolyline");
 				proceduralBone = s.SerializeObject<StringID>(proceduralBone, name: "proceduralBone");
+				shapes = s.SerializeObject<CListO<ShapeData_Template>>(shapes, name: "shapes");
 				useAABBShape = s.Serialize<bool>(useAABBShape, name: "useAABBShape", options: CSerializerObject.Options.BoolAsByte);
 				bone = s.SerializeObject<StringID>(bone, name: "bone");
 				bone3D = s.SerializeObject<StringID>(bone3D, name: "bone3D");

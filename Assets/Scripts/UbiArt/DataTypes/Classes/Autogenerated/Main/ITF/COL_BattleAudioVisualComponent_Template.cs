@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_BattleAudioVisualComponent_Template : CSerializable {
+	public partial class COL_BattleAudioVisualComponent_Template : ActorComponent_Template {
 		public Vec2d spawnOffset;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

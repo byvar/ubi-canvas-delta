@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RLVersion | GameFlags.RA)]
+	[Games(GameFlags.COL | GameFlags.RA)]
 	public partial class BezierTreeRendererComponent_Template : GraphicComponent_Template {
 		public BezierCurveRenderer_Template bezierRenderer;
 		public uint tileSpriteIndex;
@@ -16,7 +16,7 @@ namespace UbiArt.ITF {
 		public float zOffset;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.Settings.Game == Game.COL || s.Settings.Game == Game.RL) {
+			if (s.Settings.Game == Game.COL) {
 				bezierRenderer = s.SerializeObject<BezierCurveRenderer_Template>(bezierRenderer, name: "bezierRenderer");
 				tileSpriteIndex = s.Serialize<uint>(tileSpriteIndex, name: "tileSpriteIndex");
 				tileSpriteSubDiv = s.Serialize<float>(tileSpriteSubDiv, name: "tileSpriteSubDiv");

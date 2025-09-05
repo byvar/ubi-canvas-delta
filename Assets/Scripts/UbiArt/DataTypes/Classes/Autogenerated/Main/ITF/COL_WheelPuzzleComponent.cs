@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_WheelPuzzleComponent : CSerializable {
+	public partial class COL_WheelPuzzleComponent : ActorComponent {
 		public int initValue;
 		public int maxValue;
 		public bool sendTrigger;

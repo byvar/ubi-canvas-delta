@@ -3,7 +3,7 @@ namespace UbiArt.ITF {
 	public partial class COL_FeedbackManager_Template : CSerializable {
 		public Placeholder soundDescriptors;
 		public Placeholder fxDescriptors;
-		public Placeholder sequencePaths;
+		public CArrayO<Path> sequencePaths;
 		public StringID defaultIdentifier;
 		public StringID defaultModifier;
 		public StringID alwaysLoaded_ContextTag;
@@ -14,7 +14,7 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			soundDescriptors = s.SerializeObject<Placeholder>(soundDescriptors, name: "soundDescriptors");
 			fxDescriptors = s.SerializeObject<Placeholder>(fxDescriptors, name: "fxDescriptors");
-			sequencePaths = s.SerializeObject<Placeholder>(sequencePaths, name: "sequencePaths");
+			sequencePaths = s.SerializeObject<CArrayO<Path>>(sequencePaths, name: "sequencePaths");
 			defaultIdentifier = s.SerializeObject<StringID>(defaultIdentifier, name: "defaultIdentifier");
 			defaultModifier = s.SerializeObject<StringID>(defaultModifier, name: "defaultModifier");
 			alwaysLoaded_ContextTag = s.SerializeObject<StringID>(alwaysLoaded_ContextTag, name: "alwaysLoaded_ContextTag");

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_LightOrbSpawnerComponent : CSerializable {
+	public partial class COL_LightOrbSpawnerComponent : COL_BaseInteractiveComponent {
 		public uint orbCount;
 		public float healthOrbsMin;
 		public float healthOrbsMax;

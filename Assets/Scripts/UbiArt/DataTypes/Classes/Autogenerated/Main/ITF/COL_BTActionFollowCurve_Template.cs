@@ -1,7 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_BTActionFollowCurve_Template : CSerializable {
-		public StringID name;
+	public partial class COL_BTActionFollowCurve_Template : COL_BTActionBase_Template {
 		[Description("Anim used when moving along the curve")]
 		public StringID animMove;
 		[Description("Anim used when not moving")]
@@ -13,7 +12,6 @@ namespace UbiArt.ITF {
 		public bool followCurveAngle;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			name = s.SerializeObject<StringID>(name, name: "name");
 			animMove = s.SerializeObject<StringID>(animMove, name: "animMove");
 			animIdle = s.SerializeObject<StringID>(animIdle, name: "animIdle");
 			moveSpeed = s.Serialize<float>(moveSpeed, name: "moveSpeed");

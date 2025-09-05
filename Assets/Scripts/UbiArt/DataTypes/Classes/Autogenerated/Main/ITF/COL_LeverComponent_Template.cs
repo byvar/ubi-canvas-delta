@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_LeverComponent_Template : CSerializable {
+	public partial class COL_LeverComponent_Template : COL_InteractComponent_Template {
 		public float animDuration;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

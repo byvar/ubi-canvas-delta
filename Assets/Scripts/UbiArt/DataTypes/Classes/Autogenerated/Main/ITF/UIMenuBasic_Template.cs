@@ -12,6 +12,7 @@ namespace UbiArt.ITF {
 			if (s.Settings.Game == Game.RL && s.Settings.Platform != GamePlatform.Vita) {
 				validateItemSounds = s.SerializeObject<CListO<ValidateItemSound>>(validateItemSounds, name: "validateItemSounds");
 			} else if (s.Settings.Game == Game.COL || s.Settings.Game == Game.VH) {
+				if(this is COL_TutorialHUD_Template) return;
 				validateItemSounds = s.SerializeObject<CListO<ValidateItemSound>>(validateItemSounds, name: "validateItemSounds");
 				nextItemMinAngle = s.Serialize<float>(nextItemMinAngle, name: "nextItemMinAngle");
 				nextItemMaxAngle = s.Serialize<float>(nextItemMaxAngle, name: "nextItemMaxAngle");

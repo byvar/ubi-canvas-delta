@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class PloufComponent_Template : CSerializable {
+	public partial class PloufComponent_Template : ActorComponent_Template {
 		public float waterTime;
 		public float ploufAlteration;
 		protected override void SerializeImpl(CSerializerObject s) {

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_LightOrbComponent_Template : CSerializable {
+	public partial class COL_LightOrbComponent_Template : ActorComponent_Template {
 		public StringID FX_appearing;
 		public StringID FX_disappearing;
 		public StringID FX_fainting;

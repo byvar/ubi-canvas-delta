@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_LightOrbSpawnerComponent_Template : CSerializable {
+	public partial class COL_LightOrbSpawnerComponent_Template : COL_BaseInteractiveComponent_Template {
 		public Path spawnActorLua;
 		public StringID FX_Shake;
 		public StringID FX_OrbsRemaining;
