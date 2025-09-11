@@ -108,15 +108,17 @@ namespace UbiArt.ITF {
 				costumeUnlockButton = s.SerializeObject<SmartLocId>(costumeUnlockButton, name: "costumeUnlockButton");
 				challengeUnlock = s.SerializeObject<SmartLocId>(challengeUnlock, name: "challengeUnlock");
 				challengeUnlockButton = s.SerializeObject<SmartLocId>(challengeUnlockButton, name: "challengeUnlockButton");
-				invasionUnlock = s.SerializeObject<SmartLocId>(invasionUnlock, name: "invasionUnlock");
-				invasionUnlockButton = s.SerializeObject<SmartLocId>(invasionUnlockButton, name: "invasionUnlockButton");
-				invasionFailedTitle = s.SerializeObject<SmartLocId>(invasionFailedTitle, name: "invasionFailedTitle");
-				invasionFailedText = s.SerializeObject<SmartLocId>(invasionFailedText, name: "invasionFailedText");
-				invasionOneTeensySuccess = s.SerializeObject<SmartLocId>(invasionOneTeensySuccess, name: "invasionOneTeensySuccess");
-				invasionTwoTeensySuccess = s.SerializeObject<SmartLocId>(invasionTwoTeensySuccess, name: "invasionTwoTeensySuccess");
-				invasionThreeTeensySuccess = s.SerializeObject<SmartLocId>(invasionThreeTeensySuccess, name: "invasionThreeTeensySuccess");
-				invasionScoreText = s.SerializeObject<SmartLocId>(invasionScoreText, name: "invasionScoreText");
-				invasionRecordText = s.SerializeObject<SmartLocId>(invasionRecordText, name: "invasionRecordText");
+				if (s.Settings.Platform != GamePlatform.Vita || s.Settings.HasInvasionsPatch) {
+					invasionUnlock = s.SerializeObject<SmartLocId>(invasionUnlock, name: "invasionUnlock");
+					invasionUnlockButton = s.SerializeObject<SmartLocId>(invasionUnlockButton, name: "invasionUnlockButton");
+					invasionFailedTitle = s.SerializeObject<SmartLocId>(invasionFailedTitle, name: "invasionFailedTitle");
+					invasionFailedText = s.SerializeObject<SmartLocId>(invasionFailedText, name: "invasionFailedText");
+					invasionOneTeensySuccess = s.SerializeObject<SmartLocId>(invasionOneTeensySuccess, name: "invasionOneTeensySuccess");
+					invasionTwoTeensySuccess = s.SerializeObject<SmartLocId>(invasionTwoTeensySuccess, name: "invasionTwoTeensySuccess");
+					invasionThreeTeensySuccess = s.SerializeObject<SmartLocId>(invasionThreeTeensySuccess, name: "invasionThreeTeensySuccess");
+					invasionScoreText = s.SerializeObject<SmartLocId>(invasionScoreText, name: "invasionScoreText");
+					invasionRecordText = s.SerializeObject<SmartLocId>(invasionRecordText, name: "invasionRecordText");
+				}
 				difficulty1 = s.SerializeObject<SmartLocId>(difficulty1, name: "difficulty1");
 				difficulty2 = s.SerializeObject<SmartLocId>(difficulty2, name: "difficulty2");
 				difficulty3 = s.SerializeObject<SmartLocId>(difficulty3, name: "difficulty3");

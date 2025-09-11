@@ -62,6 +62,10 @@ namespace UbiCanvas {
 							texture = dds.BitmapImage;
 						}
 					}
+					if (texture != null) {
+						texture.wrapModeU = GetWrapMode(LinkedObject.Header?.WrapModeU ?? TextureCookedHeader.TextureAddressingMode.Wrap);
+						texture.wrapModeV = GetWrapMode(LinkedObject.Header?.WrapModeV ?? TextureCookedHeader.TextureAddressingMode.Wrap);
+					}
 					//texture = LoadDDS(texData);
 					//if (FileSystem.mode == FileSystem.Mode.Web) LinkedObject.texData = null;
 				}
@@ -158,6 +162,8 @@ namespace UbiCanvas {
 
 			int height = ddsBytes[13] << 8 | ddsBytes[12];
 			int width = ddsBytes[17] << 8 | ddsBytes[16];
+			if(format == TextureFormat.DXT1 && (width % 4 != 0 || height % 4 != 0))
+				return null; // Can't load in Unity if dimensions aren't multiple of 4
 
 			int DDS_HEADER_SIZE = 128;
 			byte[] dxtBytes = new byte[ddsBytes.Length - DDS_HEADER_SIZE];
@@ -176,6 +182,15 @@ namespace UbiCanvas {
 				Debug.LogWarning(ex);
 				return null;
 			}
+		}
+
+		private static TextureWrapMode GetWrapMode(TextureCookedHeader.TextureAddressingMode m) {
+			return m switch {
+				TextureCookedHeader.TextureAddressingMode.Wrap => TextureWrapMode.Repeat,
+				TextureCookedHeader.TextureAddressingMode.Mirror => TextureWrapMode.Mirror,
+				TextureCookedHeader.TextureAddressingMode.Clamp => TextureWrapMode.Clamp,
+				_ => TextureWrapMode.Repeat
+			};
 		}
 	}
 }

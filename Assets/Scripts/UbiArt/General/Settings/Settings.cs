@@ -30,6 +30,7 @@ namespace UbiArt
 		public bool IsLittleEndian => Endian == Endian.Little;
 
 		public bool IsDemo { get; set; } = false; // TODO: Replace with version tree?
+		public bool HasInvasionsPatch { get; set; } = true; // TODO: Replace with version tree?
 
 		public string PlatformString => Platform switch
 		{
@@ -309,7 +310,19 @@ namespace UbiArt
 			VersionFlags = VersionFlags.Legends,
 			Bundles = new[] { "Bundle" },
 			LoadInPlace = true,
+			HasInvasionsPatch = false,
 			MemoryData = new MemoryData_RaymanLegendsVITA()
+		};
+
+		public static Settings RL_VitaPatched = new() {
+			EngineVersion = EngineVersion.RL,
+			Game = Game.RL,
+			Platform = GamePlatform.Vita,
+			Endian = Endian.Big,
+			VersionFlags = VersionFlags.Legends,
+			Bundles = new[] { "Bundle" },
+			LoadInPlace = true,
+			MemoryData = new MemoryData_RaymanLegendsVITA_Patched()
 		};
 
 		public static Settings COL_PC32 = new()
@@ -341,6 +354,7 @@ namespace UbiArt
 				Mode.RaymanFiestaRuniOS => RFR_iOS,
 				Mode.RaymanLegendsPC => RL_PC,
 				Mode.RaymanLegendsPSVita => RL_Vita,
+				Mode.RaymanLegendsPSVitaPatched => RL_VitaPatched,
 				Mode.RaymanAdventuresAndroid => RA_Android,
 				Mode.RaymanAdventuresiOS => RA_iOS,
 				Mode.RaymanAdventuresATV => RA_ATV,

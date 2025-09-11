@@ -52,9 +52,6 @@ namespace UbiArt.ITF {
 			public PathRef optionalPath;
 			public int depth;
 			public uint flags;
-			public Path Path__0;
-			public int int__1;
-			public uint uint__2;
 			public bool bool__3;
 			public Path Path__4;
 			protected override void SerializeImpl(CSerializerObject s) {
@@ -64,9 +61,9 @@ namespace UbiArt.ITF {
 					depth = s.Serialize<int>(depth, name: "depth");
 					flags = s.Serialize<uint>(flags, name: "flags");
 				} else if (s.Settings.Game == Game.VH) {
-					Path__0 = s.SerializeObject<Path>(Path__0, name: "Path__0");
-					int__1 = s.Serialize<int>(int__1, name: "int__1");
-					uint__2 = s.Serialize<uint>(uint__2, name: "uint__2");
+					path = s.SerializeObject<Path>(path, name: "path");
+					depth = s.Serialize<int>(depth, name: "depth");
+					flags = s.Serialize<uint>(flags, name: "flags");
 					bool__3 = s.Serialize<bool>(bool__3, name: "bool__3");
 					Path__4 = s.SerializeObject<Path>(Path__4, name: "Path__4");
 				} else {

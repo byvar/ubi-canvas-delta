@@ -31,7 +31,9 @@ namespace UbiArt.ITF {
 				id = s.SerializeObject<StringID>(id, name: "id");
 				name = s.SerializeObject<StringID>(name, name: "name");
 				platformId = s.Serialize<uint>(platformId, name: "platformId");
-				noRetroactiveUnlock = s.Serialize<bool>(noRetroactiveUnlock, name: "noRetroactiveUnlock");
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					noRetroactiveUnlock = s.Serialize<bool>(noRetroactiveUnlock, name: "noRetroactiveUnlock");
+				}
 				REWARD_TRIGGER = s.SerializeObject<CArrayO<Generic<RewardTrigger_Base>>>(REWARD_TRIGGER, name: "REWARD_TRIGGER");
 			} else {
 				id = s.SerializeObject<StringID>(id, name: "id");

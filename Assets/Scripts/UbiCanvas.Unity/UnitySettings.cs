@@ -56,6 +56,7 @@ public class UnitySettings {
 		{ "ro_vita", Mode.RaymanOriginsPSVita },
 		{ "rl_pc", Mode.RaymanLegendsPC },
 		{ "rl_vita", Mode.RaymanLegendsPSVita },
+		{ "rl_vita_patched", Mode.RaymanLegendsPSVitaPatched },
 		{ "ra_android", Mode.RaymanAdventuresAndroid },
 		{ "ra_ios", Mode.RaymanAdventuresiOS },
 		{ "ra_atv", Mode.RaymanAdventuresATV },

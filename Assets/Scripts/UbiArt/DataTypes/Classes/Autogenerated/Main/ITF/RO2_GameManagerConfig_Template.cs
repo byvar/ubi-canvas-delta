@@ -151,6 +151,10 @@ namespace UbiArt.ITF {
 		public CListO<Path> catchTheAllMaps;
 		public CListO<Path> debugmapslist;
 		public CListO<Path> packages;
+
+		public Path vitaPath1;
+		public Path vitaPath2;
+
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
@@ -175,14 +179,22 @@ namespace UbiArt.ITF {
 				costumeEndBrickPath = s.SerializeObject<Path>(costumeEndBrickPath, name: "costumeEndBrickPath");
 				costumeFirstRightBrickPath = s.SerializeObject<Path>(costumeFirstRightBrickPath, name: "costumeFirstRightBrickPath");
 				costumeFirstLeftBrickPath = s.SerializeObject<Path>(costumeFirstLeftBrickPath, name: "costumeFirstLeftBrickPath");
-				additionalCostumesDescription = s.SerializeObject<CListO<RO2_CostumeDescriptor_Template>>(additionalCostumesDescription, name: "additionalCostumesDescription");
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					additionalCostumesDescription = s.SerializeObject<CListO<RO2_CostumeDescriptor_Template>>(additionalCostumesDescription, name: "additionalCostumesDescription");
+				}
 				petRewardSpawnHour = s.Serialize<uint>(petRewardSpawnHour, name: "petRewardSpawnHour");
 				homeMapPath = s.SerializeObject<Path>(homeMapPath, name: "homeMapPath");
 				soccerConfig = s.SerializeObject<Path>(soccerConfig, name: "soccerConfig");
 				firstLevelPath = (Path)s.SerializeObject<PathRef>((PathRef)firstLevelPath, name: "firstLevelPath");
 				introMoviePath = s.SerializeObject<PathRef>(introMoviePath, name: "introMoviePath");
 				introMoviePathContainer = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.LocalisedVideo>>(introMoviePathContainer, name: "introMoviePathContainer");
-				ps3HddIntroMoviePathContainer = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.LocalisedVideo>>(ps3HddIntroMoviePathContainer, name: "ps3HddIntroMoviePathContainer");
+
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					ps3HddIntroMoviePathContainer = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.LocalisedVideo>>(ps3HddIntroMoviePathContainer, name: "ps3HddIntroMoviePathContainer");
+				} else {
+					vitaPath1 = s.SerializeObject<Path>(vitaPath1, name: "vitaPath1");
+					vitaPath2 = s.SerializeObject<Path>(vitaPath2, name: "vitaPath2");
+				}
 				demoTrailerMoviePathContainer = s.SerializeObject<CListO<Path>>(demoTrailerMoviePathContainer, name: "demoTrailerMoviePathContainer");
 				mainMenuPath = s.SerializeObject<Path>(mainMenuPath, name: "mainMenuPath");
 				creditsPath = s.SerializeObject<Path>(creditsPath, name: "creditsPath");
@@ -200,8 +212,11 @@ namespace UbiArt.ITF {
 				demoEndMenuTimer = s.Serialize<float>(demoEndMenuTimer, name: "demoEndMenuTimer");
 				debugmapslist = s.SerializeObject<CListO<Path>>(debugmapslist, name: "debugmapslist");
 				menulookDRCScreenDisplayDuration = s.Serialize<float>(menulookDRCScreenDisplayDuration, name: "menulookDRCScreenDisplayDuration");
-				menuAutoMurphyScreenDisplayDuration = s.Serialize<float>(menuAutoMurphyScreenDisplayDuration, name: "menuAutoMurphyScreenDisplayDuration");
-				timeAttackTimerPath = s.SerializeObject<Path>(timeAttackTimerPath, name: "timeAttackTimerPath");
+
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					menuAutoMurphyScreenDisplayDuration = s.Serialize<float>(menuAutoMurphyScreenDisplayDuration, name: "menuAutoMurphyScreenDisplayDuration");
+					timeAttackTimerPath = s.SerializeObject<Path>(timeAttackTimerPath, name: "timeAttackTimerPath");
+				}
 				takePauseScreenshot = s.Serialize<bool>(takePauseScreenshot, name: "takePauseScreenshot");
 				pauseScreenshotWidth = s.Serialize<uint>(pauseScreenshotWidth, name: "pauseScreenshotWidth");
 				pauseScreenshotHeight = s.Serialize<uint>(pauseScreenshotHeight, name: "pauseScreenshotHeight");
@@ -210,20 +225,29 @@ namespace UbiArt.ITF {
 				nbDeathBeforeSkip = s.Serialize<uint>(nbDeathBeforeSkip, name: "nbDeathBeforeSkip");
 				playerInactivityTime = s.Serialize<float>(playerInactivityTime, name: "playerInactivityTime");
 				playerInactivityBlinkingTime = s.Serialize<float>(playerInactivityBlinkingTime, name: "playerInactivityBlinkingTime");
-				invasionCountdown = s.SerializeObject<Path>(invasionCountdown, name: "invasionCountdown");
+
+				if (s.Settings.Platform != GamePlatform.Vita || s.Settings.HasInvasionsPatch) {
+					invasionCountdown = s.SerializeObject<Path>(invasionCountdown, name: "invasionCountdown");
+				}
 				packages = s.SerializeObject<CListO<Path>>(packages, name: "packages");
 				levelsInfo = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.MapConfig>>(levelsInfo, name: "levelsInfo");
 				worldsInfo = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.WorldConfig>>(worldsInfo, name: "worldsInfo");
-				invasionsInfo = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.InvasionConfig>>(invasionsInfo, name: "invasionsInfo");
+				if (s.Settings.Platform != GamePlatform.Vita || s.Settings.HasInvasionsPatch) {
+					invasionsInfo = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.InvasionConfig>>(invasionsInfo, name: "invasionsInfo");
+				}
 				lockData = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.LockDataClass>>(lockData, name: "lockData");
 				tagText = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.TagTextClass>>(tagText, name: "tagText");
 				luckyTicketUnlockList = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.LuckyTicketUnlock>>(luckyTicketUnlockList, name: "luckyTicketUnlockList");
 				rewardsPerWorldCompletion = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.RewardPerWorldCompletion>>(rewardsPerWorldCompletion, name: "rewardsPerWorldCompletion");
-				invasionMusicMenuSuccess = s.SerializeObject<Generic<Event>>(invasionMusicMenuSuccess, name: "invasionMusicMenuSuccess");
-				invasionMusicMenuBestScore = s.SerializeObject<Generic<Event>>(invasionMusicMenuBestScore, name: "invasionMusicMenuBestScore");
-				invasionMusicMenuLoose = s.SerializeObject<Generic<Event>>(invasionMusicMenuLoose, name: "invasionMusicMenuLoose");
+				if (s.Settings.Platform != GamePlatform.Vita || s.Settings.HasInvasionsPatch) {
+					invasionMusicMenuSuccess = s.SerializeObject<Generic<Event>>(invasionMusicMenuSuccess, name: "invasionMusicMenuSuccess");
+					invasionMusicMenuBestScore = s.SerializeObject<Generic<Event>>(invasionMusicMenuBestScore, name: "invasionMusicMenuBestScore");
+					invasionMusicMenuLoose = s.SerializeObject<Generic<Event>>(invasionMusicMenuLoose, name: "invasionMusicMenuLoose");
+				}
 				pets = s.SerializeObject<CListO<RO2_GameManagerConfig_Template.Pet>>(pets, name: "pets");
-				darkRaymanID = s.SerializeObject<StringID>(darkRaymanID, name: "darkRaymanID");
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					darkRaymanID = s.SerializeObject<StringID>(darkRaymanID, name: "darkRaymanID");
+				}
 			} else {
 				playerConfig = s.SerializeObject<RO2_PlayerConfig_Template>(playerConfig, name: "playerConfig");
 				gameplayCameraPath = s.SerializeObject<Path>(gameplayCameraPath, name: "gameplayCameraPath");
@@ -436,7 +460,7 @@ namespace UbiArt.ITF {
 				luckyTicketReward = s.Serialize<uint>(luckyTicketReward, name: "luckyTicketReward");
 			}
 		}
-		[Games(GameFlags.RA)]
+		[Games(GameFlags.RL | GameFlags.RA)]
 		public partial class WorldConfig : CSerializable {
 			public StringID tag;
 			public uint teensyUnlockCountRetro1;
@@ -453,10 +477,12 @@ namespace UbiArt.ITF {
 				teensyUnlockCountCostume = s.Serialize<uint>(teensyUnlockCountCostume, name: "teensyUnlockCountCostume");
 				interactiveLoadingPath = s.SerializeObject<Path>(interactiveLoadingPath, name: "interactiveLoadingPath");
 				defaultScoreRecapPath = s.SerializeObject<Path>(defaultScoreRecapPath, name: "defaultScoreRecapPath");
-				presence = s.SerializeObject<StringID>(presence, name: "presence");
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					presence = s.SerializeObject<StringID>(presence, name: "presence");
+				}
 			}
 		}
-		[Games(GameFlags.RA)]
+		[Games(GameFlags.RL | GameFlags.RA)]
 		public partial class LocalisedVideo : CSerializable {
 			public Enum_language language;
 			public Path video;
@@ -466,13 +492,15 @@ namespace UbiArt.ITF {
 				base.SerializeImpl(s);
 				language = s.Serialize<Enum_language>(language, name: "language");
 				video = s.SerializeObject<Path>(video, name: "video");
-				audioTrack = s.Serialize<int>(audioTrack, name: "audioTrack");
-				videoTrack = s.Serialize<int>(videoTrack, name: "videoTrack");
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					audioTrack = s.Serialize<int>(audioTrack, name: "audioTrack");
+					videoTrack = s.Serialize<int>(videoTrack, name: "videoTrack");
+				}
 			}
 			public enum Enum_language {
 			}
 		}
-		[Games(GameFlags.RA)]
+		[Games(GameFlags.RL | GameFlags.RA)]
 		public partial class TagTextClass : CSerializable {
 			public StringID tag;
 			public LocalisationId locID;
@@ -482,7 +510,7 @@ namespace UbiArt.ITF {
 				locID = s.SerializeObject<LocalisationId>(locID, name: "locID");
 			}
 		}
-		[Games(GameFlags.RA)]
+		[Games(GameFlags.RL | GameFlags.RA)]
 		public partial class MapConfig : CSerializable {
 			public StringID tag;
 			public StringID worldTag;
@@ -509,18 +537,25 @@ namespace UbiArt.ITF {
 				teensyUnlockCount = s.Serialize<int>(teensyUnlockCount, name: "teensyUnlockCount");
 				mapDependencies = s.SerializeObject<CListO<StringID>>(mapDependencies, name: "mapDependencies");
 				mapPath = s.SerializeObject<PathRef>(mapPath, name: "mapPath");
-				mapPathAM = s.SerializeObject<PathRef>(mapPathAM, name: "mapPathAM");
+
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					mapPathAM = s.SerializeObject<PathRef>(mapPathAM, name: "mapPathAM");
+				}
 				mapNameId = s.SerializeObject<LocalisationId>(mapNameId, name: "mapNameId");
 				texturePath = s.SerializeObject<Path>(texturePath, name: "texturePath");
 				teensyCount = s.Serialize<TeensyCount>(teensyCount, name: "teensyCount");
 				maxLumsCount = s.Serialize<uint>(maxLumsCount, name: "maxLumsCount");
-				horizontal = s.Serialize<bool>(horizontal, name: "horizontal");
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					horizontal = s.Serialize<bool>(horizontal, name: "horizontal");
+				}
 				difficulty = s.Serialize<uint>(difficulty, name: "difficulty");
 				mapLockType = s.Serialize<MapLockType>(mapLockType, name: "mapLockType");
 				scoreRecapPath = s.SerializeObject<Path>(scoreRecapPath, name: "scoreRecapPath");
-				loading = s.SerializeObject<Path>(loading, name: "loading");
-				loadingOut = s.SerializeObject<Path>(loadingOut, name: "loadingOut");
-				startLeft = s.Serialize<bool>(startLeft, name: "startLeft");
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					loading = s.SerializeObject<Path>(loading, name: "loading");
+					loadingOut = s.SerializeObject<Path>(loadingOut, name: "loadingOut");
+					startLeft = s.Serialize<bool>(startLeft, name: "startLeft");
+				}
 				mapType = s.Serialize<MAPTYPE>(mapType, name: "mapType");
 			}
 			public enum TeensyCount {

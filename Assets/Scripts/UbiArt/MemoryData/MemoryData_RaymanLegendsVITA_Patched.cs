@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace UbiArt {
-	public class MemoryData_RaymanLegendsVITA : IMemoryData {
+	public class MemoryData_RaymanLegendsVITA_Patched : IMemoryData {
 		#region Data
 		public static readonly Dictionary<Type, uint> EditorSizes = new Dictionary<Type, uint> {
 			// Main
@@ -576,7 +576,7 @@ namespace UbiArt {
 			[typeof(ITF.FactionRelationContainer)] = 20,
 			[typeof(ITF.FontEffectList_Template)] = 184,
 			[typeof(ITF.FontEffect_Template)] = 72,
-			[typeof(ITF.RO2_GameManagerConfig_Template)] = 5772,
+			[typeof(ITF.RO2_GameManagerConfig_Template)] = 5952,
 			[typeof(ITF.RO2_PlayerIDInfo)] = 256,
 			[typeof(ITF.PlayerIDInfo.GameScreenInfo)] = 28,
 			[typeof(ITF.PlayerIDInfo.ActorInfo)] = 176,
@@ -589,8 +589,9 @@ namespace UbiArt {
 			[typeof(ITF.RO2_GameManagerConfig_Template.TagTextClass)] = 12,
 			[typeof(ITF.RO2_GameManagerConfig_Template.LuckyTicketUnlock)] = 24,
 			[typeof(ITF.RO2_GameManagerConfig_Template.RewardPerWorldCompletion)] = 12,
+			[typeof(ITF.RO2_GameManagerConfig_Template.InvasionConfig)] = 92,
 			[typeof(ITF.RO2_GhostManager_Template)] = 408,
-			[typeof(ITF.RO2_HomeManager_Template)] = 1516,
+			[typeof(ITF.RO2_HomeManager_Template)] = 1768,
 			[typeof(ITF.CompetitionModeInfo)] = 580,
 			[typeof(ITF.CompetitionLevelInfo)] = 164,
 			[typeof(ITF.StatInfos)] = 88,
@@ -620,8 +621,6 @@ namespace UbiArt {
 			[typeof(ITF.ZInputManager_Template)] = 208,
 			[typeof(ITF.ZAction)] = 56,
 			[typeof(ITF.ZInput)] = 60,
-
-
 		};
 
 		public static readonly Dictionary<Type, uint> RetailSizes = new Dictionary<Type, uint>() {

@@ -21,7 +21,9 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RL) {
 				TRCError = s.Serialize<uint>(TRCError, name: "TRCError");
-				messageText = s.Serialize<string>(messageText, name: "messageText");
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					messageText = s.Serialize<string>(messageText, name: "messageText");
+				}
 				messageId = s.SerializeObject<LocalisationId>(messageId, name: "messageId");
 				buttonLeftId = s.SerializeObject<LocalisationId>(buttonLeftId, name: "buttonLeftId");
 				buttonRightId = s.SerializeObject<LocalisationId>(buttonRightId, name: "buttonRightId");

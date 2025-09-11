@@ -22,10 +22,13 @@
 
 		[System.ComponentModel.Description("Rayman Legends (PC)")] 
 		RaymanLegendsPC,
-		
+
 		[System.ComponentModel.Description("Rayman Legends (PSV)")] 
 		RaymanLegendsPSVita,
-		
+
+		[System.ComponentModel.Description("Rayman Legends (PSV - Patched)")]
+		RaymanLegendsPSVitaPatched,
+
 		[System.ComponentModel.Description("Rayman Adventures (Android)")] 
 		RaymanAdventuresAndroid,
 

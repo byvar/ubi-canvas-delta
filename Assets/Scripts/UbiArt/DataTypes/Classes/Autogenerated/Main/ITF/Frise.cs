@@ -126,7 +126,8 @@ namespace UbiArt.ITF {
 					VisualPolyline = s.SerializeObject<PolyLine>(VisualPolyline, name: "VisualPolyline");
 					VisualPolyPointLocal = s.SerializeObject<PolyPointList>(VisualPolyPointLocal, name: "VisualPolyPointLocal");
 					if (s.Settings.Platform == GamePlatform.Vita) {
-						meshBuildData = new Nullable<MeshBuildData>();
+						if(meshBuildData == null)
+							meshBuildData = new Nullable<MeshBuildData>();
 						meshBuildData.read = true;
 						meshBuildData.value = s.SerializeObject<MeshBuildData>(meshBuildData.value, name: "MeshBuildData");
 					} else {

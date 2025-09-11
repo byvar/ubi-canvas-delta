@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	public partial class RO2_BezierBranchComponent : BezierBranchComponent {
+	public partial class RO2_BezierBranchComponent : CSerializable {
 	}
 }
 

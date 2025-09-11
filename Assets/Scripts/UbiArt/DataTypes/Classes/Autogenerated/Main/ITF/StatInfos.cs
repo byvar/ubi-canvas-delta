@@ -11,7 +11,9 @@ namespace UbiArt.ITF {
 			base.SerializeImpl(s);
 			id = s.SerializeObject<StringID>(id, name: "id");
 			color = s.SerializeObject<Color>(color, name: "color");
-			statName = s.SerializeObject<SmartLocId>(statName, name: "statName");
+			if (s.Settings.Platform != GamePlatform.Vita) {
+				statName = s.SerializeObject<SmartLocId>(statName, name: "statName");
+			}
 			name = s.SerializeObject<SmartLocId>(name, name: "name");
 			leaderboardTitle = s.SerializeObject<SmartLocId>(leaderboardTitle, name: "leaderboardTitle");
 			leaderboardTitleIcon = s.SerializeObject<StringID>(leaderboardTitleIcon, name: "leaderboardTitleIcon");

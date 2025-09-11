@@ -41,6 +41,7 @@ namespace UbiArt.ITF {
 		public float TEMP_runTimerStop;
 		public Path iconsButtonPath;
 		public Path gpeIconsPath;
+		public CArrayO<Path> menusRLVita;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RO) {
@@ -77,6 +78,9 @@ namespace UbiArt.ITF {
 				gpeIconsPath = s.SerializeObject<Path>(gpeIconsPath, name: "gpeIconsPath");
 			} else if (s.Settings.Game == Game.RL || s.Settings.Game == Game.VH || s.Settings.Game == Game.COL) {
 				debugMenuMapList = s.SerializeObject<CArrayO<Path>>(debugMenuMapList, name: "debugMenuMapList");
+				if (s.Settings.Game == Game.RL && s.Settings.Platform == GamePlatform.Vita) {
+					menusRLVita = s.SerializeObject<CArrayO<Path>>(menusRLVita, name: "menus");
+				}
 				gameTextFilePath = s.SerializeObject<Path>(gameTextFilePath, name: "gameTextFilePath");
 				loading = s.SerializeObject<Path>(loading, name: "loading");
 				playerIDInfo = s.SerializeObject<CListO<Generic<PlayerIDInfo>>>(playerIDInfo, name: "playerIDInfo");

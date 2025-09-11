@@ -29,8 +29,10 @@ namespace UbiArt.ITF {
 				pauseFadeOut = s.Serialize<float>(pauseFadeOut, name: "pauseFadeOut");
 				headphoneBusMix = s.SerializeObject<BusMix>(headphoneBusMix, name: "headphoneBusMix");
 				playerNumberBusMix = s.SerializeObject<CListO<PlayerNumberBusMix>>(playerNumberBusMix, name: "playerNumberBusMix");
-				limiterStopFade = s.Serialize<float>(limiterStopFade, name: "limiterStopFade");
-				engineStopFade = s.Serialize<float>(engineStopFade, name: "engineStopFade");
+				if (s.Settings.Platform != GamePlatform.Vita) {
+					limiterStopFade = s.Serialize<float>(limiterStopFade, name: "limiterStopFade");
+					engineStopFade = s.Serialize<float>(engineStopFade, name: "engineStopFade");
+				}
 			} else if (s.Settings.Game == Game.COL) {
 				busses = s.SerializeObject<CListO<BusDef>>(busses, name: "busses");
 				pauseFadeIn = s.Serialize<float>(pauseFadeIn, name: "pauseFadeIn");
