@@ -48,6 +48,9 @@ namespace UbiArt {
 
 		public const string UnitySerializerID = nameof(CSerializerObjectUnityEditor);
 
+		private static string LastPathDirectory = "";
+		private static string LastPathFile = "";
+
 		public static CSerializerObjectUnityEditor Serializer(Context context) {
 			var serializer = context.GetStoredObject<CSerializerObjectUnityEditor>(UnitySerializerID);
 			if (serializer == null) {
@@ -139,6 +142,8 @@ namespace UbiArt {
 				IGeneric gen = (IGeneric)obj;
 				DrawGenericClassSelector(name, ref gen, type, t);
 				obj = gen;
+			} else if (type == typeof(ArchiveMemory)) {
+				obj = ArchiveMemoryField(name, (ArchiveMemory)obj);
 			} else {
 				if (obj == null) {
 					var ctor = type.GetConstructor(Type.EmptyTypes);
@@ -229,6 +234,8 @@ namespace UbiArt {
 				if(string.IsNullOrEmpty(newPath)) newPath = null;
 				p = new Path(newPath);
 			}
+			LastPathDirectory = p.folder;
+			LastPathFile = p.filename;
 		}
 		public Angle AngleField(string name, Angle value) {
 			if (value == null) value = new Angle();
@@ -457,6 +464,48 @@ namespace UbiArt {
 
 			EditorGUI.indentLevel = indentLevel;
 			return obj;
+		}
+
+		public ArchiveMemory ArchiveMemoryField(string name, ArchiveMemory byteArray) {
+			if(byteArray == null)
+				byteArray = new ArchiveMemory();
+			if(byteArray.AMData == null)
+				byteArray.AMData = new byte[0];
+			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			var controlID = GUIUtility.GetControlID(FocusType.Passive, rect);
+			rect = EditorGUI.PrefixLabel(rect, controlID, new GUIContent(name));
+
+			var indentLevel = EditorGUI.indentLevel;
+			EditorGUI.indentLevel = 0;
+
+			var rects = UnityWindow.DivideRectHorizontally(rect, 3, spacing: 0f);
+			//var rects = UnityWindow.DivideRectHorizontally(rect, 4, spacing: 16f);
+			EditorGUI.LabelField(rects[0], $"{Util.SizeSuffix(byteArray.AMData.Length, includeBytes: true)}");
+
+			if (GUI.Button(rects[1], new GUIContent("Open"))) {
+				string directory = System.IO.Path.Combine(Context.BasePath, Context.Settings.ITFDirectory, LastPathDirectory);
+				string defaultName = LastPathFile != "" ? $"{LastPathFile}.ckd" : "";
+
+				var file = EditorUtility.OpenFilePanel("Open File", directory, "");
+				if (!string.IsNullOrWhiteSpace(file) && System.IO.File.Exists(file)) {
+					var newBytes = System.IO.File.ReadAllBytes(file);
+					if(newBytes != null)
+						byteArray.AMData = newBytes;
+				}
+			}
+			if (GUI.Button(rects[2], new GUIContent("Save"))) {
+				string directory = System.IO.Path.Combine(Context.BasePath, Context.Settings.ITFDirectory, LastPathDirectory);
+				string defaultName = LastPathFile != "" ? $"{LastPathFile}.ckd" : "";
+
+				var file = EditorUtility.SaveFilePanel("Save File", directory, defaultName, "");
+				if (!string.IsNullOrWhiteSpace(file)) {
+					Util.ByteArrayToFile(file, byteArray.AMData);
+				}
+			}
+
+			EditorGUI.indentLevel = indentLevel;
+
+			return byteArray;
 		}
 		
 		public void DrawPathRef(string name, ref PathRef p) {
@@ -739,7 +788,8 @@ namespace UbiArt {
 				obj = (T)(object)(Color)(EditorGUILayout.ColorField(name, ((Color)(object)obj ?? new Color()).GetUnityColor()).GetUbiArtColor());
 			} else if (type == typeof(ColorInteger)) {
 				obj = (T)(object)(ColorInteger)(EditorGUILayout.ColorField(name, ((ColorInteger)(object)obj ?? new ColorInteger()).GetUnityColor()).GetUbiArtColorInteger());
-
+			} else if (type == typeof(ArchiveMemory)) {
+				obj = (T)(object)ArchiveMemoryField(name, (ArchiveMemory)(object)obj);
 			} else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Generic<>)) {
 				var t = type.GetGenericArguments()[0];
 				IGeneric gen = (IGeneric)(object)obj;

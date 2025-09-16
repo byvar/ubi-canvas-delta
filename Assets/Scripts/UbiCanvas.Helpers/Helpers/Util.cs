@@ -36,9 +36,9 @@ namespace UbiCanvas.Helpers {
 
         private static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
-        public static string SizeSuffix(long value, int decimalPlaces = 1) {
+        public static string SizeSuffix(long value, int decimalPlaces = 1, bool includeBytes = false) {
             if (value < 0)
-                return "-" + SizeSuffix(-value);
+                return "-" + SizeSuffix(-value, decimalPlaces: decimalPlaces, includeBytes: includeBytes);
 
             int i = 0;
             decimal dValue = value;
@@ -46,8 +46,11 @@ namespace UbiCanvas.Helpers {
                 dValue /= 1024;
                 i++;
             }
+			if(i == 0) includeBytes = false;
 
-            return string.Format("{0:n" + decimalPlaces + "} {1}", dValue, SizeSuffixes[i]);
+            var formatted = string.Format("{0:n" + decimalPlaces + "} {1}", dValue, SizeSuffixes[i]);
+			if(includeBytes) formatted += $" ({value} bytes)";
+			return formatted;
         }
 
         public static uint NextPowerOfTwo(uint v) {
