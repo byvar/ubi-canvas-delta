@@ -483,8 +483,13 @@ namespace UbiArt {
 			EditorGUI.LabelField(rects[0], $"{Util.SizeSuffix(byteArray.AMData.Length, includeBytes: true)}");
 
 			if (GUI.Button(rects[1], new GUIContent("Open"))) {
-				string directory = System.IO.Path.Combine(Context.BasePath, Context.Settings.ITFDirectory, LastPathDirectory);
-				string defaultName = LastPathFile != "" ? $"{LastPathFile}.ckd" : "";
+				string directory = System.IO.Path.Combine(Context.BasePath, Context.Settings.ITFDirectory);
+				if (!string.IsNullOrWhiteSpace(LastPathDirectory)) {
+					var newDirectory = System.IO.Path.Combine(directory, LastPathDirectory);
+					if(System.IO.Directory.Exists(newDirectory))
+						directory = newDirectory;
+				}
+				string defaultName = !string.IsNullOrWhiteSpace(LastPathFile) ? $"{LastPathFile}.ckd" : "";
 
 				var file = EditorUtility.OpenFilePanel("Open File", directory, "");
 				if (!string.IsNullOrWhiteSpace(file) && System.IO.File.Exists(file)) {
