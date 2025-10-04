@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_HomeDoorComponent_Template : CSerializable {
+	public partial class RO2_HomeDoorComponent_Template : RO2_HomeComponent_Template {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

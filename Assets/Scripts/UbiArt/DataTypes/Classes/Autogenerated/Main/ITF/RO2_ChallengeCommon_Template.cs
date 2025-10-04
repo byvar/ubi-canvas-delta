@@ -12,7 +12,7 @@ namespace UbiArt.ITF {
 		public CListO<RO2_ChallengeCommon_Template.DifficultyRange> difficultyRanges;
 		public CListO<RO2_EnduranceRule_Template> gameplayRules;
 		public CListP<string> filter;
-		public StringID menuId = new StringID(0xec4c9c03);
+		public StringID menuId = "menuEndurance_Score";
 		public StringID debugMenuId;
 		public Path countdownPath;
 		public Nullable<EventPlayMusic> inGameMusic;

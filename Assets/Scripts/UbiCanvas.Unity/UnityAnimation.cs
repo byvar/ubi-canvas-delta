@@ -154,6 +154,7 @@ public class UnityAnimation : MonoBehaviour {
 	public bool ForceUpdatePatches { get; set; } = false;
 	public bool PlayFullAnimation = true;
 	public UnityAnimationTrack[] animsFull;
+	public bool customPose = false;
 
 	//private float updateCounter = 0f;
 	public float currentFrame = 0;
@@ -435,7 +436,7 @@ public class UnityAnimation : MonoBehaviour {
 	public void Update() {
 		if (GlobalLoadState.LoadState == GlobalLoadState.State.Finished && loaded && Controller.Obj.playAnimations) {
 			if (animTrack != null) {
-				if (playAnimation) currentFrame += Time.deltaTime * animationSpeed * (Animation?.SubAnim?.playRate ?? 1f);
+				if (playAnimation && !customPose) currentFrame += Time.deltaTime * animationSpeed * (Animation?.SubAnim?.playRate ?? 1f);
 			} else {
 				currentFrame = 0f;
 			}
@@ -446,6 +447,29 @@ public class UnityAnimation : MonoBehaviour {
 		ForceUpdatePatches = false;
 	}
 
+	public (int, int)? GetStartStopFrame() {
+		if (animTrack == null) return null;
+
+		var subAnim = Animation.SubAnim;
+		if (!PlayFullAnimation
+				&& !(subAnim?.markerStart?.IsNull ?? true) && !(subAnim?.markerStop?.IsNull ?? true)) {
+			// Play between markers only
+			var start = subAnim.markerStart;
+			var stop = subAnim.markerStop;
+			var startFrame = animTrack.frameEvents?.FirstOrDefault(e => e.events?.Any(e => e.type == AnimTrackFrameEvents.AnimMarkerEvent.AnimMarkerEventType.AnimAnimationEvent && e.marker == start) ?? false)?.frame;
+			var stopFrame = animTrack.frameEvents?.FirstOrDefault(e => e.events?.Any(e => e.type == AnimTrackFrameEvents.AnimMarkerEvent.AnimMarkerEventType.AnimAnimationEvent && e.marker == stop) ?? false)?.frame;
+			if (startFrame.HasValue && stopFrame.HasValue) {
+				var duration = stopFrame.Value - startFrame.Value;
+				if (duration <= 0) {
+					return ((int)startFrame.Value, (int)startFrame.Value);
+				} else {
+					return ((int)startFrame.Value, (int)stopFrame.Value);
+				}
+			}
+		}
+		return (0, Math.Max((int)animTrack.length - 1, 0));
+	}
+
 	void UpdateAnimation(bool force = false) {
 		if(!loaded || skeleton == null || bones == null) return;
 		Context context = Controller.MainContext;
@@ -453,11 +477,17 @@ public class UnityAnimation : MonoBehaviour {
 		foreach (var b in bones) {
 			b.visualize = DisplayBones;
 		}
-		if (animTrack != null) {
+		if (customPose) {
+			UpdateBoneLength();
+			UpdateBones(control: false);
+			UpdatePatches();
+			UpdateLines();
+			ZSortBones();
+		} else if (animTrack != null) {
 			var subAnim = Animation.SubAnim;
 			if (animTrack.length == 0) {
 				currentFrame = 0;
-			} else if(!PlayFullAnimation
+			} else if (!PlayFullAnimation
 				&& !(subAnim?.markerStart?.IsNull ?? true) && !(subAnim?.markerStop?.IsNull ?? true)) {
 				// Play between markers only
 				var start = subAnim.markerStart;
@@ -465,7 +495,7 @@ public class UnityAnimation : MonoBehaviour {
 				var startFrame = animTrack.frameEvents?.FirstOrDefault(e => e.events?.Any(e => e.type == AnimTrackFrameEvents.AnimMarkerEvent.AnimMarkerEventType.AnimAnimationEvent && e.marker == start) ?? false)?.frame;
 				var stopFrame = animTrack.frameEvents?.FirstOrDefault(e => e.events?.Any(e => e.type == AnimTrackFrameEvents.AnimMarkerEvent.AnimMarkerEventType.AnimAnimationEvent && e.marker == stop) ?? false)?.frame;
 				if (startFrame.HasValue && stopFrame.HasValue) {
-					var duration = stopFrame.Value - startFrame.Value;
+					var duration = stopFrame.Value - startFrame.Value + 1;
 					if (duration <= 0) {
 						currentFrame = startFrame.Value;
 					} else {
@@ -656,10 +686,10 @@ public class UnityAnimation : MonoBehaviour {
 		}
 	}
 
-	private void UpdateBones() {
+	private void UpdateBones(bool control = true) {
 		var updateOrder = skeleton.GetBonesUpdateOrder();
 		foreach (var boneIndex in updateOrder) {
-			bones[boneIndex].UpdateBone(controlTransform: true, updateRecursive: false);
+			bones[boneIndex].UpdateBone(controlTransform: control, updateRecursive: false);
 		}
 	}
 

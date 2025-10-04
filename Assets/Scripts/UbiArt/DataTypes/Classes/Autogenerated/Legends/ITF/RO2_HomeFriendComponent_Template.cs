@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_HomeFriendComponent_Template : CSerializable {
+	public partial class RO2_HomeFriendComponent_Template : RO2_HomeComponent_Template {
 		public Vec2d iconTauntAnchorOffset;
 		public Vec2d iconLeaderAnchorOffset;
 		protected override void SerializeImpl(CSerializerObject s) {

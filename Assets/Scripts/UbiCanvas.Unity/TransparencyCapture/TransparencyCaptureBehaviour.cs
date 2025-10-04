@@ -18,7 +18,6 @@ public class TransparencyCaptureBehaviour : MonoBehaviour
 		} finally {
 			Object.DestroyImmediate(lScreenshot);
 		}
-		Debug.Log("Screenshot saved.");
 		return screenshotBytes;
 	}
 

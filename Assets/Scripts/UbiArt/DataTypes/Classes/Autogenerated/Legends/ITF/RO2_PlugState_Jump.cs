@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_PlugState_Jump : CSerializable {
+	public partial class RO2_PlugState_Jump : ActorPlugStateImplement {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

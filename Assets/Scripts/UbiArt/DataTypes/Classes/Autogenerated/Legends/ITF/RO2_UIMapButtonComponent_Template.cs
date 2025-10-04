@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_UIMapButtonComponent_Template : CSerializable {
+	public partial class RO2_UIMapButtonComponent_Template : UIItemBasic_Template {
 		public float activeAlpha;
 		public float inactiveAlpha;
 		public Color inactiveColor;

@@ -406,7 +406,7 @@ namespace UbiArt.ITF {
 		}
 		[Games(GameFlags.RL | GameFlags.VH | GameFlags.RA)]
 		public partial class IndexList : CSerializable {
-			public CListP<ushort> List;
+			public CListP<ushort> List = new CListP<ushort>();
 			public uint IdTexConfig;
 			protected override void SerializeImpl(CSerializerObject s) {
 				base.SerializeImpl(s);

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_ElCrapoPlugPlayableController : CSerializable {
+	public partial class RO2_ElCrapoPlugPlayableController : ActorPlugPlayableController {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

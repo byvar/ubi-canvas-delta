@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_ShadowZoneDetectorComponent : CSerializable {
+	public partial class RO2_ShadowZoneDetectorComponent : ShapeDetectorComponent {
 		public bool detectInLight;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

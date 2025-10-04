@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_EventCanBeVacuum : CSerializable {
+	public partial class RO2_EventCanBeVacuum : Event {
 		public int canBeVaccumed;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

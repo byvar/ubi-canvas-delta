@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_RoomLocationComponent_Template : CSerializable {
+	public partial class RO2_RoomLocationComponent_Template : ActorComponent_Template {
 		public LocalisationId locID;
 		public Path textPath;
 		public Vec2d screenPos;

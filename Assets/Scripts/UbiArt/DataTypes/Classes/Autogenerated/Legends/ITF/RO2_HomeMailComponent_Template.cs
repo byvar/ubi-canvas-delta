@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_HomeMailComponent_Template : CSerializable {
+	public partial class RO2_HomeMailComponent_Template : RO2_HomeComponent_Template {
 		public float fallSpeed;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

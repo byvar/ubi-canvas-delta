@@ -96,6 +96,9 @@ namespace UbiArt {
 			if(p == null) return true;
 			return p.IsPathNull;
 		}
+		public static bool IsEmpty(Path p) {
+			return IsNull(p) || (string.IsNullOrEmpty(p.folder) && string.IsNullOrEmpty(p.filename) && p.flags == 0);
+		}
 
 		public bool IsCooked(Context context) {
 			return (folder != null && folder.StartsWith(context.Settings.ITFDirectory)) 
@@ -203,6 +206,11 @@ namespace UbiArt {
 							c.Loader.LoadFile<Ray_GameMaterial_Template>(this, o => Object = o);
 						} else {
 							c.Loader.LoadFile<GenericFile<GameMaterial_Template>>(this, o => Object = o);
+						}
+						break;
+					case "imt":
+						if (c.Settings.EngineVersion == EngineVersion.RO) {
+							c.Loader.LoadFile<Ray_MusicManager_Template>(this, o => Object = o);
 						}
 						break;
 					case "msh":

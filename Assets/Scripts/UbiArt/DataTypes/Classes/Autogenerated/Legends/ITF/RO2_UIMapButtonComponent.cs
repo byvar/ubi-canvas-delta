@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_UIMapButtonComponent : CSerializable {
+	public partial class RO2_UIMapButtonComponent : UIItemBasic {
 		public PathRef levelSelectFriendly;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

@@ -14,6 +14,14 @@ namespace UbiCanvas.Helpers
 
 			return text[..pos] + replace + text[(pos + search.Length)..];
 		}
+		public static string ReplaceLast(this string text, string search, string replace) {
+			int pos = text.LastIndexOf(search, StringComparison.Ordinal);
+
+			if (pos < 0)
+				return text;
+
+			return text[..pos] + replace + text[(pos + search.Length)..];
+		}
 
 		public static void CopyToClipboard(this string str)
 		{

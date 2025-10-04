@@ -9,7 +9,7 @@ namespace UbiArt.ITF {
 		public CListO<StringID> WwiseStateToRestoreAfterHotReload;
 		public CListO<BusDef> busses;
 		public CListO<LimiterDef> limiters;
-		public Placeholder busMixBank;
+		public CListO<BusMix> busMixBank;
 		public float pauseFadeIn;
 		public float pauseFadeOut;
 		public BusMix headphoneBusMix;
@@ -21,7 +21,7 @@ namespace UbiArt.ITF {
 			if (s.Settings.Game == Game.RO) {
 				busses = s.SerializeObject<CListO<BusDef>>(busses, name: "busses");
 				limiters = s.SerializeObject<CListO<LimiterDef>>(limiters, name: "limiters");
-				busMixBank = s.SerializeObject<Placeholder>(busMixBank, name: "busMixBank");
+				busMixBank = s.SerializeObject<CListO<BusMix>>(busMixBank, name: "busMixBank");
 			} else if (s.Settings.Game == Game.RL) {
 				busses = s.SerializeObject<CListO<BusDef>>(busses, name: "busses");
 				limiters = s.SerializeObject<CListO<LimiterDef>>(limiters, name: "limiters");

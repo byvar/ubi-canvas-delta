@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_UIItemLeaderboardComponent : CSerializable {
+	public partial class RO2_UIItemLeaderboardComponent : UIItem {
 		public uint highlightTextStyle;
 		public Vec3d invitationIconOffset;
 		public Vec3d costumeIconOffset;

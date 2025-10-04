@@ -80,6 +80,14 @@ namespace UbiArt {
 			}
 			return new Color(r, g, b, a);
 		}
+		public ColorInteger GetAsU32_InaccurateUbiArtCode() {
+			uint rc = Math.Max(0, Math.Min(255, (uint)(r * 256f))) & 0xFF;
+			uint gc = Math.Max(0, Math.Min(255, (uint)(g * 256f))) & 0xFF;
+			uint bc = Math.Max(0, Math.Min(255, (uint)(b * 256f))) & 0xFF;
+			uint ac = Math.Max(0, Math.Min(255, (uint)(a * 256f))) & 0xFF;
+			var colorBytes = (bc | (gc << 8) | (rc << 16) | (ac << 24));
+			return new ColorInteger(colorBytes);
+		}
 
 		public override string ToString() {
 			return $"Color({r}, {g}, {b}, {a})";

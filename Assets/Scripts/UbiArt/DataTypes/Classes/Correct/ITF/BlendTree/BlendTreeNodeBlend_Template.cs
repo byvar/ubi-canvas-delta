@@ -5,6 +5,7 @@ namespace UbiArt.ITF {
 		public bool ignoreRuleChanges;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
+			if (s.Settings.EngineVersion <= EngineVersion.RO && this is MusicTreeNodePlayMusic_Template) return;
 			if (s.HasFlags(SerializeFlags.Group_Data)) {
 				leafs = s.SerializeObject<CListO<Generic<BlendTreeNodeTemplate<T>>>>(leafs, name: "leafs");
 			}

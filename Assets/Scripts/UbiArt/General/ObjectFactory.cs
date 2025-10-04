@@ -5507,7 +5507,7 @@ namespace UbiArt {
 			{ 0xB8164942, typeof(ITF.MissionCondition_Template) },
 			{ 0xD8CBED33, typeof(ITF.MissionBase_Template) },
 			{ 0x71C003CB, typeof(ITF.COL_MovableObjectComponent_Template) },
-
+			{ 0xACBEA632, typeof(ITF.RewardsUserData) },
 		};
 	}
 }

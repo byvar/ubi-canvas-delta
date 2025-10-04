@@ -24,6 +24,7 @@ public class TransparencyCaptureBehaviourEditor : Editor {
 				Resolution res = TransparencyCaptureBehaviour.GetCurrentResolution();
 				byte[] screenshotBytes = await pb.Capture((int)(res.width * Scale), (int)(res.height * Scale), true);
 				UbiCanvas.Helpers.Util.ByteArrayToFile(savePath, screenshotBytes);
+				Debug.Log("Screenshot saved.");
 			}
 		}
 

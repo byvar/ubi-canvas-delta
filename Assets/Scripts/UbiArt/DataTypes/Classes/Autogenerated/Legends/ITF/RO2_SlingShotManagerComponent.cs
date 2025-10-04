@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_SlingShotManagerComponent : CSerializable {
+	public partial class RO2_SlingShotManagerComponent : ActorComponent {
 		public int SpawnLimitNb;
 		public uint WaveSpawnNb;
 		public uint NbToRespawn;

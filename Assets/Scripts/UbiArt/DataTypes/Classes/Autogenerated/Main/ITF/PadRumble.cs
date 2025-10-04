@@ -5,12 +5,10 @@ namespace UbiArt.ITF {
 		public float intensity;
 		public float lightIntensity;
 		public float duration;
-		public StringID StringID__0;
-		public float float__1;
-		public float float__2;
+
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			if (s.Settings.Game == Game.VH || s.Settings.Game == Game.RL) {
+			if (s.Settings.Game == Game.VH || s.Settings.Game == Game.RL || s.Settings.Game == Game.RO || s.Settings.Game == Game.RJR || s.Settings.Game == Game.RFR) {
 				name = s.SerializeObject<StringID>(name, name: "name");
 				intensity = s.Serialize<float>(intensity, name: "intensity");
 				duration = s.Serialize<float>(duration, name: "duration");

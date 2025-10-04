@@ -75,25 +75,34 @@ public class UnityWindowTools : UnityWindow
 		}
 		else if (tool is SerializerTestTool serializeGenericTool)
 		{
-			if (EditorButton("Scan all generic files")) {
-				string inputDir = EditorUtility.OpenFolderPanel("Select input directory", UnitySettings.GameDirs[UnitySettings.GameMode], "");
-				if (!String.IsNullOrWhiteSpace(inputDir)) {
-					ExecuteTask(serializeGenericTool.SerializeAsync(inputDir));
+			if (UnitySettings.GameMode == Mode.RaymanOriginsPC) {
+				if (EditorButton("Scan non-generic files")) {
+					string inputDir = EditorUtility.OpenFolderPanel("Select input directory", UnitySettings.GameDirs[UnitySettings.GameMode], "");
+					if (!String.IsNullOrWhiteSpace(inputDir)) {
+						ExecuteTask(serializeGenericTool.SerializeNonGenericAsync(inputDir));
+					}
 				}
-			}
-			if (EditorButton("Scan non-generic files")) {
-				string inputDir = EditorUtility.OpenFolderPanel("Select input directory", UnitySettings.GameDirs[UnitySettings.GameMode], "");
-				if (!String.IsNullOrWhiteSpace(inputDir)) {
-					ExecuteTask(serializeGenericTool.SerializeNonGenericAsync(inputDir));
+			} else {
+				if (EditorButton("Scan all generic files")) {
+					string inputDir = EditorUtility.OpenFolderPanel("Select input directory", UnitySettings.GameDirs[UnitySettings.GameMode], "");
+					if (!String.IsNullOrWhiteSpace(inputDir)) {
+						ExecuteTask(serializeGenericTool.SerializeAsync(inputDir));
+					}
 				}
-			}
-			if (EditorButton("Fix all memory sizes")) {
-				string inputDir = EditorUtility.OpenFolderPanel("Select input directory", UnitySettings.GameDirs[UnitySettings.GameMode], "");
-				if (!String.IsNullOrWhiteSpace(inputDir)) {
-					string outputDir = EditorUtility.OpenFolderPanel("Select output directory", inputDir, "");
+				if (EditorButton("Scan non-generic files")) {
+					string inputDir = EditorUtility.OpenFolderPanel("Select input directory", UnitySettings.GameDirs[UnitySettings.GameMode], "");
+					if (!String.IsNullOrWhiteSpace(inputDir)) {
+						ExecuteTask(serializeGenericTool.SerializeNonGenericAsync(inputDir));
+					}
+				}
+				if (EditorButton("Fix all memory sizes")) {
+					string inputDir = EditorUtility.OpenFolderPanel("Select input directory", UnitySettings.GameDirs[UnitySettings.GameMode], "");
+					if (!String.IsNullOrWhiteSpace(inputDir)) {
+						string outputDir = EditorUtility.OpenFolderPanel("Select output directory", inputDir, "");
 
-					if (!String.IsNullOrWhiteSpace(outputDir))
-						ExecuteTask(serializeGenericTool.SerializeAsync(inputDir, outputDir));
+						if (!String.IsNullOrWhiteSpace(outputDir))
+							ExecuteTask(serializeGenericTool.SerializeAsync(inputDir, outputDir));
+					}
 				}
 			}
 		}

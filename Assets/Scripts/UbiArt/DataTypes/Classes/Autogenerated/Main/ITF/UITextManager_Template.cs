@@ -6,9 +6,9 @@ namespace UbiArt.ITF {
 		public float iconYOffset;
 		public float iconXOffset;
 		public Path buttonPath;
-		public Placeholder buttonNames;
+		public CListP<string> buttonNames;
 		public Path gpePath;
-		public Placeholder gpeNames;
+		public CListP<string> gpeNames;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			if (s.Settings.Game == Game.RO) {
@@ -16,10 +16,9 @@ namespace UbiArt.ITF {
 				iconYOffset = s.Serialize<float>(iconYOffset, name: "iconYOffset");
 				iconXOffset = s.Serialize<float>(iconXOffset, name: "iconXOffset");
 				buttonPath = s.SerializeObject<Path>(buttonPath, name: "buttonPath");
-				buttonNames = s.SerializeObject<Placeholder>(buttonNames, name: "buttonNames");
+				buttonNames = s.SerializeObject<CListP<string>>(buttonNames, name: "buttonNames");
 				gpePath = s.SerializeObject<Path>(gpePath, name: "gpePath");
-				gpeNames = s.SerializeObject<Placeholder>(gpeNames, name: "gpeNames");
-			} else if (s.Settings.Game == Game.COL) {
+				gpeNames = s.SerializeObject<CListP<string>>(gpeNames, name: "gpeNames");
 			} else {
 				actorIcons = s.SerializeObject<CListO<UITextManager_Template.ActorIcon>>(actorIcons, name: "actorIcons");
 			}

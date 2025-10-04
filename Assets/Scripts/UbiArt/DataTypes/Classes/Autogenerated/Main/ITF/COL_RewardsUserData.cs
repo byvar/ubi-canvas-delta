@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.COL)]
-	public partial class COL_RewardsUserData : CSerializable {
+	public partial class COL_RewardsUserData : RewardsUserData {
 		public StringID blackQueenName;
 		public StringID bigSpiderName;
 		public uint partnersLevelToReach;

@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_ShooterSpawnerModifierComponent : CSerializable {
+	public partial class RO2_ShooterSpawnerModifierComponent : TimedSpawnerModifierComponent {
 		public Enum_tweenId tweenId;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);

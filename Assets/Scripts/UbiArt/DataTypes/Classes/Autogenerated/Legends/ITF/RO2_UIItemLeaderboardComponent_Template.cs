@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_UIItemLeaderboardComponent_Template : CSerializable {
+	public partial class RO2_UIItemLeaderboardComponent_Template : UIItem_Template {
 		public Color colorFactorSelected;
 		public Color colorFactorUnselected;
 		public float medalColorAlphaFactor;

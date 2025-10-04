@@ -455,6 +455,7 @@ namespace UbiArt {
 				case "tpl":
 				case "isg":
 				case "gmt":
+				case "imt":
 				case "frt":
 				case "tfn":
 				case "cache":
@@ -473,6 +474,7 @@ namespace UbiArt {
 				case "tpl":
 				case "isg":
 				case "gmt":
+				case "imt":
 				case "frt":
 				case "tfn":
 				case "cache":

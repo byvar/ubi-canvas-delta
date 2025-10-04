@@ -10,14 +10,10 @@ namespace UbiArt {
 			stringID = s.Serialize<uint>(stringID);
 		}
 
-		public bool IsNull {
-			get {
-				return stringID == 0xFFFFFFFF;
-			}
-		}
+		public bool IsNull => stringID == uint.MaxValue;
 
 		public StringID() {
-			stringID = 0xFFFFFFFF;
+			stringID = uint.MaxValue;
 		}
 		public StringID(uint stringID) {
 			this.stringID = stringID;
@@ -132,5 +128,7 @@ namespace UbiArt {
 		public static bool operator !=(StringID x, StringID y) {
 			return !(x == y);
 		}
+
+		public static StringID Invalid => new StringID();
 	}
 }

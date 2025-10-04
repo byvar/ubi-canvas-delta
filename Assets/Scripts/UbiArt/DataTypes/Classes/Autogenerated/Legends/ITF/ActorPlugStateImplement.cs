@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class ActorPlugStateImplement : CSerializable {
+	public partial class ActorPlugStateImplement : WithAnimStateImplement {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

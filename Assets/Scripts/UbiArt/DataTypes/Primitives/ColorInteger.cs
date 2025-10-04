@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace UbiArt {
-	public class ColorInteger : ICSerializable {
+	public class ColorInteger : ICSerializable, IEquatable<ColorInteger> {
 		public uint colorBytes;
 
 		public ColorInteger() {
@@ -11,7 +11,7 @@ namespace UbiArt {
 		}
 		public ColorInteger(ColorInteger c, byte a) {
 			colorBytes = c?.colorBytes ?? 0;
-			colorBytes = (colorBytes & 0xFFFFFF) | ((uint)a << 24);
+			colorBytes = (colorBytes & 0xFFFFFF) | (((uint)a) << 24);
 		}
 		public ColorInteger(uint colorBytes) {
 			this.colorBytes = colorBytes;
@@ -41,5 +41,28 @@ namespace UbiArt {
 		public override string ToString() {
 			return $"ColorInteger({R}, {G}, {B}, {A})";
 		}
+
+		#region Equals
+		public override bool Equals(object obj) {
+			return obj is ColorInteger && this == (ColorInteger)obj;
+		}
+		public override int GetHashCode() {
+			return colorBytes.GetHashCode();
+		}
+
+		public bool Equals(ColorInteger other) {
+			return this == (ColorInteger)other;
+		}
+
+		public static bool operator ==(ColorInteger a, ColorInteger b) {
+			if (ReferenceEquals(a, b)) return true;
+			if (ReferenceEquals(a, null)) return false;
+			if (ReferenceEquals(b, null)) return false;
+			return a.colorBytes == b.colorBytes;
+		}
+		public static bool operator !=(ColorInteger x, ColorInteger y) {
+			return !(x == y);
+		}
+		#endregion
 	}
 }
