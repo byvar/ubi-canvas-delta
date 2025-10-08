@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public float gardenCamIPadDezoom;
 		public float gardenCamIPhoneXZoom;
 		public float gardenCamIPhoneX_Y_Value;
-		public Placeholder families;
+		public CListO<RLC_GardenCreatureFamily> families;
 		public Placeholder gemValuesByRarity;
 		public Placeholder gemValuesOnTouch;
 		protected override void SerializeImpl(CSerializerObject s) {
@@ -16,7 +16,7 @@ namespace UbiArt.ITF {
 			gardenCamIPadDezoom = s.Serialize<float>(gardenCamIPadDezoom, name: "gardenCamIPadDezoom");
 			gardenCamIPhoneXZoom = s.Serialize<float>(gardenCamIPhoneXZoom, name: "gardenCamIPhoneXZoom");
 			gardenCamIPhoneX_Y_Value = s.Serialize<float>(gardenCamIPhoneX_Y_Value, name: "gardenCamIPhoneX_Y_Value");
-			families = s.SerializeObject<Placeholder>(families, name: "families");
+			families = s.SerializeObject<CListO<RLC_GardenCreatureFamily>>(families, name: "families");
 			gemValuesByRarity = s.SerializeObject<Placeholder>(gemValuesByRarity, name: "gemValuesByRarity");
 			gemValuesOnTouch = s.SerializeObject<Placeholder>(gemValuesOnTouch, name: "gemValuesOnTouch");
 		}

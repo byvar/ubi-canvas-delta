@@ -1,12 +1,12 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
 	public partial class SoundBusControllerComponent_Template : ActorComponent_Template {
-		public Placeholder busData;
-		public Placeholder inputs;
+		public CListO<SoundBusControllerComponent.Bus> busData;
+		public CListO<Input> inputs;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			busData = s.SerializeObject<Placeholder>(busData, name: "busData");
-			inputs = s.SerializeObject<Placeholder>(inputs, name: "inputs");
+			busData = s.SerializeObject<CListO<SoundBusControllerComponent.Bus>>(busData, name: "busData");
+			inputs = s.SerializeObject<CListO<Input>>(inputs, name: "inputs");
 		}
 		public override uint? ClassCRC => 0x84212367;
 	}

@@ -15,43 +15,53 @@ public class UnityPatchPointEditor : MonoBehaviour {
 	public int pointIndex = -1;
 	public AnimPatchPoint Point => pointIndex > -1 ?
 		patch.Template.patchPoints[pointIndex] : null;
+	public bool IsOrigins => Controller.MainContext.Settings.EngineVersion <= EngineVersion.RO;
+
+	public (Vec2d, Vec2d, Vec2d, float) GetLocalToNormalStuff() {
+		var isOrigins = IsOrigins;
+		var isFlipped = (bone.globalScalePreLength.x * bone.globalScalePreLength.y) < 0;
+		var dir = bone.XAxe;
+		float boneDynLocalConvert = 1f;
+		Vec2d dirNormalized = isOrigins ? dir : (bone.XAxe / bone.XAxeLength);
+		Vec2d perpendicular = dirNormalized.Rotate90 * (isFlipped ? -1f : 1f);
+		float ratio;
+
+		if (isOrigins) {
+			ratio = Math.Abs(patch.Template.SizeMultiplier * bone.globalScale.y / bone.globalScale.x);
+		} else {
+			ratio = Math.Abs(boneDynLocalConvert * bone.globalScale.y * (bone.XAxeLength / bone.globalScale.x));
+		}
+		return (dir, dirNormalized, perpendicular, ratio);
+	}
+
 	public Vec2d GlobalNormal {
 		get {
-			var boneScale = bone?.globalScale ?? Vector2.one;
-			var scaleSign = Mathf.Sign(boneScale.x * boneScale.y);
-			var globalAngle = (bone?.globalAngle ?? 0f);
-			return (Point.local.normal * new Vec2d(scaleSign, 1)).Rotate(globalAngle);
+			(Vec2d dir, Vec2d dirNormalized, Vec2d perpendicular, float ratio) = GetLocalToNormalStuff();
+			var normalX = dirNormalized * Point.local.normal.x;
+			var normalY = perpendicular * Point.local.normal.y;
+			return (normalX + normalY).Normalize();
 		}
 		set {
-			var boneScale = bone?.globalScale ?? Vector2.one;
-			var scaleSign = Mathf.Sign(boneScale.x * boneScale.y);
-			var globalAngle = (bone?.globalAngle ?? 0f);
-			Point.local.normal = value.Rotate(-globalAngle) * new Vec2d(scaleSign, 1);
+			(Vec2d dir, Vec2d dirNormalized, Vec2d perpendicular, float ratio) = GetLocalToNormalStuff();
+
+			float localNX = Vec2d.Dot(value, dirNormalized);
+			float localNY = Vec2d.Dot(value, perpendicular);
+			Point.local.normal = new Vec2d(localNX, localNY);
 		}
 	}
 	public Vec2d GlobalPosition {
 		get {
-			var boneAngle = (bone?.globalAngle ?? 0f);
-			var bonePos = (bone?.globalPosition.GetUbiArtVector() ?? Vec3d.Zero);
-			var boneScale = (bone?.globalScale.GetUbiArtVector() ?? Vec2d.One) / (bone?.bindScale.GetUbiArtVector() ?? Vec2d.One);
-			var boneLength = 0f; //(bone?.boneLength ?? 0f);
-			
-			var scaled = (Point.local.pos + new Vec2d(boneLength, 0)) * boneScale;
-			var rotated = scaled.Rotate(boneAngle);
-			var translated = rotated + new Vec2d(bonePos.x, bonePos.y);
-			return translated;
+			(Vec2d dir, Vec2d dirNormalized, Vec2d perpendicular, float ratio) = GetLocalToNormalStuff();
+			var vX = dir * Point.local.pos.x;
+			var vY = perpendicular * ratio * Point.local.pos.y;
+			return new Vec2d(bone.globalPosition.x, bone.globalPosition.y) + vX + vY;
 		}
 		set {
-			var boneAngle = (bone?.globalAngle ?? 0f);
-			var bonePos = (bone?.globalPosition.GetUbiArtVector() ?? Vec3d.Zero);
-			var boneScale = (bone?.globalScale.GetUbiArtVector() ?? Vec2d.One) / (bone?.bindScale.GetUbiArtVector() ?? Vec2d.One);
-			var boneLength = 0f; //(bone?.boneLength ?? 0f);
-
-			var translated = value;
-			var rotated = translated - new Vec2d(bonePos.x, bonePos.y);
-			var scaled = rotated.Rotate(-boneAngle);
-			var local = (scaled / boneScale) - new Vec2d(boneLength, 0);
-			Point.local.pos = local;
+			(Vec2d dir, Vec2d dirNormalized, Vec2d perpendicular, float ratio) = GetLocalToNormalStuff();
+			Vec2d toLocal = value - new Vec2d(bone.globalPosition.x, bone.globalPosition.y);
+			float localX = Vec2d.Dot(toLocal, dir) / dir.SquareNorm;
+			float localY = Vec2d.Dot(toLocal, perpendicular) / (ratio * perpendicular.SquareNorm);
+			Point.local.pos = new Vec2d(localX, localY);
 		}
 	}
 	public List<Transformation> Transformations = new List<Transformation>();
@@ -96,6 +106,8 @@ public class UnityPatchPointEditor : MonoBehaviour {
 		var pos = AverageTransformation.Apply((uv * patch.UVScale).GetUnityVector());
 		var unityPos = new Vector3(pos.x, pos.y, 0f);
 		if (transform.localPosition != unityPos) {
+			//Debug.Log($"Updating {transform.parent.name}.{gameObject.name} position");
+
 			transform.localPosition = unityPos;
 			patch.SetChanged();
 		}
@@ -109,8 +121,8 @@ public class UnityPatchPointEditor : MonoBehaviour {
 		var boneNormal = GlobalNormal;
 		var rot = AverageTransformation.Rotation;
 		var transformedUVNormal = uvNormal.Rotate(rot).NormalizeDouble();
-		var oldAngle = boneNormal.Angle();
-		var newAngle = transformedUVNormal.Angle();
+		var oldAngle = boneNormal.Angle;
+		var newAngle = transformedUVNormal.Angle;
 		if (Mathf.Abs(oldAngle - newAngle) > 0.005f) {
 			//Debug.Log($"Updating {transform.parent.name}.{gameObject.name} normal: {boneNormal} - {transformedUVNormal}");
 			GlobalNormal = transformedUVNormal;

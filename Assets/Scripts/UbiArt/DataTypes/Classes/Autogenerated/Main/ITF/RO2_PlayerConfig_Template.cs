@@ -1,13 +1,13 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RA)]
 	public partial class RO2_PlayerConfig_Template : CSerializable {
-		public uint minHitPoints;
-		public uint maxHitPoints;
-		public uint startHitPoints;
-		public uint startHitPointsAfterDeath;
-		public uint maxHitPointsWithPet;
-		public uint maxHitPointsWithPetProtector;
-		public uint maxHitPointsWithPetProtectorKing;
+		public uint minHitPoints = 1;
+		public uint maxHitPoints = 2;
+		public uint startHitPoints = 1;
+		public uint startHitPointsAfterDeath = 1;
+		public uint maxHitPointsWithPet = 2;
+		public uint maxHitPointsWithPetProtector = 3;
+		public uint maxHitPointsWithPetProtectorKing = 4;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			minHitPoints = s.Serialize<uint>(minHitPoints, name: "minHitPoints");

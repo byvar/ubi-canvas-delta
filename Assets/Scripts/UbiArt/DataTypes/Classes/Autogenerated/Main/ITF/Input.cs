@@ -1,5 +1,5 @@
 namespace UbiArt.ITF {
-	[Games(GameFlags.RJR | GameFlags.RFR | GameFlags.VH | GameFlags.RA)]
+	[Games(GameFlags.ROVersion | GameFlags.VH | GameFlags.RA)]
 	public partial class Input : CSerializable {
 		public StringID name;
 		public InputType varType;

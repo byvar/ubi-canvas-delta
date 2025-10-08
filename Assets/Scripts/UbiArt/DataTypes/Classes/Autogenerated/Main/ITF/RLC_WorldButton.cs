@@ -1,10 +1,10 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RM)]
 	public partial class RLC_WorldButton : CSerializable {
-		public Placeholder eventSentWhenSpawned;
+		public Generic<Event> eventSentWhenSpawned;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			eventSentWhenSpawned = s.SerializeObject<Placeholder>(eventSentWhenSpawned, name: "eventSentWhenSpawned");
+			eventSentWhenSpawned = s.SerializeObject<Generic<Event>>(eventSentWhenSpawned, name: "eventSentWhenSpawned");
 		}
 		public override uint? ClassCRC => 0x90CDAC93;
 	}

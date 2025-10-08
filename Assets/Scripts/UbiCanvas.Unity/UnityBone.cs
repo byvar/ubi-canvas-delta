@@ -10,10 +10,10 @@ public class UnityBone : MonoBehaviour {
 	public Vector3 bindPosition;
 	public float bindRotation;
 	public Vector2 bindScale = Vector2.one;
-	public bool bind = false;
 	public Vector3 globalPosition = Vector3.zero;
+	public Vector3 globalPositionPreInvert = Vector3.zero;
 	public float globalAngle;
-	public Vector2 computedScale = Vector2.one;
+	public Vector2 globalScalePreLength = Vector2.one;
 	public Vector2 globalScale = Vector2.one;
 	public float boneLength = 0f;
 	public float localZ = 0;
@@ -21,6 +21,9 @@ public class UnityBone : MonoBehaviour {
 	public float globalZ = 0;
 	public float bindAlpha = 1f;
 	public float localAlpha = 0f;
+
+	public Vec2d XAxe = Vec2d.Right;
+	public float XAxeLength = 1f;
 	
 	public bool visualize = false;
 	public GameObject Visual { get; set; }
@@ -45,67 +48,109 @@ public class UnityBone : MonoBehaviour {
 	private void Start() {		
 	}
 
-	public void Reset(bool resetParent = true, bool update = true) {
+	public void Reset(bool resetParent = true, bool update = true, bool invert = true) {
 		localPosition = Vector3.zero;
 		localScale = Vector2.one;
 		localRotation = 0; //new Angle(0);
 		if (resetParent) Parent = null;
-		if (update) UpdateBone();
+		if (update) UpdateBone(invert: invert);
 	}
 	void Update() {
 		UpdateVisual();
 	}
 
-	public void UpdateBone(bool controlTransform = true, bool updateRecursive = false) {
+	public void ComputeGlobalPos() {
+		var c = Controller.MainContext;
+		if (Parent != null) {
+			Vector3 PosLocal = localPosition + bindPosition;
+			Vec2d PosWorld = new Vec2d(
+				(PosLocal.x + Parent.boneLength) * Parent.globalScalePreLength.x,
+				PosLocal.y * Parent.globalScalePreLength.y).Rotate(-Parent.globalAngle);
+
+			globalPosition = Parent.globalPositionPreInvert + new Vector3(PosWorld.x, PosWorld.y, 0f);
+			globalAngle = Parent.globalAngle + bindRotation + localRotation;
+		} else {
+			// Check ITF::AnimInfo::ComputeBonesFromLocalToWorld
+			globalPosition = localPosition;
+			globalAngle = bindRotation + localRotation;
+		}
+		globalPositionPreInvert = globalPosition;
+		globalScalePreLength = Vector2.Scale(localScale, bindScale);
+
+		if (c.Settings.EngineVersion == EngineVersion.RO) {
+			globalScale = new Vector2(globalScalePreLength.x * boneLength, globalScalePreLength.y);
+		} else {
+			globalScale = globalScalePreLength;
+		}
+
+		globalZ = bindZ + localZ;// + Parent?.globalZ ?? 0;
+	}
+	public void ComputeBoneEnd(bool processInvert = true) {
+		XAxe = (Vec2d.Right * globalScale.x).Rotate(-globalAngle); // bonelength included
+		XAxeLength = System.Math.Abs(globalScale.x);
+
+		if (processInvert) {
+			XAxe.y = -XAxe.y;
+			globalPosition = new Vector3(globalPosition.x, -globalPosition.y, globalPosition.z);
+		}
+	}
+	public void ComputeBoneEnd_Inverted(bool processInvert = true) {
+		if (processInvert) {
+			globalPosition = new Vector3(globalPosition.x, -globalPosition.y, globalPosition.z);
+		}
+		// All derived variables like XAxe and XAxeLength are recalculated later
+	}
+	public void ComputeGlobalPos_Inverted() {
+		var c = Controller.MainContext;
+		//globalZ = bindZ + localZ;// + Parent?.globalZ ?? 0;
+
+		// Invert scale
+		if (c.Settings.EngineVersion <= EngineVersion.RO && boneLength != 0) {
+			globalScalePreLength = new Vector2(globalScale.x / boneLength, globalScalePreLength.y);
+		} else {
+			globalScalePreLength = globalScale;
+		}
+		globalPositionPreInvert = globalPosition;
+
+		localScale = Vector2.Scale(globalScalePreLength, new Vector2(1 / bindScale.x, 1 / bindScale.y));
+
+		if (Parent != null) {
+			// Invert rotation
+			localRotation = globalAngle - Parent.globalAngle - bindRotation;
+
+			// Inverted
+			Vector3 posWorld3d = globalPosition - Parent.globalPositionPreInvert;
+			Vec2d PosWorld = new Vec2d(posWorld3d.x, posWorld3d.y);
+			var posScaled = PosWorld.Rotate(Parent.globalAngle);
+			var endPos = posScaled / Parent.globalScalePreLength.GetUbiArtVector();
+			Vector3 PosLocal = new Vector3(endPos.x - Parent.boneLength, endPos.y, 0);
+			localPosition = PosLocal - bindPosition;
+		} else {
+			// Check ITF::AnimInfo::ComputeBonesFromLocalToWorld
+			localPosition = globalPosition;
+			localRotation = globalAngle - bindRotation;
+		}
+	}
+
+	public void UpdateBone(bool controlTransform = true, bool updateRecursive = false, bool invert = true) {
 		var c = Controller.MainContext;
 
 		Vector3 position;
 		Vector3 scale;
 		Quaternion rotation;
 
-		if (bind) {
-			if (Parent != null) {
-				globalAngle = Parent.globalAngle + bindRotation + localRotation;
-				float xPos = (Parent.computedScale.x) * (bindPosition.x + localPosition.x + Parent.boneLength);
-				float yPos = -(Parent.computedScale.y) * (bindPosition.y + localPosition.y);
-				var rotatedPos = new Vec2d(xPos, yPos).Rotate(Parent.globalAngle);
-				/*var rotationVector = new Vec2d(Mathf.Cos(Parent.globalAngle), Mathf.Sin(Parent.globalAngle));
-				var x = Vector2.Dot(new Vec2d(xPos, yPos).GetUnityVector(), rotationVector.GetUnityVector());
-				var y = Vector2.Dot(new Vec2d(yPos, -xPos).GetUnityVector(), rotationVector.GetUnityVector());
-				var rotatedPos = new Vec2d(x, y);*/
-				globalPosition = Parent.globalPosition + new Vector3(rotatedPos.x, rotatedPos.y, 0f);
-			} else {
-				// Check ITF::AnimInfo::ComputeBonesFromLocalToWorld
-				globalPosition = localPosition;
-				globalAngle = bindRotation + localRotation;
-			}
-			computedScale = Vector2.Scale(localScale, bindScale);
-			//computedScale = localScale;
-			if (c.Settings.EngineVersion == EngineVersion.RO) {
-				globalScale = new Vector2(computedScale.x * boneLength, computedScale.y);
-			} else {
-				globalScale = computedScale;
-			}
-			rotation = new Angle(globalAngle).GetUnityQuaternion();
-			position = globalPosition;
-			globalZ = bindZ + localZ;// + Parent?.globalZ ?? 0;
-		} else {
-			globalScale = localScale;
-			if (Parent != null) {
-				globalPosition = Parent.transform.localPosition + Parent.transform.localRotation * localPosition;
-				rotation = Parent.transform.localRotation * new Angle(localRotation).GetUnityQuaternion();
-			} else {
-				globalPosition = localPosition;
-				rotation = new Angle(localRotation).GetUnityQuaternion();
-			}
-			position = globalPosition;
-			globalZ = localZ;
-		}
+		ComputeGlobalPos();
+		ComputeBoneEnd(processInvert: invert);
+
+		position = globalPosition;
+		rotation = new Angle(globalAngle).GetUnityQuaternion();
 		scale = new Vector3(globalScale.x, globalScale.y, 1f);
 		if (controlTransform) {
 			transform.localScale = scale;
 			transform.localRotation = rotation;
 			transform.localPosition = position;
+			//transform.localPosition = new Vector3(position.x, -position.y, position.z);
+
 		} else {
 			transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, 1f);
 			var euler = transform.localRotation.eulerAngles;
@@ -120,54 +165,12 @@ public class UnityBone : MonoBehaviour {
 			if (transform.localScale != scale || transform.localRotation != rotation || transform.localPosition != position) {
 				//Debug.Log($"{position} - {rotation} - {scale}");
 				globalScale = new Vector2(transform.localScale.x, transform.localScale.y);
-				if (bind) {
-					if (c.Settings.EngineVersion == EngineVersion.RO) {
-						//  globalScale = new Vector2(computedScale.x * boneLength, computedScale.y);
-						if (boneLength != 0) {
-							computedScale = new Vector2(globalScale.x / boneLength, computedScale.y);
-						} else {
-							computedScale = globalScale;
-						}
-					} else {
-						computedScale = globalScale;
-					}
-					globalAngle = new Angle().SetUnityQuaternion(transform.localRotation, previous: globalAngle);
-					globalPosition = transform.localPosition;
+				globalAngle = new Angle().SetUnityQuaternion(transform.localRotation, previous: globalAngle);
+				globalPosition = transform.localPosition;
 
-					// Now reverse the other calculations
-					//if (IsPBKEditor) {
-						//localScale = new Vector2(computedScale.x / localScale.y, localScale.y);
-						//bindScale = new Vector2(localScale.y, localScale.x);
-					//} else {
-					localScale = Vector2.Scale(computedScale, new Vector3(1 / bindScale.x, 1 / bindScale.y));
-					//}
-
-					if (Parent != null) {
-						var rotatedPos3d = globalPosition - Parent.globalPosition;
-						var rotatedPos = new Vec2d(rotatedPos3d.x, rotatedPos3d.y);
-						var pos = rotatedPos.Rotate(-Parent.globalAngle) / new Vec2d(Parent.computedScale.x, -Parent.computedScale.y)
-							- new Vec2d(bindPosition.x + Parent.boneLength, bindPosition.y);
-						localPosition = new Vector3(pos.x, pos.y, 0f);
-
-						localRotation = globalAngle - Parent.globalAngle - bindRotation;
-					} else {
-						// Check ITF::AnimInfo::ComputeBonesFromLocalToWorld
-						localPosition = globalPosition;
-						localRotation = globalAngle - bindRotation;
-					}
-				} else {
-					if (Parent != null) {
-						localPosition = Quaternion.Inverse(Parent.transform.localRotation) * (transform.localPosition - Parent.transform.localPosition);
-						localRotation = new Angle().SetUnityQuaternion(Quaternion.Inverse(Parent.transform.localRotation) * transform.localRotation, previous: localRotation);
-					} else {
-						localPosition = transform.localPosition;
-						localRotation = new Angle().SetUnityQuaternion(transform.localRotation, previous: localRotation);
-					}
-					localScale = globalScale;
-					/*if (IsPBKEditor) {
-						bindScale = new Vector2(localScale.y, localScale.x);
-					}*/
-				}
+				// Reverse calculations
+				ComputeBoneEnd_Inverted(processInvert: invert);
+				ComputeGlobalPos_Inverted();
 
 				if (IsPBKEditor) {
 					if (PBKBone != null) {
@@ -178,15 +181,19 @@ public class UnityBone : MonoBehaviour {
 					}
 				}
 
+				// Recompute bone variables
+				ComputeGlobalPos();
+				ComputeBoneEnd(processInvert: invert);
+
 				foreach (var child in Children)
-					child.UpdateBone(controlTransform: true, updateRecursive: true);
+					child.UpdateBone(controlTransform: true, updateRecursive: true, invert: invert);
 			}
 		}
 
 
 		if (updateRecursive) {
 			foreach (var child in Children)
-				child.UpdateBone(controlTransform: controlTransform, updateRecursive: updateRecursive);
+				child.UpdateBone(controlTransform: controlTransform, updateRecursive: updateRecursive, invert: invert);
 		}
 	}
 

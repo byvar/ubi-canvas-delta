@@ -1,14 +1,14 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
 	public partial class MusicControllerComponent_Template : ActorComponent_Template {
-		public Placeholder musicVolume;
+		public ProceduralInputData musicVolume;
 		public uint metronomeType;
-		public Placeholder inputs;
+		public CListO<InputDesc> inputs;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			musicVolume = s.SerializeObject<Placeholder>(musicVolume, name: "musicVolume");
+			musicVolume = s.SerializeObject<ProceduralInputData>(musicVolume, name: "musicVolume");
 			metronomeType = s.Serialize<uint>(metronomeType, name: "metronomeType");
-			inputs = s.SerializeObject<Placeholder>(inputs, name: "inputs");
+			inputs = s.SerializeObject<CListO<InputDesc>>(inputs, name: "inputs");
 		}
 		public override uint? ClassCRC => 0xFBE85770;
 	}

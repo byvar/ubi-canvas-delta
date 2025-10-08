@@ -1,8 +1,7 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
 	public partial class FlyingComponent_Template : ActorComponent_Template {
-		public Placeholder DebugData;
-		public Placeholder FlyingComponentDebugData;
+		public FlyingComponent_Template.FlyingComponentDebugData DebugData;
 		public float MoveVecBlendFactor;
 		public float MoveSpeed;
 		public float MoveDirMaxAngle;
@@ -10,8 +9,7 @@ namespace UbiArt.ITF {
 		public float MoveDirAmplitude;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			DebugData = s.SerializeObject<Placeholder>(DebugData, name: "DebugData");
-			FlyingComponentDebugData = s.SerializeObject<Placeholder>(FlyingComponentDebugData, name: "FlyingComponentDebugData");
+			DebugData = s.SerializeObject<FlyingComponent_Template.FlyingComponentDebugData>(DebugData, name: "DebugData");
 			MoveVecBlendFactor = s.Serialize<float>(MoveVecBlendFactor, name: "MoveVecBlendFactor");
 			MoveSpeed = s.Serialize<float>(MoveSpeed, name: "MoveSpeed");
 			MoveDirMaxAngle = s.Serialize<float>(MoveDirMaxAngle, name: "MoveDirMaxAngle");
@@ -19,6 +17,20 @@ namespace UbiArt.ITF {
 			MoveDirAmplitude = s.Serialize<float>(MoveDirAmplitude, name: "MoveDirAmplitude");
 		}
 		public override uint? ClassCRC => 0x7E676187;
+
+		public class FlyingComponentDebugData : CSerializable {
+			public int Used;
+			public StringID SnapToWaypointId;
+			public int OnPlayer;
+			public float CollideInvForce;
+			protected override void SerializeImpl(CSerializerObject s) {
+				base.SerializeImpl(s);
+				Used = s.Serialize<int>(Used, name: "Used");
+				SnapToWaypointId = s.SerializeObject<StringID>(SnapToWaypointId, name: "SnapToWaypointId");
+				OnPlayer = s.Serialize<int>(OnPlayer, name: "OnPlayer");
+				CollideInvForce = s.Serialize<float>(CollideInvForce, name: "CollideInvForce");
+			}
+		}
 	}
 }
 

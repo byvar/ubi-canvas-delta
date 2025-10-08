@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RM)]
-	public partial class RO2_AILightningAction : CSerializable {
+	public partial class RO2_AILightningAction : AIAction {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

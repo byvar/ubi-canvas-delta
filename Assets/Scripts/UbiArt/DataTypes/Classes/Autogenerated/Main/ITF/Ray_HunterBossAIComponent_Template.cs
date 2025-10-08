@@ -5,8 +5,8 @@ namespace UbiArt.ITF {
 		public Generic<Ray_AIHunterAttackBehavior_Template> attackBehavior;
 		public Generic<Ray_AIHunterAttackBehavior_Template> holeAttackBehavior;
 		public Generic<Ray_AIReceiveHitBehavior_Template> receiveHitBehavior;
-		public Placeholder deathBehavior;
-		public Placeholder closeRangeBehavior;
+		public Generic<TemplateAIBehavior> deathBehavior;
+		public Generic<TemplateAIBehavior> closeRangeBehavior;
 		public Generic<TemplateAIBehavior> crushedBehavior;
 		public Generic<TemplateAIBehavior> voidBehavior;
 		public float findEnemyRadius;
@@ -22,8 +22,8 @@ namespace UbiArt.ITF {
 			attackBehavior = s.SerializeObject<Generic<Ray_AIHunterAttackBehavior_Template>>(attackBehavior, name: "attackBehavior");
 			holeAttackBehavior = s.SerializeObject<Generic<Ray_AIHunterAttackBehavior_Template>>(holeAttackBehavior, name: "holeAttackBehavior");
 			receiveHitBehavior = s.SerializeObject<Generic<Ray_AIReceiveHitBehavior_Template>>(receiveHitBehavior, name: "receiveHitBehavior");
-			deathBehavior = s.SerializeObject<Placeholder>(deathBehavior, name: "deathBehavior");
-			closeRangeBehavior = s.SerializeObject<Placeholder>(closeRangeBehavior, name: "closeRangeBehavior");
+			deathBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(deathBehavior, name: "deathBehavior");
+			closeRangeBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(closeRangeBehavior, name: "closeRangeBehavior");
 			crushedBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(crushedBehavior, name: "crushedBehavior");
 			voidBehavior = s.SerializeObject<Generic<TemplateAIBehavior>>(voidBehavior, name: "voidBehavior");
 			findEnemyRadius = s.Serialize<float>(findEnemyRadius, name: "findEnemyRadius");

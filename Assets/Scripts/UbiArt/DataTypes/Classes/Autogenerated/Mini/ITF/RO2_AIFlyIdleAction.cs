@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RM)]
-	public partial class RO2_AIFlyIdleAction : CSerializable {
+	public partial class RO2_AIFlyIdleAction : AIAction {
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 		}

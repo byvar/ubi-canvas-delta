@@ -6,10 +6,10 @@ namespace UbiArt.ITF {
 		public float waitTime;
 		public float timeBetweenRank;
 		public float displayScoreTime;
-		public Placeholder startAnimations;
-		public Placeholder animationsByRank;
-		public Placeholder boneNamesByRank;
-		public Placeholder fakePlayers;
+		public CListO<StringID> startAnimations;
+		public CListO<StringID> animationsByRank;
+		public CListO<StringID> boneNamesByRank;
+		public CListO<Path> fakePlayers;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			Sequence = s.SerializeObject<Path>(Sequence, name: "Sequence");
@@ -17,10 +17,10 @@ namespace UbiArt.ITF {
 			waitTime = s.Serialize<float>(waitTime, name: "waitTime");
 			timeBetweenRank = s.Serialize<float>(timeBetweenRank, name: "timeBetweenRank");
 			displayScoreTime = s.Serialize<float>(displayScoreTime, name: "displayScoreTime");
-			startAnimations = s.SerializeObject<Placeholder>(startAnimations, name: "startAnimations");
-			animationsByRank = s.SerializeObject<Placeholder>(animationsByRank, name: "animationsByRank");
-			boneNamesByRank = s.SerializeObject<Placeholder>(boneNamesByRank, name: "boneNamesByRank");
-			fakePlayers = s.SerializeObject<Placeholder>(fakePlayers, name: "fakePlayers");
+			startAnimations = s.SerializeObject<CListO<StringID>>(startAnimations, name: "startAnimations");
+			animationsByRank = s.SerializeObject<CListO<StringID>>(animationsByRank, name: "animationsByRank");
+			boneNamesByRank = s.SerializeObject<CListO<StringID>>(boneNamesByRank, name: "boneNamesByRank");
+			fakePlayers = s.SerializeObject<CListO<Path>>(fakePlayers, name: "fakePlayers");
 		}
 		public override uint? ClassCRC => 0x4C452AEC;
 	}

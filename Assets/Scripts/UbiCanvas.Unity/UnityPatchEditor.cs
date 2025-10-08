@@ -60,7 +60,7 @@ public class UnityPatchEditor : MonoBehaviour {
 		var tpl = Template;
 		
 		var patch_gao = gameObject;
-		var mesh_bones = tpl.GetBonesLocal(tpl.UbiArtContext, null, patch_gao);
+		var mesh_bones = tpl.GetBonesLocal(tpl.UbiArtContext, patch_gao);
 		updateOrder = tpl.GetBonesUpdateOrder(null);
 		for(int i = 0; i < mesh_bones.Length; i++) {
 			var bone = mesh_bones[i];

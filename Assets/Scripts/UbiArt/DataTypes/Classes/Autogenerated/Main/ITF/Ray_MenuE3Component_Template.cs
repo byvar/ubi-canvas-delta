@@ -1,7 +1,7 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RO)]
 	public partial class Ray_MenuE3Component_Template : ActorComponent_Template {
-		public Placeholder maps;
+		public CListO<Path> maps;
 		public StringID music;
 		public StringID validationSound;
 		public StringID selectionSound;
@@ -11,7 +11,7 @@ namespace UbiArt.ITF {
 		public Vec2d pauseAnimSize;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
-			maps = s.SerializeObject<Placeholder>(maps, name: "maps");
+			maps = s.SerializeObject<CListO<Path>>(maps, name: "maps");
 			music = s.SerializeObject<StringID>(music, name: "music");
 			validationSound = s.SerializeObject<StringID>(validationSound, name: "validationSound");
 			selectionSound = s.SerializeObject<StringID>(selectionSound, name: "selectionSound");

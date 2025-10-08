@@ -77,15 +77,44 @@ public class UnityPickable : MonoBehaviour {
 		UpdateDataFromTransform();
 	}
 
+	private bool IsRO => Controller.MainContext.Settings.EngineVersion <= EngineVersion.RO;
+
 	public bool UpdateDataFromTransform() {
 		bool updatedData = false;
 		if (pickable != null && GlobalLoadState.LoadState == GlobalLoadState.State.Finished) {
-			if (transform.localPosition != new Vector3(pickable.POS2D.x, pickable.POS2D.y, -pickable.RELATIVEZ)) {
+			var z = pickable.RELATIVEZ;
+			bool zForced = false;
+			bool scaleForced = false;
+			Vec2d scale = pickable.SCALE;
+			if (IsRO) {
+				if (pickable.templatePickable != null && pickable.templatePickable is Actor_Template atpl) {
+					if (atpl.useZForced != 0) {
+						zForced = true;
+						z = atpl.zForced;
+					}
+					if (atpl.scaleForced != Vec2d.Zero) {
+						scaleForced = true;
+						scale = atpl.scaleForced;
+					}
+				} else if (pickable is Frise f && f.configOrigins != null) {
+					if (f.configOrigins.isZForced != 0) {
+						zForced = true;
+						z = f.configOrigins.forcedZ;
+					}
+					scaleForced = true;
+					scale = Vec2d.One;
+				}
+			}
+			if (transform.localPosition != new Vector3(pickable.POS2D.x, pickable.POS2D.y, -z)) {
 				pickable.POS2D = new Vec2d(transform.localPosition.x, transform.localPosition.y);
 
-				if (pickable.RELATIVEZ != -transform.localPosition.z) {
-					pickable.RELATIVEZ = -transform.localPosition.z;
-					Controller.Obj.zListManager.Sort(printMessages: false);
+				if (z != -transform.localPosition.z) {
+					if (!zForced) {
+						pickable.RELATIVEZ = -transform.localPosition.z;
+						Controller.Obj.zListManager.Sort(printMessages: false);
+					} else {
+						transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -z);
+					}
 				}
 				updatedData = true;
 			}
@@ -95,10 +124,14 @@ public class UnityPickable : MonoBehaviour {
 				pickable.ANGLE.EulerAngle = transform.localEulerAngles.z;
 				updatedData = true;
 			}
-			var expectedScale = new Vector2((pickable.xFLIPPED ? -1f : 1f) * pickable.SCALE.x, pickable.SCALE.y);
+			var expectedScale = new Vector2((pickable.xFLIPPED ? -1f : 1f) * scale.x, scale.y);
 			if (new Vector2(transform.localScale.x, transform.localScale.y) != expectedScale) {
-				pickable.SCALE = new Vec2d((pickable.xFLIPPED ? -1f : 1f) * transform.localScale.x, transform.localScale.y);
-				updatedData = true;
+				if (!scaleForced) {
+					pickable.SCALE = new Vec2d((pickable.xFLIPPED ? -1f : 1f) * transform.localScale.x, transform.localScale.y);
+					updatedData = true;
+				} else {
+					transform.localScale = new Vector3(expectedScale.x, expectedScale.y, 1f);
+				}
 			}
 			if (transform.localScale.z != 1f) {
 				transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, 1f);
@@ -145,8 +178,35 @@ public class UnityPickable : MonoBehaviour {
 
 	public void ResetTransformFromData() {
 		var p = pickable;
-		transform.localPosition = new Vector3(p?.POS2D?.x ?? 0, p?.POS2D?.y ?? 0, -(p?.RELATIVEZ ?? 0f));
-		transform.localScale = new Vector3((p.xFLIPPED ? -1f : 1f) * (p?.SCALE.x ?? 1f), p?.SCALE.y ?? 1f, 1f);
+
+
+		var z = p?.RELATIVEZ ?? 0;
+		//bool zForced = false;
+		//bool scaleForced = false;
+		Vec2d scale = p?.SCALE ?? Vec2d.One;
+		if (IsRO && p != null) {
+			if (pickable.templatePickable != null && pickable.templatePickable is Actor_Template atpl) {
+				if (atpl.useZForced != 0) {
+					//zForced = true;
+					z = atpl.zForced;
+				}
+				if (atpl.scaleForced != Vec2d.Zero) {
+					//scaleForced = true;
+					scale = atpl.scaleForced;
+				}
+			} else if (pickable is Frise f && f.configOrigins != null) {
+				if (f.configOrigins.isZForced != 0) {
+					//zForced = true;
+					z = f.configOrigins.forcedZ;
+				}
+				//scaleForced = true;
+				scale = Vec2d.One;
+			}
+		}
+
+
+		transform.localPosition = new Vector3(p?.POS2D?.x ?? 0, p?.POS2D?.y ?? 0, -z);
+		transform.localScale = new Vector3((p.xFLIPPED ? -1f : 1f) * scale.x, scale.y, 1f);
 		transform.localEulerAngles = new Vector3(0, 0, p?.ANGLE?.EulerAngle ?? 0);
 	}
 

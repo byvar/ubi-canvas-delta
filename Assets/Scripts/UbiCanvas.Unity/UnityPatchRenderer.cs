@@ -204,46 +204,39 @@ public class UnityPatchRenderer : MonoBehaviour {
 		point.BoneExists = true;
 		var bone = Bones[boneIndex];
 
-		var boneAngle = (bone?.globalAngle ?? 0f);
-		var bonePos = (bone?.globalPosition.GetUbiArtVector() ?? Vec3d.Zero);
-		var boneScale = (bone?.globalScale.GetUbiArtVector() ?? Vec2d.One);
+		var boneDynLocalConvert = 1f;
 
-		if (point.Point.UbiArtContext.Settings.EngineVersion <= EngineVersion.RO && !IsPBKEditor) {
-			/*var boneLength = bone?.boneLength ?? 1f;
-			var boneLengthLocal = boneDynLocal?.boneLength ?? 1f;
-			var tplBoneScale = AnimTemplate.boneScaleY;*/
-			//boneScale *= new Vec2d(boneLength, tplBoneScale);
-			var tplBoneScale = AnimTemplate.boneScaleY;
-			boneScale *= new Vec2d(1, tplBoneScale);
-		}
+		bool isOrigins = point.Point.UbiArtContext.Settings.EngineVersion <= EngineVersion.RO;
 
-		Vec2d tplScale = null;
-		if (IsPBKEditor) {
-			tplScale = Vec2d.One;
-		} else {
+		if (!IsPBKEditor) {
 			var boneDyn = Skeleton.bonesDyn[boneIndex];
-			tplScale = boneDynLocal.scale / boneDyn.scale;
-			tplScale = new Vec2d(
-				tplScale.y, // Why (y,x)?
-				tplScale.x);
+			boneDynLocalConvert = boneDyn.scale.x / boneDynLocal.scale.x;
 		}
-		Vec2d localBoneScale = boneDynLocal.scale;
 
-		var scaled = (point.Point.local.pos) * boneScale / tplScale;
-		var rotated = scaled.Rotate(boneAngle);
-		var translated = rotated + new Vec2d(bonePos.x, bonePos.y);
+		// Game calculations
+		point.IsFlipped = (bone.globalScalePreLength.x * bone.globalScalePreLength.y) < 0;
+		var dir = bone.XAxe;
+		Vec2d dirNormalized = isOrigins ? dir : (bone.XAxe / bone.XAxeLength);
+		Vec2d perpendicular = dirNormalized.Rotate90 * (point.IsFlipped ? -1f : 1f);
+		float ratio;
 
-		var scaleSign = Mathf.Sign(boneScale.x * boneScale.y) * Mathf.Sign(localBoneScale.x * localBoneScale.y);
-		//var scaleSign = Mathf.Sign(boneScale.y);
+		if (isOrigins) {
+			ratio = Math.Abs(AnimTemplate.SizeMultiplier * bone.globalScale.y / bone.globalScale.x);
+		} else {
+			ratio = Math.Abs(boneDynLocalConvert * bone.globalScale.y * (bone.XAxeLength / bone.globalScale.x));
+		}
+		var vX = dir * point.Point.local.pos.x;
+		var vY = perpendicular * ratio * point.Point.local.pos.y;
+		point.Position = new Vec2d(bone.globalPosition.x, bone.globalPosition.y) + vX + vY;
 
-		var globalNormal = (point.Point.local.normal * new Vec2d(scaleSign, 1)).Rotate(boneAngle);
+		var normalX = dirNormalized * point.Point.local.normal.x;
+		var normalY = perpendicular * point.Point.local.normal.y;
+		point.Normal = (normalX + normalY).Normalize();
 
-		point.Position = translated;
-		point.Normal = globalNormal;
 		point.Z = bone.globalZ; // It doesn't seem to use the template Z value! :(
-		point.IsFlipped = (boneScale.x * localBoneScale.x) < 0;
 		point.Alpha = bone.bindAlpha + bone.localAlpha;
 
+		// Debug Z
 		point.ZLocal = bone.localZ;
 		point.ZSkeleton = bone.bindZ;
 		point.ZTemplate = boneDynLocal.z;

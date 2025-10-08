@@ -14,7 +14,6 @@ namespace UbiArt.Animation {
 				}*/
 				GameObject boneGao = new GameObject($"Bone {i} - {tag?.ToString(skl?.UbiArtContext, shortString: true)}");
 				unityBones[i] = boneGao.AddComponent<UnityBone>();
-				unityBones[i].bind = true;
 				unityBones[i].transform.parent = gao.transform;
 			}
 			skl.ResetBones(context, unityBones);

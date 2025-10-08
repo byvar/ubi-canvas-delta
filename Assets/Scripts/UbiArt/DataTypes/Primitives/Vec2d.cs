@@ -8,6 +8,10 @@ namespace UbiArt {
 
 		public Vec2d() {
 		}
+		public Vec2d(Vec2d v) {
+			x = v.x;
+			y = v.y;
+		}
 		public Vec2d(float x, float y) {
 			this.x = x;
 			this.y = y;
@@ -33,6 +37,10 @@ namespace UbiArt {
 		public float Norm => MathF.Sqrt(SquareNorm);
 		[IgnoreDataMember]
 		public float SquareNorm => y * y + x * x;
+		[IgnoreDataMember]
+		public Vec2d Rotate90 => new Vec2d(-y, x);
+		[IgnoreDataMember]
+		public float Angle => MathF.Atan2(y, x);
 
 		public static float Dot(Vec2d a, Vec2d b) => a.x * b.x + a.y * b.y;
 		public static float Cross(Vec2d a, Vec2d b) => a.x * b.y - b.x * a.y;
@@ -51,6 +59,10 @@ namespace UbiArt {
 			else
 				return this / magnitudeFloat;
 		}
+		public bool IsEqual(Vec2d b, float margin) {
+			return MathF.Abs(x - (b?.x ?? 0)) <= margin &&
+				   MathF.Abs(y - (b?.y ?? 0)) <= margin;
+		}
 
 		const float MIN_NORM = 0.00001f;
 
@@ -62,17 +74,24 @@ namespace UbiArt {
 				x * cos - y * sin,
 				x * sin + y * cos);
 		}
-		public Vec2d RotateAround(Vec2d center, float angle)
-			=> center + (this - center).Rotate(angle);
-
-		public float Angle() {
-			return MathF.Atan2(y, x);
+		public Vec2d Rotate(Vec2d cosSin) {
+			return new Vec2d(
+				x * cosSin.x - y * cosSin.y,
+				x * cosSin.y + y * cosSin.x);
 		}
+		public Vec2d RotateAround(Vec2d center, float angle)
+			=> center + ((this - center).Rotate(angle));
+
+		public Vec3d ToVec3d(float z) => new Vec3d(x, y, z);
+
+		public static Vec2d Lerp(Vec2d a, Vec2d b, float lerp) => a + ((b - a) * lerp);
 
 		public static Vec2d Left => new Vec2d(-1,0);
 		public static Vec2d Right => new Vec2d(1, 0);
 		public static Vec2d Up => new Vec2d(0, 1);
 		public static Vec2d Down => new Vec2d(0, -1);
+		public static Vec2d XAxis => new Vec2d(1, 0);
+		public static Vec2d YAxis => new Vec2d(0, 1);
 
 		#region Equals
 		public override bool Equals(object obj) {

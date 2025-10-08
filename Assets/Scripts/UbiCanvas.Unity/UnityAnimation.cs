@@ -421,7 +421,24 @@ public class UnityAnimation : MonoBehaviour {
 							if (boneIndex != -1) {
 								var bone = bones[boneIndex];
 								var pos = point.pos.GetUnityVector();
-								return transform.InverseTransformPoint(bone.transform.TransformPoint(pos));
+
+								// Get point position
+								var isOrigins = Controller.MainContext.Settings.EngineVersion <= EngineVersion.RO;
+								var isFlipped = (bone.globalScalePreLength.x * bone.globalScalePreLength.y) < 0;
+								var dir = bone.XAxe;
+								Vec2d dirNormalized = isOrigins ? dir : (bone.XAxe / bone.XAxeLength);
+								Vec2d perpendicular = dirNormalized.Rotate90 * (isFlipped ? -1f : 1f);
+								float ratio;
+
+								if (isOrigins) {
+									ratio = Math.Abs(bone.globalScale.y / bone.globalScale.x);
+								} else {
+									ratio = Math.Abs(bone.globalScale.y * (bone.XAxeLength / bone.globalScale.x));
+								}
+								var vX = dir * point.pos.x;
+								var vY = perpendicular * ratio * point.pos.y;
+								var posGlobal = new Vec2d(bone.globalPosition.x, bone.globalPosition.y) + vX + vY;
+								return new Vector3(posGlobal.x, posGlobal.y, 0f);
 							}
 							return Vector3.zero;
 						});
@@ -710,6 +727,7 @@ public class UnityAnimation : MonoBehaviour {
 		if (context.Settings.EngineVersion <= EngineVersion.RO) {
 			for (int i = 0; i < bones.Length; i++) {
 				AnimBoneDyn selectedDyn = null;
+				float selectedMultiplier = 1f;
 				var b = bones[i];
 				foreach (var pbk in AllPatchBanks) {
 					foreach (var p in pbk.Templates) {
@@ -719,6 +737,7 @@ public class UnityAnimation : MonoBehaviour {
 								var boneIndex = skeleton.GetBoneIndexFromTag(atl.bones[j].tag);
 								if (boneIndex == i) {
 									selectedDyn = atl.bonesDyn[j];
+									selectedMultiplier = atl.SizeMultiplier;
 								}
 								if (selectedDyn != null) break;
 							}
@@ -727,9 +746,12 @@ public class UnityAnimation : MonoBehaviour {
 					}
 					if (selectedDyn != null) break;
 				}
-				if (selectedDyn == null) selectedDyn = skeleton.bonesDyn[i];
+				if (selectedDyn == null) {
+					selectedDyn = skeleton.bonesDyn[i];
+					selectedMultiplier = 1f;
+				}
 				//b.xScaleMultiplier = selectedDyn.boneLength;
-				b.boneLength = selectedDyn.boneLength;
+				b.boneLength = selectedDyn.boneLength * selectedMultiplier;
 			}
 		}
 	}

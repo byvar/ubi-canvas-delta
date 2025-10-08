@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UbiArt;
 using UnityEngine;
+using UbiArt.ITF;
 
 [CustomEditor(typeof(UnityPickable))]
 public class UnityPickableEditor : Editor {
@@ -58,43 +59,52 @@ public class UnityPickableEditor : Editor {
 				ShowParentBind = EditorGUILayout.Foldout(ShowParentBind, "parentBind");
 				if (ShowParentBind) {
 					EditorGUI.indentLevel++;
-					act.parentBind.Serialize(s, "parentBind");
+					if (Controller.MainContext?.Settings?.EngineVersion <= EngineVersion.RO) {
+						act.parentBindOrigins.Serialize(s, "parentbind");
+					} else {
+						act.parentBind.Serialize(s, "parentBind");
 
-					if (act?.parentBind?.read ?? false) {
-						if (GUILayout.Button("Recalculate position")) {
-							var tree = new PickableTree(Controller.Obj.MainScene.obj);
-							var path = Controller.Obj.MainScene.obj.FindPickable(pick => pick == p.pickable);
+						if (act?.parentBind?.read ?? false) {
+							if (GUILayout.Button("Recalculate position")) {
+								var tree = new PickableTree(Controller.Obj.MainScene.obj);
+								var path = Controller.Obj.MainScene.obj.FindPickable(pick => pick == p.pickable);
 
-							if (path != null) {
-								var curNode = tree.FollowObjectPath(path.Path, throwIfNotFound: false);
-								if (curNode != null) {
-									var parentBind = act.parentBind.value;
-									var linkedNode = curNode.Parent.GetNodeWithObjectPath(parentBind.parentPath, throwIfNotFound: false);
-									bool foundParent = linkedNode?.Pickable != null;
-									if (foundParent) {
-										var parentObj = linkedNode.Pickable.GetPrecreatedGameObject().GetComponent<UnityPickable>();
-										var relativePos = parentObj.transform.InverseTransformPoint(p.transform.position);
+								if (path != null) {
+									var curNode = tree.FollowObjectPath(path.Path, throwIfNotFound: false);
+									if (curNode != null) {
+										var parentBind = act.parentBind.value;
+										var linkedNode = curNode.Parent.GetNodeWithObjectPath(parentBind.parentPath, throwIfNotFound: false);
+										bool foundParent = linkedNode?.Pickable != null;
+										if (foundParent) {
+											var parentObj = linkedNode.Pickable.GetPrecreatedGameObject().GetComponent<UnityPickable>();
+											var relativePos = parentObj.transform.InverseTransformPoint(p.transform.position);
 
-										parentBind.offsetPos = new Vec3d(relativePos.x, relativePos.y, -relativePos.z);
+											parentBind.offsetPos = new Vec3d(relativePos.x, relativePos.y, -relativePos.z);
 
-										var calculatedAngle = p.transform.eulerAngles.z - parentObj.transform.eulerAngles.z;
-										var curAngle = new Angle(parentBind.offsetAngle).EulerAngle;
-										var angleDifference = p.NormalizeEulerAngle(calculatedAngle) - p.NormalizeEulerAngle(curAngle);
-										if (Mathf.Abs(angleDifference) > 0.00005) {
-											parentBind.offsetAngle = new Angle(p.NormalizeEulerAngle(calculatedAngle), degrees: true);
+											var calculatedAngle = p.transform.eulerAngles.z - parentObj.transform.eulerAngles.z;
+											var curAngle = new Angle(parentBind.offsetAngle).EulerAngle;
+											var angleDifference = p.NormalizeEulerAngle(calculatedAngle) - p.NormalizeEulerAngle(curAngle);
+											if (Mathf.Abs(angleDifference) > 0.00005) {
+												parentBind.offsetAngle = new Angle(p.NormalizeEulerAngle(calculatedAngle), degrees: true);
+											}
 										}
 									}
 								}
 							}
 						}
-					}
 
+					}
 					EditorGUI.indentLevel--;
 				}
 			}
-			if (p.pickable is UbiArt.ITF.Actor act2 &&
-				(Controller.MainContext?.Settings?.Game == Game.RA || Controller.MainContext?.Settings?.Game == Game.RM)) {
-				act2.STARTPAUSE = s.Serialize<bool>(act2.STARTPAUSE, name: "STARTPAUSE");
+
+			if (p.pickable is UbiArt.ITF.Actor act2) {
+				if ((Controller.MainContext?.Settings?.Game == Game.RA || Controller.MainContext?.Settings?.Game == Game.RM)) {
+					act2.STARTPAUSE = s.Serialize<bool>(act2.STARTPAUSE, name: "STARTPAUSE");
+				}
+				if (p.pickable.templatePickable is Actor_Template atpl) {
+					atpl.STARTPAUSED = s.Serialize<bool>(atpl.STARTPAUSED, name: "(TEMPLATE) STARTPAUSED");
+				}
 			}
 
 			if (p.pickable.templatePickable != null) {

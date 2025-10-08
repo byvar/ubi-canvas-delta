@@ -4,7 +4,7 @@ namespace UbiArt.ITF {
 		public Generic<AIAction_Template> detect;
 		public Generic<AIAction_Template> backDetect;
 		public Generic<AIAction_Template> fall;
-		public Generic<AIAction_Template> giveUp;
+		public Generic<AIPlayAnimAction_Template> giveUp;
 		public Generic<AIAction_Template> outOfRange;
 		public Generic<AIAction_Template> attack;
 		public Generic<AIAction_Template> jumpAttack;
@@ -25,7 +25,7 @@ namespace UbiArt.ITF {
 			detect = s.SerializeObject<Generic<AIAction_Template>>(detect, name: "detect");
 			backDetect = s.SerializeObject<Generic<AIAction_Template>>(backDetect, name: "backDetect");
 			fall = s.SerializeObject<Generic<AIAction_Template>>(fall, name: "fall");
-			giveUp = s.SerializeObject<Generic<AIAction_Template>>(giveUp, name: "giveUp");
+			giveUp = s.SerializeObject<Generic<AIPlayAnimAction_Template>>(giveUp, name: "giveUp");
 			outOfRange = s.SerializeObject<Generic<AIAction_Template>>(outOfRange, name: "outOfRange");
 			attack = s.SerializeObject<Generic<AIAction_Template>>(attack, name: "attack");
 			jumpAttack = s.SerializeObject<Generic<AIAction_Template>>(jumpAttack, name: "jumpAttack");
