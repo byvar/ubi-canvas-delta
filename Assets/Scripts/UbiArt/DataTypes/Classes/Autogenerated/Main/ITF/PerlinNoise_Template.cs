@@ -1,11 +1,11 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.VH | GameFlags.RA)]
 	public partial class PerlinNoise_Template : CSerializable {
-		public float frequency;
-		public float persistence;
-		public uint nbOctave;
-		public float amplitude;
-		public float timeMultiplier;
+		public float frequency = 1;
+		public float persistence = 0.4f;
+		public uint nbOctave = 4;
+		public float amplitude = 1;
+		public float timeMultiplier = 1;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
 			frequency = s.Serialize<float>(frequency, name: "frequency");

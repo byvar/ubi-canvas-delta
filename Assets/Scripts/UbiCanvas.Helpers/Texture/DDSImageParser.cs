@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.IO;
 using UnityEngine;
+using BinarySerializer;
 
 namespace UbiCanvas.Helpers {
 	#region DDSImage Class
@@ -357,15 +358,15 @@ namespace UbiCanvas.Helpers {
 
 		private void CorrectPremult(uint pixnum, ref byte[] buffer) {
 			for (uint i = 0; i < pixnum; i++) {
-				byte alpha = buffer[i + 3];
+				byte alpha = buffer[(i * 4) + 3];
 				if (alpha == 0) continue;
-				int red = (buffer[i] << 8) / alpha;
-				int green = (buffer[i + 1] << 8) / alpha;
-				int blue = (buffer[i + 2] << 8) / alpha;
+				int red = (buffer[(i * 4)] << 8) / alpha;
+				int green = (buffer[(i * 4) + 1] << 8) / alpha;
+				int blue = (buffer[(i * 4) + 2] << 8) / alpha;
 
-				buffer[i] = (byte)red;
-				buffer[i + 1] = (byte)green;
-				buffer[i + 2] = (byte)blue;
+				buffer[(i * 4)] = (byte)red;
+				buffer[(i * 4) + 1] = (byte)green;
+				buffer[(i * 4) + 2] = (byte)blue;
 			}
 		}
 
@@ -387,46 +388,37 @@ namespace UbiCanvas.Helpers {
 			}
 		}
 
-		private void DxtcReadColors(byte[] data, int pos, ref Colour8888[] op) {
-			byte r0, g0, b0, r1, g1, b1;
-
-			b0 = (byte)(data[pos+0] & 0x1F);
-			g0 = (byte)(((data[pos + 0] & 0xE0) >> 5) | ((data[pos + 1] & 0x7) << 3));
-			r0 = (byte)((data[pos + 1] & 0xF8) >> 3);
-
-			b1 = (byte)(data[pos + 2] & 0x1F);
-			g1 = (byte)(((data[pos + 2] & 0xE0) >> 5) | ((data[pos + 3] & 0x7) << 3));
-			r1 = (byte)((data[pos + 3] & 0xF8) >> 3);
-
-			op[0].red = (byte)(r0 << 3 | r0 >> 2);
-			op[0].green = (byte)(g0 << 2 | g0 >> 3);
-			op[0].blue = (byte)(b0 << 3 | b0 >> 2);
-
-			op[1].red = (byte)(r1 << 3 | r1 >> 2);
-			op[1].green = (byte)(g1 << 2 | g1 >> 3);
-			op[1].blue = (byte)(b1 << 3 | b1 >> 2);
+		private void DxtcReadColors(byte[] data, int pos, ref ColorFloat[] op) {
+			ushort colour0 = ToUInt16(data, pos);
+			ushort colour1 = ToUInt16(data, pos + 2);
+			DxtcReadColor(colour0, ref op[0]);
+			DxtcReadColor(colour1, ref op[1]);
 		}
 
-		private void DxtcReadColor(ushort data, ref Colour8888 op) {
-			byte r, g, b;
+		private static void DxtcReadColor(ushort color, ref ColorFloat c) {
+			// Extract 5/6/5 bits
+			int r5 = BitHelpers.ExtractBits(color, 5, 11);
+			int g6 = BitHelpers.ExtractBits(color, 6, 5);
+			int b5 = BitHelpers.ExtractBits(color, 5, 0);
 
-			b = (byte)(data & 0x1f);
-			g = (byte)((data & 0x7E0) >> 5);
-			r = (byte)((data & 0xF800) >> 11);
+			/*c.red   = (byte)((r5 << 3) | (r5 >> 2));
+			c.green = (byte)((g6 << 2) | (g6 >> 4));
+			c.blue  = (byte)((b5 << 3) | (b5 >> 2));*/
+			/*byte Conv(int v, float max) {
+				return (byte)MathF.Round(((float)v * (255f/max)));
+			}
+			c.red = Conv(r5, 31);
+			c.green = Conv(g6, 63);
+			c.blue = Conv(b5, 31);*/
+			float Conv(int v, float max) {
+				return ((float)v * (255f / max));
+			}
+			c.red = Conv(r5, 31);
+			c.green = Conv(g6, 63);
+			c.blue = Conv(b5, 31);
 
-			op.red = (byte)(r << 3 | r >> 2);
-			op.green = (byte)(g << 2 | g >> 3);
-			op.blue = (byte)(b << 3 | r >> 2);
-		}
 
-		private void DxtcReadColors(byte[] data, int pos, ref Colour565 color_0, ref Colour565 color_1) {
-			color_0.blue = (byte)(data[pos + 0] & 0x1F);
-			color_0.green = (byte)(((data[pos + 0] & 0xE0) >> 5) | ((data[pos + 1] & 0x7) << 3));
-			color_0.red = (byte)((data[pos + 1] & 0xF8) >> 3);
-
-			color_0.blue = (byte)(data[pos + 2] & 0x1F);
-			color_0.green = (byte)(((data[pos + 2] & 0xE0) >> 5) | ((data[pos + 3] & 0x7) << 3));
-			color_0.red = (byte)((data[pos + 3] & 0xF8) >> 3);
+			c.alpha = 255;
 		}
 
 		private void GetBitsFromMask(uint mask, ref uint shiftLeft, ref uint shiftRight) {
@@ -551,10 +543,12 @@ namespace UbiCanvas.Helpers {
 		#endregion
 
 		#region Decompress Methods
-		private byte[] DecompressData(DDSStruct header, byte[] data, PixelFormat pixelFormat, int pos = 32*4) {
+		private byte[] DecompressData(DDSStruct header, byte[] data, PixelFormat pixelFormat) {
 			//Debug.WriteLine(pixelFormat);
 			// allocate bitmap
 			byte[] rawData = null;
+
+			int pos = (int)(header.size + 4); // 4 for "DDS "
 
 			switch (pixelFormat) {
 				case PixelFormat.RGBA:
@@ -627,14 +621,14 @@ namespace UbiCanvas.Helpers {
 			int height = (int)header.height;
 			int depth = (int)header.depth;
 
+
+
 			// DXT1 decompressor
 			byte[] rawData = new byte[depth * sizeofplane + height * bps + width * bpp];
 
-			Colour8888[] colours = new Colour8888[4];
-			colours[0].alpha = 0xFF;
-			colours[1].alpha = 0xFF;
-			colours[2].alpha = 0xFF;
-			
+			ColorFloat[] colours = new ColorFloat[4];
+			for (int i = 0; i < 4; i++) colours[i].alpha = 0xFF;
+
 			int temp = pos;
 			for (int z = 0; z < depth; z++) {
 				for (int y = 0; y < height; y += 4) {
@@ -652,42 +646,42 @@ namespace UbiCanvas.Helpers {
 							// 00 = color_0, 01 = color_1, 10 = color_2, 11 = color_3
 							// These 2-bit codes correspond to the 2-bit fields
 							// stored in the 64-bit block.
-							colours[2].blue = (byte)((2 * colours[0].blue + colours[1].blue + 1) / 3);
-							colours[2].green = (byte)((2 * colours[0].green + colours[1].green + 1) / 3);
-							colours[2].red = (byte)((2 * colours[0].red + colours[1].red + 1) / 3);
-							//colours[2].alpha = 0xFF;
+							colours[2].red = ComputeColorMix(colours[0].red, colours[1].red);
+							colours[2].green = ComputeColorMix(colours[0].green, colours[1].green);
+							colours[2].blue = ComputeColorMix(colours[0].blue, colours[1].blue);
+							colours[2].alpha = 255;
 
-							colours[3].blue = (byte)((colours[0].blue + 2 * colours[1].blue + 1) / 3);
-							colours[3].green = (byte)((colours[0].green + 2 * colours[1].green + 1) / 3);
-							colours[3].red = (byte)((colours[0].red + 2 * colours[1].red + 1) / 3);
-							colours[3].alpha = 0xFF;
+							colours[3].red = ComputeColorMixInv(colours[0].red, colours[1].red);
+							colours[3].green = ComputeColorMixInv(colours[0].green, colours[1].green);
+							colours[3].blue = ComputeColorMixInv(colours[0].blue, colours[1].blue);
+							colours[3].alpha = 255;
 						} else {
 							// Three-color block: derive the other color.
 							// 00 = color_0,  01 = color_1,  10 = color_2,
 							// 11 = transparent.
 							// These 2-bit codes correspond to the 2-bit fields 
 							// stored in the 64-bit block. 
-							colours[2].blue = (byte)((colours[0].blue + colours[1].blue) / 2);
-							colours[2].green = (byte)((colours[0].green + colours[1].green) / 2);
-							colours[2].red = (byte)((colours[0].red + colours[1].red) / 2);
-							//colours[2].alpha = 0xFF;
+							colours[2].red = ComputeColorMixEqual(colours[0].red, colours[1].red);
+							colours[2].green = ComputeColorMixEqual(colours[0].green, colours[1].green);
+							colours[2].blue = ComputeColorMixEqual(colours[0].blue, colours[1].blue);
+							colours[2].alpha = 255;
 
-							colours[3].blue = (byte)((colours[0].blue + 2 * colours[1].blue + 1) / 3);
-							colours[3].green = (byte)((colours[0].green + 2 * colours[1].green + 1) / 3);
-							colours[3].red = (byte)((colours[0].red + 2 * colours[1].red + 1) / 3);
-							colours[3].alpha = 0x00;
+							colours[3].red = 0;
+							colours[3].green = 0;
+							colours[3].blue = 0;
+							colours[3].alpha = 0;
 						}
 
 						for (int j = 0, k = 0; j < 4; j++) {
 							for (int i = 0; i < 4; i++, k++) {
 								int select = (int)((bitmask & (0x03 << k * 2)) >> k * 2);
-								Colour8888 col = colours[select];
+								ColorFloat col = colours[select];
 								if (((x + i) < width) && ((y + j) < height)) {
 									uint offset = (uint)(z * sizeofplane + (y + j) * bps + (x + i) * bpp);
-									rawData[offset + 0] = (byte)col.red;
-									rawData[offset + 1] = (byte)col.green;
-									rawData[offset + 2] = (byte)col.blue;
-									rawData[offset + 3] = (byte)col.alpha;
+									rawData[offset + 0] = (byte)MathF.Round(col.red);
+									rawData[offset + 1] = (byte)MathF.Round(col.green);
+									rawData[offset + 2] = (byte)MathF.Round(col.blue);
+									rawData[offset + 3] = (byte)MathF.Round(col.alpha);
 								}
 							}
 						}
@@ -713,11 +707,30 @@ namespace UbiCanvas.Helpers {
 		}
 
 		private ushort ToUInt16(byte[] data, int temp) {
-			return (ushort)((data[temp + 1] << 8) | data[temp]);
+			return (ushort)(((ushort)data[temp + 1] << 8) | (ushort)data[temp]);
 		}
 
 		private uint ToUInt32(byte[] data, int temp) {
-			return (uint)((data[temp + 3] << 24) | (data[temp + 2] << 16) | (data[temp + 1] << 8) | data[temp]);
+			return (uint)(((uint)data[temp + 3] << 24) | ((uint)data[temp + 2] << 16) | ((uint)data[temp + 1] << 8) | (uint)data[temp]);
+		}
+		private float Lerp(float c0, float c1, float t)
+			=> c0 + t * (c1 - c0);
+		private float ComputeColorMix(float c0, float c1) {
+			return Lerp(c0, c1, 1/3f);
+			//return (((2/3f) * c0 + (1/3f) * c1));
+			//return (byte)((5 * c0 + 3 * c1) >> 3);
+			//return (byte)((2 * c0 + c1 + 2) / 3); // +1 for rounding
+			// (byte)Math.Round((2 * colours[0].red + colours[1].red + 1) / 3f);
+		}
+		private float ComputeColorMixInv(float c0, float c1) {
+			return Lerp(c0, c1, 2/3f);
+			// => ComputeColorMix(c1, c0);
+		}
+
+		private float ComputeColorMixEqual(float c0, float c1) {
+			return Lerp(c0, c1, 1/2f);
+			//return (c0 + c1) / 2f;
+			//(byte)Math.Round((colours[0].blue + colours[1].blue + 1) / 2f)
 		}
 
 		private byte[] DecompressDXT3(DDSStruct header, byte[] data, PixelFormat pixelFormat, int pos = 0) {
@@ -731,7 +744,7 @@ namespace UbiCanvas.Helpers {
 
 			// DXT3 decompressor
 			byte[] rawData = new byte[depth * sizeofplane + height * bps + width * bpp];
-			Colour8888[] colours = new Colour8888[4];
+			ColorFloat[] colours = new ColorFloat[4];
 			
 			int temp = pos;
 			int z, y, x, alpha, i, j, k, select;
@@ -743,9 +756,13 @@ namespace UbiCanvas.Helpers {
 					for (x = 0; x < width; x += 4) {
 						alpha = temp;
 						temp += 8;
-
-						DxtcReadColors(data, temp, ref colours);
+						
+						ushort colour0 = ToUInt16(data, temp);
+						ushort colour1 = ToUInt16(data, temp+2);
 						temp += 4;
+
+						DxtcReadColor(colour0, ref colours[0]);
+						DxtcReadColor(colour1, ref colours[1]);
 						
 						uint bitmask;
 						try {
@@ -757,18 +774,18 @@ namespace UbiCanvas.Helpers {
 						}
 
 						// Four-color block: derive the other two colors.
-						// 00 = color_0, 01 = color_1, 10 = color_2, 11	= color_3
+						// 00 = color_0, 01 = color_1, 10 = color_2, 11 = color_3
 						// These 2-bit codes correspond to the 2-bit fields
 						// stored in the 64-bit block.
-						colours[2].blue = (byte)((2 * colours[0].blue + colours[1].blue + 1) / 3);
-						colours[2].green = (byte)((2 * colours[0].green + colours[1].green + 1) / 3);
-						colours[2].red = (byte)((2 * colours[0].red + colours[1].red + 1) / 3);
-						//colours[2].alpha = 0xFF;
+						colours[2].red = ComputeColorMix(colours[0].red, colours[1].red);
+						colours[2].green = ComputeColorMix(colours[0].green, colours[1].green);
+						colours[2].blue = ComputeColorMix(colours[0].blue, colours[1].blue);
+						colours[2].alpha = 255;
 
-						colours[3].blue = (byte)((colours[0].blue + 2 * colours[1].blue + 1) / 3);
-						colours[3].green = (byte)((colours[0].green + 2 * colours[1].green + 1) / 3);
-						colours[3].red = (byte)((colours[0].red + 2 * colours[1].red + 1) / 3);
-						//colours[3].alpha = 0xFF;
+						colours[3].red = ComputeColorMixInv(colours[0].red, colours[1].red);
+						colours[3].green = ComputeColorMixInv(colours[0].green, colours[1].green);
+						colours[3].blue = ComputeColorMixInv(colours[0].blue, colours[1].blue);
+						colours[3].alpha = 255;
 
 						for (j = 0, k = 0; j < 4; j++) {
 							for (i = 0; i < 4; k++, i++) {
@@ -776,21 +793,21 @@ namespace UbiCanvas.Helpers {
 
 								if (((x + i) < width) && ((y + j) < height)) {
 									offset = (uint)(z * sizeofplane + (y + j) * bps + (x + i) * bpp);
-									rawData[offset + 0] = (byte)colours[select].red;
-									rawData[offset + 1] = (byte)colours[select].green;
-									rawData[offset + 2] = (byte)colours[select].blue;
+									rawData[offset + 0] = (byte)MathF.Round(colours[select].red);
+									rawData[offset + 1] = (byte)MathF.Round(colours[select].green);
+									rawData[offset + 2] = (byte)MathF.Round(colours[select].blue);
 								}
 							}
 						}
 
 						for (j = 0; j < 4; j++) {
 							//ushort word = (ushort)(alpha[2 * j] + 256 * alpha[2 * j + 1]);
-							word = (ushort)(data[alpha + 2 * j] | (data[alpha + 2 * j + 1] << 8));
+							word = ToUInt16(data, alpha + 2 * j);
 							for (i = 0; i < 4; i++) {
 								if (((x + i) < width) && ((y + j) < height)) {
 									offset = (uint)(z * sizeofplane + (y + j) * bps + (x + i) * bpp + 3);
-									rawData[offset] = (byte)(word & 0x0F);
-									rawData[offset] = (byte)(rawData[offset] | (rawData[offset] << 4));
+									// Convert 4-bit alpha to 8-bit by multiplying by 17 (0x11)
+									rawData[offset] = (byte)((word & 0x0F) * 17);
 								}
 								word >>= 4;
 							}
@@ -825,7 +842,7 @@ namespace UbiCanvas.Helpers {
 			int depth = (int)header.depth;
 
 			byte[] rawData = new byte[depth * sizeofplane + height * bps + width * bpp];
-			Colour8888[] colours = new Colour8888[4];
+			ColorFloat[] colours = new ColorFloat[4];
 			ushort[] alphas = new ushort[8];
 			
 			int temp = pos;
@@ -848,27 +865,28 @@ namespace UbiCanvas.Helpers {
 						// 00 = color_0, 01 = color_1, 10 = color_2, 11	= color_3
 						// These 2-bit codes correspond to the 2-bit fields
 						// stored in the 64-bit block.
-						colours[2].blue = (byte)((2 * colours[0].blue + colours[1].blue + 1) / 3);
-						colours[2].green = (byte)((2 * colours[0].green + colours[1].green + 1) / 3);
-						colours[2].red = (byte)((2 * colours[0].red + colours[1].red + 1) / 3);
+
+						colours[2].red = ComputeColorMix(colours[0].red, colours[1].red);
+						colours[2].green = ComputeColorMix(colours[0].green, colours[1].green);
+						colours[2].blue = ComputeColorMix(colours[0].blue, colours[1].blue);
 						//colours[2].alpha = 0xFF;
 
-						colours[3].blue = (byte)((colours[0].blue + 2 * colours[1].blue + 1) / 3);
-						colours[3].green = (byte)((colours[0].green + 2 * colours[1].green + 1) / 3);
-						colours[3].red = (byte)((colours[0].red + 2 * colours[1].red + 1) / 3);
+						colours[3].red = ComputeColorMixInv(colours[0].red, colours[1].red);
+						colours[3].green = ComputeColorMixInv(colours[0].green, colours[1].green);
+						colours[3].blue = ComputeColorMixInv(colours[0].blue, colours[1].blue);
 						//colours[3].alpha = 0xFF;
 
 						int k = 0;
 						for (int j = 0; j < 4; j++) {
 							for (int i = 0; i < 4; k++, i++) {
 								int select = (int)((bitmask & (0x03 << k * 2)) >> k * 2);
-								Colour8888 col = colours[select];
+								ColorFloat col = colours[select];
 								// only put pixels out < width or height
 								if (((x + i) < width) && ((y + j) < height)) {
 									uint offset = (uint)(z * sizeofplane + (y + j) * bps + (x + i) * bpp);
-									rawData[offset] = (byte)col.red;
-									rawData[offset + 1] = (byte)col.green;
-									rawData[offset + 2] = (byte)col.blue;
+									rawData[offset] = (byte)MathF.Round(col.red);
+									rawData[offset + 1] = (byte)MathF.Round(col.green);
+									rawData[offset + 2] = (byte)MathF.Round(col.blue);
 								}
 							}
 						}
@@ -1081,22 +1099,19 @@ namespace UbiCanvas.Helpers {
 
 		#region Nested Types
 
-		#region Colour8888
+		#region Colors
 		[StructLayout(LayoutKind.Sequential)]
-		private struct Colour8888 {
+		private struct Color8888 {
 			public byte red;
 			public byte green;
 			public byte blue;
 			public byte alpha;
 		}
-		#endregion
-
-		#region Colour565
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		private struct Colour565 {
-			public ushort blue; //: 5;
-			public ushort green; //: 6;
-			public ushort red; //: 5;
+		private struct ColorFloat {
+			public float red;
+			public float green;
+			public float blue;
+			public float alpha;
 		}
 		#endregion
 

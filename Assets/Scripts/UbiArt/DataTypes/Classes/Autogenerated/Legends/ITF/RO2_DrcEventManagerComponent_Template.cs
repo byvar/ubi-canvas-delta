@@ -1,6 +1,6 @@
 namespace UbiArt.ITF {
 	[Games(GameFlags.RL)]
-	public partial class RO2_DRCEventManagerComponent_Template : ActorComponent_Template {
+	public partial class RO2_DrcEventManagerComponent_Template : ActorComponent_Template {
 		public int drcTapEnabled;
 		public int drcSwipeEnabled;
 		public int drcHoldEnabled;

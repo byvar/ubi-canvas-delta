@@ -798,7 +798,7 @@ namespace UbiCanvas.Helpers.FBX {
 			var fullPath = System.IO.Path.Combine(outputPath, textureFilePathFullName);
 
 			if (extractTextures && !File.Exists(fullPath)) {
-				var tex = texture.GetUnityTexture(context)?.Texture;
+				var tex = texture.GetUnityTexture(context)?.TextureForExport;
 				if (tex == null) {
 				} else {
 					var colors = tex.GetPixels();

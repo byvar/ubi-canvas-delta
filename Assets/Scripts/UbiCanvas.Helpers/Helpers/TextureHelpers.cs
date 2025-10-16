@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ImageMagick;
+using UnityEngine;
 
 namespace UbiCanvas.Helpers 
 {
@@ -100,36 +101,99 @@ namespace UbiCanvas.Helpers
 
 		public static Texture2D Copy(this Texture2D texture2D,
 			bool removeTransparency = false, bool alphaChannelOnly = false, bool flipY = false) {
-			var pixels = texture2D.GetPixels();
-			Texture2D newTex = new Texture2D(texture2D.width, texture2D.height);
-			if (alphaChannelOnly) {
-				for (int i = 0; i < pixels.Length; i++) {
-					pixels[i] = new Color(pixels[i].a, pixels[i].a, pixels[i].a, 1f);
+			if (texture2D.format == TextureFormat.RGBA32) {
+				var rawData = texture2D.GetRawTextureData();
+				Texture2D newTex = new Texture2D(texture2D.width, texture2D.height, TextureFormat.RGBA32, false);
+				var pixelCount = texture2D.width * texture2D.height;
+				if (alphaChannelOnly) {
+					for (int i = 0; i < pixelCount; i++) {
+						var a = rawData[i * 4 + 3];
+						rawData[i * 4 + 0] = a;
+						rawData[i * 4 + 1] = a;
+						rawData[i * 4 + 2] = a;
+						rawData[i * 4 + 3] = 255;
+					}
+				} else {
+					if (removeTransparency) {
+						for (int i = 0; i < pixelCount; i++) {
+							rawData[i * 4 + 3] = 255;
+						}
+					}
 				}
+				if (flipY) {
+					var width = texture2D.width;
+					var height = texture2D.height;
+					var rd = new byte[rawData.Length];
+					for (var x = 0; x < width; x++) {
+						for (var y = 0; y < height; y++) {
+							var i = x + y * width;
+							var ogi = x + (height - y - 1) * width;
+							rd[i * 4 + 0] = rawData[ogi * 4 + 0];
+							rd[i * 4 + 1] = rawData[ogi * 4 + 1];
+							rd[i * 4 + 2] = rawData[ogi * 4 + 2];
+							rd[i * 4 + 3] = rawData[ogi * 4 + 3];
+						}
+					}
+					rawData = rd;
+				}
+
+				newTex.LoadRawTextureData(rawData);
+				newTex.Apply();
+				return newTex;
 			} else {
-				if (removeTransparency) {
+				var pixels = texture2D.GetPixels();
+				Texture2D newTex = new Texture2D(texture2D.width, texture2D.height);
+				if (alphaChannelOnly) {
 					for (int i = 0; i < pixels.Length; i++) {
-						pixels[i] = new Color(pixels[i].r, pixels[i].g, pixels[i].b, 1f);
+						pixels[i] = new Color(pixels[i].a, pixels[i].a, pixels[i].a, 1f);
+					}
+				} else {
+					if (removeTransparency) {
+						for (int i = 0; i < pixels.Length; i++) {
+							pixels[i] = new Color(pixels[i].r, pixels[i].g, pixels[i].b, 1f);
+						}
 					}
 				}
-			}
 
-			Color[] newPixels = pixels;
+				Color[] newPixels = pixels;
 
-			if (flipY) {
-				var width = texture2D.width;
-				var height = texture2D.height;
-				newPixels = new Color[pixels.Length];
-				for (var x = 0; x < width; x++) {
-					for (var y = 0; y < height; y++) {
-						newPixels[x + y * width] = pixels[x + (height - y - 1) * width];
+				if (flipY) {
+					var width = texture2D.width;
+					var height = texture2D.height;
+					newPixels = new Color[pixels.Length];
+					for (var x = 0; x < width; x++) {
+						for (var y = 0; y < height; y++) {
+							newPixels[x + y * width] = pixels[x + (height - y - 1) * width];
+						}
 					}
 				}
-			}
 
-			newTex.SetPixels(newPixels);
-			newTex.Apply();
-			return newTex;
+				newTex.SetPixels(newPixels);
+				newTex.Apply();
+				return newTex;
+			}
+		}
+
+		public static byte[] EncodeToPNGRaw(this Texture2D texture2D) {
+			if (texture2D.format == TextureFormat.RGBA32) {
+				var rawData = texture2D.GetRawTextureData();
+
+				// Create a MagickImage from raw pixel data
+				var settings = new MagickReadSettings {
+					Width = texture2D.width,
+					Height = texture2D.height,
+					Depth = 8,
+					ColorType = ColorType.TrueColorAlpha,
+					Format = MagickFormat.Rgba,
+					ColorSpace = ImageMagick.ColorSpace.RGB
+				};
+
+				// Magick.NET expects pixels in row-major order
+				using (var image = new MagickImage(rawData, settings)) {
+					return image.ToByteArray(MagickFormat.Png);
+				}
+			} else
+				return texture2D.EncodeToPNG();
 		}
 
 		public static bool IsTransparent(this Texture2D texture2D) {

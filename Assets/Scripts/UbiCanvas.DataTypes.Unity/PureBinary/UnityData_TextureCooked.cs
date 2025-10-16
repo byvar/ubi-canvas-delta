@@ -4,116 +4,95 @@ using System.IO;
 using UbiArt;
 using UbiCanvas.Helpers;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 namespace UbiCanvas {
 	public class UnityData_TextureCooked : UnityData<TextureCooked> {
-		public bool MakeNoLongerReadable { get; set; } = false;
-
 		private Texture2D texture;
-		//private Texture2D squareTexture;
 		//private Texture2D[] subtextures;
 		public Texture2D Texture {
 			get {
-				if (texture == null && LinkedObject.Data != null) {
-					var data = LinkedObject.Data;
-					if (Context.Settings.Platform == GamePlatform.Vita) {
-						//texture = new Texture2D(LinkedObject.Width, LinkedObject.Height);
-						using MemoryStream ms = new MemoryStream(data);
-						var gxt = new GXTConvert.FileFormat.GxtBinary(ms);
-						texture = gxt.Textures[0];
-						//texture = TextureHelpers.CreateDummyTexture();
+				if (texture == null) texture = GetTexture();
+				return texture;
+			}
+		}
+
+		public Texture2D TextureForExport {
+			get => GetTexture(forExport: true);
+		}
+
+		private Texture2D GetTexture(bool forExport = false) {
+			bool MakeNoLongerReadable = false;
+			if(!forExport)
+				MakeNoLongerReadable = true;
+			Texture2D texture = null;
+			if (LinkedObject.Data != null) {
+				var data = LinkedObject.Data;
+				if (Context.Settings.Platform == GamePlatform.Vita) {
+					//texture = new Texture2D(LinkedObject.Width, LinkedObject.Height);
+					using MemoryStream ms = new MemoryStream(data);
+					var gxt = new GXTConvert.FileFormat.GxtBinary(ms, makeNoLongerReadable: MakeNoLongerReadable);
+					texture = gxt.Textures[0];
+					//texture = TextureHelpers.CreateDummyTexture();
+					return texture;
+				} else if (Context.Settings.Platform == GamePlatform.iOS) {
+					if (Context.Settings.EngineVersion <= EngineVersion.RO) {
+						texture = CreateTextureFromPNG(data, makeNoLongerReadable: MakeNoLongerReadable);
 						return texture;
-					} else if (Context.Settings.Platform == GamePlatform.iOS) {
-						if (Context.Settings.EngineVersion <= EngineVersion.RO) {
-							texture = CreateTextureFromPNG(data);
-							return texture;
-						} else {
-							if (LinkedObject.Header.Type == TextureCookedHeader.TextureType.BacklightEmmissive
-								|| LinkedObject.Header.Type == TextureCookedHeader.TextureType.PVRTC) {
-								// This is a PVR!
-								var pvr = new PVRImage(data);
-								texture = pvr.LoadIntoTexture();
-								texture.wrapMode = TextureWrapMode.Repeat;
-								texture.Apply();
-								return texture;
-							}
-						}
-					} else if (Context.Settings.Platform == GamePlatform.Android) {
-						if (Context.Settings.EngineVersion <= EngineVersion.RO) {
-							texture = CreateTextureFromPNG(data);
+					} else {
+						if (LinkedObject.Header.Type == TextureCookedHeader.TextureType.BacklightEmmissive
+							|| LinkedObject.Header.Type == TextureCookedHeader.TextureType.PVRTC) {
+							// This is a PVR!
+							var pvr = new PVRImage(data);
+							texture = pvr.LoadIntoTexture();
+							texture.wrapMode = TextureWrapMode.Repeat;
+							texture.Apply(true, makeNoLongerReadable: MakeNoLongerReadable);
 							return texture;
 						}
 					}
-					// For jpg & png:
-					/*texture = new Texture2D(width, height, TextureFormat.ARGB32, false);
-					texture.LoadImage(texData);
-					texture.Apply();*/
-					// Other formats:
-					/*using (var img = new MagickImage(texData, MagickFormat.Dds)) {
-						var pixels = img.GetPixels().GetValues();
-						texture = new Texture2D(img.Width, img.Height, TextureFormat.ARGB32, false);
-						texture.LoadImage(img.ToByteArray(MagickFormat.Png32));
-						texture.Apply();
-					}*/
-					//UnityEngine.Debug.Log($"Texture - {texData.Length} - {width} - {height}");
+				} else if (Context.Settings.Platform == GamePlatform.Android) {
+					if (Context.Settings.EngineVersion <= EngineVersion.RO) {
+						texture = CreateTextureFromPNG(data, makeNoLongerReadable: MakeNoLongerReadable);
+						return texture;
+					}
+				}
+				// For jpg & png:
+				/*texture = new Texture2D(width, height, TextureFormat.ARGB32, false);
+				texture.LoadImage(texData);
+				texture.Apply();*/
+				// Other formats:
+				/*using (var img = new MagickImage(texData, MagickFormat.Dds)) {
+					var pixels = img.GetPixels().GetValues();
+					texture = new Texture2D(img.Width, img.Height, TextureFormat.ARGB32, false);
+					texture.LoadImage(img.ToByteArray(MagickFormat.Png32));
+					texture.Apply();
+				}*/
+				//UnityEngine.Debug.Log($"Texture - {texData.Length} - {width} - {height}");
+				if (forExport) {
+					// DDSImageParser is accurate to DirectXTeX
+					using (DDSImage dds = new DDSImage(data, makeNoLongerReadable: MakeNoLongerReadable)) {
+						texture = dds.BitmapImage;
+					}
+					if (texture == null) {
+						texture = LoadTextureDXT(data, makeNoLongerReadable: MakeNoLongerReadable);
+					}
+				} else {
 					texture = LoadTextureDXT(data, makeNoLongerReadable: MakeNoLongerReadable);
 					if (texture == null) {
 						using (DDSImage dds = new DDSImage(data, makeNoLongerReadable: MakeNoLongerReadable)) {
 							texture = dds.BitmapImage;
 						}
 					}
-					if (texture != null) {
-						texture.wrapModeU = GetWrapMode(LinkedObject.Header?.WrapModeU ?? TextureCookedHeader.TextureAddressingMode.Wrap);
-						texture.wrapModeV = GetWrapMode(LinkedObject.Header?.WrapModeV ?? TextureCookedHeader.TextureAddressingMode.Wrap);
-					}
-					//texture = LoadDDS(texData);
-					//if (FileSystem.mode == FileSystem.Mode.Web) LinkedObject.texData = null;
 				}
-				return texture;
+				if (texture != null) {
+					texture.wrapModeU = GetWrapMode(LinkedObject.Header?.WrapModeU ?? TextureCookedHeader.TextureAddressingMode.Wrap);
+					texture.wrapModeV = GetWrapMode(LinkedObject.Header?.WrapModeV ?? TextureCookedHeader.TextureAddressingMode.Wrap);
+				}
+				//texture = LoadDDS(texData);
+				//if (FileSystem.mode == FileSystem.Mode.Web) LinkedObject.texData = null;
 			}
-		}
-
-		/*private Texture2D LoadDDS(byte[] ddsBytes, bool updateMipMaps = false, bool makeNoLongerReadable = true) {
-			PfimConfig pfimConfig = new PfimConfig();
-			Dds dds = Dds.Create(ddsBytes, pfimConfig);
-			dds.Decompress(); // Might not be needed, could do pfim config outside this in a Pfim class with Decompress set to true.
-			TextureFormat fmt = GetTextureFormat(dds);
-			Texture2D texture = new Texture2D(dds.Width, dds.Height, fmt, dds.Header.MipMapCount != 0);
-			
-			texture.LoadRawTextureData(dds.Data);
-			texture.Apply(updateMipMaps, makeNoLongerReadable);
 			return texture;
 		}
-
-		private TextureFormat GetTextureFormat(Dds dds) {
-			switch (dds.Format) {
-				case ImageFormat.Rgba16:
-					return TextureFormat.RGBAHalf;
-				case ImageFormat.Rgb24:
-					return TextureFormat.RGB24;
-				case ImageFormat.Rgba32:
-					return TextureFormat.RGBA32;
-				default:
-					throw new NotImplementedException("ImageFormat " + dds.Format.ToString() + " to TextureFormat is not implemented.");
-			}
-		}*/
-
-		/*public Texture2D SquareTexture {
-			get {
-				Texture2D tex = Texture;
-				if (squareTexture == null && tex != null) {
-					if (tex.width == tex.height) return tex;
-					// TODO: This is only correct if width > height!
-					// If height < width, UVs are still multiplied with width to get coordinate in pixels.
-					// In other words. V can be over 1 and still inside the texture!
-					int size = Math.Max(tex.width, tex.height);
-					squareTexture = new Texture2D(size, size);
-					squareTexture.SetPixels(0, 0, tex.width, tex.height, tex.GetPixels(0, 0, tex.width, tex.height));
-					squareTexture.Apply(true, MakeNoLongerReadable);
-				}
-				return squareTexture;
-			}
-		}*/
 
 		public float HeightFactor {
 			get {
@@ -126,7 +105,7 @@ namespace UbiCanvas {
 			}
 		}
 
-		private static Texture2D CreateTextureFromPNG(byte[] data) {
+		private static Texture2D CreateTextureFromPNG(byte[] data, bool makeNoLongerReadable = true) {
 			var pngtex = new Texture2D(2, 2);
 			pngtex.LoadImage(data);
 			var texture = TextureHelpers.CreateTexture2D(pngtex.width, pngtex.height);
@@ -137,18 +116,21 @@ namespace UbiCanvas {
 				texture.SetPixels(0, y, w, 1, row);
 			}
 			texture.wrapMode = TextureWrapMode.Repeat;
-			texture.Apply();
+			texture.Apply(true, makeNoLongerReadable);
 			return texture;
 		}
 
 		private static Texture2D LoadTextureDXT(byte[] ddsBytes, bool makeNoLongerReadable = true) {
-			TextureFormat format = TextureFormat.DXT5;
+			GraphicsFormat format = GraphicsFormat.RGBA_DXT5_UNorm;
 			switch (ddsBytes[87]) { // 84 - 87: DXT1 or DXT5 in ASCII
 				case 0x31: // DXT1
-					format = TextureFormat.DXT1;
+					format = GraphicsFormat.RGBA_DXT1_UNorm;
+					break;
+				case 0x33:
+					format = GraphicsFormat.RGBA_DXT3_UNorm; // Unity doesn't handle these well unfortunately
 					break;
 				case 0x35: // DXT5
-					format = TextureFormat.DXT5;
+					format = GraphicsFormat.RGBA_DXT5_UNorm;
 					break;
 				default:
 					return null;
@@ -162,7 +144,7 @@ namespace UbiCanvas {
 
 			int height = ddsBytes[13] << 8 | ddsBytes[12];
 			int width = ddsBytes[17] << 8 | ddsBytes[16];
-			if(format == TextureFormat.DXT1 && (width % 4 != 0 || height % 4 != 0))
+			if(format == GraphicsFormat.RGBA_DXT1_UNorm && (width % 4 != 0 || height % 4 != 0))
 				return null; // Can't load in Unity if dimensions aren't multiple of 4
 
 			int DDS_HEADER_SIZE = 128;
@@ -170,13 +152,9 @@ namespace UbiCanvas {
 			Array.Copy(ddsBytes, DDS_HEADER_SIZE, dxtBytes, 0, ddsBytes.Length - DDS_HEADER_SIZE);
 
 			try {
-				Texture2D texture = new Texture2D(width, height, format, false);
+				Texture2D texture = new Texture2D(width, height, format, TextureCreationFlags.None);
 				texture.LoadRawTextureData(dxtBytes);
-				if (width == height) {
-					texture.Apply(true, makeNoLongerReadable);
-				} else {
-					texture.Apply(true, false);
-				}
+				texture.Apply(true, makeNoLongerReadable);
 				return (texture);
 			} catch (Exception ex) {
 				Debug.LogWarning(ex);

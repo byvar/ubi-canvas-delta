@@ -29,12 +29,14 @@ namespace GXTConvert.FileFormat
         public TextureBundle[] TextureBundles { get; private set; }
 
         public Texture2D[] Textures { get; private set; }
+		public bool MakeNoLongerReadable { get; private set; }
 
-        public GxtBinary(Stream stream)
+        public GxtBinary(Stream stream, bool makeNoLongerReadable = false)
         {
             BinaryReader reader = new BinaryReader(stream);
 
             Header = new SceGxtHeader(stream);
+			MakeNoLongerReadable = makeNoLongerReadable;
 
             Func<Stream, SceGxtTextureInfo> textureInfoGeneratorFunc;
             switch (Header.Version)
@@ -95,7 +97,7 @@ namespace GXTConvert.FileFormat
 
             for (int i = 0; i < TextureInfos.Length; i++)
             {
-                TextureBundle bundle = (TextureBundles[i] = new TextureBundle(reader, Header, TextureInfos[i]));
+                TextureBundle bundle = (TextureBundles[i] = new TextureBundle(reader, Header, TextureInfos[i], makeNoLongerReadable: MakeNoLongerReadable));
                 Textures[i] = bundle.CreateTexture(FetchPalette(bundle.TextureFormat, bundle.PaletteIndex));
             }
         }

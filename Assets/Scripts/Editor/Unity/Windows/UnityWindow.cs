@@ -179,7 +179,7 @@ public class UnityWindow : EditorWindow {
 
 	protected virtual void UpdateEditorFields() { }
 
-	protected void ExecuteTask(UniTask task) {
+	public static void ExecuteTask(UniTask task) {
 		async UniTask ExecuteTask_(UniTask task) {
 			try {
 				TimeController.StartStopwatch();
@@ -193,7 +193,7 @@ public class UnityWindow : EditorWindow {
 		}
 		_ = ExecuteTask_(task);
 	}
-	protected void ExecuteTask(Task task) => ExecuteTask(task.AsUniTask());
+	public static void ExecuteTask(Task task) => ExecuteTask(task.AsUniTask());
 
 	public bool EditorField(string label, bool value, bool isVisible = true, Rect? rect = null) {
 		if (!isVisible)

@@ -34,17 +34,19 @@ public class UnityBone : MonoBehaviour {
 
 	public List<UnityBone> Children { get; set; } = new List<UnityBone>();
 	private UnityBone _parent;
-	[UnityEngine.SerializeField]
 	public UnityBone Parent {
 		get => _parent;
 		set {
 			if(_parent != null)
 				_parent.Children.Remove(this);
 			_parent = value;
+			parentBone = value;
 			if(_parent != null)
 				_parent.Children.Add(this);
 		}
 	}
+	// View only
+	public UnityBone parentBone;
 	private void Start() {		
 	}
 
@@ -106,7 +108,7 @@ public class UnityBone : MonoBehaviour {
 
 		// Invert scale
 		if (c.Settings.EngineVersion <= EngineVersion.RO && boneLength != 0) {
-			globalScalePreLength = new Vector2(globalScale.x / boneLength, globalScalePreLength.y);
+			globalScalePreLength = new Vector2(globalScale.x / boneLength, globalScale.y);
 		} else {
 			globalScalePreLength = globalScale;
 		}

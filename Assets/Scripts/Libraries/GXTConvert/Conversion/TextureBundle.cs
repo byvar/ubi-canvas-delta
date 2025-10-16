@@ -25,10 +25,11 @@ namespace GXTConvert.Conversion
         public byte[] PixelData { get; private set; }
         public int RoundedWidth { get; private set; }
         public int RoundedHeight { get; private set; }
+		public bool MakeNoLongerReadable { get; private set; }
 
         bool isCompressed;
 
-        public TextureBundle(BinaryReader reader, SceGxtHeader header, SceGxtTextureInfo info)
+        public TextureBundle(BinaryReader reader, SceGxtHeader header, SceGxtTextureInfo info, bool makeNoLongerReadable = false)
         {
             reader.BaseStream.Seek(info.DataOffset, SeekOrigin.Begin);
 
@@ -37,6 +38,7 @@ namespace GXTConvert.Conversion
             PaletteIndex = info.PaletteIndex;
             RawLineSize = (int)(info.DataSize / info.GetHeightRounded());
             TextureFormat = info.GetTextureFormat();
+			MakeNoLongerReadable = makeNoLongerReadable;
 
 			if (!PixelDataProviders.BPPMap.ContainsKey(TextureFormat) || !PixelDataProviders.ProviderFunctions.ContainsKey(TextureFormat)) {
 				UnityEngine.Debug.Log(TextureFormat);
@@ -173,7 +175,7 @@ namespace GXTConvert.Conversion
 					}
 				}
 			}
-			texture.Apply();
+			texture.Apply(true, MakeNoLongerReadable);
             return texture;
         }
     }

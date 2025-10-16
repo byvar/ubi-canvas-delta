@@ -762,7 +762,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 
 	#region Image export
 	void SavePatchBankAsPNG(TextureCooked tex, string outputPath, AnimPatchBank pbk) {
-		Texture2D tex2d = tex.GetUnityTexture(Controller.MainContext).Texture;
+		Texture2D tex2d = tex.GetUnityTexture(Controller.MainContext).TextureForExport;
 		using MagickImage img = PatchBankExport_IncludeImage
 			? new MagickImage(tex2d.Decompress().EncodeToPNG(), MagickFormat.Png)
 			: new MagickImage(MagickColors.Transparent, tex2d.width, tex2d.height);
@@ -910,7 +910,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 	}
 
 	void SaveAtlasAsPNG(TextureCooked tex, string outputPath, UVAtlas atlas) {
-		Texture2D tex2d = tex.GetUnityTexture(Controller.MainContext).Texture;
+		Texture2D tex2d = tex.GetUnityTexture(Controller.MainContext).TextureForExport;
 		using MagickImage img = PatchBankExport_IncludeImage
 			? new MagickImage(tex2d.Decompress().EncodeToPNG(), MagickFormat.Png)
 			: new MagickImage(MagickColors.Transparent, tex2d.width, tex2d.height);
@@ -1085,7 +1085,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 	}
 
 	void SaveAsPNG(TextureCooked tex, string outputPath, bool hasTransparency = true, bool alphaChannelOnly = false) {
-		var tex2d = tex.GetUnityTexture(Controller.MainContext).Texture;
+		var tex2d = tex.GetUnityTexture(Controller.MainContext).TextureForExport;
 		byte[] png;
 		if (alphaChannelOnly) {
 			png = tex2d.Copy(alphaChannelOnly: true, flipY: true).EncodeToPNG();
