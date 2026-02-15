@@ -192,6 +192,15 @@ public class UnityWindowTools : UnityWindow
 				EditorGUI.TextField(new Rect(rect.x + rect.width / 4, rect.y, rect.width / 4 * 3, rect.height), crcTool.CRC(crcTool.CustomType));
 			}
 		}
+		else if (tool is ConvertMiniPbkToLegendsTool convertMiniPbkTool)
+		{
+			convertMiniPbkTool.MiniPBKPath = EditorField("Mini PBK (.pbk.ckd)", convertMiniPbkTool.MiniPBKPath);
+			convertMiniPbkTool.LegendsPBKPath = EditorField("Legends PBK (.pbk.ckd)", convertMiniPbkTool.LegendsPBKPath);
+			convertMiniPbkTool.OutputPBKPath = EditorField("Output PBK (.pbk.ckd)", convertMiniPbkTool.OutputPBKPath);
+
+			if (EditorButton("Convert"))
+				ExecuteTask(convertMiniPbkTool.ConvertAsync());
+		}
 		else if (tool is SerializableFileTool logFileTool)
 		{
 			logFileTool.FilePath = EditorField("File path", logFileTool.FilePath);

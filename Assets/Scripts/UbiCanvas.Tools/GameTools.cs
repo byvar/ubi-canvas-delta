@@ -5,6 +5,7 @@
 		public static GameTool[] Tools { get; } =
 		{
 			new SerializableFileTool(),
+			new ConvertMiniPbkToLegendsTool(),
 			new ExportEngineDataTool(),
 			new SerializerTestTool(),
 			new ExportLocalisationTool(),
