@@ -12,6 +12,16 @@ namespace UbiCanvas.Tools {
 		public override string Name => "Convert PBK (Rayman Mini -> Rayman Legends)";
 		public override string Description => "Copies AnimTemplates from a Rayman Mini .pbk.ckd into a Rayman Legends .pbk.ckd while preserving Legends UInt32 identifiers for compatibility.";
 
+		public enum PbkGameLocation {
+			RaymanLegends,
+			RaymanMini,
+			RaymanAdventures,
+		}
+
+		public PbkGameLocation MiniGame { get; set; } = PbkGameLocation.RaymanMini;
+		public PbkGameLocation LegendsGame { get; set; } = PbkGameLocation.RaymanLegends;
+		public PbkGameLocation OutputGame { get; set; } = PbkGameLocation.RaymanLegends;
+
 		public string MiniPBKPath { get; set; }
 		public string LegendsPBKPath { get; set; }
 		public string OutputPBKPath { get; set; }
@@ -21,18 +31,22 @@ namespace UbiCanvas.Tools {
 				throw new InvalidOperationException("MiniPBKPath, LegendsPBKPath and OutputPBKPath are required");
 			}
 
-			byte[] miniData = File.ReadAllBytes(MiniPBKPath);
-			byte[] legendsData = File.ReadAllBytes(LegendsPBKPath);
+			string miniFullPath = ResolveFilePath(MiniGame, MiniPBKPath);
+			string legendsFullPath = ResolveFilePath(LegendsGame, LegendsPBKPath);
+			string outputFullPath = ResolveFilePath(OutputGame, OutputPBKPath);
+
+			byte[] miniData = File.ReadAllBytes(miniFullPath);
+			byte[] legendsData = File.ReadAllBytes(legendsFullPath);
 
 			using Context miniContext = CreateContext(
-				basePath: System.IO.Path.GetDirectoryName(MiniPBKPath),
-				mode: Mode.RaymanMiniMacOS,
+				basePath: ResolveBundleDirectory(MiniGame),
+				mode: GetModeForLocation(MiniGame),
 				enableSerializerLog: false,
 				loadAnimations: false,
 				loadAllPaths: false);
 			using Context legendsContext = CreateContext(
-				basePath: System.IO.Path.GetDirectoryName(LegendsPBKPath),
-				mode: Mode.RaymanLegendsPC,
+				basePath: ResolveBundleDirectory(LegendsGame),
+				mode: GetModeForLocation(LegendsGame),
 				enableSerializerLog: false,
 				loadAnimations: false,
 				loadAllPaths: false);
@@ -47,13 +61,50 @@ namespace UbiCanvas.Tools {
 			MergeTemplatesPreservingUInt32(mini, legends);
 
 			byte[] outputData = legends.CloneGetBinaryData("pbk", legendsContext, allowLoadingReferences: true);
-			string outputDir = System.IO.Path.GetDirectoryName(OutputPBKPath);
+			string outputDir = System.IO.Path.GetDirectoryName(outputFullPath);
 			if (!string.IsNullOrWhiteSpace(outputDir)) {
 				Directory.CreateDirectory(outputDir);
 			}
-			File.WriteAllBytes(OutputPBKPath, outputData);
+			File.WriteAllBytes(outputFullPath, outputData);
 
 			return Task.CompletedTask;
+		}
+
+		private static string ResolveFilePath(PbkGameLocation gameLocation, string path) {
+			if (System.IO.Path.IsPathRooted(path)) {
+				return path;
+			}
+
+			string bundleDir = ResolveBundleDirectory(gameLocation);
+			string sanitized = path.Replace('\\', '/').TrimStart('/');
+			if (sanitized.StartsWith("Bundle_PC/", StringComparison.OrdinalIgnoreCase)) {
+				sanitized = sanitized.Substring("Bundle_PC/".Length);
+			}
+
+			return System.IO.Path.Combine(bundleDir, sanitized);
+		}
+
+		private static string ResolveBundleDirectory(PbkGameLocation gameLocation) {
+			Mode mode = GetModeForLocation(gameLocation);
+			if (!UnitySettings.GameDirs.TryGetValue(mode, out string gameDir) || string.IsNullOrWhiteSpace(gameDir)) {
+				throw new InvalidOperationException($"Game directory is not configured for {gameLocation} ({mode}). Configure it in Settings first.");
+			}
+
+			string bundleDir = System.IO.Path.Combine(gameDir, "Bundle_PC");
+			if (Directory.Exists(bundleDir)) {
+				return bundleDir;
+			}
+
+			return gameDir;
+		}
+
+		private static Mode GetModeForLocation(PbkGameLocation gameLocation) {
+			return gameLocation switch {
+				PbkGameLocation.RaymanLegends => Mode.RaymanLegendsPC,
+				PbkGameLocation.RaymanMini => Mode.RaymanMiniMacOS,
+				PbkGameLocation.RaymanAdventures => Mode.RaymanAdventuresAndroid,
+				_ => throw new ArgumentOutOfRangeException(nameof(gameLocation), gameLocation, "Unsupported game location"),
+			};
 		}
 
 		private static void MergeTemplatesPreservingUInt32(AnimPatchBank mini, AnimPatchBank legends) {

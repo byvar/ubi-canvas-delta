@@ -194,9 +194,14 @@ public class UnityWindowTools : UnityWindow
 		}
 		else if (tool is ConvertMiniPbkToLegendsTool convertMiniPbkTool)
 		{
-			convertMiniPbkTool.MiniPBKPath = EditorField("Mini PBK (.pbk.ckd)", convertMiniPbkTool.MiniPBKPath);
-			convertMiniPbkTool.LegendsPBKPath = EditorField("Legends PBK (.pbk.ckd)", convertMiniPbkTool.LegendsPBKPath);
-			convertMiniPbkTool.OutputPBKPath = EditorField("Output PBK (.pbk.ckd)", convertMiniPbkTool.OutputPBKPath);
+			convertMiniPbkTool.MiniGame = EditorField("Mini file game", convertMiniPbkTool.MiniGame);
+			convertMiniPbkTool.MiniPBKPath = EditorField("Mini PBK path in Bundle_PC", convertMiniPbkTool.MiniPBKPath);
+
+			convertMiniPbkTool.LegendsGame = EditorField("Legends base game", convertMiniPbkTool.LegendsGame);
+			convertMiniPbkTool.LegendsPBKPath = EditorField("Legends PBK path in Bundle_PC", convertMiniPbkTool.LegendsPBKPath);
+
+			convertMiniPbkTool.OutputGame = EditorField("Output game folder", convertMiniPbkTool.OutputGame);
+			convertMiniPbkTool.OutputPBKPath = EditorField("Output PBK path in Bundle_PC", convertMiniPbkTool.OutputPBKPath);
 
 			if (EditorButton("Convert"))
 				ExecuteTask(convertMiniPbkTool.ConvertAsync());
