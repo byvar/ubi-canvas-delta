@@ -27,6 +27,22 @@ public class UnityWindowSerializableEditor : UnityWindow
 		titleContent.text = "Serializer";
 	}
 
+	private void OnDisable()
+	{
+		if (_context != null) {
+			_context.Dispose();
+			_context = null;
+		}
+	}
+
+	public void SetPath(Path path) {
+		Path = path;
+		if (path != null) {
+			titleContent = EditorGUIUtility.IconContent("TextAsset Icon");
+			titleContent.text = $"Serializer - {path.filename}";
+		}
+	}
+
 	protected override void UpdateEditorFields()
 	{
 		base.UpdateEditorFields();

@@ -236,9 +236,10 @@ public class UnityWindowTools : UnityWindow
 						return;
 					}
 
-					UnityWindowSerializableEditor window = GetWindow<UnityWindowSerializableEditor>(false, "Serializer", true);
-					window.Path = path;
+					UnityWindowSerializableEditor window = CreateWindow<UnityWindowSerializableEditor>();
+					window.SetPath(path);
 					window.SetContext(context);
+					window.Show();
 				}
 
 				ExecuteTask(edit());
