@@ -81,8 +81,14 @@ namespace UbiCanvas.Tools {
 			string[] removablePrefixes = {
 				"Bundle_PC/",
 				"cache/itf_cooked/pc/",
+				"cache/itf_cooked/android/",
+				"cache/itf_cooked/macos/",
 				"itf_cooked/pc/",
+				"itf_cooked/android/",
+				"itf_cooked/macos/",
 				"pc/",
+				"android/",
+				"macos/",
 			};
 			foreach (string prefix in removablePrefixes) {
 				if (sanitized.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) {
