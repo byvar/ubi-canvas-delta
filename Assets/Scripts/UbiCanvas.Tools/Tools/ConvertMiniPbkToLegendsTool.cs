@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using UbiArt;
 using UbiArt.Animation;
@@ -184,7 +183,7 @@ namespace UbiCanvas.Tools {
 			if (typeof(IList).IsAssignableFrom(type)) {
 				IList sourceList = source as IList;
 				IList targetList = target as IList;
-				if (sourceList == null || targetList == null) return target;
+				if (sourceList == null || targetList == null) return source;
 
 				Type elementType = typeof(object);
 				if (type.IsArray) {
@@ -193,30 +192,27 @@ namespace UbiCanvas.Tools {
 					elementType = type.GetGenericArguments()[0];
 				}
 
-				int mergeCount = Math.Min(targetList.Count, sourceList.Count);
-				for (int i = 0; i < mergeCount; i++) {
+				for (int i = 0; i < sourceList.Count; i++) {
 					object sourceItem = sourceList[i];
-					object targetItem = targetList[i];
-					targetList[i] = MergePreservingUInt32(targetItem, sourceItem, elementType);
+					object targetItem = i < targetList.Count ? targetList[i] : null;
+					sourceList[i] = MergePreservingUInt32(targetItem, sourceItem, elementType);
 				}
 
-				return target;
+				return source;
 			}
 
-			FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+			FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 			foreach (FieldInfo field in fields) {
 				if (field.IsInitOnly || field.IsLiteral || field.IsStatic)
-					continue;
-				if (Attribute.IsDefined(field, typeof(IgnoreDataMemberAttribute)))
 					continue;
 
 				object sourceValue = field.GetValue(source);
 				object targetValue = field.GetValue(target);
 				object mergedValue = MergePreservingUInt32(targetValue, sourceValue, field.FieldType);
-				field.SetValue(target, mergedValue);
+				field.SetValue(source, mergedValue);
 			}
 
-			return target;
+			return source;
 		}
 	}
 }
