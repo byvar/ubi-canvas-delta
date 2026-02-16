@@ -77,8 +77,17 @@ namespace UbiCanvas.Tools {
 
 			string bundleDir = ResolveBundleDirectory(gameLocation);
 			string sanitized = path.Replace('\\', '/').TrimStart('/');
-			if (sanitized.StartsWith("Bundle_PC/", StringComparison.OrdinalIgnoreCase)) {
-				sanitized = sanitized.Substring("Bundle_PC/".Length);
+
+			string[] removablePrefixes = {
+				"Bundle_PC/",
+				"cache/itf_cooked/pc/",
+				"itf_cooked/pc/",
+				"pc/",
+			};
+			foreach (string prefix in removablePrefixes) {
+				if (sanitized.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) {
+					sanitized = sanitized.Substring(prefix.Length);
+				}
 			}
 
 			return System.IO.Path.Combine(bundleDir, sanitized);
