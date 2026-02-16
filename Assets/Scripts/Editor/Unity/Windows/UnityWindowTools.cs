@@ -192,6 +192,20 @@ public class UnityWindowTools : UnityWindow
 				EditorGUI.TextField(new Rect(rect.x + rect.width / 4, rect.y, rect.width / 4 * 3, rect.height), crcTool.CRC(crcTool.CustomType));
 			}
 		}
+		else if (tool is ConvertMiniPbkToLegendsTool convertMiniPbkTool)
+		{
+			convertMiniPbkTool.MiniGame = EditorField("Mini file game", convertMiniPbkTool.MiniGame);
+			convertMiniPbkTool.MiniPBKPath = EditorField("Mini PBK path (start at world/...)", convertMiniPbkTool.MiniPBKPath);
+
+			convertMiniPbkTool.LegendsGame = EditorField("Legends base game", convertMiniPbkTool.LegendsGame);
+			convertMiniPbkTool.LegendsPBKPath = EditorField("Legends PBK path (start at world/...)", convertMiniPbkTool.LegendsPBKPath);
+
+			convertMiniPbkTool.OutputGame = EditorField("Output game folder", convertMiniPbkTool.OutputGame);
+			convertMiniPbkTool.OutputPBKPath = EditorField("Output PBK path (start at world/...)", convertMiniPbkTool.OutputPBKPath);
+
+			if (EditorButton("Convert"))
+				ExecuteTask(convertMiniPbkTool.ConvertAsync());
+		}
 		else if (tool is SerializableFileTool logFileTool)
 		{
 			logFileTool.FilePath = EditorField("File path", logFileTool.FilePath);
@@ -222,9 +236,10 @@ public class UnityWindowTools : UnityWindow
 						return;
 					}
 
-					UnityWindowSerializableEditor window = GetWindow<UnityWindowSerializableEditor>(false, "Serializer", true);
-					window.Path = path;
+					UnityWindowSerializableEditor window = CreateWindow<UnityWindowSerializableEditor>();
+					window.SetPath(path);
 					window.SetContext(context);
+					window.Show();
 				}
 
 				ExecuteTask(edit());
