@@ -184,7 +184,7 @@ namespace UbiCanvas.Tools {
 			if (typeof(IList).IsAssignableFrom(type)) {
 				IList sourceList = source as IList;
 				IList targetList = target as IList;
-				if (sourceList == null || targetList == null) return source;
+				if (sourceList == null || targetList == null) return target;
 
 				Type elementType = typeof(object);
 				if (type.IsArray) {
@@ -193,13 +193,14 @@ namespace UbiCanvas.Tools {
 					elementType = type.GetGenericArguments()[0];
 				}
 
-				for (int i = 0; i < sourceList.Count; i++) {
+				int mergeCount = Math.Min(targetList.Count, sourceList.Count);
+				for (int i = 0; i < mergeCount; i++) {
 					object sourceItem = sourceList[i];
-					object targetItem = i < targetList.Count ? targetList[i] : null;
-					sourceList[i] = MergePreservingUInt32(targetItem, sourceItem, elementType);
+					object targetItem = targetList[i];
+					targetList[i] = MergePreservingUInt32(targetItem, sourceItem, elementType);
 				}
 
-				return source;
+				return target;
 			}
 
 			FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
@@ -212,10 +213,10 @@ namespace UbiCanvas.Tools {
 				object sourceValue = field.GetValue(source);
 				object targetValue = field.GetValue(target);
 				object mergedValue = MergePreservingUInt32(targetValue, sourceValue, field.FieldType);
-				field.SetValue(source, mergedValue);
+				field.SetValue(target, mergedValue);
 			}
 
-			return source;
+			return target;
 		}
 	}
 }
