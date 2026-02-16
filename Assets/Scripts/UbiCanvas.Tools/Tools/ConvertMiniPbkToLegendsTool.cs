@@ -80,6 +80,9 @@ namespace UbiCanvas.Tools {
 
 			string[] removablePrefixes = {
 				"Bundle_PC/",
+				"bundle_pc/",
+				"bundle_android/",
+				"bundle_macos/",
 				"cache/itf_cooked/pc/",
 				"cache/itf_cooked/android/",
 				"cache/itf_cooked/macos/",
@@ -105,12 +108,22 @@ namespace UbiCanvas.Tools {
 				throw new InvalidOperationException($"Game directory is not configured for {gameLocation} ({mode}). Configure it in Settings first.");
 			}
 
-			string bundleDir = System.IO.Path.Combine(gameDir, "Bundle_PC");
+			string normalizedGameDir = gameDir.Replace('\\', '/').TrimEnd('/');
+			string cookedRelative = Settings.FromMode(mode).ITFDirectory.Replace('\\', '/').Trim('/');
+			if (!string.IsNullOrWhiteSpace(cookedRelative)) {
+				string cookedDir = System.IO.Path.Combine(normalizedGameDir, cookedRelative);
+				if (Directory.Exists(cookedDir)) {
+					return cookedDir;
+				}
+			}
+
+			// Legacy fallback if a project points directly to a Bundle_PC layout
+			string bundleDir = System.IO.Path.Combine(normalizedGameDir, "Bundle_PC");
 			if (Directory.Exists(bundleDir)) {
 				return bundleDir;
 			}
 
-			return gameDir;
+			return normalizedGameDir;
 		}
 
 		private static Mode GetModeForLocation(PbkGameLocation gameLocation) {
