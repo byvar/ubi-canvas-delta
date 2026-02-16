@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using UbiArt;
 using UbiArt.Animation;
@@ -201,9 +202,11 @@ namespace UbiCanvas.Tools {
 				return source;
 			}
 
-			FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 			foreach (FieldInfo field in fields) {
 				if (field.IsInitOnly || field.IsLiteral || field.IsStatic)
+					continue;
+				if (Attribute.IsDefined(field, typeof(IgnoreDataMemberAttribute)))
 					continue;
 
 				object sourceValue = field.GetValue(source);
