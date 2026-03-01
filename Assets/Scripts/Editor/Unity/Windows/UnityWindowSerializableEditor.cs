@@ -55,6 +55,8 @@ public class UnityWindowSerializableEditor : UnityWindow
 			EditorGUILayout.TextField("File", Path.FullPath);
 			EditorGUI.EndDisabledGroup();
 
+			CSerializerObjectUnityEditor.AllowCrossGamePaste = EditorGUILayout.ToggleLeft("Allow paste from other games", CSerializerObjectUnityEditor.AllowCrossGamePaste);
+
 			if (GUILayout.Button("Save to file")) {
 				var cookedPath = Path.CookedPath(Context);
 				var cookedName = cookedPath.filename;

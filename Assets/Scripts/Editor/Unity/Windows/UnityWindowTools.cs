@@ -202,9 +202,69 @@ public class UnityWindowTools : UnityWindow
 
 			convertMiniPbkTool.OutputGame = EditorField("Output game folder", convertMiniPbkTool.OutputGame);
 			convertMiniPbkTool.OutputPBKPath = EditorField("Output PBK path (start at world/...)", convertMiniPbkTool.OutputPBKPath);
+			convertMiniPbkTool.ExcludedTemplateKeyCount = Math.Max(0, EditorField("Excluded key count", convertMiniPbkTool.ExcludedTemplateKeyCount));
+			while (convertMiniPbkTool.ExcludedTemplateKeyInputs.Count < convertMiniPbkTool.ExcludedTemplateKeyCount)
+				convertMiniPbkTool.ExcludedTemplateKeyInputs.Add(string.Empty);
+			while (convertMiniPbkTool.ExcludedTemplateKeyInputs.Count > convertMiniPbkTool.ExcludedTemplateKeyCount)
+				convertMiniPbkTool.ExcludedTemplateKeyInputs.RemoveAt(convertMiniPbkTool.ExcludedTemplateKeyInputs.Count - 1);
+
+			for (int i = 0; i < convertMiniPbkTool.ExcludedTemplateKeyInputs.Count; i++) {
+				convertMiniPbkTool.ExcludedTemplateKeyInputs[i] = EditorField($"Excluded key {i + 1} (dec/hex)", convertMiniPbkTool.ExcludedTemplateKeyInputs[i]);
+			}
+			convertMiniPbkTool.ExcludeUntranslatableKeys = EditorField("Exclude keys with reverse string = Not found", convertMiniPbkTool.ExcludeUntranslatableKeys);
+			convertMiniPbkTool.CopyOnlyPresetRaymanKeyNames = EditorField("Copy only preset key names (liste fournie)", convertMiniPbkTool.CopyOnlyPresetRaymanKeyNames);
+			convertMiniPbkTool.ForceAddMissingKeysFromSource = EditorField("Force add missing source keys", convertMiniPbkTool.ForceAddMissingKeysFromSource);
+			convertMiniPbkTool.KeepOriginalTags = EditorField("Keep original pointLinks/patches (+ patchPoints limited to existing, tags copied)", convertMiniPbkTool.KeepOriginalTags);
+			convertMiniPbkTool.ReplaceAllLegendsKeysWithSource = EditorField("Replace all Legends keys/templates with source (preserve Legends UInt32 when possible)", convertMiniPbkTool.ReplaceAllLegendsKeysWithSource);
 
 			if (EditorButton("Convert"))
 				ExecuteTask(convertMiniPbkTool.ConvertAsync());
+		}
+
+		else if (tool is PbkKeyCompareTool keyCompareTool)
+		{
+			keyCompareTool.FirstGame = EditorField("First game", keyCompareTool.FirstGame);
+			keyCompareTool.FirstPBKPath = EditorField("First PBK path (start at world/...)", keyCompareTool.FirstPBKPath);
+
+			keyCompareTool.SecondGame = EditorField("Second game", keyCompareTool.SecondGame);
+			keyCompareTool.SecondPBKPath = EditorField("Second PBK path (start at world/...)", keyCompareTool.SecondPBKPath);
+
+			if (EditorButton("Compare"))
+				ExecuteTask(keyCompareTool.CompareAsync());
+
+		}
+		else if (tool is PbkDeepDiffTool pbkDeepDiffTool)
+		{
+			pbkDeepDiffTool.FirstGame = EditorField("First game", pbkDeepDiffTool.FirstGame);
+			pbkDeepDiffTool.FirstPBKPath = EditorField("First PBK path (start at world/...)", pbkDeepDiffTool.FirstPBKPath);
+
+			pbkDeepDiffTool.SecondGame = EditorField("Second game", pbkDeepDiffTool.SecondGame);
+			pbkDeepDiffTool.SecondPBKPath = EditorField("Second PBK path (start at world/...)", pbkDeepDiffTool.SecondPBKPath);
+			pbkDeepDiffTool.MaxDifferencesToLog = Math.Max(1, EditorField("Max differences to log", pbkDeepDiffTool.MaxDifferencesToLog));
+
+			if (EditorButton("Deep compare"))
+				ExecuteTask(pbkDeepDiffTool.CompareAsync());
+
+		}
+		else if (tool is PbkAtlasTemplateTransferTool transferTool)
+		{
+			transferTool.SourceGame = EditorField("Source game", transferTool.SourceGame);
+			transferTool.SourceTexturePath = EditorField("Source texture path (start at world/...)", transferTool.SourceTexturePath);
+			transferTool.SourcePBKPath = EditorField("Source PBK path (start at world/...)", transferTool.SourcePBKPath);
+
+			transferTool.TargetGame = EditorField("Target game", transferTool.TargetGame);
+			transferTool.TargetTexturePath = EditorField("Target texture path (start at world/...)", transferTool.TargetTexturePath);
+			transferTool.TargetPBKPath = EditorField("Target PBK path (start at world/...)", transferTool.TargetPBKPath);
+
+			transferTool.OutputGame = EditorField("Output game folder", transferTool.OutputGame);
+			transferTool.OutputPBKPath = EditorField("Output PBK path (start at world/...)", transferTool.OutputPBKPath);
+			transferTool.PreserveTargetUInt32Identifiers = EditorField("Preserve target UInt32 identifiers (recommended)", transferTool.PreserveTargetUInt32Identifiers);
+			transferTool.PreserveTargetPatchTopology = EditorField("Preserve target patch topology/UV links (recommended)", transferTool.PreserveTargetPatchTopology);
+			transferTool.PreserveTargetBoneDynamicsAndScale = EditorField("Preserve target bone dynamics/scale (recommended)", transferTool.PreserveTargetBoneDynamicsAndScale);
+
+			if (EditorButton("Copy all templates and save PBK"))
+				ExecuteTask(transferTool.TransferAsync());
+
 		}
 		else if (tool is SerializableFileTool logFileTool)
 		{

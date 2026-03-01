@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,28 +16,113 @@ namespace UbiArt {
 			public byte[] Data { get; set; }
 			public Mode GameMode { get; set; }
 			public string Extension { get; set; }
+			public CSerializable SourceObject { get; set; }
 		}
 		private static ClipboardData CopiedData { get; set; }
+		public static bool AllowCrossGamePaste { get; set; }
+
 		private void Copy(CSerializable obj) {
 			CopiedData = new ClipboardData() {
 				Type = obj.GetType(),
 				GameMode = Context.Settings.Mode,
 				Data = obj.CloneGetBinaryData(ExtensionForCopying, context: Context),
-				Extension = ExtensionForCopying
+				Extension = ExtensionForCopying,
+				SourceObject = obj.Clone(ExtensionForCopying, context: Context)
 			};
 		}
 		private CSerializable Paste(CSerializable original, Type type) {
 			if(!CanPaste(type)) return original;
-			var newData = CSerializable.CreateFromBinaryData(CopiedData.Data, CopiedData.Type, CopiedData.Extension, Context);
-			if (foldouts.ContainsKey(original) && !foldouts.ContainsKey(newData)) {
-				foldouts[newData] = foldouts[original];
+
+			try {
+				// Same-game paste keeps previous exact binary behavior
+				if (CopiedData.GameMode == Context.Settings.Mode) {
+					var newData = CSerializable.CreateFromBinaryData(CopiedData.Data, CopiedData.Type, CopiedData.Extension, Context);
+					if (foldouts.ContainsKey(original) && !foldouts.ContainsKey(newData)) {
+						foldouts[newData] = foldouts[original];
+					}
+					return newData;
+				}
+
+				// Cross-game paste only applies compatible fields and preserves UInt32 identifiers
+				if (CopiedData.SourceObject == null) return original;
+				return (CSerializable)MergeCompatiblePreservingUInt32(original, CopiedData.SourceObject, type);
+			} catch (Exception ex) {
+				Debug.LogError($"Paste failed for {type?.Name}: {ex.Message}");
+				return original;
 			}
-			return newData;
 		}
 		private bool CanPaste(Type type) {
-			if (CopiedData?.Data == null || CopiedData.Type != type || CopiedData.GameMode != Context.Settings.Mode) return false;
+			if (CopiedData == null || CopiedData.Type != type) return false;
+			if (!AllowCrossGamePaste && CopiedData.GameMode != Context.Settings.Mode) return false;
 			return true;
 		}
+		private static object MergeCompatiblePreservingUInt32(object target, object source, Type declaredType) {
+			if (source == null) return target;
+
+			Type type = declaredType ?? source.GetType();
+			if (type == typeof(uint) || type == typeof(UInt32) || type == typeof(Link) || type == typeof(StringID))
+				return target;
+
+			if (target == null) {
+				if (type.IsPrimitive || type.IsEnum || type == typeof(string) || type == typeof(decimal))
+					return source;
+				if (type.IsValueType) return source;
+				try { target = Activator.CreateInstance(type); }
+				catch { return source; }
+			}
+
+			if (type.IsPrimitive || type.IsEnum || type == typeof(string) || type == typeof(decimal))
+				return source;
+
+			if (typeof(IList).IsAssignableFrom(type)) {
+				IList sourceList = source as IList;
+				if (sourceList == null) return target;
+
+				Type elementType = typeof(object);
+				if (type.IsArray) {
+					elementType = type.GetElementType() ?? typeof(object);
+					IList targetList = target as IList;
+					Array merged = Array.CreateInstance(elementType, sourceList.Count);
+					for (int i = 0; i < sourceList.Count; i++) {
+						object targetItem = (targetList != null && i < targetList.Count) ? targetList[i] : null;
+						object mergedItem = MergeCompatiblePreservingUInt32(targetItem, sourceList[i], elementType);
+						merged.SetValue(mergedItem, i);
+					}
+					return merged;
+				}
+
+				if (type.IsGenericType)
+					elementType = type.GetGenericArguments()[0];
+
+				IList targetGenericList = target as IList;
+				if (targetGenericList == null) return target;
+
+				int originalCount = targetGenericList.Count;
+				for (int i = 0; i < sourceList.Count; i++) {
+					object targetItem = i < originalCount ? targetGenericList[i] : null;
+					object mergedItem = MergeCompatiblePreservingUInt32(targetItem, sourceList[i], elementType);
+					if (i < originalCount) targetGenericList[i] = mergedItem;
+					else targetGenericList.Add(mergedItem);
+				}
+				while (targetGenericList.Count > sourceList.Count)
+					targetGenericList.RemoveAt(targetGenericList.Count - 1);
+				return targetGenericList;
+			}
+
+			FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			foreach (FieldInfo field in fields) {
+				if (field.IsInitOnly || field.IsLiteral || field.IsStatic)
+					continue;
+
+				object sourceValue = field.GetValue(source);
+				object targetValue = field.GetValue(target);
+				object mergedValue = MergeCompatiblePreservingUInt32(targetValue, sourceValue, field.FieldType);
+				field.SetValue(target, mergedValue);
+			}
+
+			return target;
+		}
+
 		private bool CanCopyPaste(Type type) => typeof(CSerializable).IsAssignableFrom(type);
 		public string ExtensionForCopying { get; set; } = "isc";
 

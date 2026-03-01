@@ -6,6 +6,9 @@
 		{
 			new SerializableFileTool(),
 			new ConvertMiniPbkToLegendsTool(),
+			new PbkKeyCompareTool(),
+			new PbkDeepDiffTool(),
+			new PbkAtlasTemplateTransferTool(),
 			new ExportEngineDataTool(),
 			new SerializerTestTool(),
 			new ExportLocalisationTool(),
