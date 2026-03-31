@@ -5,6 +5,7 @@ namespace UbiArt.Localisation {
 		public CMap<int, CMap<LocalisationId, LocText>> strings;
 		public CMap<LocalisationId, LocAudio> audio;
 		public CListO<Path> paths;
+		public CListP<CString> pathsOrigins;
 		public uint maxLanguagesCount;
 		public uint[] languagesFlags;
 
@@ -12,7 +13,11 @@ namespace UbiArt.Localisation {
 			base.SerializeImpl(s);
 			strings = s.SerializeObject<CMap<int, CMap<LocalisationId, LocText>>>(strings, name: "strings");
 			audio = s.SerializeObject<CMap<LocalisationId, LocAudio>>(audio, name: "audio");
-			paths = s.SerializeObject<CListO<Path>>(paths, name: "paths");
+			if (s.Settings.EngineVersion == EngineVersion.RO) {
+				pathsOrigins = s.SerializeObject<CListP<CString>>(pathsOrigins, name: "paths");
+			} else {
+				paths = s.SerializeObject<CListO<Path>>(paths, name: "paths");
+			}
 			// Special array with sometimes predefined size
 			if (s.Settings.Game == Game.RA || s.Settings.Game == Game.RM) {
 				// Adventures: length specified in file, but when writing, the script always writes 25.
@@ -20,7 +25,9 @@ namespace UbiArt.Localisation {
 			} else {
 				// Legends: length not specified in file. When writing, the script always writes 19.
 				maxLanguagesCount = 19;
-				if (s.Settings.Platform == GamePlatform.Vita) {
+				if(s.Settings.EngineVersion == EngineVersion.RO) {
+					maxLanguagesCount = 0;
+				} else if (s.Settings.Platform == GamePlatform.Vita) {
 					maxLanguagesCount = 20;
 				}
 			}

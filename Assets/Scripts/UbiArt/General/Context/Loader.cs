@@ -268,8 +268,15 @@ namespace UbiArt {
 			LoadFile<UVAtlasManager>(pAtlas, result => uvAtlasManager = result);
 
 			// Load localization
-			Path pLoc = new Path("enginedata/localisation/", "localisation.loc8") { specialUncooked = true };
-			LoadFile<Localisation.Localisation_Template>(pLoc, result => localisation = result);
+			if (Context.Settings.EngineVersion == EngineVersion.RO) {
+				if (Context.Settings.Game != Game.RJR) { // No loc in RJR?
+					Path pLoc = new Path("localisation/", "localisation.loc") { specialUncooked = true };
+					LoadFile<Localisation.Localisation_Template>(pLoc, result => localisation = result);
+				}
+			} else {
+				Path pLoc = new Path("enginedata/localisation/", "localisation.loc8") { specialUncooked = true };
+				LoadFile<Localisation.Localisation_Template>(pLoc, result => localisation = result);
+			}
 
 			/*Path pGameConfigRO = new Path("gameconfig/", "gameconfig.isg.ckd");
 				Load(pGameConfigRO, (CSerializerObject s) => {
