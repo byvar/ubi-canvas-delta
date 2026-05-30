@@ -1462,7 +1462,7 @@ public class UnityWindowAtlasEditor : UnityWindow {
 	}
 
 	void CreateTemplateGameObject(AnimPatchBank pbk, int i) {
-		GameObject patch_gao = new GameObject($"{i} [ {pbk.templateKeys.GetKey(i).ToString(pbk.UbiArtContext, shortString: true)} ]");
+		GameObject patch_gao = new GameObject($"{i} [ {pbk.templateKeys.GetKeyAtIndex(i).ToString(pbk.UbiArtContext, shortString: true)} ]");
 		//patch_gao.transform.SetParent(gao.transform, false);
 		patch_gao.transform.localPosition = Vector3.zero;
 		patch_gao.transform.localRotation = Quaternion.identity;

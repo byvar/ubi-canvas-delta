@@ -54,11 +54,11 @@ namespace UbiArt.ITF {
 			for(int i = 0; i < resources.Length; i++) {
 				var res = resources[i];
 				if (res is TextureCooked tex) {
-					var texPath = tpl.animSet.resourceList[i];
+					var texPath = resourceList[i];
 					var pbkPathLower = $"{texPath.GetFilenameWithoutExtension(fullPath: true).ToLowerInvariant()}.pbk";
 					for (int j = 0; j < resources.Length; j++) {
 						if (resources[j] is AnimPatchBank pbk && resourceList[j].FullPath.ToLowerInvariant() == pbkPathLower) {
-							var pbkPath = tpl.animSet.resourceList[j];
+							var pbkPath = resourceList[j];
 							pbksOrigins.Add(new UnityAnimation.UnityPatchBank() {
 								PBK = pbk,
 								TextureID = texPath.stringID
@@ -89,8 +89,8 @@ namespace UbiArt.ITF {
 			ua.InitSubObjects();
 			var skeleton_gao = ua.skeletonGao;
 			var bones = skeleton.CreateBones(c, skeleton_gao);
-			ua.transform.localScale = new Vector3(tpl?.scale?.x ?? 1f, tpl?.scale?.y ?? 1f, 1f);
-			ua.transform.localPosition = new Vector3(tpl?.posOffset?.x ?? 1f, tpl?.posOffset?.y ?? 1f, -(tpl?.depthOffset ?? 0f));
+			ua.transform.localScale = new Vector3((tpl?.scale?.x ?? 1f) * ((tpl?.flip ?? false) ? -1f : 1f), tpl?.scale?.y ?? 1f, 1f);
+			ua.transform.localPosition = new Vector3(tpl?.posOffset?.x ?? 1f, tpl?.posOffset?.y ?? 1f, -(tpl?.depthOffset ?? 0f) - depthOffset);
 			ua.transform.localRotation = tpl?.angleOffset?.GetUnityQuaternion() ?? Quaternion.identity;
 			ua.bones = bones;
 			ua.skeleton = skeleton;
@@ -181,10 +181,14 @@ namespace UbiArt.ITF {
 
 			// Create templates
 			ua = animation_gao.AddComponent<UnityAnimation>();
+			if (c.Settings.Game == Game.RA || c.Settings.Game == Game.RM) {
+				ua.useCircularInterpolation = true;
+				//ua.enableCircularInterpolationWarnings = true;
+			}
 			ua.InitSubObjects();
 			var bones = skeleton.CreateBones(c, ua.skeletonGao);
-			ua.transform.localScale = new Vector3(tpl?.scale?.x ?? 1f, tpl?.scale?.y ?? 1f, 1f);
-			ua.transform.localPosition = new Vector3(tpl?.posOffset?.x ?? 1f, tpl?.posOffset?.y ?? 1f, -(tpl?.depthOffset ?? 0f));
+			ua.transform.localScale = new Vector3((tpl?.scale?.x ?? 1f) * ((tpl?.flip ?? false) ? -1f : 1f), tpl?.scale?.y ?? 1f, 1f);
+			ua.transform.localPosition = new Vector3(tpl?.posOffset?.x ?? 1f, tpl?.posOffset?.y ?? 1f, -(tpl?.depthOffset ?? 0f) - depthOffset);
 			ua.transform.localRotation = tpl?.angleOffset?.GetUnityQuaternion() ?? Quaternion.identity;
 			ua.bones = bones;
 			ua.skeleton = skeleton;

@@ -47,11 +47,13 @@ public class UnityAnimation : MonoBehaviour {
 				//skeleton.ResetBones(Controller.MainContext, bones);
 				AnimTemplate at = PBK.templates[i];
 				Templates[i] = new UnityAnimation.UnityAnimTemplate() {
+					Bank = ID,
+					Name = PBK.templateKeys.GetKeyFromValueSID(i),
 					Template = at
 				};
 
 				var gao = unityAnimation.templatesGao;
-				GameObject patch_gao = new GameObject($"Anim Bank {(ID ?? TextureID)?.ToString(PBK.UbiArtContext, shortString: true)} - {i} [ {PBK.templateKeys.GetKey(i).ToString(PBK.UbiArtContext, shortString: true)} ]");
+				GameObject patch_gao = new GameObject($"{(ID ?? TextureID)?.ToString(PBK.UbiArtContext, shortString: true)} - {i} [ {PBK.templateKeys.GetKeyAtIndex(i).ToString(PBK.UbiArtContext, shortString: true)} ]");
 				patch_gao.transform.SetParent(gao.transform, false);
 				patch_gao.transform.localPosition = Vector3.zero;
 				patch_gao.transform.localRotation = Quaternion.identity;
@@ -72,6 +74,8 @@ public class UnityAnimation : MonoBehaviour {
 		}
 	}
 	public class UnityAnimTemplate {
+		public StringID Bank { get; set; }
+		public StringID Name { get; set; }
 		public AnimTemplate Template { get; set; }
 		public GameObject Object { get; set; }
 		public bool Active { get; set; }
@@ -139,11 +143,12 @@ public class UnityAnimation : MonoBehaviour {
 	public AnimLightComponent alc;
 	public AnimLightComponent_Template alc_tpl;
 	public bool playAnimation = true;
+	public bool useCircularInterpolation = false;
+	public bool enableCircularInterpolationWarnings = false;
 	public bool DisplayPolylines;
 	public bool DisplayInactivePolylines;
 	public bool DisplayBones;
 	public float animationSpeed = 60f;
-	public int zValue = 0;
 	bool loaded = false;
 	private Dictionary<StringID, LineRenderer> lines;
 	public GameObject linesGao;
@@ -155,6 +160,12 @@ public class UnityAnimation : MonoBehaviour {
 	public bool PlayFullAnimation = true;
 	public UnityAnimationTrack[] animsFull;
 	public bool customPose = false;
+	public bool loopAnimation = true;
+	public bool showRootAnimation = false;// true;
+	public bool IsPlaying => playAnimation && !customPose;
+	public bool useZOffset = true;
+	public bool movePatchesUsingZOffset = false;
+	public bool UseZOffset => useZOffset && alc_tpl.useZOffset;
 
 	//private float updateCounter = 0f;
 	public float currentFrame = 0;
@@ -174,7 +185,8 @@ public class UnityAnimation : MonoBehaviour {
 			skeleton.ResetBones(l, bones);
 			InitLines();
 			//FixCircularInterpolation(animTrack);
-			//WarnCircularInterpolation(animTrack);
+			if(enableCircularInterpolationWarnings)
+				WarnCircularInterpolation(Animation);
 		}
 		loaded = true;
 		if (animIndex >= 0) {
@@ -222,7 +234,8 @@ public class UnityAnimation : MonoBehaviour {
 		}
 	}*/
 
-	void WarnCircularInterpolation(AnimTrack anim) {
+	void WarnCircularInterpolation(UnityAnimationTrack a) {
+		var anim = a?.Track;
 		if (anim == null) return;
 		for(int bi = 0; bi < anim.bonesLists.Count; bi++) {
 			var bl = anim.bonesLists[bi];
@@ -246,86 +259,11 @@ public class UnityAnimation : MonoBehaviour {
 				while (curAngleFloat - lastAngleFloat <= -180) curAngleFloat += 360f;
 
 				if (curAngleFloat != curAngle.EulerAngle) {
-					UnityEngine.Debug.Log($"Circular interpolation: Bone {bi} - PAS {bl.startPAS + i} - Frame {pas.frame}");
+					UnityEngine.Debug.Log($"Circular interpolation: {a.Path.FullPath}\nCircular interpolation: Bone {bi} - PAS {bl.startPAS + i} - Frame {pas.frame}");
 					curAngle = new Angle(curAngleFloat, degrees: true);
 					//pas.Rotation = curAngle / anim.multiplierA;
 				}
 				lastAngle = curAngle;
-			}
-		}
-	}
-
-	void FixCircularInterpolation(AnimTrack anim) {
-		if(anim?.bonePAS == null) return;
-		Angle[] angles = new Angle[anim.bonePAS.Count];
-		bool madeChanges = false;
-
-		for (int i = 0; i < anim.bonePAS.Count; i++) {
-			var pas = anim.bonePAS[i];
-			angles[i] = new Angle(pas.Rotation * anim.multiplierA);
-		}
-
-		foreach (var bl in anim.bonesLists) {
-			if (bl.amountPAS == 0) continue;
-
-			// First pass: front to back
-			Angle lastAngle = new Angle();
-			int lastPasFrame = -1;
-			for (int pass = 0; pass < 2; pass++) {
-				for (int i = 0; i < bl.amountPAS; i++) {
-					var index = bl.startPAS + i;
-
-					var pas = anim.bonePAS[index];
-					var curAngle = angles[index];
-					if (pas.frame == lastPasFrame + 1) {
-						lastAngle = curAngle;
-						continue;
-					}
-					lastPasFrame = pas.frame;
-					float curAngleFloat = curAngle.EulerAngle;
-					float lastAngleFloat = lastAngle.EulerAngle;
-					if (curAngleFloat == lastAngleFloat) continue;
-					while (curAngleFloat - lastAngleFloat > 180) curAngleFloat -= 360f;
-					while (curAngleFloat - lastAngleFloat <= -180) curAngleFloat += 360f;
-
-					if (curAngleFloat != curAngle.EulerAngle) {
-						madeChanges = true;
-						curAngle = new Angle(curAngleFloat, degrees: true);
-						angles[index] = curAngle;
-					}
-					lastAngle = curAngle;
-				}
-			}
-
-			// Second pass: back to front
-			/*var lastPAS = anim.bonePAS[bl.startPAS];
-			lastAngle = new Angle(lastPAS.Rotation * anim.multiplierA);
-			lastPasFrame = -1;
-			for (int i = 0; i < bl.amountPAS; i++) {
-				var pas = anim.bonePAS[bl.startPAS + bl.amountPAS - 1 - i];
-				var curAngle = new Angle(pas.Rotation * anim.multiplierA);
-				if (pas.frame == lastPasFrame - 1) {
-					break;
-				}
-				lastPasFrame = pas.frame;
-				float curAngleFloat = curAngle.EulerAngle;
-				float lastAngleFloat = lastAngle.EulerAngle;
-				if (curAngleFloat == lastAngleFloat) continue;
-				while (curAngleFloat - lastAngleFloat > 180) curAngleFloat -= 360f;
-				while (curAngleFloat - lastAngleFloat <= -180) curAngleFloat += 360f;
-
-				if (curAngleFloat != curAngle.EulerAngle) {
-					curAngle = new Angle(curAngleFloat, degrees: true);
-					pas.Rotation = curAngle / anim.multiplierA;
-				}
-				lastAngle = curAngle;
-			}*/
-		}
-		if (madeChanges) {
-			anim.multiplierA = angles.Max(a => MathF.Abs(a)) + 0.5f;
-			for (int i = 0; i < anim.bonePAS.Count; i++) {
-				var pas = anim.bonePAS[i];
-				pas.Rotation = angles[i] / anim.multiplierA;
 			}
 		}
 	}
@@ -453,7 +391,7 @@ public class UnityAnimation : MonoBehaviour {
 	public void Update() {
 		if (GlobalLoadState.LoadState == GlobalLoadState.State.Finished && loaded && Controller.Obj.playAnimations) {
 			if (animTrack != null) {
-				if (playAnimation && !customPose) currentFrame += Time.deltaTime * animationSpeed * (Animation?.SubAnim?.playRate ?? 1f);
+				if (IsPlaying) currentFrame += Time.deltaTime * animationSpeed * (Animation?.SubAnim?.playRate ?? 1f);
 			} else {
 				currentFrame = 0f;
 			}
@@ -497,12 +435,13 @@ public class UnityAnimation : MonoBehaviour {
 		if (customPose) {
 			UpdateBoneLength();
 			UpdateBones(control: false);
+			UpdateBMLCustomPose();
 			UpdatePatches();
 			UpdateLines();
 			ZSortBones();
 		} else if (animTrack != null) {
 			var subAnim = Animation.SubAnim;
-			if (animTrack.length == 0) {
+			if (animTrack.length == 0 && loopAnimation && IsPlaying) {
 				currentFrame = 0;
 			} else if (!PlayFullAnimation
 				&& !(subAnim?.markerStart?.IsNull ?? true) && !(subAnim?.markerStop?.IsNull ?? true)) {
@@ -521,10 +460,10 @@ public class UnityAnimation : MonoBehaviour {
 						curFrameRel %= duration;
 						currentFrame = startFrame.Value + curFrameRel;
 					}
-				} else if (currentFrame >= animTrack.length) {
+				} else if (currentFrame >= animTrack.length && loopAnimation && IsPlaying) {
 					currentFrame %= animTrack.length;
 				}
-			} else if (currentFrame >= animTrack.length) {
+			} else if (currentFrame >= animTrack.length && loopAnimation && IsPlaying) {
 				currentFrame %= animTrack.length;
 			}
 			var bounds = Animation.GetBounds();
@@ -565,75 +504,119 @@ public class UnityAnimation : MonoBehaviour {
 		}
 	}
 
-	private void UpdateBonePASZAL() {
+	public (Vector2, Vector2, Angle)? GetPAS(int i) {
 		int numBones = Math.Min(animTrack.bonesLists.Count, bones.Length);
-		int rootIndex = skeleton.GetBoneIndexFromTag(new StringID("Root"));
+		int rootIndex = skeleton.GetBoneIndexFromTag("Root");
 		bool useRoot = (alc_tpl?.useRootBone) ?? true;
 		bool useRootRotation = Animation?.SubAnim?.useRootRotation ?? true;
 		bool defaultFlip = Animation?.SubAnim?.defaultFlip ?? false;
 
-		for (int i = 0; i < numBones; i++) {
-			bool isRoot = i == rootIndex;
-			/*if (((!alc_tpl?.useRootBone) ?? false) && isRoot) {
-				bones[i].localPosition = Vector3.zero;
-				bones[i].localScale = Vector3.one;
-				bones[i].localRotation = 0f;
-			} else {*/
-			AnimTrackBonesList bl = animTrack.bonesLists[i];
-			if (bl.amountPAS > 0) { // Position Angle Scale
-				for (int p = 0; p < bl.amountPAS; p++) {
-					AnimTrackBonePAS pas = animTrack.bonePAS[bl.startPAS + p];
-					AnimTrackBonePAS next = p < bl.amountPAS - 1 ? animTrack.bonePAS[bl.startPAS + ((p + 1) % bl.amountPAS)] : null; // Don't interpolate with start frame in loops
-					if (p == bl.amountPAS - 1 || (currentFrame >= pas.frame && currentFrame < next.frame)) {
-						Vector2 pos = pas.Position.GetUnityVector();
-						Angle rot = pas.Rotation;
-						Vector2 scl = pas.Scale.GetUnityVector();
-						if (next != null && next != pas) {
-							float nextFrame = next.frame < pas.frame ? next.frame + animTrack.length : next.frame;
-							float lerp = (Mathf.Floor(currentFrame) - pas.frame) / (Mathf.Floor(nextFrame) - pas.frame); // TODO: maybe change to Math.Floor(currentFrame) if animations can't be interpolated. This fixed jittery feet for Rayman
-							pos = Vector2.Lerp(pos, next.Position.GetUnityVector(), lerp);
-							//rot = Mathf.LerpAngle(rot * animTrack.multiplierA, next.Rotation * animTrack.multiplierA, lerp) / animTrack.multiplierA;
+		if (showRootAnimation) {
+			useRoot = true;
+			useRootRotation = true;
+			defaultFlip = false;
+		}
+
+		bool isRoot = i == rootIndex;
+		/*if (((!alc_tpl?.useRootBone) ?? false) && isRoot) {
+			bones[i].localPosition = Vector3.zero;
+			bones[i].localScale = Vector3.one;
+			bones[i].localRotation = 0f;
+		} else {*/
+		AnimTrackBonesList bl = animTrack.bonesLists[i];
+		if (bl.amountPAS > 0) { // Position Angle Scale
+			for (int p = 0; p < bl.amountPAS; p++) {
+				AnimTrackBonePAS pas = animTrack.bonePAS[bl.startPAS + p];
+				AnimTrackBonePAS next = p < bl.amountPAS - 1 ? animTrack.bonePAS[bl.startPAS + ((p + 1) % bl.amountPAS)] : null; // Don't interpolate with start frame in loops
+				if (p == bl.amountPAS - 1 || (currentFrame >= pas.frame && currentFrame < next.frame)) {
+					Vector2 pos = pas.Position.GetUnityVector();
+					Angle rot = pas.Rotation;
+					Vector2 scl = pas.Scale.GetUnityVector();
+					if (currentFrame != pas.frame && next != null && next != pas) {
+						float nextFrame = next.frame < pas.frame ? next.frame + animTrack.length : next.frame;
+						float lerp = (Mathf.Floor(currentFrame) - pas.frame) / (Mathf.Floor(nextFrame) - pas.frame); // TODO: maybe change to Math.Floor(currentFrame) if animations can't be interpolated. This fixed jittery feet for Rayman
+						pos = Vector2.Lerp(pos, next.Position.GetUnityVector(), lerp);
+						//rot = Mathf.LerpAngle(rot * animTrack.multiplierA, next.Rotation * animTrack.multiplierA, lerp) / animTrack.multiplierA;
+						if (useCircularInterpolation)
+							rot = Mathf.LerpAngle(rot * animTrack.multiplierA * Mathf.Rad2Deg, next.Rotation * animTrack.multiplierA * Mathf.Rad2Deg, lerp) * Mathf.Deg2Rad / animTrack.multiplierA;
+						else
 							rot = Mathf.Lerp(rot, next.Rotation, lerp);
-							scl = Vector2.Lerp(scl, next.Scale.GetUnityVector(), lerp);
-						}
-						pos *= animTrack.multiplierP;
-						rot *= animTrack.multiplierA;
-						scl *= animTrack.multiplierS;
-
-						if (isRoot) {
-							if (!useRoot) {
-								pos = Vector2.zero;
-								scl = Vector2.one;
-								if (!useRootRotation) rot = 0f;
-							}
-							if (defaultFlip) scl = new Vector2(-scl.x, scl.y);
-						}
-
-						bones[i].localPosition = pos;
-						bones[i].localScale = scl;
-						bones[i].localRotation = rot;
-						break;
+						scl = Vector2.Lerp(scl, next.Scale.GetUnityVector(), lerp);
 					}
+					pos *= animTrack.multiplierP;
+					rot *= animTrack.multiplierA;
+					scl *= animTrack.multiplierS;
+
+					if (isRoot) {
+						if (!useRoot) {
+							pos = Vector2.zero;
+							scl = Vector2.one;
+							if (!useRootRotation) rot = 0f;
+						}
+						if (defaultFlip) scl = new Vector2(-scl.x, scl.y);
+					}
+					return (pos, scl, rot);
 				}
 			}
-			if (bl.amountZAL > 0) { // Z ALpha
-				for (int p = 0; p < bl.amountZAL; p++) {
-					AnimTrackBoneZAL zal = animTrack.boneZAL[bl.startZAL + p];
-					AnimTrackBoneZAL next = p < bl.amountZAL - 1 ? animTrack.boneZAL[bl.startZAL + ((p + 1) % bl.amountZAL)] : null; // Don't interpolate with start frame
-					if (p == bl.amountZAL - 1 || (currentFrame >= zal.frame && currentFrame < next.frame)) {
-						float z = zal.z;
-						float alpha = zal.alpha / 255f;
-						if (next != null && next != zal) {
-							float nextFrame = next.frame < zal.frame ? next.frame + animTrack.length : next.frame;
-							float lerp = (currentFrame - zal.frame) / (nextFrame - zal.frame);
-							z = Mathf.Lerp(z, next.z, lerp);
-							alpha = Mathf.Lerp(alpha, next.alpha / 255f, lerp);
-						}
-						bones[i].localZ = z;
-						bones[i].localAlpha = alpha;
-						break;
+		}
+		return null;
+	}
+	public (float, float)? GetZAL(int i) {
+		int numBones = Math.Min(animTrack.bonesLists.Count, bones.Length);
+		int rootIndex = skeleton.GetBoneIndexFromTag("Root");
+		bool useRoot = (alc_tpl?.useRootBone) ?? true;
+		bool useRootRotation = Animation?.SubAnim?.useRootRotation ?? true;
+		bool defaultFlip = Animation?.SubAnim?.defaultFlip ?? false;
+
+		if (showRootAnimation) {
+			useRoot = true;
+			useRootRotation = true;
+			defaultFlip = false;
+		}
+
+		bool isRoot = i == rootIndex;
+		/*if (((!alc_tpl?.useRootBone) ?? false) && isRoot) {
+			bones[i].localPosition = Vector3.zero;
+			bones[i].localScale = Vector3.one;
+			bones[i].localRotation = 0f;
+		} else {*/
+		AnimTrackBonesList bl = animTrack.bonesLists[i];
+		if (bl.amountZAL > 0) { // Z ALpha
+			for (int p = 0; p < bl.amountZAL; p++) {
+				AnimTrackBoneZAL zal = animTrack.boneZAL[bl.startZAL + p];
+				AnimTrackBoneZAL next = p < bl.amountZAL - 1 ? animTrack.boneZAL[bl.startZAL + ((p + 1) % bl.amountZAL)] : null; // Don't interpolate with start frame
+				if (p == bl.amountZAL - 1 || (currentFrame >= zal.frame && currentFrame < next.frame)) {
+					float z = zal.z;
+					float alpha = zal.alpha / 255f;
+					if (next != null && next != zal) {
+						float nextFrame = next.frame < zal.frame ? next.frame + animTrack.length : next.frame;
+						float lerp = (currentFrame - zal.frame) / (nextFrame - zal.frame);
+						z = Mathf.Lerp(z, next.z, lerp);
+						alpha = Mathf.Lerp(alpha, next.alpha / 255f, lerp);
 					}
+					return (z, alpha);
 				}
+			}
+		}
+		return null;
+	}
+
+	private void UpdateBonePASZAL() {
+		int numBones = Math.Min(animTrack.bonesLists.Count, bones.Length);
+
+		for (int i = 0; i < numBones; i++) {
+			var pas = GetPAS(i);
+			if (pas.HasValue) {
+				(Vector2 pos, Vector2 scl, float rot) = pas.Value;
+				bones[i].localPosition = pos;
+				bones[i].localScale = scl;
+				bones[i].localRotation = rot;
+			}
+			var zal = GetZAL(i);
+			if (zal.HasValue) {
+				(float z, float alpha) = zal.Value;
+				bones[i].localZ = z;
+				bones[i].localAlpha = alpha;
 			}
 		}
 	}
@@ -702,8 +685,17 @@ public class UnityAnimation : MonoBehaviour {
 			}
 		}
 	}
+	private void UpdateBMLCustomPose() {
+		currentBMLFrame = -1;
+		foreach (var pbk in AllPatchBanks) {
+			foreach (var p in pbk.Templates) {
+				if (p?.Object == null) continue;
+				p.Active = p.Object.activeSelf;
+			}
+		}
+	}
 
-	private void UpdateBones(bool control = true) {
+	public void UpdateBones(bool control = true) {
 		var updateOrder = skeleton.GetBonesUpdateOrder();
 		foreach (var boneIndex in updateOrder) {
 			bones[boneIndex].UpdateBone(controlTransform: control, updateRecursive: false);
@@ -765,10 +757,31 @@ public class UnityAnimation : MonoBehaviour {
 			.OrderBy(p => p.Z);
 		// Back to front
 		int i = 0;
+		var zPosMain = transform.position.z;
 		foreach (var patch in activePatches) {
 			if(patch?.Renderer == null) continue;
 			alc.FillMaterialParams(patch.Renderer, alpha: 1f);//patch.Alpha);
-			zman.zDict[patch.Renderer] = transform.position.z - (i / 10000f);
+			var zPos = zPosMain;
+			var movePos = 0f;
+			if (UseZOffset) {
+				if (patch.Z <= 0) {
+					movePos = alc_tpl.backZOffset;
+				} else {
+					movePos = alc_tpl.frontZOffset;
+				}
+				movePos += alc_tpl.zOrderExtract * patch.Z;
+				//patch.GameObject.transform.localPosition = new Vector3(0, 0, -pos);
+				zPos -= movePos;
+			} else {
+				//patch.GameObject.transform.localPosition = Vector3.zero;
+			}
+			if (movePatchesUsingZOffset) {
+				patch.GameObject.transform.localPosition = new Vector3(0, 0, -movePos);
+			} else {
+				patch.GameObject.transform.localPosition = Vector3.zero;
+			}
+
+			zman.zDict[patch.Renderer] = zPos - (i / 10000f);
 			if (Animation != null) {
 				patch.Renderer.localBounds = Animation.GetBounds();
 			}
