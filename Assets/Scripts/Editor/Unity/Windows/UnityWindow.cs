@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 using UbiCanvas.Helpers;
 
 public class UnityWindow : EditorWindow {
-	protected Rect GetNextRect(ref float yPos, float padding = 4f, float height = 0f, float vPadding = 0f, float vPaddingBottom = 0f, bool ignoreIndent = false, float linesCount = 1f) {
+	public Rect GetNextRect(ref float yPos, float padding = 4f, float height = 0f, float vPadding = 0f, float vPaddingBottom = 0f, bool ignoreIndent = false, float linesCount = 1f, bool? defaultScrollbarShown = null) {
 		if (height == 0f)
 			height = EditorGUIUtility.singleLineHeight * linesCount;
 		float indent = (ignoreIndent ? 0f : (IndentLevel * 16f));
 
-		Rect rect = new Rect(padding + indent, yPos + vPadding, Mathf.Max(0f, EditorGUIUtility.currentViewWidth - padding * 2f - indent - (scrollbarShown ? scrollbarWidth : 0f)), height);
+		Rect rect = new Rect(padding + indent, yPos + vPadding, Mathf.Max(0f, EditorGUIUtility.currentViewWidth - padding * 2f - indent - ((defaultScrollbarShown ?? scrollbarShown) ? scrollbarWidth : 0f)), height);
 
 		yPos += height + vPadding * 2f + vPaddingBottom;
 
 		return rect;
 	}
-	protected Rect GetNextRect(float padding = 4f, float height = 0f, float vPadding = 0f, float vPaddingBottom = 0f, bool ignoreIndent = false, float linesCount = 1f)
-		=> GetNextRect(ref YPos, padding: padding, height: height, vPadding: vPadding, vPaddingBottom: vPaddingBottom, ignoreIndent: ignoreIndent, linesCount: linesCount);
+	public Rect GetNextRect(float padding = 4f, float height = 0f, float vPadding = 0f, float vPaddingBottom = 0f, bool ignoreIndent = false, float linesCount = 1f, bool? defaultScrollbarShown = null)
+		=> GetNextRect(ref YPos, padding: padding, height: height, vPadding: vPadding, vPaddingBottom: vPaddingBottom, ignoreIndent: ignoreIndent, linesCount: linesCount, defaultScrollbarShown: defaultScrollbarShown);
 
 	protected void DrawHeader(ref float yPos, string header) {
 		if (yPos > 0) {

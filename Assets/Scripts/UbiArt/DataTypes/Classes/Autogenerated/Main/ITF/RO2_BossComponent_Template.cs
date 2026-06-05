@@ -26,8 +26,10 @@ namespace UbiArt.ITF {
 				hitRequiredToChangePhase = s.Serialize<uint>(hitRequiredToChangePhase, name: "hitRequiredToChangePhase");
 				hitRequiredResetDuration = s.Serialize<float>(hitRequiredResetDuration, name: "hitRequiredResetDuration");
 				hitFxPhase01Name = s.SerializeObject<StringID>(hitFxPhase01Name, name: "hitFxPhase01Name");
-				hitFxPhase02Name = s.SerializeObject<StringID>(hitFxPhase02Name, name: "hitFxPhase02Name");
-				hitFxPhase03Name = s.SerializeObject<StringID>(hitFxPhase03Name, name: "hitFxPhase03Name");
+				if (s.Settings.Platform != GamePlatform.Xbox360) { // TODO: Temporary.
+					hitFxPhase02Name = s.SerializeObject<StringID>(hitFxPhase02Name, name: "hitFxPhase02Name");
+					hitFxPhase03Name = s.SerializeObject<StringID>(hitFxPhase03Name, name: "hitFxPhase03Name");
+				}
 			} else {
 				camShakeType = s.SerializeObject<StringID>(camShakeType, name: "camShakeType");
 				offsetZSwitch = s.Serialize<float>(offsetZSwitch, name: "offsetZSwitch");

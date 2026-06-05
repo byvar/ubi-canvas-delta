@@ -69,19 +69,21 @@ public class PickableSelector : MonoBehaviour {
         }
     }
 
-    public void Select(UnityPickable p, bool view = false) {
-        if (selected != p || view) {
-            Deselect();
-            selected = p;
-            p.Select();
+	public void Select(UnityPickable p, bool view = false) {
+		if (selected != p || view) {
+			Deselect();
+			selected = p;
+			p.Select();
 #if UNITY_EDITOR
-            UnityEditor.Selection.activeGameObject = p.gameObject;
+			UnityEditor.Selection.activeGameObject = p.gameObject;
 #endif
-            cam.JumpTo(p.gameObject, frontView: true);
-        }
-    }
+			if (view) {
+				cam.JumpTo(p.gameObject, frontView: true);
+			}
+		}
+	}
 
-    public void Deselect() {
+	public void Deselect() {
         if (selected != null) {
             selected.Deselect();
         }

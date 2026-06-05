@@ -6,7 +6,7 @@ namespace UbiArt.ITF {
 		public CListO<StringID> buslist;
 		public float factor;
 		public uint aux;
-		public Unknown_RL_1377_sub_388210 reverbParams;
+		public ReverbParams reverbParams;
 		public float blendDuration;
 		protected override void SerializeImpl(CSerializerObject s) {
 			base.SerializeImpl(s);
@@ -15,13 +15,13 @@ namespace UbiArt.ITF {
 			buslist = s.SerializeObject<CListO<StringID>>(buslist, name: "buslist");
 			factor = s.Serialize<float>(factor, name: "factor");
 			aux = s.Serialize<uint>(aux, name: "aux");
-			reverbParams = s.SerializeObject<Unknown_RL_1377_sub_388210>(reverbParams, name: "reverbParams");
+			reverbParams = s.SerializeObject<ReverbParams>(reverbParams, name: "reverbParams");
 			blendDuration = s.Serialize<float>(blendDuration, name: "blendDuration");
 		}
 		public override uint? ClassCRC => 0xAC4D988E;
 
 		[Games(GameFlags.RL)]
-		public partial class Unknown_RL_1377_sub_388210 : CSerializable {
+		public partial class ReverbParams : CSerializable {
 			public uint XAudio2ReflectionsDelay;
 			public char XAudio2ReverbDelay;
 			public char XAudio2RearDelay;

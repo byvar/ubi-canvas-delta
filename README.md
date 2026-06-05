@@ -8,15 +8,16 @@ This Δ version was created as a temporary place to host all non-DLC code for ub
 Ubi-Canvas supports converting between game modes only because it was implemented specifically for the Fan DLC. We're still working hard on it, so please be patient! It hurts a lot to see people using this incomplete code to implement half-baked conversion tools. Please respect this and wait for the full release instead.
 
 ## Contributors
-- @byvar: Reverse engineering, main developer
-- @RayCarrot: Game Tools, Settings and Serializer windows, various other additions and improvements
+- @byvar: Reverse engineering, main developer, BinarySerializer
+- @RayCarrot: BinarySerializer, Game Tools, Settings and Serializer windows, various other improvements
 
 ## Current status
 - Rayman Legends (PC): viewing & editing
 - Rayman Adventures (Android), Rayman Mini (MacOS): viewing
-- Rayman Legends (PS Vita): limited viewing
+- Rayman Legends (PS Vita): limited viewing & editing
+- Rayman Legends (Xbox 360): limited viewing & editing
 - Rayman Origins (PC), Rayman Jungle Run (Android & iOS), Rayman Fiesta Run (Android & iOS): very limited viewing
-- Child of Light (PC): very limited viewing
+- Child of Light (PC): limited viewing & editing
 
 ## How to use
 1. Download and install Unity 2022.3.7

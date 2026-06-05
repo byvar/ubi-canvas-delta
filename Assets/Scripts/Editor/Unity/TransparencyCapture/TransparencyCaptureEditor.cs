@@ -22,7 +22,7 @@ public class TransparencyCaptureBehaviourEditor : Editor {
 			string savePath = EditorUtility.SaveFilePanel("Output file", Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), defaultName, "png");
 			if (!string.IsNullOrWhiteSpace(savePath)) {
 				Resolution res = TransparencyCaptureBehaviour.GetCurrentResolution();
-				byte[] screenshotBytes = await pb.Capture((int)(res.width * Scale), (int)(res.height * Scale), true);
+				byte[] screenshotBytes = await pb.Capture((int)(res.width * Scale), (int)(res.height * Scale), IsTransparent);
 				UbiCanvas.Helpers.Util.ByteArrayToFile(savePath, screenshotBytes);
 				Debug.Log("Screenshot saved.");
 			}
@@ -31,7 +31,7 @@ public class TransparencyCaptureBehaviourEditor : Editor {
 	}
 
 	public float Scale = 1f;
-	public bool IsTransparent = false;
+	public bool IsTransparent = true;
 	
 
 }

@@ -4,16 +4,17 @@ using UnityEngine;
 
 [CustomEditor(typeof(UnityFrise))]
 public class UnityFriseEditor : Editor {
-	/*Color proColor = (Color)new Color32(56, 56, 56, 255);
-	Color plebColor = (Color)new Color32(194, 194, 194, 255);
+	/*
+	UnityEngine.Color darkSkinHeaderColor = (UnityEngine.Color)new Color32(62, 62, 62, 255);
+	UnityEngine.Color lightSkinHeaderColor = (UnityEngine.Color)new Color32(194, 194, 194, 255);
 	protected override void OnHeaderGUI() {
 		var rect = EditorGUILayout.GetControlRect(false, 0f);
 		rect.height = EditorGUIUtility.singleLineHeight;
-		rect.y -= rect.height;
-		rect.x = 48;
+		rect.y -= rect.height * 1.4f;
+		rect.x = 60;
 		rect.xMax -= rect.x * 2f;
 
-		EditorGUI.DrawRect(rect, EditorGUIUtility.isProSkin ? proColor : plebColor);
+		EditorGUI.DrawRect(rect, EditorGUIUtility.isProSkin ? darkSkinHeaderColor : lightSkinHeaderColor);
 
 		UnityActorComponent uac = target as UnityActorComponent;
 		if (uac != null && uac.component != null && !uac.component.IsNull) {
@@ -31,7 +32,9 @@ public class UnityFriseEditor : Editor {
 
 		UnityFrise frise = target as UnityFrise;
 		if (frise != null && frise.frise != null) {
-			frise.frise.Serialize(CSerializerObjectUnityEditor.Serializer(Controller.MainContext), "Frise");
+			var s = CSerializerObjectUnityEditor.Serializer(Controller.MainContext);
+			s.InitFoldout(frise.frise);
+			frise.frise.Serialize(s, "Frise");
 		}
 
 	}

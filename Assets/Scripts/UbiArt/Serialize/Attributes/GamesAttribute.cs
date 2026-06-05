@@ -37,6 +37,7 @@ namespace UbiArt {
 				GamePlatform.MacOS => HasPlatform(PlatformFlags.MacOS),
 				GamePlatform.Vita => HasPlatform(PlatformFlags.Vita),
 				GamePlatform.WiiU => HasPlatform(PlatformFlags.WiiU),
+				GamePlatform.Xbox360 => HasPlatform(PlatformFlags.Xbox360),
 				_ => false
 			};;
 		}

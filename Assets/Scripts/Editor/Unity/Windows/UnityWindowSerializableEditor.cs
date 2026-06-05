@@ -61,7 +61,9 @@ public class UnityWindowSerializableEditor : UnityWindow
 			}
 
 			_scrollPosition = GUILayout.BeginScrollView(_scrollPosition, false, true);
-			Path.Object.Serialize(CSerializerObjectUnityEditor.Serializer(Context), Path.filename);
+			var serializer = CSerializerObjectUnityEditor.Serializer(Context);
+			serializer.InitFoldout(Path.Object);
+			Path.Object.Serialize(serializer, Path.filename);
 			GUILayout.EndScrollView();
 		}
 	}

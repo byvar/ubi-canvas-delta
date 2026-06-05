@@ -41,6 +41,8 @@ namespace UbiArt
 			GamePlatform.MacOS => "macos",
 			GamePlatform.Vita => "VITA",
 			GamePlatform.PC32 => "PC32",
+			GamePlatform.WiiU => "wiiu",
+			GamePlatform.Xbox360 => "x360",
 			_ => throw new InvalidOperationException($"Can not get a platform string for the platform {Platform}")
 		};
 
@@ -325,6 +327,19 @@ namespace UbiArt
 			MemoryData = new MemoryData_RaymanLegendsVITA_Patched()
 		};
 
+		public static Settings RL_X360 = new() {
+			EngineVersion = EngineVersion.RL,
+			Game = Game.RL,
+			Platform = GamePlatform.Xbox360,
+			Endian = Endian.Big,
+			VersionFlags = VersionFlags.Legends,
+			IpkVersion = 5,
+			EngineSignature = 0x4BFC7C03,
+			Bundles = new[] { "persistentLoading", "Bundle" },
+			MemoryData = new MemoryData_RaymanLegendsX360(),
+			LoadInPlace = true
+		};
+
 		public static Settings COL_PC32 = new()
 		{
 			EngineVersion = EngineVersion.RL,
@@ -353,6 +368,7 @@ namespace UbiArt
 				Mode.RaymanFiestaRunAndroid => RFR_Android,
 				Mode.RaymanFiestaRuniOS => RFR_iOS,
 				Mode.RaymanLegendsPC => RL_PC,
+				Mode.RaymanLegendsXbox360 => RL_X360,
 				Mode.RaymanLegendsPSVita => RL_Vita,
 				Mode.RaymanLegendsPSVitaPatched => RL_VitaPatched,
 				Mode.RaymanAdventuresAndroid => RA_Android,

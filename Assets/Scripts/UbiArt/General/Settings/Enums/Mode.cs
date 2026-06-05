@@ -23,6 +23,9 @@
 		[System.ComponentModel.Description("Rayman Legends (PC)")] 
 		RaymanLegendsPC,
 
+		[System.ComponentModel.Description("Rayman Legends (Xbox 360)")]
+		RaymanLegendsXbox360,
+
 		[System.ComponentModel.Description("Rayman Legends (PSV)")] 
 		RaymanLegendsPSVita,
 

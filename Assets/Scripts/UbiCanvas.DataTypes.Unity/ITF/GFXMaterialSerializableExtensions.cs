@@ -39,7 +39,7 @@ namespace UbiArt.ITF {
 					0f,
 					0f,
 					0f,
-					gfxmat.textureSet.tex_back_light?.GetUnityTexture(c)?.Texture?.format == TextureFormat.DXT1 ? 1f : 0f));
+					(gfxmat.textureSet.tex_back_light?.GetUnityTexture(c)?.IsDXT1 ?? false) ? 1f : 0f));
 				if (gfxmat.textureSet.tex_diffuse != null) {
 					mpb.SetTexture("_Diffuse", gfxmat.textureSet.tex_diffuse.GetUnityTexture(c).Texture);
 					mpb.SetVector("_Diffuse_ST", new Vector4(1,1,0,0));

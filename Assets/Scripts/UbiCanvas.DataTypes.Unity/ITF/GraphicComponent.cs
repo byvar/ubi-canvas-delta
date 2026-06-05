@@ -38,7 +38,7 @@ namespace UbiArt.ITF {
 					0f,
 					0f,
 					0f,
-					textureSet.tex_back_light?.GetUnityTexture(UbiArtContext)?.Texture?.format == TextureFormat.DXT1 ? 1f : 0f));
+					(textureSet.tex_back_light?.GetUnityTexture(UbiArtContext)?.IsDXT1 ?? false) ? 1f : 0f));
 
 				if (textureSet.tex_diffuse != null) {
 					var t = textureSet.tex_diffuse.GetUnityTexture(UbiArtContext);

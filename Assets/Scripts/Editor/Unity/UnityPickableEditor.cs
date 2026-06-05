@@ -20,6 +20,7 @@ public class UnityPickableEditor : Editor {
 		if (p?.pickable != null) {
 			p.UpdateDataFromTransform();
 			var s = CSerializerObjectUnityEditor.Serializer(Controller.MainContext);
+			s.InitFoldout(p.pickable);
 			bool wasFlipped = p.pickable.xFLIPPED;
 			Vec2d prevPos = new Vec2d(p.pickable.POS2D?.x ?? 0, p.pickable.POS2D?.y ?? 0);
 			float prevZ = p.pickable.RELATIVEZ;
@@ -101,9 +102,13 @@ public class UnityPickableEditor : Editor {
 			if (p.pickable is UbiArt.ITF.Actor act2) {
 				if ((Controller.MainContext?.Settings?.Game == Game.RA || Controller.MainContext?.Settings?.Game == Game.RM)) {
 					act2.STARTPAUSE = s.Serialize<bool>(act2.STARTPAUSE, name: "STARTPAUSE");
-				}
-				if (p.pickable.templatePickable is Actor_Template atpl) {
-					atpl.STARTPAUSED = s.Serialize<bool>(atpl.STARTPAUSED, name: "(TEMPLATE) STARTPAUSED");
+					if (p.pickable.templatePickable is Actor_Template atpl) {
+						atpl.STARTPAUSED = s.Serialize<bool>(atpl.STARTPAUSED, name: "(TEMPLATE) STARTPAUSED");
+					}
+				} else {
+					if (p.pickable.templatePickable is Actor_Template atpl && !(p.pickable.templatePickable is FriseConfig)) {
+						atpl.STARTPAUSED = s.Serialize<bool>(atpl.STARTPAUSED, name: "(TEMPLATE) STARTPAUSED");
+					}
 				}
 			}
 
@@ -120,6 +125,9 @@ public class UnityPickableEditor : Editor {
 
 			if (GUILayout.Button("Select in game view")) {
 				Controller.Obj.selector.Select(p, view: true);
+			}
+			if (GUILayout.Button("Select in game view (do not move camera)")) {
+				Controller.Obj.selector.Select(p, view: false);
 			}
 		}
 		//if (p.Dirty) {

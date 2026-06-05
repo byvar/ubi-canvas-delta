@@ -33,6 +33,7 @@ namespace UbiArt.ITF {
 			if (s.Settings.EngineVersion <= EngineVersion.RO) {
 			} else if (s.Settings.Game == Game.RL) {
 				if (this is UISliderComponent) return;
+				if (this is RO2_UIItemLeaderboardGraphNodeComponent && s.Settings.Platform == GamePlatform.Xbox360) return;
 				selectTextStyle = s.Serialize<uint>(selectTextStyle, name: "selectTextStyle");
 				selectAnimMeshVertex = s.SerializeObject<CListO<StringID>>(selectAnimMeshVertex, name: "selectAnimMeshVertex");
 			} else if(s.Settings.Game == Game.COL) {

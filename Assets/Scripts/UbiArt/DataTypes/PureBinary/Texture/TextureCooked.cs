@@ -11,6 +11,8 @@ namespace UbiArt {
 			var dataSize = (int)(Header?.RawDataSize ?? (s.Length - s.CurrentPosition));
 			if(s.Settings.Platform == GamePlatform.iOS && (Header?.Type ?? 0) != 0 && dataSize == 0) {
 				dataSize = (int)(s.Length - s.CurrentPosition);
+			} else if (s.Settings.Platform == GamePlatform.Xbox360) {
+				dataSize = (int)(s.Length - s.CurrentPosition);
 			}
 
 			Data = s.SerializeBytes(Data, dataSize);

@@ -54,7 +54,7 @@ namespace UbiArt.ITF {
 				if (s.HasFlags(SerializeFlags.Group_DataEditable)) {
 					transition = s.Serialize<bool>(transition, name: "transition");
 					display = s.Serialize<bool>(display, name: "display");
-					if (s.Settings.Platform != GamePlatform.Vita) {
+					if (s.Settings.Platform != GamePlatform.Vita && s.Settings.Platform != GamePlatform.Xbox360) {
 						leftComponent = s.Serialize<string>(leftComponent, name: "leftComponent");
 						rightComponent = s.Serialize<string>(rightComponent, name: "rightComponent");
 						upComponent = s.Serialize<string>(upComponent, name: "upComponent");

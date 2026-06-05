@@ -222,7 +222,7 @@ namespace UbiArt {
 			[typeof(ITF.RO2_BezierBranchRendererComponent_Template)] = 4,
 			[typeof(ITF.EventSoundCommand)] = 32,
 			[typeof(ITF.AuxReverbCommand)] = 188,
-			[typeof(ITF.AuxReverbCommand.Unknown_RL_1377_sub_388210)] = 140,
+			[typeof(ITF.AuxReverbCommand.ReverbParams)] = 140,
 			[typeof(ITF.SoundBoxInterpolatorComponent_Template)] = 52,
 			[typeof(ITF.StaticMeshVertexComponent_Template)] = 1592,
 			[typeof(ITF.ProceduralBoneComponent_Template)] = 16,
@@ -621,6 +621,24 @@ namespace UbiArt {
 			[typeof(ITF.ZInputManager_Template)] = 208,
 			[typeof(ITF.ZAction)] = 56,
 			[typeof(ITF.ZInput)] = 60,
+			[typeof(ITF.RO2_BubbleDreamerComponent_Template)] = 76,
+			[typeof(ITF.Quote)] = 36,
+			[typeof(ITF.QuoteCondition)] = 12,
+			[typeof(ITF.RO2_LumsCounterComponent_Template)] = 120,
+			[typeof(ITF.RO2_LumsCounterComponentHome_Template.RO2_TagColorSetting)] = 28,
+			[typeof(ITF.UIComponent_Template)] = 28,
+			[typeof(ITF.UITextBox_Template)] = 72,
+			[typeof(ITF.RO2_LuckyTicketComponent_Template)] = 1964,
+			[typeof(ITF.RO2_LTReward)] = 12,
+			[typeof(ITF.RO2_DigShapeComponent_Template)] = 60,
+			[typeof(ITF.RO2_HomeWaypointComponent_Template)] = 16,
+			[typeof(ITF.RO2_SnakeNetworkNodeComponent_Template)] = 20,
+			[typeof(ITF.RO2_HomeCheckpointComponent_Template)] = 16,
+			[typeof(ITF.RO2_GlobalTeensieCounterComponent_Template)] = 104,
+			[typeof(ITF.RO2_LevelIndicatorComponent_Template)] = 56,
+			[typeof(ITF.RO2_LevelTitleComponent_Template)] = 180,
+			[typeof(ITF.RO2_LuckyTicketsOnTitleComponent_Template)] = 312,
+
 		};
 
 		public static readonly Dictionary<Type, uint> RetailSizes = new Dictionary<Type, uint>() {

@@ -4,11 +4,12 @@
 	{
 		None, 
 		PC, 
-		iOS, 
+		iOS,
 		AppleTV,
 		Android, 
 		WiiU, 
-		Vita, 
+		Vita,
+		Xbox360,
 		MacOS, 
 		PC32
 	}

@@ -28,9 +28,9 @@ namespace UbiArt {
 		private CSerializable Paste(CSerializable original, Type type) {
 			if(!CanPaste(type)) return original;
 			var newData = CSerializable.CreateFromBinaryData(CopiedData.Data, CopiedData.Type, CopiedData.Extension, Context);
-			if (foldouts.ContainsKey(original) && !foldouts.ContainsKey(newData)) {
+			/*if (foldouts.ContainsKey(original) && !foldouts.ContainsKey(newData)) {
 				foldouts[newData] = foldouts[original];
-			}
+			}*/
 			return newData;
 		}
 		private bool CanPaste(Type type) {
@@ -40,7 +40,43 @@ namespace UbiArt {
 		private bool CanCopyPaste(Type type) => typeof(CSerializable).IsAssignableFrom(type);
 		public string ExtensionForCopying { get; set; } = "isc";
 
-		private Dictionary<object, bool> foldouts = new Dictionary<object, bool>();
+		private Dictionary<string, bool> foldouts = new Dictionary<string, bool>();
+		private string CurrentFoldoutPath { get; set; } = "";
+		public void InitFoldout(object obj) {
+			CurrentFoldoutPath = obj?.GetHashCode().ToString() ?? "";
+		}
+		public void DoFoldout(string name, Rect rect, Action action) {
+			(bool isFoldout, string lastFoldoutPath) = BeginFoldout(name, rect);
+			if (isFoldout) {
+				try {
+					action();
+				} finally {
+					EndFoldout(lastFoldoutPath);
+				}
+			}
+		}
+		public (bool, string) BeginFoldout(string name, Rect rect) {
+			var newFoldoutPath = $"{CurrentFoldoutPath}|{name}";
+			if (!foldouts.ContainsKey(newFoldoutPath)) {
+				foldouts[newFoldoutPath] = false;
+			}
+			foldouts[newFoldoutPath] = EditorGUI.Foldout(rect, foldouts[newFoldoutPath], name, true);
+			if (foldouts[newFoldoutPath]) {
+				EditorGUI.indentLevel++;
+				IncreaseLevel();
+				var lastFoldoutPath = CurrentFoldoutPath;
+				CurrentFoldoutPath = newFoldoutPath;
+				return (true, lastFoldoutPath);
+			}
+			return (false, null);
+		}
+		public void EndFoldout(string lastFoldoutPath) {
+			CurrentFoldoutPath = lastFoldoutPath;
+			DecreaseLevel();
+			EditorGUI.indentLevel--;
+		}
+
+
 		public uint position = 0;
 		private LocalisationIdDropdown localisationDropdown = null;
 		private GenericClassSelectorDropdown genericDropdown = null;
@@ -50,6 +86,15 @@ namespace UbiArt {
 
 		private static string LastPathDirectory = "";
 		private static string LastPathFile = "";
+
+		public UnityWindow Window { get; set; }
+		Rect GetRect() {
+			if (Window != null) {
+				return Window.GetNextRect();
+			} else {
+				return EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			}
+		}
 
 		public static CSerializerObjectUnityEditor Serializer(Context context) {
 			var serializer = context.GetStoredObject<CSerializerObjectUnityEditor>(UnitySerializerID);
@@ -81,10 +126,10 @@ namespace UbiArt {
 				obj = EnumField(name, obj, type);
 			} else if (Type.GetTypeCode(type) != TypeCode.Object) {
 				switch (Type.GetTypeCode(type)) {
-					case TypeCode.Boolean: obj = EditorGUILayout.Toggle(name, (bool)obj); break;
+					case TypeCode.Boolean: obj = BooleanField(name, (bool)obj); break;
 					case TypeCode.Byte: obj = MinMaxField<byte>(name, (byte)obj); break;
-					case TypeCode.Char: obj = (char)EditorGUILayout.IntField(name, (char)obj); break;
-					case TypeCode.String: obj = EditorGUILayout.TextField(name, (string)obj); break;
+					case TypeCode.Char: obj = MinMaxField<char>(name, (char)obj); break;
+					case TypeCode.String: obj = StringField(name, (string)obj); break;
 					case TypeCode.Single: obj = MinMaxField<float>(name, (float)obj); break;
 					case TypeCode.Double: obj = MinMaxField<double>(name, (double)obj); break;
 					case TypeCode.UInt16: obj = MinMaxField<ushort>(name, (ushort)obj); break;
@@ -128,15 +173,15 @@ namespace UbiArt {
 			} else if (type == typeof(Vec3d)) {
 				obj = Vec3dField(name, (Vec3d)obj);
 			} else if (type == typeof(Vec4d)) {
-				obj = (Vec4d)(EditorGUILayout.Vector4Field(name, ((Vec4d)obj ?? new Vec4d()).GetUnityVector()).GetUbiArtVector());
+				obj = Vec4dField(name, (Vec4d)obj);
 			} else if (type == typeof(Color)) {
-				obj = (Color)(EditorGUILayout.ColorField(name, ((Color)obj ?? new Color()).GetUnityColor()).GetUbiArtColor());
+				obj = ColorField(name, (Color)obj);
 			} else if (type == typeof(ColorInteger)) {
-				obj = (ColorInteger)(EditorGUILayout.ColorField(name, ((ColorInteger)obj ?? new ColorInteger()).GetUnityColor()).GetUbiArtColorInteger());
+				obj = ColorIntegerField(name, (ColorInteger)obj);
 			} else if (type == typeof(CString)) {
-				obj = new CString(EditorGUILayout.TextField(name, ((CString)obj ?? new CString()).str));
+				obj = new CString(StringField(name, ((CString)obj ?? new CString()).str));
 			} else if (type == typeof(BasicString)) {
-				obj = new BasicString(EditorGUILayout.TextField(name, ((BasicString)obj ?? new BasicString()).str));
+				obj = new BasicString(StringField(name, ((BasicString)obj ?? new BasicString()).str));
 			} else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Generic<>)){
 				var t = type.GetGenericArguments()[0];
 				IGeneric gen = (IGeneric)obj;
@@ -153,23 +198,15 @@ namespace UbiArt {
 					obj = ctor.Invoke(new object[] { });
 				}
 				if (obj is ICSerializable) {
-					Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+					Rect rect = GetRect();
 					if (CanCopyPaste(type)) {
 						var cs = (CSerializable)obj;
 						DrawCopyPaste(ref rect, type, ref cs);
 						obj = cs;
 					}
-					if (!foldouts.ContainsKey(obj)) {
-						foldouts[obj] = false;
-					}
-					foldouts[obj] = EditorGUI.Foldout(rect, foldouts[obj], name, true);
-					if (foldouts[obj]) {
-						EditorGUI.indentLevel++;
-						IncreaseLevel();
+					DoFoldout(name, rect, () => {
 						((ICSerializable)obj).Serialize(this, name);
-						DecreaseLevel();
-						EditorGUI.indentLevel--;
-					}
+					});
 				}
 			}
 			return obj;
@@ -222,8 +259,7 @@ namespace UbiArt {
 
 		public void DrawPath(string name, ref Path p) {
 			if (p == null) p = new Path();
-			//EditorGUILayout.PrefixLabel(name);
-			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			Rect rect = GetRect();
 			//texPreviewRect = EditorGUI.PrefixLabel(texPreviewRect, new GUIContent(name));
 			string fullPath = p.FullPath;
 			//var indent = EditorGUI.indentLevel;
@@ -239,7 +275,7 @@ namespace UbiArt {
 		}
 		public Angle AngleField(string name, Angle value) {
 			if (value == null) value = new Angle();
-			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			Rect rect = GetRect();
 			var controlID = GUIUtility.GetControlID(FocusType.Passive, rect);
 			rect = EditorGUI.PrefixLabel(rect, controlID, new GUIContent(name));
 
@@ -263,7 +299,7 @@ namespace UbiArt {
 		}
 		public Vec2d Vec2dField(string name, Vec2d value) {
 			if(value == null) value = new Vec2d();
-			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			Rect rect = GetRect();
 			var controlID = GUIUtility.GetControlID(FocusType.Passive, rect);
 			rect = EditorGUI.PrefixLabel(rect, controlID, new GUIContent(name));
 
@@ -274,13 +310,16 @@ namespace UbiArt {
 			value.x = MinMaxField<float>("X", value.x, rectToUse: rects[0], labelWidth: 16);
 			value.y = MinMaxField<float>("Y", value.y, rectToUse: rects[1], labelWidth: 16);
 
+			/*if (GUI.Button(rects[2], "/2")) {
+				value = value / 2f;
+			}*/
 			EditorGUI.indentLevel = indentLevel;
 
 			return value;
 		}
 		public Vec3d Vec3dField(string name, Vec3d value) {
 			if (value == null) value = new Vec3d();
-			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			Rect rect = GetRect();
 			var controlID = GUIUtility.GetControlID(FocusType.Passive, rect);
 			rect = EditorGUI.PrefixLabel(rect, controlID, new GUIContent(name));
 
@@ -293,6 +332,9 @@ namespace UbiArt {
 			value.y = MinMaxField<float>("Y", value.y, rectToUse: rects[1], labelWidth: 16);
 			value.z = MinMaxField<float>("Z", value.z, rectToUse: rects[2], labelWidth: 16);
 
+			/*if (GUI.Button(rects[3], "/2")) {
+				value = value / 2f;
+			}*/
 			/*var rot = MinMaxField<float>("Rot", 0, rectToUse: rects[3], labelWidth: 16);
 			if (rot != 0) {
 				var value2d = new Vec2d(value.x, value.y).Rotate(rot);
@@ -305,9 +347,108 @@ namespace UbiArt {
 
 			return value;
 		}
+		public Vec4d Vec4dField(string name, Vec4d value) {
+			if (value == null) value = new Vec4d();
+			Rect rect = GetRect();
+			var controlID = GUIUtility.GetControlID(FocusType.Passive, rect);
+			rect = EditorGUI.PrefixLabel(rect, controlID, new GUIContent(name));
+
+			var indentLevel = EditorGUI.indentLevel;
+			EditorGUI.indentLevel = 0;
+
+			var rects = UnityWindow.DivideRectHorizontally(rect, 4, spacing: 16f);
+			//var rects = UnityWindow.DivideRectHorizontally(rect, 4, spacing: 16f);
+			value.x = MinMaxField<float>("X", value.x, rectToUse: rects[0], labelWidth: 16);
+			value.y = MinMaxField<float>("Y", value.y, rectToUse: rects[1], labelWidth: 16);
+			value.z = MinMaxField<float>("Z", value.z, rectToUse: rects[2], labelWidth: 16);
+			value.w = MinMaxField<float>("W", value.w, rectToUse: rects[3], labelWidth: 16);
+
+			EditorGUI.indentLevel = indentLevel;
+
+			return value;
+		}
+		public Color ColorField(string name, Color value) {
+			if (value == null) value = new Color();
+			Rect rect = GetRect();
+			var controlID = GUIUtility.GetControlID(FocusType.Passive, rect);
+			rect = EditorGUI.PrefixLabel(rect, controlID, new GUIContent(name));
+
+			var indentLevel = EditorGUI.indentLevel;
+			EditorGUI.indentLevel = 0;
+
+			var oldCol = value.GetUnityColor();
+			var newCol = EditorGUI.ColorField(rect, oldCol);
+			if (newCol != oldCol) {
+				value = newCol.GetUbiArtColor();
+			}
+			EditorGUI.indentLevel = indentLevel;
+
+			return value;
+		}
+		public ColorInteger ColorIntegerField(string name, ColorInteger value) {
+			if (value == null) value = new ColorInteger();
+			Rect rect = GetRect();
+			var controlID = GUIUtility.GetControlID(FocusType.Passive, rect);
+			rect = EditorGUI.PrefixLabel(rect, controlID, new GUIContent(name));
+
+			var indentLevel = EditorGUI.indentLevel;
+			EditorGUI.indentLevel = 0;
+
+			var oldCol = value.GetUnityColor();
+			var newCol = EditorGUI.ColorField(rect, oldCol);
+			if (newCol != oldCol) {
+				value = newCol.GetUbiArtColorInteger();
+			}
+			EditorGUI.indentLevel = indentLevel;
+
+			return value;
+		}
 		public static UnityEngine.Color MinMaxHighlightColor = UnityEngine.Color.cyan;
+		public string StringField(string name, string value, Rect? rectToUse = null, bool prefixLabel = true, float? labelWidth = null) {
+			Rect rect = rectToUse ?? GetRect();
+			if (prefixLabel) {
+				if (labelWidth.HasValue) {
+					Rect labelRect = new Rect(rect.x, rect.y, labelWidth.Value, rect.height);
+					rect = new Rect(rect.x + labelWidth.Value, rect.y, rect.width - labelWidth.Value, rect.height);
+					EditorGUI.LabelField(labelRect, name, EditorStyles.miniLabel);
+				} else {
+					rect = EditorGUI.PrefixLabel(rect, new GUIContent(name));
+				}
+			}
+			var indentLevel = EditorGUI.indentLevel;
+			EditorGUI.indentLevel = 0;
+
+			string valueText = value;
+			string ogValueText = valueText;
+			//valueText = EditorGUI.DelayedTextField(rect, valueText);
+			valueText = EditorGUI.TextField(rect, valueText);
+			if (valueText != ogValueText) {
+				value = valueText;
+			}
+			EditorGUI.indentLevel = indentLevel;
+			return value;
+		}
+		public bool BooleanField(string name, bool value, Rect? rectToUse = null, bool prefixLabel = true, float? labelWidth = null) {
+			Rect rect = rectToUse ?? GetRect();
+			if (prefixLabel) {
+				if (labelWidth.HasValue) {
+					Rect labelRect = new Rect(rect.x, rect.y, labelWidth.Value, rect.height);
+					rect = new Rect(rect.x + labelWidth.Value, rect.y, rect.width - labelWidth.Value, rect.height);
+					EditorGUI.LabelField(labelRect, name, EditorStyles.miniLabel);
+				} else {
+					rect = EditorGUI.PrefixLabel(rect, new GUIContent(name));
+				}
+			}
+			var indentLevel = EditorGUI.indentLevel;
+			EditorGUI.indentLevel = 0;
+
+			value = EditorGUI.Toggle(rect, value);
+
+			EditorGUI.indentLevel = indentLevel;
+			return value;
+		}
 		public T MinMaxField<T>(string name, T value, Rect? rectToUse = null, bool prefixLabel = true, float? labelWidth = null) {
-			Rect rect = rectToUse ?? EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			Rect rect = rectToUse ?? GetRect();
 			if (prefixLabel) {
 				if (labelWidth.HasValue) {
 					Rect labelRect = new Rect(rect.x, rect.y, labelWidth.Value, rect.height);
@@ -344,6 +485,9 @@ namespace UbiArt {
 				// Unsigned: only max
 				case TypeCode.Byte:
 					maxValue = byte.MaxValue;
+					break;
+				case TypeCode.Char:
+					maxValue = (char)255;
 					break;
 				case TypeCode.UInt16:
 					maxValue = ushort.MaxValue;
@@ -419,6 +563,9 @@ namespace UbiArt {
 							case TypeCode.SByte:
 								if (sbyte.TryParse(valueText, out sbyte sb)) value = (T)(object)sb;
 								break;
+							case TypeCode.Char:
+								if (byte.TryParse(valueText, out byte cb)) value = (T)(object)(char)cb;
+								break;
 							default:
 								break;
 						}
@@ -429,7 +576,7 @@ namespace UbiArt {
 			return value;
 		}
 		public object EnumField(string name, object obj, Type type, Rect? rectToUse = null, bool prefixLabel = true, float? labelWidth = null) {
-			Rect rect = rectToUse ?? EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			Rect rect = rectToUse ?? GetRect();
 			if (prefixLabel) {
 				if (labelWidth.HasValue) {
 					Rect labelRect = new Rect(rect.x, rect.y, labelWidth.Value, rect.height);
@@ -466,12 +613,12 @@ namespace UbiArt {
 			return obj;
 		}
 
-		public ArchiveMemory ArchiveMemoryField(string name, ArchiveMemory byteArray) {
-			if(byteArray == null)
-				byteArray = new ArchiveMemory();
-			if(byteArray.AMData == null)
-				byteArray.AMData = new byte[0];
-			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+		public ArchiveMemory ArchiveMemoryField(string name, ArchiveMemory am) {
+			if(am == null)
+				am = new ArchiveMemory();
+			if(am.AMData == null)
+				am.AMData = new byte[0];
+			Rect rect = GetRect();
 			var controlID = GUIUtility.GetControlID(FocusType.Passive, rect);
 			rect = EditorGUI.PrefixLabel(rect, controlID, new GUIContent(name));
 
@@ -480,7 +627,7 @@ namespace UbiArt {
 
 			var rects = UnityWindow.DivideRectHorizontally(rect, 3, spacing: 0f);
 			//var rects = UnityWindow.DivideRectHorizontally(rect, 4, spacing: 16f);
-			EditorGUI.LabelField(rects[0], $"{Util.SizeSuffix(byteArray.AMData.Length, includeBytes: true)}");
+			EditorGUI.LabelField(rects[0], $"{Util.SizeSuffix(am.AMData.Length, includeBytes: true)}");
 
 			if (GUI.Button(rects[1], new GUIContent("Open"))) {
 				string directory = System.IO.Path.Combine(Context.BasePath, Context.Settings.ITFDirectory);
@@ -494,8 +641,9 @@ namespace UbiArt {
 				var file = EditorUtility.OpenFilePanel("Open File", directory, "");
 				if (!string.IsNullOrWhiteSpace(file) && System.IO.File.Exists(file)) {
 					var newBytes = System.IO.File.ReadAllBytes(file);
-					if(newBytes != null)
-						byteArray.AMData = newBytes;
+					if (newBytes != null) {
+						am.AMData = newBytes;
+					}
 				}
 			}
 			if (GUI.Button(rects[2], new GUIContent("Save"))) {
@@ -504,19 +652,18 @@ namespace UbiArt {
 
 				var file = EditorUtility.SaveFilePanel("Save File", directory, defaultName, "");
 				if (!string.IsNullOrWhiteSpace(file)) {
-					Util.ByteArrayToFile(file, byteArray.AMData);
+					Util.ByteArrayToFile(file, am.AMData);
 				}
 			}
 
 			EditorGUI.indentLevel = indentLevel;
 
-			return byteArray;
+			return am;
 		}
 		
 		public void DrawPathRef(string name, ref PathRef p) {
 			if (p == null) p = new PathRef();
-			//EditorGUILayout.PrefixLabel(name);
-			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			Rect rect = GetRect();
 			//texPreviewRect = EditorGUI.PrefixLabel(texPreviewRect, new GUIContent(name));
 			string fullPath = p.FullPath;
 			//var indent = EditorGUI.indentLevel;
@@ -530,8 +677,7 @@ namespace UbiArt {
 		}
 		public void DrawObjectPath(string name, ref ITF.ObjectPath p) {
 			if (p == null) p = new ITF.ObjectPath();
-			//EditorGUILayout.PrefixLabel(name);
-			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			Rect rect = GetRect();
 			//texPreviewRect = EditorGUI.PrefixLabel(texPreviewRect, new GUIContent(name));
 			string fullPath = p.FullPath;
 			//var indent = EditorGUI.indentLevel;
@@ -545,8 +691,7 @@ namespace UbiArt {
 		public void DrawStringID(string name, ref StringID sid) {
 			if (sid == null) sid = new StringID();
 			var context = this.Context;
-			//EditorGUILayout.PrefixLabel(name);
-			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			Rect rect = GetRect();
 			rect = EditorGUI.PrefixLabel(rect, new GUIContent(name));
 
 			var indent = EditorGUI.indentLevel;
@@ -585,7 +730,7 @@ namespace UbiArt {
 		}
 		public void DrawLocId(string name, ref LocalisationId locId) {
 			if (locId == null) locId = new LocalisationId();
-			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+			Rect rect = GetRect();
 			rect = EditorGUI.PrefixLabel(rect, new GUIContent(name));
 
 			
@@ -630,70 +775,62 @@ namespace UbiArt {
 				gen = (IGeneric)ctor.Invoke(new object[] { });
 			}
 
-			if (!foldouts.ContainsKey(gen)) {
-				foldouts[gen] = false;
-			}
-			foldouts[gen] = EditorGUILayout.Foldout(foldouts[gen], name, true);
-			if (!foldouts[gen]) return;
-			// Increase indent level
-			EditorGUI.indentLevel++;
-			IncreaseLevel();
+			Rect rect = GetRect();
+			(bool isFoldout, string lastFoldoutPath) = BeginFoldout(name, rect);
+			if(!isFoldout) return;
+			try {
+				int indent = EditorGUI.indentLevel;
+				rect = GetRect();
+				rect = EditorGUI.PrefixLabel(rect, new GUIContent(name));
 
-			Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
-			rect = EditorGUI.PrefixLabel(rect, new GUIContent(name));
+				var genTypeName = t.GetFormattedName();
 
-			var genTypeName = t.GetFormattedName();
-
-
-			int indent = EditorGUI.indentLevel;
-			string genPreview;
-			if (gen.IsNull) {
-				genPreview = "None";
-			} else {
-				Type type = ObjectFactory.classes[gen.GenericClassName.stringID];
-				genPreview = type.GetFormattedName();
-			}
-
-			EditorGUI.indentLevel = 0;
-			if (EditorGUI.DropdownButton(rect, new GUIContent(genPreview), FocusType.Passive)) {
-				if (genericDropdown == null || genericDropdown.type != t || genericDropdown.context != Context) {
-					genericDropdown = new GenericClassSelectorDropdown(Context, new UnityEditor.IMGUI.Controls.AdvancedDropdownState()) {
-						name = $"Generic<{genTypeName}>",
-						type = t
-					};
+				string genPreview;
+				if (gen.IsNull) {
+					genPreview = "None";
+				} else {
+					Type type = ObjectFactory.classes[gen.GenericClassName.stringID];
+					genPreview = type.GetFormattedName();
 				}
-				genericDropdown.rect = rect;
-				genericDropdown.Show(rect);
-			}
-			if (genericDropdown != null && genericDropdown.selection != null && genericDropdown.rect == rect) {
-				var newGenID = genericDropdown.selection.Value;
-				genericDropdown.selection = null;
 
-				if (newGenID != gen.GenericClassName?.stringID) {
-					// Create new object
-					/*var newType = ObjectFactory.classes[newGenID];
-					if (newType.ContainsGenericParameters) {
-						if (!genType.IsGenericType) {
-							EditorGUI.indentLevel = indent;
-							return; // Don't make this change
-						}
-						newType = newType.MakeGenericType(genType.GetGenericArguments());
-					}*/
-					gen.GenericClassName = new StringID(newGenID);
-					gen.GenericObject = null;
+				EditorGUI.indentLevel = 0;
+				if (EditorGUI.DropdownButton(rect, new GUIContent(genPreview), FocusType.Passive)) {
+					if (genericDropdown == null || genericDropdown.type != t || genericDropdown.context != Context) {
+						genericDropdown = new GenericClassSelectorDropdown(Context, new UnityEditor.IMGUI.Controls.AdvancedDropdownState()) {
+							name = $"Generic<{genTypeName}>",
+							type = t
+						};
+					}
+					genericDropdown.rect = rect;
+					genericDropdown.Show(rect);
 				}
+				if (genericDropdown != null && genericDropdown.selection != null && genericDropdown.rect == rect) {
+					var newGenID = genericDropdown.selection.Value;
+					genericDropdown.selection = null;
+
+					if (newGenID != gen.GenericClassName?.stringID) {
+						// Create new object
+						/*var newType = ObjectFactory.classes[newGenID];
+						if (newType.ContainsGenericParameters) {
+							if (!genType.IsGenericType) {
+								EditorGUI.indentLevel = indent;
+								return; // Don't make this change
+							}
+							newType = newType.MakeGenericType(genType.GetGenericArguments());
+						}*/
+						gen.GenericClassName = new StringID(newGenID);
+						gen.GenericObject = null;
+					}
+				}
+
+				EditorGUI.indentLevel = indent;
+
+				if (!gen.IsNull) {
+					gen.SerializeObject(this);
+				}
+			} finally {
+				EndFoldout(lastFoldoutPath);
 			}
-
-			EditorGUI.indentLevel = indent;
-
-			if (!gen.IsNull) {
-				gen.SerializeObject(this);
-			}
-
-			// Decrease indent level
-			DecreaseLevel();
-			EditorGUI.indentLevel--;
-
 		}
 
 		public override T SerializeGenericPureBinary<T>(T obj, Type type = null, string name = null, int? index = null) {
@@ -717,16 +854,16 @@ namespace UbiArt {
 				obj = EnumField(name, obj, type);
 			} else if (typeCode == TypeCode.Object) {
 				if (type == typeof(CString)) {
-					obj = new CString(EditorGUILayout.TextField(name, ((CString)obj)?.str));
+					obj = new CString(StringField(name, ((CString)obj)?.str));
 				} else if (type == typeof(BasicString)) {
-					obj = new BasicString(EditorGUILayout.TextField(name, ((BasicString)obj)?.str));
+					obj = new BasicString(StringField(name, ((BasicString)obj)?.str));
 				}
 			} else {
 				switch (Type.GetTypeCode(type)) {
-					case TypeCode.Boolean: obj = EditorGUILayout.Toggle(name, (bool)obj); break;
+					case TypeCode.Boolean: obj = BooleanField(name, (bool)obj); break;
 					case TypeCode.Byte: obj = MinMaxField<byte>(name, (byte)obj); break;
-					case TypeCode.Char: obj = (char)EditorGUILayout.IntField(name, (char)obj); break;
-					case TypeCode.String: obj = EditorGUILayout.TextField(name, (string)obj); break;
+					case TypeCode.Char: obj = MinMaxField<char>(name, (char)obj); break;
+					case TypeCode.String: obj = StringField(name, (string)obj); break;
 					case TypeCode.Single: obj = MinMaxField<float>(name, (float)obj); break;
 					case TypeCode.Double: obj = MinMaxField<double>(name, (double)obj); break;
 					case TypeCode.UInt16: obj = MinMaxField<ushort>(name, (ushort)obj); break;
@@ -788,11 +925,11 @@ namespace UbiArt {
 			} else if (type == typeof(Vec3d)) {
 				obj = (T)(object)Vec3dField(name, (Vec3d)(object)obj);
 			} else if (type == typeof(Vec4d)) {
-				obj = (T)(object)(Vec4d)(EditorGUILayout.Vector4Field(name, ((Vec4d)(object)obj ?? new Vec4d()).GetUnityVector()).GetUbiArtVector());
+				obj = (T)(object)Vec4dField(name, (Vec4d)(object)obj);
 			} else if (type == typeof(Color)) {
-				obj = (T)(object)(Color)(EditorGUILayout.ColorField(name, ((Color)(object)obj ?? new Color()).GetUnityColor()).GetUbiArtColor());
+				obj = (T)(object)ColorField(name, (Color)(object)obj);
 			} else if (type == typeof(ColorInteger)) {
-				obj = (T)(object)(ColorInteger)(EditorGUILayout.ColorField(name, ((ColorInteger)(object)obj ?? new ColorInteger()).GetUnityColor()).GetUbiArtColorInteger());
+				obj = (T)(object)ColorIntegerField(name, (ColorInteger)(object)obj);
 			} else if (type == typeof(ArchiveMemory)) {
 				obj = (T)(object)ArchiveMemoryField(name, (ArchiveMemory)(object)obj);
 			} else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Generic<>)) {
@@ -804,23 +941,15 @@ namespace UbiArt {
 				if (obj == null) {
 					obj = new T();
 				}
-				Rect rect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight);
+				Rect rect = GetRect();
 				if (CanCopyPaste(typeof(T))) {
 					var cs = (CSerializable)(object)obj;
 					DrawCopyPaste(ref rect, type, ref cs);
 					obj = (T)(object)cs;
 				}
-				if (!foldouts.ContainsKey(obj)) {
-					foldouts[obj] = false;
-				}
-				foldouts[obj] = EditorGUI.Foldout(rect, foldouts[obj], name, true);
-				if (foldouts[obj]) {
-					EditorGUI.indentLevel++;
-					IncreaseLevel();
+				DoFoldout(name, rect, () => {
 					obj.Serialize(this, name);
-					DecreaseLevel();
-					EditorGUI.indentLevel--;
-				}
+				});
 			}
 
 			return obj;
@@ -854,7 +983,11 @@ namespace UbiArt {
 		}
 
 		public override bool SerializeEditorButton(string name) {
-			return GUILayout.Button(name);
+			if (Window) {
+				return Window.EditorButton(name);
+			} else {
+				return GUILayout.Button(name);
+			}
 		}
 	}
 }

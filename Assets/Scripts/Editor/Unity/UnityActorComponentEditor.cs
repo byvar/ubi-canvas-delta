@@ -5,16 +5,16 @@ using UbiCanvas.Helpers;
 
 [CustomEditor(typeof(UnityActorComponent))]
 public class UnityActorComponentEditor : Editor {
-	UnityEngine.Color proColor = (UnityEngine.Color)new Color32(56, 56, 56, 255);
-	UnityEngine.Color plebColor = (UnityEngine.Color)new Color32(194, 194, 194, 255);
+	UnityEngine.Color darkSkinHeaderColor = (UnityEngine.Color)new Color32(62, 62, 62, 255);
+	UnityEngine.Color lightSkinHeaderColor = (UnityEngine.Color)new Color32(194, 194, 194, 255);
 	protected override void OnHeaderGUI() {
 		var rect = EditorGUILayout.GetControlRect(false, 0f);
 		rect.height = EditorGUIUtility.singleLineHeight;
-		rect.y -= rect.height;
-		rect.x = 48;
+		rect.y -= rect.height * 1.4f;
+		rect.x = 60;
 		rect.xMax -= rect.x * 2f;
 
-		EditorGUI.DrawRect(rect, EditorGUIUtility.isProSkin ? proColor : plebColor);
+		EditorGUI.DrawRect(rect, EditorGUIUtility.isProSkin ? darkSkinHeaderColor : lightSkinHeaderColor);
 
 		UnityActorComponent uac = target as UnityActorComponent;
 		if (uac != null && uac.component != null) {
@@ -32,7 +32,9 @@ public class UnityActorComponentEditor : Editor {
 
 		UnityActorComponent uac = target as UnityActorComponent;
 		if (uac != null && uac.component != null) {
-			uac.component.Serialize(CSerializerObjectUnityEditor.Serializer(Controller.MainContext), "Component");
+			var s = CSerializerObjectUnityEditor.Serializer(Controller.MainContext);
+			s.InitFoldout(uac.component);
+			uac.component.Serialize(s, "Component");
 		}
 
 	}

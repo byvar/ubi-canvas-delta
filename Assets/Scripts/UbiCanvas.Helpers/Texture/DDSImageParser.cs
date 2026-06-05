@@ -11,6 +11,7 @@ namespace UbiCanvas.Helpers {
 		private bool m_makeNoLongerReadable = false;
 		private bool m_isValid = false;
 		private Texture2D m_bitmap = null;
+		public PixelFormat Format { get; private set; } = PixelFormat.UNKNOWN;
 		#endregion
 
 		#region Constructor/Destructor
@@ -20,6 +21,42 @@ namespace UbiCanvas.Helpers {
 			if (ddsImage.Length == 0) return;
 
 			this.Parse(ddsImage);
+		}
+
+		// For headerless DDS
+		public DDSImage(byte[] ddsImageRaw, uint width, uint height, PixelFormat pixelFormat, Func<DDSImage, byte[], byte[]> processRawData = null, bool makeNoLongerReadable = true) {
+			m_makeNoLongerReadable = makeNoLongerReadable;
+			if (ddsImageRaw == null) return;
+			if (ddsImageRaw.Length == 0) return;
+
+			DDSStruct header = new DDSStruct();
+			header.pixelformat = new DDSStruct.pixelformatstruct() { rgbbitcount = 32 };
+			header.height = height;
+			header.width = width;
+			header.depth = 1;
+			if (ddsImageRaw != null) {
+				byte[] rawData = null;
+				switch (pixelFormat) {
+					case PixelFormat.DXT1:
+						rawData = this.DecompressDXT1(header, ddsImageRaw, pixelFormat);
+						break;
+					case PixelFormat.DXT3:
+						rawData = this.DecompressDXT3(header, ddsImageRaw, pixelFormat);
+						break;
+					case PixelFormat.DXT5:
+						rawData = this.DecompressDXT5(header, ddsImageRaw, pixelFormat);
+						break;
+					case PixelFormat.RGBA:
+						rawData = ddsImageRaw;
+						break;
+				}
+				if (processRawData != null) {
+					rawData = processRawData.Invoke(this, rawData);
+				}
+				// Remove mipmaps
+				Array.Resize(ref rawData, (int)(header.width * header.height * 4));
+				this.m_bitmap = this.CreateBitmap((int)header.width, (int)header.height, rawData);
+			}
 		}
 
 		public DDSImage(Stream ddsImage, bool makeNoLongerReadable = true) {
@@ -38,9 +75,6 @@ namespace UbiCanvas.Helpers {
 		}
 		#endregion
 
-		#region Override Methods
-		#endregion
-
 		#region Private Methods
 		private void Parse(BinaryReader reader) {
 			DDSStruct header = new DDSStruct();
@@ -54,6 +88,7 @@ namespace UbiCanvas.Helpers {
 
 				uint blocksize = 0;
 				pixelFormat = this.GetFormat(header, ref blocksize);
+				Format = pixelFormat;
 				if (pixelFormat == PixelFormat.UNKNOWN) {
 					throw new InvalidFileHeaderException();
 				}
@@ -84,6 +119,7 @@ namespace UbiCanvas.Helpers {
 
 				uint blocksize = 0;
 				pixelFormat = this.GetFormat(header, ref blocksize);
+				Format = pixelFormat;
 				if (pixelFormat == PixelFormat.UNKNOWN) {
 					throw new InvalidFileHeaderException();
 				}
@@ -94,6 +130,24 @@ namespace UbiCanvas.Helpers {
 			}
 		}
 
+		private void Parse(DDSStruct header, byte[] dataRaw) {
+			PixelFormat pixelFormat = PixelFormat.UNKNOWN;
+
+			this.m_isValid = true;
+			// patches for stuff
+			if (header.depth == 0) header.depth = 1;
+
+			uint blocksize = 0;
+			pixelFormat = this.GetFormat(header, ref blocksize);
+			Format = pixelFormat;
+			if (pixelFormat == PixelFormat.UNKNOWN) {
+				throw new InvalidFileHeaderException();
+			}
+			if (dataRaw != null) {
+				byte[] rawData = this.DecompressData(header, dataRaw, pixelFormat);
+				this.m_bitmap = this.CreateBitmap((int)header.width, (int)header.height, rawData);
+			}
+		}
 		private byte[] ReadData(BinaryReader reader, DDSStruct header) {
 			byte[] compdata = null;
 			uint compsize = 0;
@@ -543,12 +597,12 @@ namespace UbiCanvas.Helpers {
 		#endregion
 
 		#region Decompress Methods
-		private byte[] DecompressData(DDSStruct header, byte[] data, PixelFormat pixelFormat) {
+		private byte[] DecompressData(DDSStruct header, byte[] data, PixelFormat pixelFormat, int? posOverride = null) {
 			//Debug.WriteLine(pixelFormat);
 			// allocate bitmap
 			byte[] rawData = null;
 
-			int pos = (int)(header.size + 4); // 4 for "DDS "
+			int pos = posOverride ?? (int)(header.size + 4); // 4 for "DDS "
 
 			switch (pixelFormat) {
 				case PixelFormat.RGBA:
@@ -624,7 +678,7 @@ namespace UbiCanvas.Helpers {
 
 
 			// DXT1 decompressor
-			byte[] rawData = new byte[depth * sizeofplane + height * bps + width * bpp];
+			byte[] rawData = new byte[depth * sizeofplane];
 
 			ColorFloat[] colours = new ColorFloat[4];
 			for (int i = 0; i < 4; i++) colours[i].alpha = 0xFF;
@@ -743,7 +797,7 @@ namespace UbiCanvas.Helpers {
 			int depth = (int)header.depth;
 
 			// DXT3 decompressor
-			byte[] rawData = new byte[depth * sizeofplane + height * bps + width * bpp];
+			byte[] rawData = new byte[depth * sizeofplane];
 			ColorFloat[] colours = new ColorFloat[4];
 			
 			int temp = pos;
@@ -841,7 +895,7 @@ namespace UbiCanvas.Helpers {
 			int height = (int)header.height;
 			int depth = (int)header.depth;
 
-			byte[] rawData = new byte[depth * sizeofplane + height * bps + width * bpp];
+			byte[] rawData = new byte[depth * sizeofplane];
 			ColorFloat[] colours = new ColorFloat[4];
 			ushort[] alphas = new ushort[8];
 			
@@ -958,7 +1012,7 @@ namespace UbiCanvas.Helpers {
 			int height = (int)header.height;
 			int depth = (int)header.depth;
 
-			byte[] rawData = new byte[depth * sizeofplane + height * bps + width * bpp];
+			byte[] rawData = new byte[width * height * depth * 4];
 
 			uint valMask = (uint)((header.pixelformat.rgbbitcount == 32) ? ~0 : (1 << (int)header.pixelformat.rgbbitcount) - 1);
 			uint pixSize = (uint)(((int)header.pixelformat.rgbbitcount + 7) / 8);
@@ -996,7 +1050,7 @@ namespace UbiCanvas.Helpers {
 			int height = (int)header.height;
 			int depth = (int)header.depth;
 
-			byte[] rawData = new byte[depth * sizeofplane + height * bps + width * bpp];
+			byte[] rawData = new byte[width * height * depth * 4];
 
 			uint valMask = (uint)((header.pixelformat.rgbbitcount == 32) ? ~0 : (1 << (int)header.pixelformat.rgbbitcount) - 1);
 			// Funny x86s, make 1 << 32 == 1
@@ -1040,7 +1094,7 @@ namespace UbiCanvas.Helpers {
 			int height = (int)header.height;
 			int depth = (int)header.depth;
 
-			byte[] rawData = new byte[depth * sizeofplane + height * bps + width * bpp];
+			byte[] rawData = new byte[width * height * depth * 4];
 
 			int lShift1 = 0; int lMul = 0; int lShift2 = 0;
 			ComputeMaskParams(header.pixelformat.rbitmask, ref lShift1, ref lMul, ref lShift2);
@@ -1117,7 +1171,7 @@ namespace UbiCanvas.Helpers {
 
 		#region DDSStruct
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		private struct DDSStruct {
+		public struct DDSStruct {
 			public uint size;       // equals size of struct (which is part of the data file!)
 			public uint flags;
 			public uint height;
@@ -1223,7 +1277,7 @@ namespace UbiCanvas.Helpers {
 		/// <summary>
 		/// Various pixel formats/compressors used by the DDS image.
 		/// </summary>
-		private enum PixelFormat {
+		public enum PixelFormat {
 			/// <summary>
 			/// 32-bit image, with 8-bit red, green, blue and alpha.
 			/// </summary>

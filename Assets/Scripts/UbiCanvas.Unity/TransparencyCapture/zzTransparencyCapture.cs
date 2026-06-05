@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.IO;
+using System.Linq;
 
 public class zzTransparencyCapture
 {
@@ -8,7 +9,7 @@ public class zzTransparencyCapture
         Camera lCamera = Camera.main;
         //OutlineEffect outline = lCamera.GetComponent<OutlineEffect>();
         //if (outline != null) outline.enabled = false;
-		RenderTexture renderTexture = new RenderTexture((int)pRect.width, (int)pRect.height, 32);
+		RenderTexture renderTexture = new RenderTexture((int)pRect.width, (int)pRect.height, 32, RenderTextureFormat.ARGB32);
         Texture2D lOut;
         if (isTransparent) {
             var lPreClearFlags = lCamera.clearFlags;
@@ -46,7 +47,7 @@ public class zzTransparencyCapture
                 Object.DestroyImmediate(lBlackBackgroundCapture);
             }
             // Restore previous settings.
-            Camera.main.targetTexture = null;
+            lCamera.targetTexture = null;
             RenderTexture.active = oldRenderTexture;
             lCamera.backgroundColor = lPreBackgroundColor;
             lCamera.clearFlags = lPreClearFlags;
@@ -63,8 +64,9 @@ public class zzTransparencyCapture
             // Render
             lCamera.Render();
             lOut = captureView(pRect);
+			lOut.SetPixels(lOut.GetPixels().Select(p => new Color(p.r, p.g, p.b, 1f)).ToArray());
             // Restore previous settings.
-            Camera.main.targetTexture = null;
+            lCamera.targetTexture = null;
             RenderTexture.active = oldRenderTexture;
             lCamera.backgroundColor = lPreBackgroundColor;
             lCamera.clearFlags = lPreClearFlags;

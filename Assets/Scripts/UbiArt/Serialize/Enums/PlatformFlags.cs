@@ -15,8 +15,9 @@ namespace UbiArt {
 		MacOS = 1 << 4,
 		WiiU = 1 << 5,
 		AppleTV = 1 << 6,
+		Xbox360 = 1 << 7,
 		Mobile = Android | iOS | AppleTV,
 		DRCPlatforms = Vita | WiiU,
-		All = PC | Android | iOS | AppleTV | Vita | MacOS | WiiU
+		All = PC | Android | iOS | AppleTV | Vita | MacOS | WiiU | Xbox360,
 	}
 }

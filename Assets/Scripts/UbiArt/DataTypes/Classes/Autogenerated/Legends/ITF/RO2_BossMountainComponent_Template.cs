@@ -13,7 +13,7 @@ namespace UbiArt.ITF {
 		public float CreatureBaseRadius;
 		public float CreatureRadiusSeeder;
 		public float CreatureNbCoeff;
-		public CListO<Unknown_RL_20717_sub_6E6EE0> OnBoneData;
+		public CListO<RO2_BossMountainComponent_Template.OnBoneData> _OnBoneData;
 		public CListO<StringID> EyeBoneList;
 		public int ApplyAnimMod;
 		public StringID TailBone;
@@ -70,7 +70,7 @@ namespace UbiArt.ITF {
 			CreatureBaseRadius = s.Serialize<float>(CreatureBaseRadius, name: "CreatureBaseRadius");
 			CreatureRadiusSeeder = s.Serialize<float>(CreatureRadiusSeeder, name: "CreatureRadiusSeeder");
 			CreatureNbCoeff = s.Serialize<float>(CreatureNbCoeff, name: "CreatureNbCoeff");
-			OnBoneData = s.SerializeObject<CListO<Unknown_RL_20717_sub_6E6EE0>>(OnBoneData, name: "OnBoneData");
+			_OnBoneData = s.SerializeObject<CListO<RO2_BossMountainComponent_Template.OnBoneData>>(_OnBoneData, name: "OnBoneData");
 			EyeBoneList = s.SerializeObject<CListO<StringID>>(EyeBoneList, name: "EyeBoneList");
 			ApplyAnimMod = s.Serialize<int>(ApplyAnimMod, name: "ApplyAnimMod");
 			TailBone = s.SerializeObject<StringID>(TailBone, name: "TailBone");
@@ -117,7 +117,7 @@ namespace UbiArt.ITF {
 		public override uint? ClassCRC => 0x6AAD0104;
 
 		[Games(GameFlags.RL)]
-		public partial class Unknown_RL_20717_sub_6E6EE0 : CSerializable {
+		public partial class OnBoneData : CSerializable {
 			public StringID BoneName;
 			public uint CreatureNb;
 			public float Scale;

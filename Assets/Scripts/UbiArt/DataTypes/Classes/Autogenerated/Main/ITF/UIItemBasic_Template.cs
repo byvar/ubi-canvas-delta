@@ -40,6 +40,7 @@ namespace UbiArt.ITF {
 			if (s.Settings.EngineVersion <= EngineVersion.RO) {
 			} else if (s.Settings.Game == Game.RL || s.Settings.Game == Game.COL) {
 				if(this is UISliderComponent_Template) return;
+				if (this is RO2_UIItemLeaderboardGraphNodeComponent_Template && s.Settings.Platform == GamePlatform.Xbox360) return;
 				blinkScaleMin = s.Serialize<float>(blinkScaleMin, name: "blinkScaleMin");
 				blinkScale = s.Serialize<float>(blinkScale, name: "blinkScale");
 				blinkPeriod = s.Serialize<float>(blinkPeriod, name: "blinkPeriod");
