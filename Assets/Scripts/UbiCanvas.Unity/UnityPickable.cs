@@ -3,6 +3,7 @@ using UbiArt;
 using UbiArt.ITF;
 using System.Linq;
 using UbiCanvas.Helpers;
+using System;
 
 [ExecuteInEditMode]
 public class UnityPickable : MonoBehaviour {
@@ -125,9 +126,14 @@ public class UnityPickable : MonoBehaviour {
 				updatedData = true;
 			}
 			var expectedScale = new Vector2((pickable.xFLIPPED ? -1f : 1f) * scale.x, scale.y);
-			if (new Vector2(transform.localScale.x, transform.localScale.y) != expectedScale) {
+			var unityScale = new Vector2(transform.localScale.x, transform.localScale.y);
+			if (unityScale != expectedScale) {
 				if (!scaleForced) {
-					pickable.SCALE = new Vec2d((pickable.xFLIPPED ? -1f : 1f) * transform.localScale.x, transform.localScale.y);
+					if ((unityScale.x < 0) != pickable.xFLIPPED) {
+						pickable.xFLIPPED = !pickable.xFLIPPED;
+						unityScale = new Vector2(-unityScale.x, unityScale.y);
+					}
+					pickable.SCALE = new Vec2d((pickable.xFLIPPED ? -1f : 1f) * unityScale.x, unityScale.y);
 					updatedData = true;
 				} else {
 					transform.localScale = new Vector3(expectedScale.x, expectedScale.y, 1f);
