@@ -169,6 +169,7 @@ public class UnityAnimation : MonoBehaviour {
 
 	//private float updateCounter = 0f;
 	public float currentFrame = 0;
+	public float ActualCurrentFrame => MathF.Floor(currentFrame);
 
 	public void Start() {
 	}
@@ -330,7 +331,7 @@ public class UnityAnimation : MonoBehaviour {
 			if((skeleton?.bank?.value?.polylines?.Count ?? 0) > 0) {
 				AnimTrackPolyline lastPolyLineList = null;
 				if (animTrack?.polylines?.Count > 0) {
-					lastPolyLineList = animTrack.polylines.LastOrDefault(p => p.frame <= currentFrame);
+					lastPolyLineList = animTrack.polylines.LastOrDefault(p => p.frame <= ActualCurrentFrame);
 				}
 				foreach (var l in lines) {
 					var lr = l.Value;
@@ -528,13 +529,13 @@ public class UnityAnimation : MonoBehaviour {
 			for (int p = 0; p < bl.amountPAS; p++) {
 				AnimTrackBonePAS pas = animTrack.bonePAS[bl.startPAS + p];
 				AnimTrackBonePAS next = p < bl.amountPAS - 1 ? animTrack.bonePAS[bl.startPAS + ((p + 1) % bl.amountPAS)] : null; // Don't interpolate with start frame in loops
-				if (p == bl.amountPAS - 1 || (currentFrame >= pas.frame && currentFrame < next.frame)) {
+				if (p == bl.amountPAS - 1 || (ActualCurrentFrame >= pas.frame && ActualCurrentFrame < next.frame)) {
 					Vector2 pos = pas.Position.GetUnityVector();
 					Angle rot = pas.Rotation;
 					Vector2 scl = pas.Scale.GetUnityVector();
-					if (currentFrame != pas.frame && next != null && next != pas) {
+					if (ActualCurrentFrame != pas.frame && next != null && next != pas) {
 						float nextFrame = next.frame < pas.frame ? next.frame + animTrack.length : next.frame;
-						float lerp = (Mathf.Floor(currentFrame) - pas.frame) / (Mathf.Floor(nextFrame) - pas.frame); // TODO: maybe change to Math.Floor(currentFrame) if animations can't be interpolated. This fixed jittery feet for Rayman
+						float lerp = (ActualCurrentFrame - pas.frame) / (Mathf.Floor(nextFrame) - pas.frame); // TODO: maybe change to Math.Floor(currentFrame) if animations can't be interpolated. This fixed jittery feet for Rayman
 						pos = Vector2.Lerp(pos, next.Position.GetUnityVector(), lerp);
 						//rot = Mathf.LerpAngle(rot * animTrack.multiplierA, next.Rotation * animTrack.multiplierA, lerp) / animTrack.multiplierA;
 						if (useCircularInterpolation)
@@ -585,12 +586,12 @@ public class UnityAnimation : MonoBehaviour {
 			for (int p = 0; p < bl.amountZAL; p++) {
 				AnimTrackBoneZAL zal = animTrack.boneZAL[bl.startZAL + p];
 				AnimTrackBoneZAL next = p < bl.amountZAL - 1 ? animTrack.boneZAL[bl.startZAL + ((p + 1) % bl.amountZAL)] : null; // Don't interpolate with start frame
-				if (p == bl.amountZAL - 1 || (currentFrame >= zal.frame && currentFrame < next.frame)) {
+				if (p == bl.amountZAL - 1 || (ActualCurrentFrame >= zal.frame && ActualCurrentFrame < next.frame)) {
 					float z = zal.z;
 					float alpha = zal.alpha / 255f;
 					if (next != null && next != zal) {
 						float nextFrame = next.frame < zal.frame ? next.frame + animTrack.length : next.frame;
-						float lerp = (currentFrame - zal.frame) / (nextFrame - zal.frame);
+						float lerp = (ActualCurrentFrame - zal.frame) / (nextFrame - zal.frame);
 						z = Mathf.Lerp(z, next.z, lerp);
 						alpha = Mathf.Lerp(alpha, next.alpha / 255f, lerp);
 					}
@@ -625,7 +626,7 @@ public class UnityAnimation : MonoBehaviour {
 		AnimTrackBML bml = null;
 		if (animTrack.bml.Count > 0) {
 			// Reset BML at end of animation - except if current BML frame is the first frame
-			if (currentBMLFrame > currentFrame && currentBMLFrame != animTrack.bml[0].frame) {
+			if (currentBMLFrame > ActualCurrentFrame && currentBMLFrame != animTrack.bml[0].frame) {
 				currentBMLFrame = -1;
 			}
 			// Find last index that matches current BML
@@ -633,7 +634,7 @@ public class UnityAnimation : MonoBehaviour {
 
 			for (int i = currentBMLIndex; i < animTrack.bml.Count; i++) {
 				AnimTrackBML currentBML = animTrack.bml[i];
-				if (currentBML.frame > currentFrame) break;
+				if (currentBML.frame > ActualCurrentFrame) break;
 				//if ((curB.frame > currentFrame) && !(checkHigher && curB.frame > lastBmlFrame)) break;
 				bml = currentBML;
 			}
