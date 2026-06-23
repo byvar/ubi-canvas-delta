@@ -117,11 +117,7 @@ namespace UbiArt {
 		public override long Length => 0;
 
 		public override object Serialize(object obj, Type type, string name = null, Options options = Options.None) {
-			if (name == null) name = $"({type.GetFormattedName()})";
-			if (addToName != null) {
-				name += addToName;
-				addToName = null;
-			}
+			name = FillName(name, type);
 			if (type.IsEnum) {
 				obj = EnumField(name, obj, type);
 			} else if (Type.GetTypeCode(type) != TypeCode.Object) {
@@ -221,15 +217,24 @@ namespace UbiArt {
 			//obj = reader.ReadBytes(numBytes);
 			return obj;
 		}
-
-		string addToName = null;
+		
+		protected Stack<pair<int, string>> AddToName { get; set; } = new Stack<pair<int, string>>();
+		protected string FillName(string name, Type type) {
+			if (name == null) name = $"({type.GetFormattedName()})";
+			if (AddToName.TryPeek(out var result)) {
+				if (result.Item1 == indent) {
+					name += result.Item2;
+				}
+			}
+			return name;
+		}
 		public override bool ArrayEntryStart(string name, int index) {
-			addToName = $"[{index}]";
+			AddToName.Push(new pair<int, string>(indent+1, $"[{index}]"));
 			return base.ArrayEntryStart(name, index);
 		}
 
 		public override void ArrayEntryStop() {
-			addToName = null;
+			AddToName.TryPop(out _);
 			base.ArrayEntryStop();
 		}
 
@@ -842,11 +847,7 @@ namespace UbiArt {
 			// Get the type
 			var type = typeof(T);
 
-			if (name == null) name = $"({type.GetFormattedName()})";
-			if (addToName != null) {
-				name += addToName;
-				addToName = null;
-			}
+			name = FillName(name, type);
 
 			TypeCode typeCode = Type.GetTypeCode(type);
 
@@ -887,11 +888,7 @@ namespace UbiArt {
 		public override T SerializeObject<T>(T obj, Action<T> onPreSerialize = null, string name = null, int? index = null, Options options = Options.None) {
 			// Get the type
 			var type = typeof(T);
-			if(name == null) name = $"({type.GetFormattedName()})";
-			if (addToName != null) {
-				name += addToName;
-				addToName = null;
-			}
+			name = FillName(name, type);
 			if (type == typeof(Angle)) {
 				Angle a = (Angle)(object)obj;
 				a = AngleField(name, a);
