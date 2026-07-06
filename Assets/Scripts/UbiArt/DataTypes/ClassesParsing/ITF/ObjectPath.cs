@@ -11,23 +11,6 @@ namespace UbiArt.ITF {
 			FullPath = path;
 		}
 
-		protected override void OnPreSerialize(CSerializerObject s) {
-			base.OnPreSerialize(s);
-			Reinit(s.Context, s.Settings);
-		}
-
-		Settings previousSettings = null;
-		protected virtual void Reinit(Context c, Settings settings) {
-			if (previousSettings != null) {
-				if (previousSettings.Game != settings.Game) {
-					if (settings.EngineVersion > EngineVersion.RO && previousSettings.EngineVersion <= EngineVersion.RO) {
-						FullPath = id;
-					}
-				}
-			}
-			previousSettings = settings;
-		}
-
 		public string FullPath {
 			get {
 				StringBuilder b = new();

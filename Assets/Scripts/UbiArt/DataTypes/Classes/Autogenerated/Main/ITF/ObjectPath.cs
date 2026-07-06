@@ -13,7 +13,7 @@ namespace UbiArt.ITF {
 				id = s.Serialize<string>(id, name: "id");
 				absolute = s.Serialize<bool>(absolute, name: "absolute");
 			} else {
-				id = s.Serialize<string>(id, name: "id");
+				FullPath = s.Serialize<string>(FullPath, name: "id");
 			}
 		}
 		[Games(GameFlags.VH | GameFlags.RA)]
