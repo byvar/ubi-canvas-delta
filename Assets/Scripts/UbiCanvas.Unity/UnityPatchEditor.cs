@@ -161,9 +161,19 @@ public class UnityPatchEditor : MonoBehaviour {
 		}
 		foreach (var p in points) {
 			if (!p.Transformations.Any()) continue;
+
+			// Circular mean to get average rotation
+			var sinSum = 0f;
+			var cosSum = 0f;
+			foreach (var transf in p.Transformations) {
+				sinSum += MathF.Sin(transf.Rotation);
+				cosSum += MathF.Cos(transf.Rotation);
+			}
+			var circularMean = MathF.Atan2(sinSum, cosSum);
+
 			UnityPatchPointEditor.Transformation t = new UnityPatchPointEditor.Transformation() {
 				Translation = new Vector2(p.Transformations.Average(p => p.Translation.x), p.Transformations.Average(p => p.Translation.y)),
-				Rotation = p.Transformations.Average(p => p.Rotation),
+				Rotation = circularMean,
 				Scale = p.Transformations.Average(p => p.Scale)
 			};
 			//Debug.Log($"{t.Translation} - {t.Rotation} - {t.Scale}");
